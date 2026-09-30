@@ -18,9 +18,12 @@ const hrefs = (name: string) =>
     .map((link) => link.getAttribute("href"))
 
 describe("Footer", () => {
-  it("signs off", () => {
+  it("signs off like a horror film: it's never really over", () => {
     renderInEnglish(<Footer />)
     expect(screen.getByText("The end?")).toBeInTheDocument()
+    expect(
+      screen.getByText("Every monster comes back. See you next Halloween.")
+    ).toBeInTheDocument()
   })
 
   it("links every help channel, each form preselected", () => {
@@ -36,6 +39,9 @@ describe("Footer", () => {
   it("links what to explore and the fine print, still to come", () => {
     renderInEnglish(<Footer />)
     expect(hrefs("Explore")).toEqual(["/costumes", "/basket", "/try-on"])
+    expect(
+      screen.getByRole("link", { name: "My Pumpkin Basket" })
+    ).toHaveAttribute("href", "/basket")
     expect(hrefs("Fine print")).toEqual(["/terms", "/privacy"])
     const finePrint = screen.getByRole("navigation", { name: "Fine print" })
     expect(within(finePrint).getAllByText("Soon")).toHaveLength(2)

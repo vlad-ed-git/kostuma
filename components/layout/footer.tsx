@@ -18,8 +18,12 @@ export function Footer() {
     <footer className="relative isolate overflow-hidden border-t border-border">
       <Fog />
       <div className="mx-auto max-w-7xl px-4 pt-20 pb-10 sm:px-6 lg:px-8">
+        {/* The last card of a horror film: it's never really over. */}
         <p className="font-heading text-display text-transparent uppercase transition-colors duration-700 [-webkit-text-stroke:1px_var(--muted-foreground)] hover:text-foreground">
           {t("signOff")}
+        </p>
+        <p className="mt-3 font-mono text-label text-muted-foreground">
+          {t("signOffLine")}
         </p>
 
         <div className="mt-16 grid gap-10 sm:grid-cols-3">

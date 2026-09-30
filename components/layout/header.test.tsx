@@ -32,10 +32,10 @@ describe("Header", () => {
     ])
   })
 
-  it("names the Pumpkin Basket, whose icon alone says nothing", () => {
+  it("names My Pumpkin Basket, whose icon alone says nothing", () => {
     renderInEnglish(<Header />)
     expect(
-      screen.getByRole("link", { name: "Pumpkin Basket" })
+      screen.getByRole("link", { name: "My Pumpkin Basket" })
     ).toHaveAttribute("href", "/basket")
   })
 
