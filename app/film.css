@@ -166,10 +166,17 @@
 
 /* ── Fog (home hero and footer, components/horror/fog.tsx) ─────────────── */
 
+/*
+ * Behind all content, like the vignette, and clipped only sideways (so it
+ * never widens the page): its glow drifts across the edge of its section
+ * and fades out there. No line may mark where one section ends and the
+ * next begins (owner, 2026-09-30), so no section that holds fog clips it.
+ */
 .fog {
   position: absolute;
   inset: 0;
-  overflow: hidden;
+  z-index: -1;
+  overflow-x: clip;
   pointer-events: none;
 }
 .fog::before,

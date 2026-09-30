@@ -19,7 +19,8 @@ export default async function HomePage() {
         data-title-card
         // Slides under the header, which stays transparent over a title
         // card. A little short of the screen, so the first costumes peek.
-        className="relative isolate -mt-16 flex max-h-240 min-h-[88svh] items-end overflow-hidden px-4 pt-32 pb-20 sm:px-6 lg:px-8"
+        // Never clipped: its fog fades out over the costumes (app/film.css).
+        className="relative -mt-16 flex max-h-240 min-h-[88svh] items-end px-4 pt-32 pb-20 sm:px-6 lg:px-8"
       >
         <Fog />
         <div className="film-weave mx-auto w-full max-w-7xl">

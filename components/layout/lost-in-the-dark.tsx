@@ -28,7 +28,8 @@ export function LostInTheDark({
     <section
       data-title-card
       className={cn(
-        "relative isolate grid min-h-[calc(100svh-4rem)] place-items-center overflow-hidden px-4 py-24 text-center",
+        // Never clipped: its fog fades out into the footer (app/film.css).
+        "relative grid min-h-[calc(100svh-4rem)] place-items-center px-4 py-24 text-center",
         className
       )}
     >

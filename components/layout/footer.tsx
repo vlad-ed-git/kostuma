@@ -16,9 +16,9 @@ export function Footer() {
   const soon = <Badge variant="soon">{badge("soon")}</Badge>
 
   return (
-    <footer className="relative isolate overflow-hidden">
-      {/* Upside down: the fog and its red glow hang from the top, so the
-          page runs into the credits without a line between them. */}
+    <footer className="relative">
+      {/* Upside down: the fog and its red glow rise above the footer's top,
+          so the page runs into the credits without a line between them. */}
       <Fog className="-scale-y-100" />
       <div className="mx-auto max-w-7xl px-4 pt-20 pb-10 sm:px-6 lg:px-8">
         {/* The last card of a horror film: it's never really over. */}

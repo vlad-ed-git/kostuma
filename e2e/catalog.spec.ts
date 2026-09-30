@@ -215,6 +215,26 @@ test.describe("browsing the costumes", () => {
       expect(overflow, path).toBeLessThanOrEqual(0)
     }
   })
+
+  test("no section clips its fog, so no line marks where it ends", async ({
+    page,
+  }) => {
+    for (const path of ["/", "/costumes/ghostface", "/no-such-page"]) {
+      await page.goto(path)
+      const clipped = await page.evaluate(() =>
+        [...document.querySelectorAll(".fog")].flatMap((fog) => {
+          const own = getComputedStyle(fog)
+          const parent = getComputedStyle(fog.parentElement!)
+          return own.zIndex === "-1" &&
+            own.overflowY === "visible" &&
+            parent.overflowY === "visible"
+            ? []
+            : [fog.parentElement!.tagName]
+        })
+      )
+      expect(clipped, path).toEqual([])
+    }
+  })
 })
 
 test.describe("the cue mark on a costume link", () => {
