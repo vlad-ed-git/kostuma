@@ -9,9 +9,9 @@ corners, uppercase tracked buttons, underline form fields, borderless text badge
 type now come from one period: horror cinema of 1978–1984, seen through modern restraint.
 
 Scope of v1: the public site (home, costumes, costume pages, My Pumpkin Basket, feedback),
-accounts (register, sign in, reset password, account) and polished "coming soon" pages for
-virtual try-on (The Mirror), pricing, terms and privacy. Every costume uses one placeholder image
-until real photography exists.
+accounts (register, sign in, reset password, account) and polished "coming soon" pages for the
+Fitting Room (virtual try-on, part of My Pumpkin Basket), terms and privacy. Every costume uses
+one placeholder image until real photography exists.
 
 ---
 
@@ -35,22 +35,39 @@ weave, light leaking at the edge of a reel. Two looks are ruled out on purpose:
 
 ### 1.2 Vocabulary
 
-| Cinema                           | Kostuma                                            |
-| -------------------------------- | -------------------------------------------------- |
-| Title card                       | Home hero ("The darkest day is coming.")           |
-| Film leader countdown            | Countdown to Halloween                             |
-| The cast / most wanted           | The collection: 100 characters, ranked             |
-| One-sheet poster + billing block | Costume page (image, name, credits)                |
-| Case file / production notes     | Ranks, years, labels ("No. 001 · 1978")            |
-| Behind the scenes                | Fun facts ("Behind the screams")                   |
-| Wardrobe department notes        | "The look": what the costume needs                 |
-| Cue mark ("cigarette burn")      | Loading and page-change indicator                  |
-| Reel change                      | Moving between pages                               |
-| Coming soon trailer              | Features not open yet (The Mirror, pricing, legal) |
-| Admission                        | Pricing (Premium)                                  |
-| End credits                      | Footer ("The end?")                                |
+| Cinema                           | Kostuma                                           |
+| -------------------------------- | ------------------------------------------------- |
+| Title card                       | Home hero ("The darkest day is coming.")          |
+| Film leader countdown            | Countdown to Halloween                            |
+| The cast / most wanted           | The collection: 100 characters, ranked            |
+| One-sheet poster + billing block | Costume page (image, name, credits)               |
+| Case file / production notes     | Ranks, years, labels ("No. 001 · 1978")           |
+| Behind the scenes                | Fun facts ("Behind the screams")                  |
+| Wardrobe department notes        | "The look": what the costume needs                |
+| Cue mark ("cigarette burn")      | Loading and page-change indicator                 |
+| Reel change                      | Moving between pages                              |
+| Wardrobe fitting                 | The Fitting Room: try on what's in your basket    |
+| Coming soon trailer              | Features not open yet (Fitting Room, legal pages) |
+| Admission ticket                 | The premium badge (paid try-ons)                  |
+| End credits                      | Footer ("The end?")                               |
 
-### 1.3 Principles
+### 1.3 The flow (owner, 2026-09-30)
+
+**Browse → My Pumpkin Basket → Fitting Room → Buy.**
+
+1. **Browse** the costumes: the collection and each costume's page.
+2. **Add** the ones you like to **My Pumpkin Basket**, the cart (no sign-in, kept on the
+   device).
+3. **Try them on** in the **Fitting Room**, which is part of the basket: it shows exactly the
+   outfits in your basket (virtual try-on: sign in, 2 free try-ons, then {price} per costume).
+   Coming soon.
+4. **Buy**: an action on each outfit in the basket, opening its shop in a new tab.
+
+Menus hold places, never actions: the header and the mobile menu offer Costumes and My Pumpkin
+Basket, nothing else. The Fitting Room and Buy live inside the basket; a costume's page offers
+"Add to My Pumpkin Basket".
+
+### 1.4 Principles
 
 1. **One period, modern manners.** The look is 1978–1984 film; the UX is today's: clean grids,
    readable forms, fast, accessible. The period lives in color, type, texture and pacing, never
@@ -59,7 +76,7 @@ weave, light leaking at the edge of a reel. Two looks are ruled out on purpose:
    viewport gets at most one attention-grabbing effect; everything else is calm and typographic.
 3. **Clarity beats spookiness where people act.** Forms, errors, buttons and prices are plain and
    instantly readable. Atmosphere lives around them, never on them.
-4. **Color means something.** Arterial red = action or danger. Sodium orange = your Pumpkin
+4. **Color means something.** Arterial red = action or danger. Sodium orange = My Pumpkin
    Basket and Halloween itself. Black and bone = structure. Nothing is colored for decoration.
 5. **Motion is slow and physical, and always optional.** Things fade up from black; nothing
    bounces. Every ambient effect switches off under `prefers-reduced-motion`.
@@ -439,16 +456,19 @@ Client components are marked (C). Everything else renders on the server.
 
 - **Wordmark** (2.1).
 - **Header** (server; the mobile menu is the only client part, the scroll state is CSS):
-  - Left: wordmark → home. Desktop nav: Costumes · The Mirror (`soon`) · Pricing (`soon`).
-  - Right: My Pumpkin Basket link (icon + `count`, label "My Pumpkin Basket, 3 saved"), language
-    menu, account: "Sign in" (ghost) or a square avatar with initials → menu (Account,
+  - Wordmark → home, then the main nav: the two places of the flow (1.3). Costumes (from `lg`)
+    and, pushed right, My Pumpkin Basket: the pumpkin plus its name from `lg`, the icon alone
+    below (the name kept for screen readers), with the `count` badge once the basket works
+    ("My Pumpkin Basket, 3 costumes"). Places only, never actions.
+  - Then the language menu and the account: "Sign in" (ghost) or a square avatar with initials → menu (Account,
     Sign out).
   - Transparent over a title card (any page with `[data-title-card]`: the home hero, the 404);
     after 24 px of scroll (and on every other page) it becomes `--background` at 80 % +
     `backdrop-blur-md` + bottom hairline. A scroll-driven animation; browsers without one keep
     it solid.
-  - Below `lg` (1024 px; the full row needs the room): wordmark, basket, menu button. Menu = full-screen overlay (`--background` 96 %),
-    big `h2` links with stagger, language links and account actions at the bottom. Focus trapped,
+  - Below `lg` (1024 px): wordmark, basket icon, menu button. Menu = full-screen overlay
+    (`--background` 96 %), big `h2` links (Costumes, My Pumpkin Basket) with stagger, language
+    links and account actions at the bottom. Focus trapped,
     Escape closes, focus returns to the menu button, body scroll locked.
   - Anchored during reel changes (`view-transition-name: site-header`).
 - **Skip link**: first focusable, "Skip to content", visible on focus, jumps to `<main id>`.
@@ -463,7 +483,7 @@ Client components are marked (C). Everything else renders on the server.
     fill; fills to bone on hover): "The end?", the last card of a horror film, where the question
     mark promises the monster will be back. Under it, in Courier `label`, the line that lands the
     joke: "Every monster comes back. See you next Halloween."
-  - Columns: Explore (Costumes, My Pumpkin Basket, The Mirror `soon`), Help (Report a bug, Share
+  - Columns: Explore (Costumes, My Pumpkin Basket), Help (Report a bug, Share
     feedback, Request a feature), Fine print (Terms `soon`, Privacy `soon`).
   - Language links. Legal lines (2.3). No top border: the fog layer is flipped upside down, so
     it and its red glow hang from the top and the page runs into the credits.
@@ -479,29 +499,30 @@ Client components are marked (C). Everything else renders on the server.
     is clickable without nesting interactive elements.
   - 4:5 image, bottom gradient (`--background` → transparent, 55 % height).
   - Top-left: case-file rank `No. 001` (Courier label). Top-right: basket toggle (C) above the
-    stretched link (`z-10`), 40 × 40 with a 44 px hit area, `aria-pressed`, label "Save {name} to
+    stretched link (`z-10`), 40 × 40 with a 44 px hit area, `aria-pressed`, label "Add {name} to
     My Pumpkin Basket" / "Remove {name} from My Pumpkin Basket".
   - Bottom: `newBlood` badge if trending, name (`h3`, 2-line clamp), film + year (Courier micro,
     muted).
   - Hover/focus-within motion per 7.2.
 - **Basket toggle** (C): outline pumpkin ↔ lit pumpkin, ignite animation on add; announces
-  "Saved to My Pumpkin Basket" / "Removed" through a polite live region.
+  "Added to My Pumpkin Basket" / "Removed from My Pumpkin Basket" through a polite live region.
 - **Collection toolbar** (C): sticky under the header. Search input (search icon, clear button),
-  era chips (All · New blood · Before 1980 · 1980–1999 · 2000–2019 · 2020 and later), sort menu
-  (a Base UI Select styled like the language menu)
-  (Rank · A–Z · Newest · Oldest), live result count ("24 costumes"). State mirrors the URL
+  era chips (All · New blood · Before 1980 · 1980–1999 · 2000–2019 · 2020 and later), sort as a
+  row of four links (Rank · A–Z · Newest · Oldest: no dropdown needed), live result count ("24 costumes"). State mirrors the URL
   (`?q=&era=&sort=`) with `history.replaceState` so views are shareable.
 - **Billing block**: the credits of a costume page, set like the credit block at the foot of a
   one-sheet: centered, League Gothic at 75 % width (`billing`), muted, role words small and names
   tall ("Created by", "Brought to life by").
 - **Wardrobe list** ("The look"): the catalog's look text split into items, each with a thin
   square bullet, `body`. Reads as a wardrobe department checklist.
-- **Store links**: "Find this costume" group of outline buttons, one per store, each ending with
-  an `arrow-right-up-line` icon and sr-only "(opens in a new tab)"; `target="_blank"`
-  `rel="noopener noreferrer nofollow"` (+ `sponsored` when a link is an affiliate link).
+- **Buy** (in the basket only, 1.3): opens the outfit's shop in a new tab, with an
+  `arrow-right-up-line` icon and sr-only "(opens in a new tab)"; `target="_blank"`
+  `rel="noopener noreferrer nofollow"` (+ `sponsored` when a link is an affiliate link). With
+  several shops, a styled menu of them.
 - **Empty state**: centered icon (64 px, muted), `h3`, one line of copy, one action.
 - **Coming soon panel**: see 11.9.
-- **Premium price line**: "2 free transformations. Then {price} per costume." `{price}` is USD 5,
+- **Premium price line**: "2 free try-ons in the Fitting Room. Then {price} per costume."
+  `{price}` is USD 5,
   formatted by the locale's currency formatter (next-intl `format.number(5, {style: "currency",
 currency: "USD"})`), never a hardcoded "$5" string.
 
@@ -529,8 +550,7 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
      `display` `--ember` and "The darkest day is here."; after Halloween it counts to next year.
      `role="timer"`, `aria-live="off"`, and a visually hidden sentence updated once per minute
      for screen readers ("31 days, 4 hours until Halloween").
-   - Actions: primary "Browse the costumes" → `/costumes`; secondary outline "Try it on" with
-     `soon` badge → `/try-on`.
+   - Action: primary "Browse the costumes" → `/costumes`.
    - Scroll cue: Courier micro "Scroll" above a 48 px line that drips downward (2.4 s loop;
      hidden under reduced motion).
 2. **Most wanted** — section heading "01 — Most wanted" / "This season's most wanted" / link "See
@@ -538,14 +558,16 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
 3. **New blood** — "02 — New blood" / "Fresh from the screen": the trending costumes in a
    horizontal scroll-snap row (cards 70 % width on mobile, 4 visible on desktop), arrow buttons
    on desktop.
-4. **How it works** — "03 — How it works", three steps with huge League Gothic numerals
-   `01 02 03`: Choose your monster (browse) · See yourself transformed (The Mirror, `soon` +
-   `premium`) · Get the costume (store links).
-5. **The Mirror teaser** — split layout: left copy ("Coming soon", `h2` "The Mirror", one
-   paragraph: upload one full-body photo and one face close-up, see yourself in the costume with
-   special-effects makeup; price line; button "Learn more" → `/try-on`); right an oval mirror
-   frame (double hairline) holding the placeholder figure behind slow fog.
-6. **Final call** — centered `display`: "Who will you become?" + primary button to costumes.
+4. **How it works** — "03 — How it works": the flow (1.3) in four steps with huge League Gothic
+   numerals `01 02 03 04`: Browse · Add to My Pumpkin Basket · Try on in the Fitting Room (`soon`
+   \+ `premium`) · Buy.
+5. **The Fitting Room teaser** — split layout: left copy ("Coming soon", `h2` "The Fitting Room",
+   one paragraph: try on what's in your basket with one full-body photo and one face close-up,
+   special-effects makeup included; price line; link to My Pumpkin Basket); right a
+   fitting-room mirror (double hairline) holding the placeholder figure behind slow fog.
+
+The home page is re-planned with the owner before `feat/landing` (the owner likes the
+placeholder's window lit by a sodium streetlight for the hero). 6. **Final call** — centered `display`: "Who will you become?" + primary button to costumes.
 
 ### 11.2 Costumes `/costumes`
 
@@ -564,11 +586,10 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
   - Case-file line (`label`): "No. 001 · 1978" + `newBlood` badge.
   - H1 `display`: the character.
   - Film line: film icon + "Scream (1996)" (lead, muted).
-  - Actions: basket toggle as a labelled button ("Save to My Pumpkin Basket" / "Saved"),
-    "Try it on" outline with `soon` + `premium` → `/try-on?costume={slug}`.
+  - Action: one primary button, "Add to My Pumpkin Basket" (in the basket: "In My Pumpkin
+    Basket", with a link to it). No try-on and no shop here (1.3): both live in the basket.
   - **The lore** (`label` + `body-lg`).
   - **The look** (wardrobe list).
-  - **Find this costume** (store links).
   - **Behind the screams** (fun fact, `body`, inside a left hairline in `--blood`).
   - **Credits** (billing block).
 - Prev / next by rank ("← No. 000 {name}" / "{name} No. 002 →").
@@ -576,9 +597,12 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
 
 ### 11.4 My Pumpkin Basket `/basket`
 
-- H1 "My Pumpkin Basket", count, note "Saved on this device." (muted small).
-- Rows: thumbnail (4:5, 72 px wide), name + film, actions: "Find it" (first store link),
-  "Remove" (ghost, icon). "Clear basket" asks for a second click ("Click again to clear") within
+- H1 "My Pumpkin Basket", count, note "Kept on this device." (muted small).
+- **The Fitting Room** panel (part of the basket, 1.3): `h2` "The Fitting Room" + `soon` +
+  `premium`, one line ("Try on the outfits in your basket, special-effects makeup included."),
+  price line, link "Step inside" → `/basket/fitting-room` (coming soon).
+- Rows: thumbnail (4:5, 72 px wide), name + film, actions: **Buy** (primary, 10.3), "Try on"
+  (→ `/basket/fitting-room?costume={slug}`, `soon`), "Remove" (ghost, icon). "Clear basket" asks for a second click ("Click again to clear") within
   4 s.
 - Empty: unlit pumpkin, "Your basket is empty.", "The night is young.", button "Browse costumes".
 - Server renders a skeleton; the client reads storage after mount (no hydration mismatch).
@@ -604,7 +628,7 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
 ### 11.6 Account `/account`
 
 - H1 "Your account". Profile block: name, email (Courier), member since.
-- "The Mirror" block: "2 free transformations waiting" + `soon` + price line.
+- "The Fitting Room" block: "2 free try-ons waiting" + `soon` + price line.
 - Sign out (outline button). Signed-out visitors are redirected to sign in (with `next`).
 
 ### 11.7 Feedback `/feedback` (`?type=bug|feedback|feature`)
@@ -630,12 +654,11 @@ Shared panel ("trailer"): `label` with a blinking red REC dot (1 Hz, static unde
 motion) "Coming soon"; `display` title; lead; up to 3 feature bullets; primary action back to
 something that works now; secondary "Want it sooner? Tell us." → `/feedback?type=feature`.
 
-| Route      | Title            | Content                                                                                                                                                                                                                                |
-| ---------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/try-on`  | The Mirror       | What it does (one full-body photo + one face close-up → you in the costume with special-effects makeup), `premium` badge, price line, privacy note ("Your photos stay private."), CTA browse. Accepts `?costume=` to name the costume. |
-| `/pricing` | Admission        | Two columns: Free (browse, basket, feedback) / Premium (`premium`: 2 free transformations, then {price} per costume). Both marked `soon` where relevant.                                                                               |
-| `/terms`   | Terms of service | "The fine print is being written." + a link to the feedback form. `noindex`.                                                                                                                                                           |
-| `/privacy` | Privacy policy   | Same pattern; states plainly what is stored today (account email and name, feedback messages) + a link to the feedback form. `noindex`.                                                                                                |
+| Route                  | Title            | Content                                                                                                                                                                                                                                                                                                                             |
+| ---------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/basket/fitting-room` | The Fitting Room | Part of the basket: what it does (one full-body photo + one face close-up → you in each outfit from your basket, special-effects makeup included), the outfits in your basket (or a nudge to fill it), `premium` badge, price line, privacy note ("Your photos stay private."), CTA back to My Pumpkin Basket. Accepts `?costume=`. |
+| `/terms`               | Terms of service | "The fine print is being written." + a link to the feedback form. `noindex`.                                                                                                                                                                                                                                                        |
+| `/privacy`             | Privacy policy   | Same pattern; states plainly what is stored today (account email and name, feedback messages) + a link to the feedback form. `noindex`.                                                                                                                                                                                             |
 
 ---
 
@@ -746,7 +769,7 @@ Each feature branch ships unit and end-to-end tests for the cases that apply to 
 
 ## 18. Later
 
-Real costume photography (per-costume art direction) · The Mirror flow (upload guide, progress
+Real costume photography (per-costume art direction) · The Fitting Room flow (upload guide, progress
 as a "developing film" animation, result reveal) · Stripe checkout styled as a ticket stub ·
 translations · optional opt-in ambient sound: projector whir (never autoplay) · shared-element
 morphs between cards and costume pages.
