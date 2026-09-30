@@ -6,10 +6,11 @@ import { cn } from "@/lib/utils"
 
 // Kostuma's badges (docs/design-spec.md §10.1) add a hairline border and a
 // little padding to the preset's text badge, so they read as stamped labels.
+// The base sets its own family: a badge inside a title keeps the UI face.
 const stamp = "border px-1.5 py-0.5"
 
 const badgeVariants = cva(
-  "group/badge inline-flex w-fit shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-none border-0 bg-transparent px-0 py-0 text-[0.625rem] font-semibold tracking-widest whitespace-nowrap uppercase transition-colors has-data-[icon=inline-end]:pr-0 has-data-[icon=inline-start]:pl-0 aria-invalid:border-destructive [&>svg]:pointer-events-none [&>svg]:size-3!",
+  "group/badge inline-flex w-fit shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-none border-0 bg-transparent px-0 py-0 font-sans text-[0.625rem] font-semibold tracking-widest whitespace-nowrap uppercase transition-colors has-data-[icon=inline-end]:pr-0 has-data-[icon=inline-start]:pl-0 aria-invalid:border-destructive [&>svg]:pointer-events-none [&>svg]:size-3!",
   {
     variants: {
       variant: {
