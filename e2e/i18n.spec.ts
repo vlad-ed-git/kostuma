@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test"
 
+import { collectErrors } from "./console"
+
 test.describe("languages", () => {
   test("English lives at the root, dark on a light system", async ({
     page,
@@ -10,7 +12,7 @@ test.describe("languages", () => {
     const background = await page.evaluate(
       () => getComputedStyle(document.body).backgroundColor
     )
-    // The preset's zinc-950: nowhere near white.
+    // The warm black of the palette: nowhere near white.
     expect(background).not.toMatch(/rgb\(255, 255, 255\)/)
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible()
   })
@@ -42,19 +44,16 @@ test.describe("languages", () => {
   test("switching languages keeps the page and logs no errors", async ({
     page,
   }) => {
-    const errors: string[] = []
-    page.on("console", (message) => {
-      if (message.type() === "error") errors.push(message.text())
-    })
-    page.on("pageerror", (error) => errors.push(error.message))
+    const errors = collectErrors(page)
 
+    // The footer's switcher: the header's hides on small screens.
+    const language = () => page.getByRole("contentinfo").getByLabel("Language")
     await page.goto("/")
-    const language = page.getByLabel("Language")
-    await language.selectOption("es")
+    await language().selectOption("es")
     await expect(page).toHaveURL(/\/es$/)
     await expect(page.locator("html")).toHaveAttribute("lang", "es")
 
-    await page.getByLabel("Language").selectOption("en")
+    await language().selectOption("en")
     await expect(page).toHaveURL(/\/$/)
     await expect(page.locator("html")).toHaveAttribute("lang", "en")
 

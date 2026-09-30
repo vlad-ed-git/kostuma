@@ -5,6 +5,11 @@ import { notFound } from "next/navigation"
 import { connection } from "next/server"
 
 import { documentClassName } from "@/app/fonts"
+import { Atmosphere } from "@/components/horror/atmosphere"
+import { CueMark } from "@/components/horror/cue-mark"
+import { Footer } from "@/components/layout/footer"
+import { Header } from "@/components/layout/header"
+import { SkipLink } from "@/components/layout/skip-link"
 import { languageTags, routing } from "@/i18n/routing"
 import { themeColor } from "@/lib/design/theme"
 
@@ -46,9 +51,19 @@ export default async function RootLayout({
 
   return (
     <html lang={languageTags[locale]} className={documentClassName}>
-      <body>
+      <body className="flex min-h-svh flex-col">
         {/* Gives Client Components the locale and messages of this request. */}
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          <SkipLink />
+          <Header />
+          {/* Pages render sections; the shell owns the one <main>. */}
+          <main id="content" tabIndex={-1} className="flex-1 outline-none">
+            {children}
+          </main>
+          <Footer />
+          <CueMark />
+          <Atmosphere />
+        </NextIntlClientProvider>
       </body>
     </html>
   )

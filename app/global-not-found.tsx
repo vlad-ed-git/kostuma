@@ -5,6 +5,9 @@ import { cookies, headers } from "next/headers"
 import Link from "next/link"
 
 import { documentClassName } from "@/app/fonts"
+import { Atmosphere } from "@/components/horror/atmosphere"
+import { LostInTheDark } from "@/components/layout/lost-in-the-dark"
+import { buttonVariants } from "@/components/ui/button"
 import { languageTags, routing } from "@/i18n/routing"
 import { themeColor } from "@/lib/design/theme"
 
@@ -48,16 +51,22 @@ export default async function GlobalNotFound() {
 
   return (
     <html lang={languageTags[locale]} className={documentClassName}>
-      <body>
-        <main className="flex min-h-svh flex-col items-center justify-center gap-4 p-6 text-center">
-          <h1 className="text-4xl font-semibold tracking-tight">
-            {t("title")}
-          </h1>
-          <p className="max-w-md text-muted-foreground">{t("description")}</p>
-          <Link href={home} className="text-sm underline underline-offset-4">
-            {t("home")}
-          </Link>
+      <body className="flex min-h-svh flex-col">
+        {/* No header here: this page stands outside every language. */}
+        <main id="content" className="flex-1">
+          <LostInTheDark
+            className="min-h-svh"
+            code={t("code")}
+            title={t("title")}
+            description={t("description")}
+            action={
+              <Link href={home} className={buttonVariants({ size: "lg" })}>
+                {t("home")}
+              </Link>
+            }
+          />
         </main>
+        <Atmosphere />
       </body>
     </html>
   )

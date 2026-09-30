@@ -1,15 +1,52 @@
 {
   "App": {
     "name": "Kostuma",
-    "tagline": "The darkest day is coming. Transform into a monster."
+    "tagline": "The darkest day is coming. Transform into a monster.",
+    "taglineLead": "The darkest day is coming.",
+    "taglineTail": "Transform into a monster."
   },
-  "LocaleSwitcher": {
-    "label": "Language"
+  "Nav": {
+    "label": "Main",
+    "costumes": "Costumes",
+    "mirror": "The Mirror",
+    "pricing": "Pricing",
+    "basket": "Pumpkin Basket",
+    "signIn": "Sign in",
+    "menu": "Menu",
+    "openMenu": "Open the menu",
+    "closeMenu": "Close the menu"
+  },
+  "Footer": {
+    "signOff": "The end?",
+    "explore": "Explore",
+    "help": "Help",
+    "finePrint": "Fine print",
+    "reportBug": "Report a bug",
+    "shareFeedback": "Share feedback",
+    "requestFeature": "Request a feature",
+    "terms": "Terms of service",
+    "privacy": "Privacy policy",
+    "contentWarning": "Horror imagery. Not intended for children.",
+    "trademarks": "Character names and film titles belong to their owners. Kostuma is not affiliated with any studio or retailer.",
+    "copyright": "© {year} Kostuma"
+  },
+  "Badge": {
+    "soon": "Soon",
+    "premium": "Premium",
+    "newBlood": "New blood",
+    "newBloodHint": "A 2024–2026 breakout"
+  },
+  "SkipLink": {
+    "label": "Skip to content"
   },
   "CueMark": {
     "loading": "Loading…"
   },
+  "LocaleSwitcher": {
+    "label": "Language"
+  },
   "NotFound": {
+    "code": "404",
     "title": "Lost in the dark",
     "description": "This page does not exist, or it has already been claimed by the night.",
     "home": "Back to Kostuma"
