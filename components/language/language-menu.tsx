@@ -68,7 +68,7 @@ export function LanguageMenu({ className }: { className?: string }) {
                       />
                     }
                     className={cn(
-                      "relative flex min-h-11 items-center justify-between gap-6 px-4 text-xl transition-colors focus-visible:-outline-offset-2",
+                      "relative flex min-h-11 items-center justify-between gap-6 px-4 text-lg transition-colors focus-visible:-outline-offset-2",
                       // A blood-red bar marks the highlighted row, like a
                       // splice mark on the edge of the film.
                       "before:absolute before:inset-y-2 before:start-0 before:w-0.5 before:bg-blood before:opacity-0 before:transition-opacity data-highlighted:bg-muted data-highlighted:before:opacity-100",
