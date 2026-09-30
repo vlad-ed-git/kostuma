@@ -1,26 +1,12 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { hasLocale, NextIntlClientProvider } from "next-intl"
 import { getTranslations } from "next-intl/server"
-import { Geist_Mono, Noto_Sans, Space_Grotesk } from "next/font/google"
 import { notFound } from "next/navigation"
 
-import { ThemeProvider } from "@/components/theme-provider"
+import { documentClassName } from "@/app/fonts"
 import { languageTags, routing } from "@/i18n/routing"
-import { cn } from "@/lib/utils"
 
 import "../globals.css"
-
-const spaceGroteskHeading = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-heading",
-})
-
-const notoSans = Noto_Sans({ subsets: ["latin"], variable: "--font-sans" })
-
-const fontMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-})
 
 // Every language is rendered at build time.
 export function generateStaticParams() {
@@ -46,6 +32,13 @@ export async function generateMetadata({
   }
 }
 
+// Dark only: browser UI (scrollbars, form controls, the address bar on
+// mobile) follows the preset's dark background.
+export const viewport: Viewport = {
+  colorScheme: "dark",
+  themeColor: "#09090b",
+}
+
 // The root layout: every page lives under a language (app/[locale]).
 export default async function RootLayout({
   children,
@@ -55,22 +48,10 @@ export default async function RootLayout({
   if (!hasLocale(routing.locales, locale)) notFound()
 
   return (
-    <html
-      lang={languageTags[locale]}
-      suppressHydrationWarning
-      className={cn(
-        "antialiased",
-        fontMono.variable,
-        "font-sans",
-        notoSans.variable,
-        spaceGroteskHeading.variable
-      )}
-    >
+    <html lang={languageTags[locale]} className={documentClassName}>
       <body>
         {/* Gives Client Components the locale and messages of this request. */}
-        <NextIntlClientProvider>
-          <ThemeProvider>{children}</ThemeProvider>
-        </NextIntlClientProvider>
+        <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
   )

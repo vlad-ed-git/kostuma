@@ -1,9 +1,10 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { hasLocale } from "next-intl"
 import { getTranslations } from "next-intl/server"
 import { cookies, headers } from "next/headers"
 import Link from "next/link"
 
+import { documentClassName } from "@/app/fonts"
 import { languageTags, routing } from "@/i18n/routing"
 
 import "./globals.css"
@@ -26,6 +27,11 @@ async function visitorLocale() {
   )
 }
 
+export const viewport: Viewport = {
+  colorScheme: "dark",
+  themeColor: "#09090b",
+}
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations({
     locale: await visitorLocale(),
@@ -40,7 +46,7 @@ export default async function GlobalNotFound() {
   const home = locale === routing.defaultLocale ? "/" : `/${locale}`
 
   return (
-    <html lang={languageTags[locale]} className="antialiased">
+    <html lang={languageTags[locale]} className={documentClassName}>
       <body>
         <main className="flex min-h-svh flex-col items-center justify-center gap-4 p-6 text-center">
           <h1 className="text-4xl font-semibold tracking-tight">
