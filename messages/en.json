@@ -1,0 +1,14 @@
+{
+  "App": {
+    "name": "Kostuma",
+    "tagline": "The darkest day is coming. Transform into a monster."
+  },
+  "LocaleSwitcher": {
+    "label": "Language"
+  },
+  "NotFound": {
+    "title": "Lost in the dark",
+    "description": "This page does not exist, or it has already been claimed by the night.",
+    "home": "Back to Kostuma"
+  }
+}
