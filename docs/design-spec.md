@@ -18,17 +18,17 @@ the projector hums, and the cast of every horror film you ever loved is waiting 
 
 The metaphor gives the whole product one vocabulary:
 
-| Cinema | Kostuma |
-| --- | --- |
-| Title card | Home hero ("The darkest day is coming.") |
-| Film leader countdown | Countdown to Halloween |
-| The cast / most wanted | The collection: 100 characters, ranked |
-| One-sheet poster + billing block | Costume page (image, name, credits) |
-| Behind the scenes | Fun facts ("Behind the screams") |
-| Wardrobe department notes | "The look": what the costume needs |
-| Coming soon trailer | Features not open yet (The Mirror, pricing, legal) |
-| Admission | Pricing (Premium) |
-| End credits | Footer ("The end?") |
+| Cinema                           | Kostuma                                            |
+| -------------------------------- | -------------------------------------------------- |
+| Title card                       | Home hero ("The darkest day is coming.")           |
+| Film leader countdown            | Countdown to Halloween                             |
+| The cast / most wanted           | The collection: 100 characters, ranked             |
+| One-sheet poster + billing block | Costume page (image, name, credits)                |
+| Behind the scenes                | Fun facts ("Behind the screams")                   |
+| Wardrobe department notes        | "The look": what the costume needs                 |
+| Coming soon trailer              | Features not open yet (The Mirror, pricing, legal) |
+| Admission                        | Pricing (Premium)                                  |
+| End credits                      | Footer ("The end?")                                |
 
 ### Principles
 
@@ -71,7 +71,7 @@ Short. Ominous. Confident. Second person, present tense. A little wry, never che
 - Actions and errors say **what happened and what to do**, in that order. Flavor, if any, comes
   after and is optional ("Wrong email or password." not "The spirits reject you.").
 - Never gory in UI copy, never mocking victims, no ableist words ("insane", "psycho" as insults;
-  film titles such as *Psycho* are fine as titles).
+  film titles such as _Psycho_ are fine as titles).
 - Sentence case in every message. Uppercase is applied by CSS only where the design calls for it,
   so translations never inherit forced caps.
 - The brand name, character names and film titles are never translated by us (they come from the
@@ -90,50 +90,50 @@ Short. Ominous. Confident. Second person, present tense. A little wry, never che
 
 ### 3.1 Preset tokens (from `app/globals.css`, `.dark`, always on)
 
-| Token | Value | ≈ | Use |
-| --- | --- | --- | --- |
-| `--background` | oklch(0.141 0.005 285.823) | zinc-950 `#09090b` | Page. The void. |
-| `--foreground` | oklch(0.985 0 0) | `#fafafa` | Primary text, icons. |
-| `--card` / `--popover` | oklch(0.21 0.006 285.885) | zinc-900 `#18181b` | Raised surfaces, fields, menus. |
-| `--secondary` / `--muted` / `--accent` | oklch(0.274 0.006 286.033) | zinc-800 `#27272a` | Hover fills, chips, skeletons. |
-| `--muted-foreground` | oklch(0.705 0.015 286.067) | zinc-400 `#9f9fa9` | Secondary text, metadata. |
-| `--primary` | oklch(0.444 0.177 26.899) | red-800 `#9f0712` | Primary buttons, selected states. |
-| `--primary-foreground` | oklch(0.971 0.013 17.38) | red-50 | Text on primary. |
-| `--destructive` | oklch(0.704 0.191 22.216) | red-400 `#ff6467` | Error text and icons. |
-| `--border` | white / 10 % | | Hairlines, dividers, card edges. |
-| `--input` | white / 15 % | | Preset field border (see 3.3). |
-| `--ring` | oklch(0.552 0.016 285.938) | zinc-500 | Preset ring (see 3.3). |
-| `--chart-1…5` | red-300, 500, 600, 700, 800 | | The **red ramp** used for glows and light. |
+| Token                                  | Value                       | ≈                  | Use                                        |
+| -------------------------------------- | --------------------------- | ------------------ | ------------------------------------------ |
+| `--background`                         | oklch(0.141 0.005 285.823)  | zinc-950 `#09090b` | Page. The void.                            |
+| `--foreground`                         | oklch(0.985 0 0)            | `#fafafa`          | Primary text, icons.                       |
+| `--card` / `--popover`                 | oklch(0.21 0.006 285.885)   | zinc-900 `#18181b` | Raised surfaces, fields, menus.            |
+| `--secondary` / `--muted` / `--accent` | oklch(0.274 0.006 286.033)  | zinc-800 `#27272a` | Hover fills, chips, skeletons.             |
+| `--muted-foreground`                   | oklch(0.705 0.015 286.067)  | zinc-400 `#9f9fa9` | Secondary text, metadata.                  |
+| `--primary`                            | oklch(0.444 0.177 26.899)   | red-800 `#9f0712`  | Primary buttons, selected states.          |
+| `--primary-foreground`                 | oklch(0.971 0.013 17.38)    | red-50             | Text on primary.                           |
+| `--destructive`                        | oklch(0.704 0.191 22.216)   | red-400 `#ff6467`  | Error text and icons.                      |
+| `--border`                             | white / 10 %                |                    | Hairlines, dividers, card edges.           |
+| `--input`                              | white / 15 %                |                    | Preset field border (see 3.3).             |
+| `--ring`                               | oklch(0.552 0.016 285.938)  | zinc-500           | Preset ring (see 3.3).                     |
+| `--chart-1…5`                          | red-300, 500, 600, 700, 800 |                    | The **red ramp** used for glows and light. |
 
 ### 3.2 Extensions (added in `:root`, theme-independent)
 
 Only one new hue (ember, for the basket's pumpkin). The rest are named aliases of the preset's
 own red ramp so intent is readable in code.
 
-| Token | Value | Use |
-| --- | --- | --- |
-| `--blood` | = `--chart-3` (red-600) | Wordmark disc, rim light, glows, "REC" dots. Never body text. |
-| `--blood-text` | = `--chart-2` (red-500) | Red text that must be readable (≥ 5:1). |
-| `--premium` | = `--chart-1` (red-300) | Premium badge text/border. |
-| `--ember` | oklch(0.705 0.187 47.604) (orange-500) | The lit pumpkin: basket icon, count badge. Nothing else. |
-| `--field-border` | white / 40 % | Borders of inputs, textareas, checkboxes (a11y, 3.3). |
-| `--focus` | = `--foreground` | Focus outline color. |
+| Token            | Value                                  | Use                                                           |
+| ---------------- | -------------------------------------- | ------------------------------------------------------------- |
+| `--blood`        | = `--chart-3` (red-600)                | Wordmark disc, rim light, glows, "REC" dots. Never body text. |
+| `--blood-text`   | = `--chart-2` (red-500)                | Red text that must be readable (≥ 5:1).                       |
+| `--premium`      | = `--chart-1` (red-300)                | Premium badge text/border.                                    |
+| `--ember`        | oklch(0.705 0.187 47.604) (orange-500) | The lit pumpkin: basket icon, count badge. Nothing else.      |
+| `--field-border` | white / 40 %                           | Borders of inputs, textareas, checkboxes (a11y, 3.3).         |
+| `--focus`        | = `--foreground`                       | Focus outline color.                                          |
 
 ### 3.3 Contrast (measured, WCAG 2.2)
 
-| Pair | Ratio | Verdict |
-| --- | --- | --- |
-| foreground on background | 19.1 | Body text |
-| muted-foreground on background / card | 7.6 / 6.8 | Secondary text OK |
-| red-500 (`--blood-text`) on background / card | 5.2 / 4.7 | Red text OK (≥ 4.5) |
-| red-400 (`--destructive`) on background | 6.9 | Error text OK |
-| red-300 (`--premium`) on background | 10.4 | OK |
-| ember on background | 6.9 | OK |
-| red-50 on red-800 (primary button) | 7.6 | OK |
-| **red-800 (`--primary`) as text on background** | **2.4** | **Never use as text.** |
-| red-600 (`--blood`) as text | 4.2 | Large display text only (≥ 24 px), else decorative |
-| white/15 % field border (preset `--input`) | 1.5 | Fails 1.4.11 → fields use `--field-border` (white/40 %, 3.8) |
-| zinc-500 ring at 30 % alpha (preset focus) | < 3 | Fails → focus uses `--focus` outline (19:1) |
+| Pair                                            | Ratio     | Verdict                                                      |
+| ----------------------------------------------- | --------- | ------------------------------------------------------------ |
+| foreground on background                        | 19.1      | Body text                                                    |
+| muted-foreground on background / card           | 7.6 / 6.8 | Secondary text OK                                            |
+| red-500 (`--blood-text`) on background / card   | 5.2 / 4.7 | Red text OK (≥ 4.5)                                          |
+| red-400 (`--destructive`) on background         | 6.9       | Error text OK                                                |
+| red-300 (`--premium`) on background             | 10.4      | OK                                                           |
+| ember on background                             | 6.9       | OK                                                           |
+| red-50 on red-800 (primary button)              | 7.6       | OK                                                           |
+| **red-800 (`--primary`) as text on background** | **2.4**   | **Never use as text.**                                       |
+| red-600 (`--blood`) as text                     | 4.2       | Large display text only (≥ 24 px), else decorative           |
+| white/15 % field border (preset `--input`)      | 1.5       | Fails 1.4.11 → fields use `--field-border` (white/40 %, 3.8) |
+| zinc-500 ring at 30 % alpha (preset focus)      | < 3       | Fails → focus uses `--focus` outline (19:1)                  |
 
 Rules:
 
@@ -149,28 +149,28 @@ Rules:
 
 ### 4.1 Families (preset, via `app/fonts.ts`)
 
-| Role | Family | Variable | Notes |
-| --- | --- | --- | --- |
-| Display & headings | Space Grotesk | `--font-heading` | Big, uppercase, tight. Horror poster energy through scale and spacing, not a "spooky" face. |
-| Body & UI | Noto Sans | `--font-sans` | Everything readable. |
-| Labels, metadata, numbers | Geist Mono | `--font-mono` | "Case file" details: ranks, years, credits labels, units. |
-| Chinese fallback | system CJK | — | `"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC"` appended to every stack. No web font download for CJK. |
+| Role                      | Family        | Variable         | Notes                                                                                                                                                   |
+| ------------------------- | ------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Display & headings        | Space Grotesk | `--font-heading` | Big, uppercase, tight. Horror poster energy through scale and spacing, not a "spooky" face.                                                             |
+| Body & UI                 | Noto Sans     | `--font-sans`    | Everything readable.                                                                                                                                    |
+| Labels, metadata, numbers | Geist Mono    | `--font-mono`    | "Case file" details: ranks, years, credits labels, units.                                                                                               |
+| Chinese fallback          | system CJK    | —                | `"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC"` appended to every stack. No web font download for CJK. |
 
 ### 4.2 Scale (fluid)
 
-| Style | Family | Size | Line height | Tracking | Weight | Case |
-| --- | --- | --- | --- | --- | --- | --- |
-| `display-xl` (home H1) | heading | clamp(3rem, 8.5vw, 8rem) | 0.88 | -0.03em | 600 | upper |
-| `display` (page H1) | heading | clamp(2.5rem, 6vw, 5rem) | 0.92 | -0.02em | 600 | upper |
-| `h2` (section) | heading | clamp(1.75rem, 3.5vw, 3rem) | 1 | -0.01em | 600 | upper |
-| `h3` (card/name) | heading | 1.25rem | 1.15 | -0.005em | 600 | upper |
-| `lead` | sans | 1.25rem | 1.6 | 0 | 400 | sentence |
-| `body-lg` (lore) | sans | 1.125rem | 1.75 | 0 | 400 | sentence |
-| `body` | sans | 1rem | 1.6 | 0 | 400 | sentence |
-| `small` | sans | 0.875rem | 1.5 | 0 | 400 | sentence |
-| `label` | mono | 0.75rem | 1.4 | 0.2em | 500 | upper |
-| `micro` | mono | 0.6875rem | 1.4 | 0.24em | 500 | upper |
-| `numeral` (countdown) | heading | clamp(2.5rem, 7vw, 5.5rem) | 1 | -0.02em | 500 | tabular-nums |
+| Style                  | Family  | Size                        | Line height | Tracking | Weight | Case         |
+| ---------------------- | ------- | --------------------------- | ----------- | -------- | ------ | ------------ |
+| `display-xl` (home H1) | heading | clamp(3rem, 8.5vw, 8rem)    | 0.88        | -0.03em  | 600    | upper        |
+| `display` (page H1)    | heading | clamp(2.5rem, 6vw, 5rem)    | 0.92        | -0.02em  | 600    | upper        |
+| `h2` (section)         | heading | clamp(1.75rem, 3.5vw, 3rem) | 1           | -0.01em  | 600    | upper        |
+| `h3` (card/name)       | heading | 1.25rem                     | 1.15        | -0.005em | 600    | upper        |
+| `lead`                 | sans    | 1.25rem                     | 1.6         | 0        | 400    | sentence     |
+| `body-lg` (lore)       | sans    | 1.125rem                    | 1.75        | 0        | 400    | sentence     |
+| `body`                 | sans    | 1rem                        | 1.6         | 0        | 400    | sentence     |
+| `small`                | sans    | 0.875rem                    | 1.5         | 0        | 400    | sentence     |
+| `label`                | mono    | 0.75rem                     | 1.4         | 0.2em    | 500    | upper        |
+| `micro`                | mono    | 0.6875rem                   | 1.4         | 0.24em   | 500    | upper        |
+| `numeral` (countdown)  | heading | clamp(2.5rem, 7vw, 5.5rem)  | 1           | -0.02em  | 500    | tabular-nums |
 
 ### 4.3 Rules
 
@@ -207,7 +207,7 @@ Rules:
 - Hairlines: 1 px `--border`. Sections are separated by space first, a hairline second.
 - Elevation is light, not shadow: raised surfaces are `--card`; focus and hover add a faint red
   inner glow (`box-shadow: inset 0 -40px 60px -40px color-mix(in oklch, var(--blood) 35%,
-  transparent)`), never drop shadows.
+transparent)`), never drop shadows.
 - Texture comes from the atmosphere layers (section 8), not from surfaces.
 
 ---
@@ -216,15 +216,15 @@ Rules:
 
 ### 7.1 Tokens
 
-| Token | Value | Use |
-| --- | --- | --- |
-| `--ease-dread` | cubic-bezier(0.16, 1, 0.3, 1) | Entrances, reveals (expo out: fast start, long settle). |
-| `--ease-heavy` | cubic-bezier(0.65, 0, 0.35, 1) | Toggles, overlays, the heartbeat. |
-| `--duration-fast` | 150 ms | Color and opacity on hover/press. |
-| `--duration-base` | 300 ms | Small state changes, menus. |
-| `--duration-slow` | 700 ms | Reveals. |
-| `--duration-glacial` | 1200 ms | Image drift on hover. |
-| Stagger | 60 ms, max 12 items | Grids and lists. |
+| Token                | Value                          | Use                                                     |
+| -------------------- | ------------------------------ | ------------------------------------------------------- |
+| `--ease-dread`       | cubic-bezier(0.16, 1, 0.3, 1)  | Entrances, reveals (expo out: fast start, long settle). |
+| `--ease-heavy`       | cubic-bezier(0.65, 0, 0.35, 1) | Toggles, overlays, the heartbeat.                       |
+| `--duration-fast`    | 150 ms                         | Color and opacity on hover/press.                       |
+| `--duration-base`    | 300 ms                         | Small state changes, menus.                             |
+| `--duration-slow`    | 700 ms                         | Reveals.                                                |
+| `--duration-glacial` | 1200 ms                        | Image drift on hover.                                   |
+| Stagger              | 60 ms, max 12 items            | Grids and lists.                                        |
 
 ### 7.2 Patterns
 
@@ -295,7 +295,7 @@ Fixed, full-viewport, `pointer-events: none`, `aria-hidden`, rendered once in th
   from an SVG source (`design/costume-placeholder.svg`) with sharp.
 - Art direction: zinc-950 room. A tall, anonymous hooded figure, faceless, stands center, lit from
   behind by a red rim light (red-600 → red-800) that spills onto floor fog. Film grain. No text,
-  no character features: *the costume is waiting for whoever wears it*. Works under a bottom
+  no character features: _the costume is waiting for whoever wears it_. Works under a bottom
   gradient that carries the card's text.
 - Alt policy: while it's a placeholder, the image is decorative (`alt=""`); the character's name
   is always in text next to it. Real photos later get `alt="{Character} costume"`.
@@ -333,7 +333,7 @@ Client components are marked (C). Everything else renders on the server.
 - **Checkbox**: 20 px square, `--field-border`, checked = red-800 fill + red-50 check; label to
   the right, clickable.
 - **Segmented control** (C): radio group rendered as joined square tabs; selected = zinc-800 fill
-  + 2 px red-600 bottom bar; arrow keys move selection.
+  - 2 px red-600 bottom bar; arrow keys move selection.
 - **Select** (locale): native `<select>` (dark via `color-scheme`) for robustness, styled like
   Input. Compact header variant shows a globe icon + current endonym.
 - **FormAlert**: whole-form message, `role="alert"`, 1 px destructive border at 40 %, destructive
@@ -395,7 +395,7 @@ Client components are marked (C). Everything else renders on the server.
 - **Coming soon panel**: see 11.9.
 - **Premium price line**: "2 free transformations. Then {price} per costume." `{price}` is USD 5,
   formatted by the locale's currency formatter (next-intl `format.number(5, {style: "currency",
-  currency: "USD"})`), never a hardcoded "$5" string.
+currency: "USD"})`), never a hardcoded "$5" string.
 
 ---
 
@@ -517,12 +517,12 @@ Shared panel ("trailer"): `label` with a blinking red REC dot (1 Hz, static unde
 motion) "Coming soon"; `display` title; lead; up to 3 feature bullets; primary action back to
 something that works now; secondary "Want it sooner? Tell us." → `/feedback?type=feature`.
 
-| Route | Title | Content |
-| --- | --- | --- |
-| `/try-on` | The Mirror | What it does (one full-body photo + one face close-up → you in the costume with special-effects makeup), `premium` badge, price line, privacy note ("Your photos stay private."), CTA browse. Accepts `?costume=` to name the costume. |
-| `/pricing` | Admission | Two columns: Free (browse, basket, feedback) / Premium (`premium`: 2 free transformations, then {price} per costume). Both marked `soon` where relevant. |
-| `/terms` | Terms of service | "The fine print is being written." + support email. `noindex`. |
-| `/privacy` | Privacy policy | Same pattern; states plainly what is stored today (account email and name, feedback messages) + support email. `noindex`. |
+| Route      | Title            | Content                                                                                                                                                                                                                                |
+| ---------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/try-on`  | The Mirror       | What it does (one full-body photo + one face close-up → you in the costume with special-effects makeup), `premium` badge, price line, privacy note ("Your photos stay private."), CTA browse. Accepts `?costume=` to name the costume. |
+| `/pricing` | Admission        | Two columns: Free (browse, basket, feedback) / Premium (`premium`: 2 free transformations, then {price} per costume). Both marked `soon` where relevant.                                                                               |
+| `/terms`   | Terms of service | "The fine print is being written." + support email. `noindex`.                                                                                                                                                                         |
+| `/privacy` | Privacy policy   | Same pattern; states plainly what is stored today (account email and name, feedback messages) + support email. `noindex`.                                                                                                              |
 
 ---
 
@@ -569,13 +569,13 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 
 ## 15. Performance budgets
 
-| Metric | Budget |
-| --- | --- |
+| Metric              | Budget                                                                                     |
+| ------------------- | ------------------------------------------------------------------------------------------ |
 | LCP (4G, mid phone) | ≤ 2.0 s; the home LCP is the H1 text, visible from first paint (never starts at opacity 0) |
-| CLS | ≤ 0.02 (reserved sizes for countdown, reCAPTCHA, images) |
-| INP | ≤ 200 ms |
-| JS per route | ≤ 120 KB gz shared + ≤ 40 KB route |
-| Fonts | 3 variable families, Latin subsets, `display: swap`; CJK from the system |
+| CLS                 | ≤ 0.02 (reserved sizes for countdown, reCAPTCHA, images)                                   |
+| INP                 | ≤ 200 ms                                                                                   |
+| JS per route        | ≤ 120 KB gz shared + ≤ 40 KB route                                                         |
+| Fonts               | 3 variable families, Latin subsets, `display: swap`; CJK from the system                   |
 
 - Ambient effects: CSS, `transform`/`opacity` only, no `mix-blend-mode` on full-screen layers.
 - `motion` only in client islands, through `LazyMotion` + `domAnimation` + `m.*`.
@@ -585,16 +585,16 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 
 ## 16. Implementation map
 
-| Piece | Where |
-| --- | --- |
-| Tokens (extensions, motion) | `app/globals.css` `:root` + `@theme inline` |
-| Fonts | `app/fonts.ts` (preset) |
-| Atmosphere | `components/horror/{grain,vignette,fog,projector-glow,flashlight}.tsx` |
-| Shell | `components/layout/{header,mobile-menu,footer,wordmark,skip-link}.tsx` |
-| Primitives | `components/ui/*` (shadcn style, cva) |
-| Feature components | `components/{costume,basket,auth,forms,countdown}/*` |
-| Placeholder art | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}` |
-| Visual review | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit |
+| Piece                       | Where                                                                                  |
+| --------------------------- | -------------------------------------------------------------------------------------- |
+| Tokens (extensions, motion) | `app/globals.css` `:root` + `@theme inline`                                            |
+| Fonts                       | `app/fonts.ts` (preset)                                                                |
+| Atmosphere                  | `components/horror/{grain,vignette,fog,projector-glow,flashlight}.tsx`                 |
+| Shell                       | `components/layout/{header,mobile-menu,footer,wordmark,skip-link}.tsx`                 |
+| Primitives                  | `components/ui/*` (shadcn style, cva)                                                  |
+| Feature components          | `components/{costume,basket,auth,forms,countdown}/*`                                   |
+| Placeholder art             | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`     |
+| Visual review               | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit |
 
 ---
 
