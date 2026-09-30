@@ -10,5 +10,16 @@
     "title": "Lost in the dark",
     "description": "This page does not exist, or it has already been claimed by the night.",
     "home": "Back to Kostuma"
+  },
+  "AuthErrors": {
+    "invalid_login_credentials": "Wrong email or password.",
+    "email_change_needs_verification": "Confirm your new email address first. Check your inbox for the link.",
+    "email_exists": "An account already uses this email. Sign in instead.",
+    "invalid_email": "Enter a full email address, like you@example.com.",
+    "invalid_password": "Wrong password. Try again, or reset it.",
+    "too_many_attempts_try_later": "Too many attempts. Wait a few minutes, then try again.",
+    "weak_password": "Choose a stronger password: longer, with a mix of letters, numbers and symbols.",
+    "unknown_auth_error": "Something went wrong. Try again.",
+    "network_error": "No internet connection. Check it, then try again."
   }
 }
