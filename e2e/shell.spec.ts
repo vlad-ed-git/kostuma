@@ -17,7 +17,7 @@ test.describe("site shell", () => {
     await expect(page.locator("main#content")).toBeFocused()
   })
 
-  test("the header lists the sections on wide screens", async ({
+  test("the header leads to the costumes and the basket", async ({
     page,
     isMobile,
   }) => {
@@ -28,8 +28,7 @@ test.describe("site shell", () => {
     })
     await expect(nav.getByRole("link")).toHaveText([
       "Costumes",
-      /The Mirror\s*Soon/,
-      /Pricing\s*Soon/,
+      "My Pumpkin Basket",
     ])
     await expect(
       page.getByRole("button", { name: "Open the menu" })

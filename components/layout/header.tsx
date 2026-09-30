@@ -2,12 +2,10 @@ import { useTranslations } from "next-intl"
 
 import { Pumpkin } from "@/components/icons/pumpkin"
 import { LanguageMenu } from "@/components/language/language-menu"
-import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "@/components/ui/button"
 import { Link } from "@/i18n/navigation"
 
 import { MobileMenu } from "./mobile-menu"
-import { primaryNav } from "./nav"
 import { Wordmark } from "./wordmark"
 
 /**
@@ -17,7 +15,6 @@ import { Wordmark } from "./wordmark"
  */
 export function Header() {
   const t = useTranslations("Nav")
-  const badge = useTranslations("Badge")
 
   return (
     <header className="site-header sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md [view-transition-name:site-header]">
@@ -26,34 +23,25 @@ export function Header() {
           <Wordmark />
         </Link>
 
-        <nav aria-label={t("label")} className="hidden lg:block">
-          <ul className="flex items-center gap-7">
-            {primaryNav.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="inline-flex min-h-11 items-center gap-2 text-xs font-semibold tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground"
-                >
-                  {t(item.label)}
-                  {item.soon && <Badge variant="soon">{badge("soon")}</Badge>}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        <div className="ms-auto flex items-center gap-1 lg:gap-3">
+        {/* The two places of the flow: browse, then My Pumpkin Basket. */}
+        <nav aria-label={t("label")} className="flex flex-1 items-center">
+          <Link
+            href="/costumes"
+            className="hidden min-h-11 items-center text-xs font-semibold tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground lg:inline-flex"
+          >
+            {t("costumes")}
+          </Link>
           <Link
             href="/basket"
-            aria-label={t("basket")}
-            className={buttonVariants({
-              variant: "ghost",
-              size: "icon-lg",
-              className: "text-muted-foreground hover:text-ember",
-            })}
+            className="ms-auto inline-flex min-h-11 min-w-11 items-center justify-center gap-2.5 text-xs font-semibold tracking-widest text-muted-foreground uppercase transition-colors hover:text-ember"
           >
             <Pumpkin className="size-6" />
+            {/* The icon alone on small screens; the name stays for readers. */}
+            <span className="sr-only lg:not-sr-only">{t("basket")}</span>
           </Link>
+        </nav>
+
+        <div className="flex items-center gap-1 lg:gap-3">
           <LanguageMenu className="hidden lg:inline-flex" />
           <Link
             href="/sign-in"

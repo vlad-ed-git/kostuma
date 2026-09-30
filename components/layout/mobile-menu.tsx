@@ -6,11 +6,10 @@ import { useTranslations } from "next-intl"
 import { useEffect, useState, type CSSProperties } from "react"
 
 import { LanguageLinks } from "@/components/language/language-links"
-import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Link } from "@/i18n/navigation"
 
-import { primaryNav } from "./nav"
+import { sections } from "./nav"
 import { Wordmark } from "./wordmark"
 
 // Tailwind's `lg`: from here on the header shows the full navigation.
@@ -23,7 +22,6 @@ const WIDE = "(min-width: 64rem)"
  */
 export function MobileMenu({ className }: { className?: string }) {
   const t = useTranslations("Nav")
-  const badge = useTranslations("Badge")
   const [open, setOpen] = useState(false)
   const close = () => setOpen(false)
 
@@ -67,7 +65,7 @@ export function MobileMenu({ className }: { className?: string }) {
 
           <nav aria-label={t("label")} className="mt-10">
             <ul className="flex flex-col gap-1">
-              {primaryNav.map((item, index) => (
+              {sections.map((item, index) => (
                 <li
                   key={item.href}
                   style={{ "--i": index } as CSSProperties}
@@ -80,7 +78,6 @@ export function MobileMenu({ className }: { className?: string }) {
                     className="flex min-h-11 items-center gap-3 py-2 font-heading text-h2 uppercase"
                   >
                     {t(item.label)}
-                    {item.soon && <Badge variant="soon">{badge("soon")}</Badge>}
                   </Link>
                 </li>
               ))}

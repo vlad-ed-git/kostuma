@@ -36,7 +36,7 @@ describe("Footer", () => {
 
   it("links what to explore and the fine print, still to come", () => {
     renderInEnglish(<Footer />)
-    expect(hrefs("Explore")).toEqual(["/costumes", "/basket", "/try-on"])
+    expect(hrefs("Explore")).toEqual(["/costumes", "/basket"])
     expect(
       screen.getByRole("link", { name: "My Pumpkin Basket" })
     ).toHaveAttribute("href", "/basket")

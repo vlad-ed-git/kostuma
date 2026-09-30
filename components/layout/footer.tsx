@@ -31,9 +31,6 @@ export function Footer() {
           <Column title={t("explore")}>
             <FooterLink href="/costumes">{nav("costumes")}</FooterLink>
             <FooterLink href="/basket">{nav("basket")}</FooterLink>
-            <FooterLink href="/try-on">
-              {nav("mirror")} {soon}
-            </FooterLink>
           </Column>
           <Column title={t("help")}>
             <FooterLink href="/feedback?type=bug">{t("reportBug")}</FooterLink>

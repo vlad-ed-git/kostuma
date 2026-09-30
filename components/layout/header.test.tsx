@@ -16,19 +16,17 @@ describe("Header", () => {
     )
   })
 
-  it("lists the main sections, marking the ones still to come", () => {
+  it("leads to the two places of the flow: costumes, then the basket", () => {
     renderInEnglish(<Header />)
     const nav = screen.getByRole("navigation", { name: "Main" })
     const links = within(nav).getAllByRole("link")
     expect(links.map((link) => link.getAttribute("href"))).toEqual([
       "/costumes",
-      "/try-on",
-      "/pricing",
+      "/basket",
     ])
     expect(links.map((link) => link.textContent)).toEqual([
       "Costumes",
-      "The MirrorSoon",
-      "PricingSoon",
+      "My Pumpkin Basket",
     ])
   })
 

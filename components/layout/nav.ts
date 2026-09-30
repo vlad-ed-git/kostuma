@@ -1,10 +1,10 @@
 /**
- * The site's main sections, shared by the header and the mobile menu. The
- * labels are keys of the `Nav` messages. `soon` marks a coming-soon page
- * (spec §12: a working link with a "Soon" badge, never a disabled one).
+ * The places to go (spec §10.2), in the order of the flow: browse the
+ * costumes, then My Pumpkin Basket, which holds the Fitting Room and the
+ * way to buy. Only places are menu items, never actions. The labels are
+ * keys of the `Nav` messages.
  */
-export const primaryNav = [
-  { href: "/costumes", label: "costumes", soon: false },
-  { href: "/try-on", label: "mirror", soon: true },
-  { href: "/pricing", label: "pricing", soon: true },
+export const sections = [
+  { href: "/costumes", label: "costumes" },
+  { href: "/basket", label: "basket" },
 ] as const
