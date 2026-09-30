@@ -157,11 +157,10 @@ test.describe("film atmosphere", () => {
     await page.emulateMedia({ reducedMotion: "reduce" })
     await page.goto("/")
     expect(await grainAnimation(page)).toBe("none")
-    const weave = await page.evaluate(
-      () =>
-        getComputedStyle(document.querySelector(".film-weave")!).animationName
+    const flicker = await page.evaluate(
+      () => getComputedStyle(document.querySelector(".flicker")!).animationName
     )
-    expect(weave).toBe("none")
+    expect(flicker).toBe("none")
   })
 
   test("the header is clear over the title card, solid once scrolled", async ({
@@ -183,7 +182,7 @@ test.describe("film atmosphere", () => {
 })
 
 test.describe("Chinese pages", () => {
-  test("drop Latin tracking but keep the wordmark's", async ({ page }) => {
+  test("drop Latin tracking; the wordmark stays Latin", async ({ page }) => {
     await page.goto("/zh")
     const spacing = (selector: string) =>
       page.evaluate(
@@ -192,7 +191,10 @@ test.describe("Chinese pages", () => {
         selector
       )
     expect(await spacing("h1")).toBe("normal")
-    expect(await spacing(".wordmark")).not.toBe("normal")
+    await expect(page.getByRole("banner").locator(".wordmark")).toHaveAttribute(
+      "lang",
+      "en"
+    )
   })
 })
 

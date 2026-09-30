@@ -10,7 +10,7 @@
   },
   "Countdown": {
     "label": "Time until Halloween",
-    "until": "Until Halloween · {date}",
+    "until": "Until Halloween · <b>{date}</b>",
     "days": "Days",
     "hours": "Hours",
     "minutes": "Minutes",

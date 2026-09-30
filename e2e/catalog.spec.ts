@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test"
+import sharp from "sharp"
 
 import { collectErrors } from "./console"
 
@@ -28,8 +29,8 @@ test.describe("browsing the costumes", () => {
     for (const href of hrefs) expect(href).toMatch(/^\/costumes\/[a-z0-9-]+$/)
     expect(new Set(hrefs).size).toBe(100)
     // In the owner's order, with no ranks, badges or headings on screen.
-    await expect(links.first()).toHaveText("Ghostface")
-    await expect(links.last()).toHaveText("Alice")
+    await expect(links.first()).toContainText("Ghostface")
+    await expect(links.last()).toContainText("Alice")
     await expect(costumes(page)).not.toContainText(/No\. ?\d|New blood/)
     expect(errors).toEqual([])
   })
@@ -88,7 +89,7 @@ test.describe("browsing the costumes", () => {
     const sameFilm = page.getByRole("region", {
       name: "More from The Shining",
     })
-    await expect(sameFilm.getByRole("link")).toHaveText([
+    await expect(sameFilm.getByRole("link")).toContainText([
       "The Grady Twins",
       "Danny Torrance",
     ])
@@ -97,7 +98,7 @@ test.describe("browsing the costumes", () => {
     await page.goto("/costumes/alice")
     const more = page.getByRole("region", { name: "More costumes" })
     await expect(more.getByRole("link")).toHaveCount(4)
-    await expect(more.getByRole("link").first()).toHaveText("Ghostface")
+    await expect(more.getByRole("link").first()).toContainText("Ghostface")
   })
 
   test("the breadcrumb leads back to the costumes on the home page", async ({
@@ -164,7 +165,7 @@ test.describe("browsing the costumes", () => {
     })
     await page.goto("/")
     // Down to the last card, half a screen at a time, as a reader would.
-    const lastCard = costumes(page).getByRole("article").last()
+    const lastCard = costumes(page).getByRole("listitem").last()
     const end = await lastCard.evaluate(
       (card) => card.getBoundingClientRect().top + window.scrollY
     )
@@ -216,24 +217,44 @@ test.describe("browsing the costumes", () => {
     }
   })
 
-  test("no section clips its fog, so no line marks where it ends", async ({
+  test("no line marks where the title ends and the costumes begin", async ({
     page,
   }) => {
-    for (const path of ["/", "/costumes/ghostface", "/no-such-page"]) {
-      await page.goto(path)
-      const clipped = await page.evaluate(() =>
-        [...document.querySelectorAll(".fog")].flatMap((fog) => {
-          const own = getComputedStyle(fog)
-          const parent = getComputedStyle(fog.parentElement!)
-          return own.zIndex === "-1" &&
-            own.overflowY === "visible" &&
-            parent.overflowY === "visible"
-            ? []
-            : [fog.parentElement!.tagName]
-        })
-      )
-      expect(clipped, path).toEqual([])
-    }
+    // The owner's rule, measured: brightness down the left margin, row by
+    // row, across the bottom edge of the title (fog, figure and light all
+    // fade out before it). Motion is still, so nothing drifts meanwhile.
+    await page.goto("/")
+    const title = page.locator("[data-title-card]")
+    const bottom = await title.evaluate(
+      (el) => el.getBoundingClientRect().bottom + window.scrollY
+    )
+    await page.evaluate((y) => window.scrollTo(0, y - 300), bottom)
+    const edge = await title.evaluate((el) =>
+      Math.round(el.getBoundingClientRect().bottom)
+    )
+    // The 12 px at the far left: inside the smallest page margin (16 px),
+    // so no thumbnail or text falls in the strip.
+    // Without the film grain: it is noise by design, not a line.
+    await page.addStyleTag({
+      content: ".film-grain { display: none !important; }",
+    })
+    const png = await page.screenshot({
+      clip: { x: 0, y: edge - 60, width: 12, height: 120 },
+    })
+    const { data, info } = await sharp(png)
+      .raw()
+      .toBuffer({ resolveWithObject: true })
+    const rows = Array.from({ length: info.height }, (_, row) => {
+      let sum = 0
+      for (let x = 0; x < info.width; x++) {
+        const i = (row * info.width + x) * info.channels
+        sum += data[i] + data[i + 1] + data[i + 2]
+      }
+      return sum / (info.width * 3)
+    })
+    const jumps = rows.slice(1).map((value, i) => Math.abs(value - rows[i]))
+    // A gradient steps by one level at most; the line this caught was 1.7.
+    expect(Math.max(...jumps)).toBeLessThan(1.5)
   })
 })
 
@@ -286,7 +307,7 @@ test.describe("costumes without JavaScript", () => {
     page,
   }) => {
     await page.goto("/")
-    const last = costumes(page).getByRole("article").last()
+    const last = costumes(page).getByRole("listitem").last()
     await last.scrollIntoViewIfNeeded()
     await expect(last).toBeInViewport()
     await expect

@@ -48,8 +48,10 @@ describe("Countdown", () => {
         <Countdown year={2026} />
       </NextIntlClientProvider>
     )
-    expect(html.match(/--/g)).toHaveLength(4)
-    expect(html).toContain("Until Halloween · Saturday, October 31")
+    expect(html.match(/>--</g)).toHaveLength(4)
+    expect(html.replace(/<[^>]+>/g, "")).toContain(
+      "Until Halloween · Saturday, October 31"
+    )
     expect(html).not.toMatch(/\d+ days/)
   })
 
@@ -97,9 +99,9 @@ describe("Countdown", () => {
     clockAt("2026-11-01T00:00:00Z")
     // The server guessed this year's; the browser knows better.
     renderInEnglish(<Countdown year={2026} />)
-    expect(
-      screen.getByText("Until Halloween · Sunday, October 31")
-    ).toBeInTheDocument()
+    expect(screen.getByText(/^Until Halloween/)).toHaveTextContent(
+      "Until Halloween · Sunday, October 31"
+    )
     expect(digits()[0]).toBe("364")
   })
 

@@ -47,11 +47,11 @@ export function Countdown({
   if (count?.kind === "tonight") {
     return (
       <div className={className}>
-        <p className="font-mono text-label text-ember uppercase">{date}</p>
-        <p className="mt-3 font-heading text-numeral text-ember uppercase">
+        <p className="text-label caps font-semibold text-foreground">{date}</p>
+        <p className="mt-3 font-heading text-numeral font-medium text-blood-text [text-shadow:0_0_22px_color-mix(in_oklch,var(--blood)_50%,transparent)]">
           {t("tonight")}
         </p>
-        <p className="mt-2 font-mono text-micro text-muted-foreground uppercase">
+        <p className="mt-1.5 text-micro caps text-muted-foreground">
           {t("tonightLine")}
         </p>
       </div>
@@ -67,8 +67,11 @@ export function Countdown({
 
   return (
     <div className={className}>
-      <p className="font-mono text-label text-ember uppercase">
-        {t("until", { date })}
+      <p className="text-label caps text-muted-foreground">
+        {t.rich("until", {
+          date,
+          b: (chunks) => <b className="text-foreground">{chunks}</b>,
+        })}
       </p>
       <div role="timer" aria-label={t("label")} className="mt-3">
         {count && (
@@ -84,14 +87,15 @@ export function Countdown({
         {/* Four equal columns, numbers and units on one left edge. */}
         <ol
           aria-hidden="true"
-          className="grid w-fit grid-cols-4 gap-x-6 sm:gap-x-10"
+          className="grid w-fit grid-cols-[repeat(4,minmax(3.2ch,auto))] gap-x-[clamp(1.25rem,3vw,2.5rem)]"
         >
           {cells.map(({ unit, value, beat }) => (
             <li key={unit} className="flex flex-col items-start">
               <span
                 className={cn(
-                  "font-heading text-numeral tabular-nums",
-                  beat && "text-blood-text"
+                  "font-heading text-numeral font-medium tabular-nums",
+                  beat &&
+                    "text-blood-text [text-shadow:0_0_22px_color-mix(in_oklch,var(--blood)_50%,transparent)]"
                 )}
               >
                 {value === undefined ? (
@@ -106,7 +110,7 @@ export function Countdown({
                   pad(value)
                 )}
               </span>
-              <span className="mt-2 font-mono text-micro text-muted-foreground uppercase">
+              <span className="mt-1.5 text-micro caps text-muted-foreground">
                 {unit}
               </span>
             </li>

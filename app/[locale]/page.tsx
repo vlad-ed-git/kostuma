@@ -1,9 +1,9 @@
 import { RiArrowDownLine } from "@remixicon/react"
 import { getTranslations } from "next-intl/server"
 
-import { CostumeCard } from "@/components/costume/costume-card"
+import { CostumeRow } from "@/components/costume/costume-row"
 import { Countdown } from "@/components/countdown/countdown"
-import { Fog } from "@/components/horror/fog"
+import { NightScene } from "@/components/home/night-scene"
 import { costumesHref } from "@/components/layout/nav"
 import { Link } from "@/i18n/navigation"
 import { getCostumes, toCard } from "@/lib/catalog"
@@ -27,20 +27,21 @@ export default async function HomePage() {
       <section
         data-title-card
         // Slides under the header, which stays transparent over a title
-        // card. As tall as its content, no taller (owner: no empty band
-        // above it). Never clipped: its fog fades out over the costumes.
-        className="relative -mt-16 pt-28 pb-14 lg:pt-32"
+        // card. As tall as its content. Clipped, because the scene is
+        // wider than the screen; everything in it fades out before the
+        // edges, so no line marks where it ends.
+        // Owner: 200 px taller on desktop than its content needs.
+        className="relative isolate -mt-16 overflow-clip pt-80 pb-14 lg:pt-61 lg:pb-49"
       >
-        <Fog />
+        <NightScene />
         {/* Desktop: the tagline on the left, the countdown on the right with
             "Choose your costume" under it. Small screens: one column. */}
         <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end lg:gap-16 lg:px-8">
-          {/* The gate weave moves the title only, never what is read. */}
-          <div className="film-weave">
-            <h1 className="max-w-[16ch] font-heading text-display-xl text-balance uppercase lg:text-[clamp(4.5rem,7.5vw,8.5rem)]">
+          <div>
+            <h1 className="flicker max-w-[11ch] font-heading text-display-xl font-semibold text-balance [text-shadow:0_0_40px_rgb(0_0_0/0.8)]">
               {t("taglineLead")}
             </h1>
-            <p className="mt-5 font-heading text-h2 text-blood-text uppercase">
+            <p className="mt-5 font-heading text-[clamp(1.6rem,3vw,2.6rem)] leading-none font-medium text-blood-text [text-shadow:0_0_24px_color-mix(in_oklch,var(--blood)_45%,transparent)]">
               {t("taglineTail")}
             </p>
           </div>
@@ -48,7 +49,7 @@ export default async function HomePage() {
             <Countdown year={year} />
             <Link
               href={costumesHref}
-              className="group mt-10 inline-flex min-h-11 items-center gap-3 font-heading text-h2 leading-none whitespace-nowrap uppercase transition-colors hover:text-blood-text lg:text-[clamp(2.25rem,3.6vw,3.5rem)]"
+              className="mt-9 inline-flex min-h-11 items-center gap-3.5 font-heading text-[clamp(1.9rem,3.2vw,2.9rem)] leading-none font-semibold whitespace-nowrap transition-colors hover:text-blood-text"
             >
               {home("chooseCostume")}
               <RiArrowDownLine
@@ -60,19 +61,19 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* No heading on screen: the costumes speak for themselves. */}
+      {/* No heading on screen: "Choose your costume" leads here. */}
       <section
         id="costumes"
         aria-label={nav("costumes")}
-        className="mx-auto max-w-7xl scroll-mt-16 px-4 pt-4 pb-24 sm:px-6 lg:px-8"
+        className="mx-auto max-w-7xl scroll-mt-16 px-4 pt-4 pb-28 sm:px-6 lg:px-8"
       >
-        <ul className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 md:grid-cols-3 lg:grid-cols-4 lg:gap-x-8 lg:gap-y-12">
+        <ol className="grid gap-x-16 gap-y-2 lg:grid-cols-2">
           {getCostumes().map((costume) => (
-            <li key={costume.slug}>
-              <CostumeCard costume={toCard(costume)} />
+            <li key={costume.slug} className="lit">
+              <CostumeRow costume={toCard(costume)} />
             </li>
           ))}
-        </ul>
+        </ol>
       </section>
     </>
   )

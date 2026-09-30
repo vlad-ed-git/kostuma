@@ -1,0 +1,34 @@
+import { IntentLink } from "@/components/navigation/intent-link"
+import type { CostumeCard } from "@/lib/catalog/types"
+
+import { CostumeImage } from "./costume-image"
+import { filmLine } from "./format"
+
+/**
+ * A costume in a list (spec §10.3): its thumbnail, its name in the title
+ * face, its film underneath. The whole row is one link; it turns blood red
+ * under the pointer or the keyboard. Prefetches on intent only.
+ */
+export function CostumeRow({ costume }: { costume: CostumeCard }) {
+  return (
+    <IntentLink
+      href={`/costumes/${costume.slug}`}
+      className="group/row grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4 py-2.5 outline-offset-4 lg:gap-6"
+    >
+      <span className="relative aspect-4/5 w-19 overflow-hidden border border-foreground/8 bg-card transition-[border-color,box-shadow] duration-300 group-hover/row:border-blood-text/50 group-hover/row:shadow-[0_0_34px_color-mix(in_oklch,var(--blood)_45%,transparent)] group-focus-visible/row:border-blood-text/50 lg:w-26">
+        <CostumeImage
+          sizes="104px"
+          className="object-cover brightness-80 transition-[filter] duration-300 group-hover/row:brightness-100 group-focus-visible/row:brightness-100"
+        />
+      </span>
+      <span className="flex min-w-0 flex-col gap-1">
+        <span className="font-heading text-h3 font-medium text-balance transition-[color,translate,text-shadow] duration-300 ease-dread group-hover/row:translate-x-1.5 group-hover/row:text-blood-text group-hover/row:[text-shadow:0_0_30px_color-mix(in_oklch,var(--blood)_55%,transparent)] group-focus-visible/row:text-blood-text motion-reduce:transition-none motion-reduce:group-hover/row:translate-x-0">
+          {costume.name}
+        </span>
+        <span className="text-lg text-muted-foreground italic transition-colors group-hover/row:text-foreground">
+          {filmLine(costume.films)}
+        </span>
+      </span>
+    </IntentLink>
+  )
+}

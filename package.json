@@ -18,7 +18,7 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "check": "npm run lint && npm run typecheck && npm run format:check && npm test",
-    "images": "node scripts/placeholder.mjs",
+    "images": "node scripts/placeholder.mjs && node scripts/fog.mjs",
     "catalog:import": "node scripts/import-catalog.mjs"
   },
   "dependencies": {

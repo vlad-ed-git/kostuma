@@ -1,0 +1,66 @@
+import { render, screen } from "@testing-library/react"
+import { describe, expect, it, vi } from "vitest"
+
+import { CostumeRow } from "./costume-row"
+
+vi.mock("@/i18n/navigation", () => import("@/test/navigation"))
+// What Next.js' bundler makes of the placeholder's static import.
+vi.mock("@/public/images/costume-placeholder.webp", () => ({
+  default: {
+    src: "/images/costume-placeholder.webp",
+    width: 1200,
+    height: 1500,
+    blurDataURL: "data:image/webp;base64,UklGRg==",
+  },
+}))
+
+const ghostface = {
+  slug: "ghostface",
+  name: "Ghostface",
+  films: [{ title: "Scream", year: 1996 }],
+}
+
+describe("CostumeRow", () => {
+  it("is one link to the costume's page, named after the character", () => {
+    render(<CostumeRow costume={ghostface} />)
+    const links = screen.getAllByRole("link")
+    expect(links).toHaveLength(1)
+    expect(links[0]).toHaveAttribute("href", "/costumes/ghostface")
+    expect(links[0]).toHaveAccessibleName(/^Ghostface/)
+  })
+
+  it("shows the thumbnail, the name and the film, and nothing else", () => {
+    const { container } = render(<CostumeRow costume={ghostface} />)
+    expect(container.querySelector("img")).toBeInTheDocument()
+    expect(screen.getByRole("link")).toHaveTextContent(
+      /^GhostfaceScream \(1996\)$/
+    )
+  })
+
+  it("names every film a character comes from", () => {
+    render(
+      <CostumeRow
+        costume={{
+          slug: "pearl",
+          name: "Pearl",
+          films: [
+            { title: "Pearl", year: 2022 },
+            { title: "X", year: 2022 },
+          ],
+        }}
+      />
+    )
+    expect(screen.getByText("Pearl (2022) / X (2022)")).toBeInTheDocument()
+  })
+
+  it("keeps the placeholder thumbnail out of the way of screen readers", () => {
+    const { container } = render(<CostumeRow costume={ghostface} />)
+    expect(container.querySelector("img")).toHaveAttribute("alt", "")
+    expect(screen.queryByRole("img")).not.toBeInTheDocument()
+  })
+
+  it("loads its thumbnail lazily, since most rows start off screen", () => {
+    const { container } = render(<CostumeRow costume={ghostface} />)
+    expect(container.querySelector("img")).toHaveAttribute("loading", "lazy")
+  })
+})
