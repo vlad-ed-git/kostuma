@@ -57,10 +57,8 @@ describe("the catalog", () => {
 
   it("gives cards only what they show", () => {
     expect(toCard(costume("ghostface"))).toEqual({
-      rank: 1,
       slug: "ghostface",
       name: "Ghostface",
-      trending: false,
       films: [{ title: "Scream", year: 1996 }],
     })
   })

@@ -45,6 +45,15 @@ describe("the collection", () => {
         expect(film.year).toBeGreaterThanOrEqual(1900)
         expect(film.year).toBeLessThanOrEqual(2026)
       }
+      expect(costume.createdBy.length).toBeGreaterThan(0)
+      // Each list shows its lines once: a repeat is a copy-paste slip.
+      for (const list of [
+        costume.createdBy,
+        costume.broughtToLifeBy,
+        costume.look.pieces,
+      ]) {
+        expect(new Set(list).size, costume.name).toBe(list.length)
+      }
       expect(costume.look.pieces.length).toBeGreaterThan(0)
       for (const store of costume.stores) {
         expect(store.url).toMatch(/^https:\/\//)
@@ -52,7 +61,7 @@ describe("the collection", () => {
     }
   )
 
-  it("marks the 2024–2026 breakouts as new blood", () => {
+  it("marks the 2024–2026 breakouts", () => {
     expect(costumes.filter((costume) => costume.trending)).toHaveLength(12)
   })
 })

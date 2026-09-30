@@ -22,7 +22,7 @@ export type Costume = {
   /** The URL segment: lowercase words and hyphens, never a dot. */
   slug: string
   name: string
-  /** A 2024–2026 breakout: "New blood". */
+  /** A 2024–2026 breakout (🔥 in the owner's list). Not shown for now. */
   trending: boolean
   /** The first film is the one the character is known from. */
   films: Film[]
@@ -35,7 +35,4 @@ export type Costume = {
 }
 
 /** What a card shows, and nothing more (cards also render in the browser). */
-export type CostumeCard = Pick<
-  Costume,
-  "rank" | "slug" | "name" | "trending" | "films"
->
+export type CostumeCard = Pick<Costume, "slug" | "name" | "films">

@@ -10,7 +10,7 @@ import type { Costume, CostumeCard, Film } from "./types"
 const byRank = [...costumes].sort((a, b) => a.rank - b.rank)
 const bySlug = new Map(byRank.map((costume) => [costume.slug, costume]))
 
-/** Every costume, in rank order. */
+/** Every costume, in the owner's order. */
 export function getCostumes(): readonly Costume[] {
   return byRank
 }
@@ -19,7 +19,7 @@ export function getCostume(slug: string) {
   return bySlug.get(slug)
 }
 
-/** The costumes ranked just above and below (none past either end). */
+/** The costumes just before and after it (none past either end). */
 export function getNeighbors(costume: Costume) {
   const index = byRank.indexOf(costume)
   return {
@@ -34,7 +34,7 @@ export type Related =
 
 /**
  * What to show after a costume: others from its films if there are any,
- * else the next most wanted (wrapping past No. 100 to the top).
+ * else the costumes that follow it (wrapping past the last to the first).
  */
 export function getRelated(costume: Costume, count = 4): Related {
   const titles = new Set(costume.films.map((film) => film.title))
@@ -61,6 +61,6 @@ export function getRelated(costume: Costume, count = 4): Related {
 
 /** What a card shows, and nothing more. */
 export function toCard(costume: Costume): CostumeCard {
-  const { rank, slug, name, trending, films } = costume
-  return { rank, slug, name, trending, films }
+  const { slug, name, films } = costume
+  return { slug, name, films }
 }
