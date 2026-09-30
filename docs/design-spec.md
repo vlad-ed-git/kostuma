@@ -1,8 +1,12 @@
 # Kostuma — Design Spec
 
-Status: v1 (2026-09-30). Source of truth for how Kostuma looks, moves, reads and behaves.
-Dark mode only. Built on the project's shadcn preset (`base-sera`): its palette, fonts and
-square geometry are the foundation, not suggestions.
+Status: v2 (2026-09-30). Source of truth for how Kostuma looks, moves, reads and behaves.
+Dark mode only.
+
+v2 replaces v1's palette and fonts. The owner released the shadcn preset's colors and fonts
+("you are absolutely free here"); the preset's **structure** stays: Base UI components, square
+corners, uppercase tracked buttons, underline form fields, borderless text badges. Colors and
+type now come from one period: horror cinema of 1978–1984, seen through modern restraint.
 
 Scope of v1: the public site (home, costumes, costume pages, Pumpkin Basket, feedback),
 accounts (register, sign in, reset password, account) and polished "coming soon" pages for
@@ -16,7 +20,20 @@ until real photography exists.
 Kostuma is a cinema that only opens at night. You walk in off the street, the lights go down,
 the projector hums, and the cast of every horror film you ever loved is waiting to be worn.
 
-The metaphor gives the whole product one vocabulary:
+### 1.1 The era: 1978–1984, on film
+
+The birth of the slasher and the golden age of practical effects: _Halloween_, _Alien_, _The
+Shining_, _The Thing_, _A Nightmare on Elm Street_. It is the source of most of the top 100, and
+its one-sheet posters are the model for costume pages.
+
+It is **film, not video**: warm projected blacks, film-stock whites, grain, the gate's faint
+weave, light leaking at the edge of a reel. Two looks are ruled out on purpose:
+
+- **Neon '80s / VHS / synthwave** — everywhere already, and it reads as a retro party theme, not
+  dread. Video appears exactly once, as a joke on the 404 page (8.9).
+- **Futuristic** — cold and clinical, the opposite of Halloween's handmade feel.
+
+### 1.2 Vocabulary
 
 | Cinema                           | Kostuma                                            |
 | -------------------------------- | -------------------------------------------------- |
@@ -24,23 +41,27 @@ The metaphor gives the whole product one vocabulary:
 | Film leader countdown            | Countdown to Halloween                             |
 | The cast / most wanted           | The collection: 100 characters, ranked             |
 | One-sheet poster + billing block | Costume page (image, name, credits)                |
+| Case file / production notes     | Ranks, years, labels ("No. 001 · 1978")            |
 | Behind the scenes                | Fun facts ("Behind the screams")                   |
 | Wardrobe department notes        | "The look": what the costume needs                 |
+| Cue mark ("cigarette burn")      | Loading and page-change indicator                  |
+| Reel change                      | Moving between pages                               |
 | Coming soon trailer              | Features not open yet (The Mirror, pricing, legal) |
 | Admission                        | Pricing (Premium)                                  |
 | End credits                      | Footer ("The end?")                                |
 
-### Principles
+### 1.3 Principles
 
-1. **The preset is the foundation.** Zinc darkness, blood-red primary, Space Grotesk, Noto Sans,
-   Geist Mono, square corners, uppercase tracked buttons. Everything here extends it.
+1. **One period, modern manners.** The look is 1978–1984 film; the UX is today's: clean grids,
+   readable forms, fast, accessible. The period lives in color, type, texture and pacing, never
+   in how a control works.
 2. **Dread through restraint.** Darkness, negative space, slow light. One scare per screen: each
    viewport gets at most one attention-grabbing effect; everything else is calm and typographic.
 3. **Clarity beats spookiness where people act.** Forms, errors, buttons and prices are plain and
    instantly readable. Atmosphere lives around them, never on them.
-4. **Color means something.** Red = action or danger. Ember orange = your Pumpkin Basket. Zinc =
-   structure. Nothing is colored for decoration alone.
-5. **Motion is slow and physical, and always optional.** Things emerge from the dark; nothing
+4. **Color means something.** Arterial red = action or danger. Sodium orange = your Pumpkin
+   Basket and Halloween itself. Black and bone = structure. Nothing is colored for decoration.
+5. **Motion is slow and physical, and always optional.** Things fade up from black; nothing
    bounces. Every ambient effect switches off under `prefers-reduced-motion`.
 6. **Every language is first-class.** No uppercase baked into copy, no fixed-width text boxes,
    CJK gets its own rhythm.
@@ -54,14 +75,14 @@ The metaphor gives the whole product one vocabulary:
 ### 2.1 Name and wordmark
 
 - Name: **Kostuma** (never translated). Written `Kostuma` in running text.
-- Wordmark: `KOSTUMA` in Space Grotesk 700, uppercase, tracking `0.28em`. The **O is replaced by a
-  solid disc** in `--blood` (red-600), the size of the cap height, with a soft red glow: a moon, a
-  pupil, a recording light. Reads as `K●STUMA`.
+- Wordmark: `KOSTUMA` in League Gothic, uppercase, tracking `0.32em`: widely spaced like a
+  late-'70s one-sheet title. The **O is a solid disc** in `--blood`, the size of the cap height,
+  with a soft red glow: a moon, a pupil, the projector's lamp. Reads as `K●STUMA`.
 - Accessible name `Kostuma` (the letters are `aria-hidden`, the link has `aria-label`).
-- Hover (fine pointer): the disc beats once (scale 1 → 1.18 → 1, 600 ms, heavy ease) and its glow
-  swells. Reduced motion: no beat.
-- Favicon / app icon: the disc alone, red-600 on zinc-950, 12 % padding. Maskable variant with
-  20 % safe area.
+- Hover (fine pointer): the disc beats once (7.2 heartbeat) and its glow swells. Reduced motion:
+  no beat.
+- Favicon / app icon: the disc alone, `--blood` on `--background`, 12 % padding. Maskable variant
+  with 20 % safe area.
 
 ### 2.2 Voice
 
@@ -88,89 +109,110 @@ Short. Ominous. Confident. Second person, present tense. A little wry, never che
 
 ## 3. Color
 
-### 3.1 Preset tokens (from `app/globals.css`, `.dark`, always on)
+One palette, defined once in `:root` (there is no light theme). `<html>` keeps the `dark` class
+so the preset components' `dark:` variants apply.
 
-| Token                                  | Value                       | ≈                  | Use                                        |
-| -------------------------------------- | --------------------------- | ------------------ | ------------------------------------------ |
-| `--background`                         | oklch(0.141 0.005 285.823)  | zinc-950 `#09090b` | Page. The void.                            |
-| `--foreground`                         | oklch(0.985 0 0)            | `#fafafa`          | Primary text, icons.                       |
-| `--card` / `--popover`                 | oklch(0.21 0.006 285.885)   | zinc-900 `#18181b` | Raised surfaces, fields, menus.            |
-| `--secondary` / `--muted` / `--accent` | oklch(0.274 0.006 286.033)  | zinc-800 `#27272a` | Hover fills, chips, skeletons.             |
-| `--muted-foreground`                   | oklch(0.705 0.015 286.067)  | zinc-400 `#9f9fa9` | Secondary text, metadata.                  |
-| `--primary`                            | oklch(0.444 0.177 26.899)   | red-800 `#9f0712`  | Primary buttons, selected states.          |
-| `--primary-foreground`                 | oklch(0.971 0.013 17.38)    | red-50             | Text on primary.                           |
-| `--destructive`                        | oklch(0.704 0.191 22.216)   | red-400 `#ff6467`  | Error text and icons.                      |
-| `--border`                             | white / 10 %                |                    | Hairlines, dividers, card edges.           |
-| `--input`                              | white / 15 %                |                    | Preset field border (see 3.3).             |
-| `--ring`                               | oklch(0.552 0.016 285.938)  | zinc-500           | Preset ring (see 3.3).                     |
-| `--chart-1…5`                          | red-300, 500, 600, 700, 800 |                    | The **red ramp** used for glows and light. |
+### 3.1 Tokens
 
-### 3.2 Extensions (added in `:root`, theme-independent)
+Blacks are warm, like a projected print, not the preset's cold zinc. Whites are film-stock bone.
+Red is saturated arterial red, after Technicolor and Italian giallo posters. The only other hue
+is sodium-streetlight orange.
 
-Only one new hue (ember, for the basket's pumpkin). The rest are named aliases of the preset's
-own red ramp so intent is readable in code.
+| Token                                  | Value                 | Hex       | Use                                                             |
+| -------------------------------------- | --------------------- | --------- | --------------------------------------------------------------- |
+| `--background`                         | oklch(0.145 0.009 50) | `#0d0907` | Page. The dark of the house.                                    |
+| `--card` / `--popover`                 | oklch(0.19 0.011 50)  | `#18120f` | Raised surfaces, menus.                                         |
+| `--secondary` / `--muted` / `--accent` | oklch(0.245 0.013 50) | `#261f1b` | Hover fills, chips, skeletons.                                  |
+| `--foreground`                         | oklch(0.935 0.022 85) | `#f0e9d9` | Bone. Primary text, icons.                                      |
+| `--muted-foreground`                   | oklch(0.72 0.022 75)  | `#ada396` | Secondary text, metadata. A faded print.                        |
+| `--primary`                            | oklch(0.5 0.195 27)   | `#b91319` | Arterial red. Primary buttons, selected states. **Never text.** |
+| `--primary-foreground`                 | = `--foreground`      |           | Text on primary.                                                |
+| `--blood`                              | oklch(0.58 0.22 28)   | `#df2321` | Wordmark disc, rim light, glows, REC dot. Never body text.      |
+| `--blood-text`                         | oklch(0.665 0.2 27)   | `#f6544b` | Red text that must be readable.                                 |
+| `--destructive`                        | oklch(0.73 0.16 24)   | `#fc7a75` | Error text and icons.                                           |
+| `--ember`                              | oklch(0.77 0.155 62)  | `#f99b39` | Sodium orange: the Pumpkin Basket and Halloween touches only.   |
+| `--border`                             | bone / 10 %           |           | Hairlines, dividers, card edges.                                |
+| `--input` / `--field-border`           | bone / 45 %           |           | The underline of fields, checkbox and outline-button borders.   |
+| `--ring` / `--focus`                   | = `--foreground`      |           | Focus indicators.                                               |
+| `--chart-1…5`                          | red ramp 0.8 → 0.4 L  |           | Glows and light (and charts, if any).                           |
 
-| Token            | Value                                  | Use                                                           |
-| ---------------- | -------------------------------------- | ------------------------------------------------------------- |
-| `--blood`        | = `--chart-3` (red-600)                | Wordmark disc, rim light, glows, "REC" dots. Never body text. |
-| `--blood-text`   | = `--chart-2` (red-500)                | Red text that must be readable (≥ 5:1).                       |
-| `--premium`      | = `--chart-1` (red-300)                | Premium badge text/border.                                    |
-| `--ember`        | oklch(0.705 0.187 47.604) (orange-500) | The lit pumpkin: basket icon, count badge. Nothing else.      |
-| `--field-border` | white / 40 %                           | Borders of inputs, textareas, checkboxes (a11y, 3.3).         |
-| `--focus`        | = `--foreground`                       | Focus outline color.                                          |
+`--ember` may appear on: the pumpkin icon and basket count, the Halloween date above the
+countdown, the Halloween-night state of the countdown, and inside light leaks (8.4). Nowhere else.
 
-### 3.3 Contrast (measured, WCAG 2.2)
+v1's `--premium` (red-300) is gone: the premium badge is built from `--foreground` and
+`--blood-text` (10.1), so the palette stays two hues.
 
-| Pair                                            | Ratio     | Verdict                                                      |
-| ----------------------------------------------- | --------- | ------------------------------------------------------------ |
-| foreground on background                        | 19.1      | Body text                                                    |
-| muted-foreground on background / card           | 7.6 / 6.8 | Secondary text OK                                            |
-| red-500 (`--blood-text`) on background / card   | 5.2 / 4.7 | Red text OK (≥ 4.5)                                          |
-| red-400 (`--destructive`) on background         | 6.9       | Error text OK                                                |
-| red-300 (`--premium`) on background             | 10.4      | OK                                                           |
-| ember on background                             | 6.9       | OK                                                           |
-| red-50 on red-800 (primary button)              | 7.6       | OK                                                           |
-| **red-800 (`--primary`) as text on background** | **2.4**   | **Never use as text.**                                       |
-| red-600 (`--blood`) as text                     | 4.2       | Large display text only (≥ 24 px), else decorative           |
-| white/15 % field border (preset `--input`)      | 1.5       | Fails 1.4.11 → fields use `--field-border` (white/40 %, 3.8) |
-| zinc-500 ring at 30 % alpha (preset focus)      | < 3       | Fails → focus uses `--focus` outline (19:1)                  |
+### 3.2 Contrast (measured, WCAG 2.2)
+
+Measured by compositing each token over its surface in sRGB and applying the WCAG formula.
+
+| Pair                                        | Ratio              | Verdict                                            |
+| ------------------------------------------- | ------------------ | -------------------------------------------------- |
+| foreground on background / card / muted     | 16.4 / 15.3 / 13.4 | Body text                                          |
+| muted-foreground on background / card       | 8.0 / 7.4          | Secondary text                                     |
+| muted-foreground on muted (hover fill)      | 6.6                | OK                                                 |
+| `--blood-text` on background / card / muted | 5.9 / 5.5 / 4.9    | Red text OK (≥ 4.5)                                |
+| `--destructive` on background / card        | 7.7 / 7.2          | Error text OK                                      |
+| `--ember` on background / card              | 9.2 / 8.6          | OK                                                 |
+| background on `--ember` (count badge)       | 9.2                | OK                                                 |
+| foreground on `--primary` (button)          | 5.5                | OK                                                 |
+| foreground on `--primary` at 80 % (hover)   | 7.2                | OK. Hover darkens; a lighter red would drop to 4.3 |
+| **`--primary` as text on background**       | **3.0**            | **Never use as text.**                             |
+| `--blood` as text on background             | 4.1                | Large display text only (≥ 24 px), else decorative |
+| `--field-border` (bone 45 %) on background  | 3.9                | Passes 1.4.11 (≥ 3)                                |
+| `--focus` on background / on primary        | 16.4 / 5.5         | Focus visible on every surface                     |
 
 Rules:
 
-- Red text is `--blood-text` or `--destructive`, never `--primary`.
+- Red text is `--blood-text` or `--destructive`, never `--primary` or `--blood`.
+- Hover on a filled red control darkens it (`bg-primary/80`); it never lightens.
 - Borders that only decorate (cards, dividers) keep `--border` (10 %). Borders that identify a
-  control (inputs, checkboxes, outline buttons) use `--field-border`.
+  control (fields, checkboxes, outline buttons) use `--field-border`.
 - Focus: `outline: 2px solid var(--focus); outline-offset: 2px` on every interactive element
-  (`:focus-visible`). On red buttons the white outline still reads at 7:1+.
+  (`:focus-visible`), except underline fields, whose underline turns bone and doubles (10.1).
 
 ---
 
 ## 4. Typography
 
-### 4.1 Families (preset, via `app/fonts.ts`)
+### 4.1 Families (`app/fonts.ts`, `next/font/google`, self-hosted)
 
-| Role                      | Family        | Variable         | Notes                                                                                                                                                   |
-| ------------------------- | ------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Display & headings        | Space Grotesk | `--font-heading` | Big, uppercase, tight. Horror poster energy through scale and spacing, not a "spooky" face.                                                             |
-| Body & UI                 | Noto Sans     | `--font-sans`    | Everything readable.                                                                                                                                    |
-| Labels, metadata, numbers | Geist Mono    | `--font-mono`    | "Case file" details: ranks, years, credits labels, units.                                                                                               |
-| Chinese fallback          | system CJK    | —                | `"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC"` appended to every stack. No web font download for CJK. |
+The three faces share a lineage: the American gothics and typewriters of 1970s film marketing
+and production paperwork.
+
+| Role                                  | Family         | Variable                   | Why                                                                                                                                        |
+| ------------------------------------- | -------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Titles (display, headings, numerals)  | League Gothic  | `--font-league-gothic`     | Tall condensed poster lettering (Alternate Gothic, 1903: the one-sheet gothic). Variable width 75–100.                                     |
+| Billing block (credits)               | League Gothic  | same, `font-stretch: 75 %` | The same face at its narrowest: the tight credit block at a poster's foot. No extra download.                                              |
+| Case-file labels, ranks, years, units | Courier Prime  | `--font-courier-prime`     | The screenplay Courier, redrawn for screens: every script and call sheet was typed in it. 400 + 700.                                       |
+| Body and UI                           | Libre Franklin | `--font-libre-franklin`    | Franklin Gothic, the text face of '70s film ads and credits. Clean and readable. Variable weight.                                          |
+| Chinese fallback                      | system CJK     | —                          | `"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC"` appended to every stack. No CJK download. |
+
+Tailwind names: `font-heading` (League Gothic), `font-sans` (Libre Franklin, the default),
+`font-mono` (Courier Prime).
+
+League Gothic has one weight. Headings use `font-normal`, and `font-synthesis: none` is set on
+the document so no browser ever fakes a bold or italic.
 
 ### 4.2 Scale (fluid)
 
-| Style                  | Family  | Size                        | Line height | Tracking | Weight | Case         |
-| ---------------------- | ------- | --------------------------- | ----------- | -------- | ------ | ------------ |
-| `display-xl` (home H1) | heading | clamp(3rem, 8.5vw, 8rem)    | 0.88        | -0.03em  | 600    | upper        |
-| `display` (page H1)    | heading | clamp(2.5rem, 6vw, 5rem)    | 0.92        | -0.02em  | 600    | upper        |
-| `h2` (section)         | heading | clamp(1.75rem, 3.5vw, 3rem) | 1           | -0.01em  | 600    | upper        |
-| `h3` (card/name)       | heading | 1.25rem                     | 1.15        | -0.005em | 600    | upper        |
-| `lead`                 | sans    | 1.25rem                     | 1.6         | 0        | 400    | sentence     |
-| `body-lg` (lore)       | sans    | 1.125rem                    | 1.75        | 0        | 400    | sentence     |
-| `body`                 | sans    | 1rem                        | 1.6         | 0        | 400    | sentence     |
-| `small`                | sans    | 0.875rem                    | 1.5         | 0        | 400    | sentence     |
-| `label`                | mono    | 0.75rem                     | 1.4         | 0.2em    | 500    | upper        |
-| `micro`                | mono    | 0.6875rem                   | 1.4         | 0.24em   | 500    | upper        |
-| `numeral` (countdown)  | heading | clamp(2.5rem, 7vw, 5.5rem)  | 1           | -0.02em  | 500    | tabular-nums |
+| Style                  | Family  | Size                         | Line height | Tracking | Weight | Case         |
+| ---------------------- | ------- | ---------------------------- | ----------- | -------- | ------ | ------------ |
+| `display-xl` (home H1) | heading | clamp(3.75rem, 12vw, 11rem)  | 0.86        | 0.005em  | 400    | upper        |
+| `display` (page H1)    | heading | clamp(3rem, 8vw, 6.5rem)     | 0.9         | 0.01em   | 400    | upper        |
+| `h2` (section)         | heading | clamp(2.25rem, 5vw, 4rem)    | 0.95        | 0.01em   | 400    | upper        |
+| `h3` (card/name)       | heading | 1.625rem                     | 1           | 0.02em   | 400    | upper        |
+| `billing`              | heading | 0.9375rem, `font-stretch` 75 | 1.15        | 0.04em   | 400    | upper        |
+| `lead`                 | sans    | 1.1875rem                    | 1.6         | 0        | 400    | sentence     |
+| `body-lg` (lore)       | sans    | 1.0625rem                    | 1.75        | 0        | 400    | sentence     |
+| `body`                 | sans    | 1rem                         | 1.6         | 0        | 400    | sentence     |
+| `small`                | sans    | 0.875rem                     | 1.5         | 0        | 400    | sentence     |
+| `label`                | mono    | 0.8125rem                    | 1.4         | 0.08em   | 400    | upper        |
+| `micro`                | mono    | 0.75rem                      | 1.4         | 0.1em    | 700    | upper        |
+| `numeral` (countdown)  | heading | clamp(3rem, 9vw, 7rem)       | 1           | 0        | 400    | tabular-nums |
+
+Courier is monospaced and already wide, so it needs far less tracking than v1's Geist Mono.
+`micro` uses Courier's bold so its thin strokes hold up at 12 px on black.
 
 ### 4.3 Rules
 
@@ -178,9 +220,11 @@ Rules:
 - Numbers that change (countdown, counts) use `tabular-nums` and fixed-width cells: no jitter.
 - Uppercase only through CSS (`uppercase` utility) on headings, labels and buttons.
 - `:lang(zh-Hans)`: `letter-spacing: normal` on everything (tracking utilities neutralized),
-  headings line-height +0.12, body line-height 1.8, no italics.
+  headings weight 600 (system CJK fonts have real weights) and line-height +0.15, body
+  line-height 1.8, no italics.
 - Spanish runs ~25 % longer than English: no fixed widths on text containers or buttons; buttons
-  may wrap to two lines on narrow screens rather than truncate.
+  may wrap to two lines on narrow screens rather than truncate. The condensed display face keeps
+  long Spanish titles on screen.
 - Never truncate names or titles with ellipsis on detail pages; cards may clamp to 2 lines.
 
 ---
@@ -195,20 +239,21 @@ Rules:
   (8, 12, 16, 24, 32, 48, 64).
 - Header height 64 px; sticky toolbars sit below it (`top-16`).
 - Z-index scale: content 0 · sticky toolbar 30 · header 40 · menus/overlays 50 · atmosphere
-  (grain, vignette) 60, `pointer-events: none` · toasts 70 · skip link 80.
+  (grain, vignette, leaks) 60, `pointer-events: none` · cue mark 65 · toasts 70 · skip link 80.
 
 ---
 
 ## 6. Shape, surface, texture
 
 - **Square corners everywhere** (`rounded-none`), as the preset's components do. The one
-  exception: circles that are circles (the wordmark disc, the countdown's leader ring, avatar
-  disc).
+  exception: circles that are circles (the wordmark disc, the cue mark, the countdown's leader
+  ring, avatar disc).
 - Hairlines: 1 px `--border`. Sections are separated by space first, a hairline second.
 - Elevation is light, not shadow: raised surfaces are `--card`; focus and hover add a faint red
   inner glow (`box-shadow: inset 0 -40px 60px -40px color-mix(in oklch, var(--blood) 35%,
 transparent)`), never drop shadows.
-- Texture comes from the atmosphere layers (section 8), not from surfaces.
+- Texture is **film**, and comes from the atmosphere layers (8), not from surfaces: grain, the
+  gate's weave on title cards, occasional light leaks, scratches only while a reel changes.
 
 ---
 
@@ -216,64 +261,92 @@ transparent)`), never drop shadows.
 
 ### 7.1 Tokens
 
-| Token                | Value                          | Use                                                     |
-| -------------------- | ------------------------------ | ------------------------------------------------------- |
-| `--ease-dread`       | cubic-bezier(0.16, 1, 0.3, 1)  | Entrances, reveals (expo out: fast start, long settle). |
-| `--ease-heavy`       | cubic-bezier(0.65, 0, 0.35, 1) | Toggles, overlays, the heartbeat.                       |
-| `--duration-fast`    | 150 ms                         | Color and opacity on hover/press.                       |
-| `--duration-base`    | 300 ms                         | Small state changes, menus.                             |
-| `--duration-slow`    | 700 ms                         | Reveals.                                                |
-| `--duration-glacial` | 1200 ms                        | Image drift on hover.                                   |
-| Stagger              | 60 ms, max 12 items            | Grids and lists.                                        |
+| Token                | Value                          | Use                                                   |
+| -------------------- | ------------------------------ | ----------------------------------------------------- |
+| `--ease-dread`       | cubic-bezier(0.16, 1, 0.3, 1)  | Fades up from black, reveals (fast start, long tail). |
+| `--ease-heavy`       | cubic-bezier(0.65, 0, 0.35, 1) | Toggles, overlays, the heartbeat, the reel change.    |
+| `--duration-fast`    | 150 ms                         | Color and opacity on hover/press.                     |
+| `--duration-base`    | 300 ms                         | Small state changes, menus.                           |
+| `--duration-slow`    | 700 ms                         | Reveals.                                              |
+| `--duration-glacial` | 1200 ms                        | Image drift on hover.                                 |
+| Frame                | 1000 / 24 ≈ 42 ms              | Film-rate steps (grain, weave, cue mark).             |
+| Stagger              | 60 ms, max 12 items            | Grids and lists.                                      |
 
 ### 7.2 Patterns
 
-- **Emerge (reveal):** opacity 0 → 1, `translateY(16px)` → 0, `blur(8px)` → 0, 700 ms
+- **Fade up from black (reveal):** opacity 0 → 1, `translateY(12px)` → 0, 700 ms
   `--ease-dread`, once, when 10 % in view. Never on the LCP element.
+- **Title-card cut:** page titles (`display`) never fade; they are there on the first frame, like
+  a title card cut in. On the home hero and the 404 the title card also carries the gate weave
+  (8.3).
+- **Reel change (between pages):** the old page fades to black (180 ms, `--ease-heavy`), holds
+  black for one beat (60 ms), and the new page fades up (320 ms, `--ease-dread`). Two or three
+  scratches flicker down the frame while it runs (8.5). The header does not move. Implemented
+  with React's `<ViewTransition>` in `app/[locale]/template.tsx`; browsers without the View
+  Transitions API swap instantly.
+- **Cue mark (loading):** the cigarette burn (10.2) appears top right when the next page takes
+  longer than 150 ms, and stays until it arrives. Fast navigations never show it.
 - **Press:** buttons `translateY(1px)` (preset) and 150 ms color.
 - **Card hover (fine pointer):** image `scale(1.05)` over 1200 ms; red rim light rises from the
   bottom (opacity 0 → 1, 300 ms); a 1 px red line draws under the name (`scaleX` 0 → 1 from the
   left, 400 ms).
-- **Heartbeat:** scale 1 → 1.06 → 1 → 1.03 → 1 over 1000 ms (lub-dub), used only by the wordmark
+- **Heartbeat:** scale 1 → 1.18 → 1 → 1.08 → 1 over 1000 ms (lub-dub), used only by the wordmark
   disc on hover and the lit pumpkin when an item is added.
 - **Ignite (basket add):** pumpkin goes from outline to ember fill with a 600 ms flicker (opacity
   0.4 → 1 → 0.7 → 1) and the count rolls up (old number slides up and out, new one in).
-- **Overlay (mobile menu):** backdrop fades in 300 ms; items emerge with 60 ms stagger; closing is
-  200 ms fade, no stagger.
+- **Overlay (mobile menu):** backdrop fades in 300 ms; items fade up with 60 ms stagger; closing
+  is a 200 ms fade, no stagger.
 
 ### 7.3 Reduced motion and photosensitivity
 
 Under `prefers-reduced-motion: reduce`:
 
-- Reveals become a 150 ms opacity fade (no movement, no blur).
-- Ambient loops stop (grain frozen, fog still, no glow breathing, no leader sweep, no drip).
+- Reveals become a 150 ms opacity fade (no movement).
+- The reel change becomes an instant cut; no scratches.
+- Ambient loops stop: grain frozen, no gate weave, no light leaks, fog still, no projector
+  flicker, no leader sweep, no drip, no VHS roll. The cue mark shows steadily instead of blinking.
 - The flashlight effect is replaced by a static, faint reveal.
 - Hover zooms are removed; color changes stay.
 
 Always, regardless of settings: no element flashes more than 3 times per second; flicker
-changes opacity by at most 10 % of the layer and never involves red saturated fields larger than
-a card (WCAG 2.3.1, red-flash threshold).
+changes opacity by at most 10 % of the layer and never involves saturated red fields larger than
+a card (WCAG 2.3.1, red-flash threshold). The cue mark is small (≤ 32 px) and blinks at 1 Hz.
 
 ---
 
 ## 8. Atmosphere layers
 
-Fixed, full-viewport, `pointer-events: none`, `aria-hidden`, rendered once in the root layout.
+Fixed, full-viewport, `pointer-events: none`, `aria-hidden`. Global ones render once in the root
+layout; the rest belong to the section that owns them. No `mix-blend-mode` on full-screen layers
+(it forces expensive repaints).
 
-1. **Grain.** An SVG `feTurbulence` tile (data URI, `baseFrequency 0.8`, 4 octaves, grayscale)
-   on a pseudo-element 200 % of the viewport, opacity 0.06, normal blending (no
-   `mix-blend-mode`: it would force expensive repaints). Animated by `transform: translate()` in
-   `steps(6)` over 800 ms: film grain dance. Frozen under reduced motion.
-2. **Vignette.** `radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.55) 100%)`.
-3. **Projector glow** (home hero only, not global): a red-800 radial glow from the top center at
-   18 % opacity, breathing 0.14 → 0.2 over 8 s `--ease-heavy`, alternate.
-4. **Fog** (home hero and footer only): two or three blurred ellipses (zinc-400 at 6 %, red-800 at
-   10 %, `filter: blur(60px)`), drifting horizontally 40–90 s, alternate. Transform only.
-5. **Flashlight** (home hero only): a hidden layer with a giant outline phrase (message
+1. **Grain (global).** An SVG `feTurbulence` tile (data URI, `baseFrequency 0.8`, 4 octaves,
+   grayscale) on a pseudo-element 200 % of the viewport, opacity 0.07. It jumps to a new offset
+   every other frame (`steps` timing, 8 positions over 330 ms): film grain, not TV static. Frozen
+   under reduced motion.
+2. **Vignette (global).** `radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.6)
+100%)`: the falloff of a projector lamp.
+3. **Gate weave (title cards only: home hero, 404).** The title block drifts by at most 0.6 px
+   on a 12 fps stepped loop, like a print weaving in the projector gate. Never on body text,
+   forms or anything a person reads for more than a glance.
+4. **Light leak (global, occasional).** A warm bloom (`--ember` into `--blood`, radial) swells
+   at one edge of the frame to at most 10 % opacity over 2 s, holds, and fades over 3 s, about
+   once every 30 s. Transform and opacity only.
+5. **Scratches (reel changes only).** Two or three 1 px vertical lines in bone at 25 % that jump
+   position every frame for the 450 ms of a page change, then vanish. Never at rest.
+6. **Projector beam (home hero only).** A soft bone-white cone from the top center at 8 %
+   opacity with a red underglow, flickering irregularly by at most 3 % (lamp flicker, never a
+   strobe).
+7. **Fog (home hero and footer only).** Two or three blurred ellipses (warm grey at 6 %,
+   `--primary` at 10 %, `filter: blur(60px)`), drifting horizontally 40–90 s, alternate.
+8. **Flashlight (home hero only).** A hidden layer with a giant outline phrase (message
    `Home.hidden`, e.g. "We all wear masks") revealed through a 260 px radial mask that follows the
    pointer (`--x`/`--y` CSS vars updated in `requestAnimationFrame`). On touch / no hover the
    mask drifts slowly on its own (Lissajous path, 20 s). Reduced motion: the phrase sits static at
-   5 % opacity, no mask. The phrase is decorative and `aria-hidden`.
+   5 % opacity, no mask. Decorative and `aria-hidden`.
+9. **VHS tracking (404 only).** The one place video appears: the tape ran out. A band of
+   horizontal noise rolls up the screen once every ~7 s (1.2 s roll, 15 % opacity) and the `404`
+   splits into a red and a bone ghost offset by 2 px. Static under reduced motion.
 
 ---
 
@@ -293,14 +366,15 @@ Fixed, full-viewport, `pointer-events: none`, `aria-hidden`, rendered once in th
 
 - File: `public/images/costume-placeholder.webp` (+ `.avif`), 1200 × 1500 (4:5), generated
   from an SVG source (`design/costume-placeholder.svg`) with sharp.
-- Art direction: zinc-950 room. A tall, anonymous hooded figure, faceless, stands center, lit from
-  behind by a red rim light (red-600 → red-800) that spills onto floor fog. Film grain. No text,
+- Art direction: a dark room in warm black. A tall, anonymous hooded figure, faceless, stands
+  center, lit from behind by an arterial-red rim light that spills onto floor fog; a faint
+  sodium-orange glow from off-frame, like a streetlight through a window. Film grain. No text,
   no character features: _the costume is waiting for whoever wears it_. Works under a bottom
   gradient that carries the card's text.
 - Alt policy: while it's a placeholder, the image is decorative (`alt=""`); the character's name
   is always in text next to it. Real photos later get `alt="{Character} costume"`.
-- OG images are generated (next/og) in the same language: zinc-950, red rim glow, rank in mono,
-  name in Space Grotesk, film in muted text, wordmark bottom-left. 1200 × 630.
+- OG images are generated (next/og) in the same language: warm black, red rim glow, rank in
+  Courier, name in League Gothic, film in muted text, wordmark bottom-left. 1200 × 630.
 
 ---
 
@@ -308,61 +382,72 @@ Fixed, full-viewport, `pointer-events: none`, `aria-hidden`, rendered once in th
 
 Client components are marked (C). Everything else renders on the server.
 
-### 10.1 Primitives
+### 10.1 Primitives (preset structure, film palette)
 
-- **Button** (preset cva, extended): variants `default` (red-800, red-50 text), `outline`
-  (`--field-border`), `secondary` (zinc-800), `ghost`, `link`, `destructive`. Sizes preset.
-  Loading state: spinner (Remix `loader-4-line`, spin 800 ms linear) replaces the leading icon,
-  label switches to the "…ing" message, `aria-busy`. Minimum hit area 44 × 44. Links styled as
-  buttons use Base UI `render` + `nativeButton={false}`.
-- **Badge**: mono `micro`, uppercase, 1 px border, square.
-  - `soon` — border white/20, text muted: "Soon".
-  - `premium` — border `--premium` at 40 %, text `--premium`, crown icon (`vip-crown-2-line`):
-    "Premium".
-  - `new-blood` — border `--blood-text` at 40 %, text `--blood-text`, fire icon: "New blood"
-    (the 2024–2026 breakouts marked 🔥 in the catalog). `title`/sr text: "A 2024–2026 breakout".
-  - `count` — ember background, zinc-950 text (basket count).
-- **Field** (label + control + hint + error): label `small` 500 always visible above the control;
-  hint muted `small`; error `--destructive` `small` with an alert icon, linked by
-  `aria-describedby`, control gets `aria-invalid`.
-- **Input / Textarea**: `--card` fill, 1 px `--field-border`, 44 px tall, 12 px padding, square;
-  hover border white/55 %; focus `--focus` outline; invalid border `--destructive`. Textarea shows
-  a live character count `n / max` (mono micro).
+- **Button** (preset cva): variants `default` (arterial red, bone text, hover darkens to 80 %),
+  `outline` (`--field-border`), `secondary`, `ghost`, `link` (`--blood-text`), `destructive`.
+  Sizes preset. Focus: the global outline (3.2). Loading state: spinner (Remix `loader-4-line`,
+  spin 800 ms linear) replaces the leading icon, label switches to the "…ing" message,
+  `aria-busy`. Minimum hit area 44 × 44. Links styled as buttons use `buttonVariants` on the
+  link itself.
+- **Badge** (preset: borderless, uppercase, 10 px, tracking-widest). Kostuma variants add a 1 px
+  border and 2 × 6 px padding so they read as stamped labels:
+  - `soon` — border bone/20, text muted: "Soon".
+  - `premium` — border `--blood-text` at 50 %, text `--foreground`, ticket icon
+    (`ticket-2-line`) in `--blood-text`: "Premium". An admission ticket.
+  - `newBlood` — border `--blood-text` at 40 %, text `--blood-text`, fire icon: "New blood"
+    (the 2024–2026 breakouts marked 🔥 in the catalog). sr-only hint: "A 2024–2026 breakout".
+  - `count` — `--ember` fill, `--background` text, no border, tabular numbers (basket count).
+- **Field** (preset `field.tsx`: Field, FieldLabel, FieldDescription, FieldError with
+  `role="alert"`, FieldGroup, FieldSet, FieldSeparator). Label is the preset's uppercase
+  `text-xs` semibold, always visible above the control; description muted `small`; error
+  `--destructive` `small`, linked by `aria-describedby`, control gets `aria-invalid`.
+- **Input / Textarea** (preset underline fields): transparent, no box, a 1 px underline in
+  `--field-border`, 40 px tall (44 px hit area with the label), no side padding. Hover: underline
+  at bone 70 %. Focus: underline turns bone and doubles to 2 px (inset shadow, no layout shift);
+  no outline box. Invalid: underline `--destructive`. Textarea grows with content
+  (`field-sizing: content`) and shows a live character count `n / max` (mono micro).
 - **Password input** (C): input + show/hide toggle button (eye icons, `aria-pressed`, label
   "Show password"/"Hide password").
-- **Checkbox**: 20 px square, `--field-border`, checked = red-800 fill + red-50 check; label to
-  the right, clickable.
-- **Segmented control** (C): radio group rendered as joined square tabs; selected = zinc-800 fill
-  - 2 px red-600 bottom bar; arrow keys move selection.
-- **Select** (locale): native `<select>` (dark via `color-scheme`) for robustness, styled like
-  Input. Compact header variant shows a globe icon + current endonym.
+- **Checkbox**: 18 px square, `--field-border`, checked = arterial fill + bone check, focus =
+  global outline; label to the right, clickable.
+- **Segmented control** (C): radio group rendered as joined square tabs; selected = `--muted`
+  fill + 2 px `--blood` bottom bar; arrow keys move selection.
+- **Select** (locale): native `<select>` (dark via `color-scheme`) for robustness, styled like the
+  underline Input. Compact header variant: globe icon + current endonym.
 - **FormAlert**: whole-form message, `role="alert"`, 1 px destructive border at 40 %, destructive
-  text, alert icon. Success variant: foreground text, check icon, border white/20.
-- **Skeleton**: zinc-800 blocks with a slow sheen (1.6 s); static under reduced motion.
+  text, alert icon. Success variant: foreground text, check icon, border bone/20.
+- **Skeleton**: `--muted` blocks with a slow sheen (1.6 s); static under reduced motion.
 
 ### 10.2 Brand and shell
 
 - **Wordmark** (2.1).
 - **Header** (C for scroll state + menu):
   - Left: wordmark → home. Desktop nav: Costumes · The Mirror (`soon`) · Pricing (`soon`).
-  - Right: Pumpkin Basket button (icon + `count`, label "Pumpkin Basket, 3 saved"), locale
-    select (compact), account: "Sign in" (ghost) or a square avatar with initials → menu
-    (Account, Sign out).
+  - Right: Pumpkin Basket link (icon + `count`, label "Pumpkin Basket, 3 saved"), locale select
+    (compact), account: "Sign in" (ghost) or a square avatar with initials → menu (Account,
+    Sign out).
   - Transparent over the home hero; after 24 px of scroll (and on every other page) it becomes
     `--background` at 80 % + `backdrop-blur-md` + bottom hairline.
   - Mobile (< md): wordmark, basket, menu button. Menu = full-screen overlay (`--background` 96 %),
     big `h2` links with stagger, locale select and account actions at the bottom. Focus trapped,
     Escape closes, focus returns to the menu button, body scroll locked.
+  - Anchored during reel changes (`view-transition-name: site-header`).
 - **Skip link**: first focusable, "Skip to content", visible on focus, jumps to `<main id>`.
+- **Cue mark** (the "cigarette burn"): a 28 px circle 24 px from the top-right corner, below the
+  header. Bone center fading to a ragged, burnt ember edge with a soft glow, as if scratched
+  through the emulsion. Blinks like a real cue: 4 frames on (~170 ms), then off, once per
+  second, while loading. `role="status"` with a visually hidden "Loading…" message. Reduced
+  motion: steady, no blink.
 - **Footer**:
   - Sign-off line in `display` size, outline text (1 px `--muted-foreground` stroke, transparent
-    fill; fills to foreground on hover): "The end?" (message).
+    fill; fills to bone on hover): "The end?" (message).
   - Columns: Explore (Costumes, Pumpkin Basket, The Mirror `soon`), Help (Report a bug, Share
     feedback, Request a feature, support email), Fine print (Terms `soon`, Privacy `soon`).
   - Locale select. Legal lines (2.3). Fog layer behind.
-- **Section heading**: `label` overline (mono, muted, e.g. "01 — Most wanted") + `h2` + optional
-  lead + optional right-aligned link ("See all 100 →").
-- **Breadcrumb**: mono `label`, `/` separators, current page `aria-current="page"`.
+- **Section heading**: `label` overline (Courier, muted, e.g. "01 — Most wanted") + `h2` +
+  optional lead + optional right-aligned link ("See all 100 →").
+- **Breadcrumb**: Courier `label`, `/` separators, current page `aria-current="page"`.
 
 ### 10.3 Feature components
 
@@ -371,10 +456,10 @@ Client components are marked (C). Everything else renders on the server.
   - `article` with a stretched link (the name link's `::after` covers the card) so the whole card
     is clickable without nesting interactive elements.
   - 4:5 image, bottom gradient (`--background` → transparent, 55 % height).
-  - Top-left: rank `No. 001` (mono label). Top-right: basket toggle (C) above the stretched link
-    (`z-10`), 40 × 40 with a 44 px hit area, `aria-pressed`, label "Save {name} to your Pumpkin
-    Basket" / "Remove {name} from your Pumpkin Basket".
-  - Bottom: `new-blood` badge if trending, name (`h3`, 2-line clamp), film + year (mono micro,
+  - Top-left: case-file rank `No. 001` (Courier label). Top-right: basket toggle (C) above the
+    stretched link (`z-10`), 40 × 40 with a 44 px hit area, `aria-pressed`, label "Save {name} to
+    your Pumpkin Basket" / "Remove {name} from your Pumpkin Basket".
+  - Bottom: `newBlood` badge if trending, name (`h3`, 2-line clamp), film + year (Courier micro,
     muted).
   - Hover/focus-within motion per 7.2.
 - **Basket toggle** (C): outline pumpkin ↔ lit pumpkin, ignite animation on add; announces
@@ -383,11 +468,11 @@ Client components are marked (C). Everything else renders on the server.
   era chips (All · New blood · Before 1980 · 1980–1999 · 2000–2019 · 2020 and later), sort select
   (Rank · A–Z · Newest · Oldest), live result count ("24 costumes"). State mirrors the URL
   (`?q=&era=&sort=`) with `history.replaceState` so views are shareable.
-- **Billing block**: the credits of a costume page, styled like the credit block at the bottom of
-  a film poster: centered, uppercase Space Grotesk 500 at 13 px, tight tracking, muted, with
-  small mono role labels ("Created by", "Brought to life by").
+- **Billing block**: the credits of a costume page, set like the credit block at the foot of a
+  one-sheet: centered, League Gothic at 75 % width (`billing`), muted, role words small and names
+  tall ("Created by", "Brought to life by").
 - **Wardrobe list** ("The look"): the catalog's look text split into items, each with a thin
-  square bullet, `body`. Reads as a shopping checklist.
+  square bullet, `body`. Reads as a wardrobe department checklist.
 - **Store links**: "Find this costume" group of outline buttons, one per store, each ending with
   an `arrow-right-up-line` icon and sr-only "(opens in a new tab)"; `target="_blank"`
   `rel="noopener noreferrer nofollow"` (+ `sponsored` when a link is an affiliate link).
@@ -407,8 +492,10 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
 ### 11.1 Home `/`
 
 1. **Hero (title card)** — min-height `100svh` (max 60rem), content bottom-left aligned on desktop,
-   centered on mobile. Projector glow + fog + flashlight layer.
-   - Overline (`label`, muted): "Halloween · {Saturday, October 31}" (date formatted per locale).
+   centered on mobile. Projector beam + fog + flashlight layer; the title block carries the gate
+   weave.
+   - Overline (`label`, `--ember`): "Halloween · {Saturday, October 31}" (date formatted per
+     locale).
    - H1 `display-xl`: "The darkest day is coming." (message `App.taglineLead`).
    - Line 2 `h2` in `--blood-text`: "Transform into a monster." (`App.taglineTail`).
    - **Countdown** (film leader): four cells, Days · Hours · Minutes · Seconds, `numeral` digits
@@ -416,21 +503,21 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
      thin circle with a conic red sweep that turns once per second, the film-leader nod. Server
      renders `--` placeholders at final size (no layout shift); the client fills in the visitor's
      local time. Targets the next Oct 31 at 00:00 local; on Oct 31 it shows "Tonight." in
-     `display` red and "The darkest day is here."; after Halloween it counts to next year.
+     `display` `--ember` and "The darkest day is here."; after Halloween it counts to next year.
      `role="timer"`, `aria-live="off"`, and a visually hidden sentence updated once per minute
      for screen readers ("31 days, 4 hours until Halloween").
    - Actions: primary "Browse the costumes" → `/costumes`; secondary outline "Try it on" with
      `soon` badge → `/try-on`.
-   - Scroll cue: mono micro "Scroll" above a 48 px line that drips downward (2.4 s loop; hidden
-     under reduced motion).
+   - Scroll cue: Courier micro "Scroll" above a 48 px line that drips downward (2.4 s loop;
+     hidden under reduced motion).
 2. **Most wanted** — section heading "01 — Most wanted" / "This season's most wanted" / link "See
    all 100". Grid: top 8 by rank (2 / 3 / 4 columns).
 3. **New blood** — "02 — New blood" / "Fresh from the screen": the trending costumes in a
    horizontal scroll-snap row (cards 70 % width on mobile, 4 visible on desktop), arrow buttons
    on desktop.
-4. **How it works** — "03 — How it works", three steps with huge mono numerals `01 02 03`:
-   Choose your monster (browse) · See yourself transformed (The Mirror, `soon` + `premium`) · Get
-   the costume (store links).
+4. **How it works** — "03 — How it works", three steps with huge League Gothic numerals
+   `01 02 03`: Choose your monster (browse) · See yourself transformed (The Mirror, `soon` +
+   `premium`) · Get the costume (store links).
 5. **The Mirror teaser** — split layout: left copy ("Coming soon", `h2` "The Mirror", one
    paragraph: upload one full-body photo and one face close-up, see yourself in the costume with
    special-effects makeup; price line; button "Learn more" → `/try-on`); right an oval mirror
@@ -445,13 +532,13 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
   (crawlable); filtering happens in the browser.
 - No results: empty state "Nothing lurks here." / "Try another name or film." / "Clear filters".
 
-### 11.3 Costume `/costumes/[slug]`
+### 11.3 Costume `/costumes/[slug]` — the one-sheet
 
 - Breadcrumb Costumes / {name}.
 - Desktop two columns (5 / 7): left sticky image (4:5) with the rank as a huge outline numeral
   behind it (`display-xl`, 8 % opacity); right content. Mobile: image then content.
 - Content, in order:
-  - `label` "No. 001 · Most wanted" + `new-blood` badge.
+  - Case-file line (`label`): "No. 001 · 1978" + `newBlood` badge.
   - H1 `display`: the character.
   - Film line: film icon + "Scream (1996)" (lead, muted).
   - Actions: basket toggle as a labelled button ("Save to Pumpkin Basket" / "Saved"),
@@ -493,7 +580,7 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
 
 ### 11.6 Account `/account`
 
-- H1 "Your account". Profile block: name, email (mono), member since.
+- H1 "Your account". Profile block: name, email (Courier), member since.
 - "The Mirror" block: "2 free transformations waiting" + `soon` + price line.
 - Sign out (outline button). Signed-out visitors are redirected to sign in (with `next`).
 
@@ -509,7 +596,9 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
 
 ### 11.8 Not found
 
-Centered: `label` "404", `display` "Lost in the dark", one line, button "Back to Kostuma". Fog.
+Centered title card with the VHS tracking layer (8.9): `label` "404" in its red/bone ghost split,
+`display` "Lost in the dark", one line, button "Back to Kostuma". Both 404s (the in-app one and
+the global one for unmatched URLs) look the same; the global one has no header.
 
 ### 11.9 Coming soon pages
 
@@ -533,7 +622,8 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 - **Coming soon**: never a disabled button (unfocusable, unexplained). Use a working link to the
   coming-soon page with a `soon` badge.
 - **External links**: new tab, `noopener noreferrer`, icon + sr-only "(opens in a new tab)".
-- **Loading**: skeletons for content, spinners only inside buttons. No full-page spinners.
+- **Loading**: the cue mark for pages, skeletons for content, spinners only inside buttons. No
+  full-page spinners.
 - **Errors**: say what happened and what to do; keep the user's input; focus moves to the first
   invalid field (or the form alert) after submit.
 - **Live regions**: result counts and basket changes announce politely; form alerts assertively.
@@ -542,7 +632,8 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 
 ## 13. Accessibility checklist (WCAG 2.2 AA)
 
-- Contrast per 3.3; focus visible everywhere (`--focus`, 2 px, offset 2 px).
+- Contrast per 3.2; focus visible everywhere (`--focus`, 2 px, offset 2 px; underline fields per
+  10.1).
 - Targets ≥ 44 × 44 px.
 - Landmarks (`header`, `nav` with labels, `main`, `footer`), one H1 per page, ordered headings.
 - Skip link; logical tab order; mobile menu traps focus and restores it.
@@ -552,7 +643,7 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 - `lang` on `<html>` (`en`, `es`, `zh-Hans`) and on endonyms in the language list.
 - Decorative images and atmosphere `aria-hidden` / `alt=""`.
 - Content works without JavaScript for reading (catalog, costume pages); interactive features
-  degrade to links.
+  degrade to links. Reveals must never leave content invisible when JavaScript is off.
 
 ---
 
@@ -569,13 +660,13 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 
 ## 15. Performance budgets
 
-| Metric              | Budget                                                                                     |
-| ------------------- | ------------------------------------------------------------------------------------------ |
-| LCP (4G, mid phone) | ≤ 2.0 s; the home LCP is the H1 text, visible from first paint (never starts at opacity 0) |
-| CLS                 | ≤ 0.02 (reserved sizes for countdown, reCAPTCHA, images)                                   |
-| INP                 | ≤ 200 ms                                                                                   |
-| JS per route        | ≤ 120 KB gz shared + ≤ 40 KB route                                                         |
-| Fonts               | 3 variable families, Latin subsets, `display: swap`; CJK from the system                   |
+| Metric              | Budget                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------- |
+| LCP (4G, mid phone) | ≤ 2.0 s; the home LCP is the H1 text, visible from first paint (never starts at opacity 0)              |
+| CLS                 | ≤ 0.02 (reserved sizes for countdown, reCAPTCHA, images)                                                |
+| INP                 | ≤ 200 ms                                                                                                |
+| JS per route        | ≤ 120 KB gz shared + ≤ 40 KB route                                                                      |
+| Fonts               | 3 families (2 variable + Courier 400/700), Latin subset preloaded, `display: swap`; CJK from the system |
 
 - Ambient effects: CSS, `transform`/`opacity` only, no `mix-blend-mode` on full-screen layers.
 - `motion` only in client islands, through `LazyMotion` + `domAnimation` + `m.*`.
@@ -585,22 +676,45 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 
 ## 16. Implementation map
 
-| Piece                       | Where                                                                                  |
-| --------------------------- | -------------------------------------------------------------------------------------- |
-| Tokens (extensions, motion) | `app/globals.css` `:root` + `@theme inline`                                            |
-| Fonts                       | `app/fonts.ts` (preset)                                                                |
-| Atmosphere                  | `components/horror/{grain,vignette,fog,projector-glow,flashlight}.tsx`                 |
-| Shell                       | `components/layout/{header,mobile-menu,footer,wordmark,skip-link}.tsx`                 |
-| Primitives                  | `components/ui/*` (shadcn style, cva)                                                  |
-| Feature components          | `components/{costume,basket,auth,forms,countdown}/*`                                   |
-| Placeholder art             | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`     |
-| Visual review               | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit |
+| Piece                    | Where                                                                                   |
+| ------------------------ | --------------------------------------------------------------------------------------- |
+| Tokens (palette, motion) | `app/globals.css` `:root` + `@theme inline`                                             |
+| Fonts                    | `app/fonts.ts`                                                                          |
+| Atmosphere               | `components/horror/{atmosphere,projector-beam,fog,flashlight,vhs-tracking}.tsx` + CSS   |
+| Reel change + scratches  | `app/[locale]/template.tsx`, `components/horror/scratches.tsx`, `::view-transition` CSS |
+| Cue mark                 | `components/horror/cue-mark.tsx`, used by `app/[locale]/loading.tsx`                    |
+| Shell                    | `components/layout/{header,header-bar,mobile-menu,footer,wordmark,skip-link}.tsx`       |
+| Primitives               | `components/ui/*` (shadcn style, cva)                                                   |
+| Feature components       | `components/{costume,basket,auth,forms,countdown}/*`                                    |
+| Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`      |
+| Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit  |
 
 ---
 
-## 17. Later
+## 17. Edge cases (tested with each feature)
+
+Each feature branch ships unit and end-to-end tests for the cases that apply to it:
+
+- **Countdown:** time zones east and west of UTC; daylight-saving changes before Oct 31;
+  Halloween day itself ("Tonight."); the rollover after Halloween to next year; a visitor whose
+  clock is wrong; the server-rendered placeholder before hydration.
+- **Languages:** the longest strings (Spanish) at 320 px; Chinese line breaking and fallback
+  fonts; dates, numbers and currency formatted per locale; untranslated keys falling back to
+  English.
+- **Storage (basket):** absent, corrupted, oversized or outdated data in `localStorage`; storage
+  that throws (private mode, blocked); changes from another tab; costumes that no longer exist.
+- **Motion and no-JS:** reduced motion turns every loop and transition off; every page reads
+  without JavaScript (no content stuck invisible).
+- **Network and services:** slow networks (the cue mark, skeletons); reCAPTCHA failing to load
+  or expiring; every Firebase Auth error code mapped to a translated message; rate limits.
+- **Content states:** empty basket, no search results, a filter combination with no costumes,
+  unknown costume slugs (404), 1 item vs many (plurals).
+
+---
+
+## 18. Later
 
 Real costume photography (per-costume art direction) · The Mirror flow (upload guide, progress
 as a "developing film" animation, result reveal) · Stripe checkout styled as a ticket stub ·
-translations · optional opt-in ambient sound (never autoplay) · view transitions between cards
-and costume pages.
+translations · optional opt-in ambient sound: projector whir (never autoplay) · shared-element
+morphs between cards and costume pages.
