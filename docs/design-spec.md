@@ -388,7 +388,8 @@ Client components are marked (C). Everything else renders on the server.
   `outline` (`--field-border`), `secondary`, `ghost`, `link` (`--blood-text`), `destructive`.
   Sizes preset. Focus: the global outline (3.2). Loading state: spinner (Remix `loader-4-line`,
   spin 800 ms linear) replaces the leading icon, label switches to the "…ing" message,
-  `aria-busy`. Minimum hit area 44 × 44. Links styled as buttons use `buttonVariants` on the
+  `aria-busy`. Preset heights (default 40 px); header, menu and other touch-first controls use
+  `lg` / `icon-lg` (44 px). Links styled as buttons use `buttonVariants` on the
   link itself.
 - **Badge** (preset: borderless, uppercase, 10 px, tracking-widest). Kostuma variants add a 1 px
   border and 2 × 6 px padding so they read as stamped labels:
@@ -634,7 +635,8 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 
 - Contrast per 3.2; focus visible everywhere (`--focus`, 2 px, offset 2 px; underline fields per
   10.1).
-- Targets ≥ 44 × 44 px.
+- Targets: 44 × 44 px for navigation and primary touch controls; never below 24 × 24 px
+  (WCAG 2.5.8). Small controls get an invisible padded hit area (the preset checkbox does).
 - Landmarks (`header`, `nav` with labels, `main`, `footer`), one H1 per page, ordered headings.
 - Skip link; logical tab order; mobile menu traps focus and restores it.
 - Forms: visible labels, `autocomplete` (`name`, `email`, `current-password`, `new-password`),
