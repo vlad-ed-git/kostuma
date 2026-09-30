@@ -427,7 +427,7 @@ Client components are marked (C). Everything else renders on the server.
 - **Footer** (on the page's grid, no top border, no sign-off: the owner removed "The end?"):
   - Top row, aligned at the top: the wordmark and the legal lines (2.3) on the left (5 of 12
     columns); on the right (6 columns), Explore (Costumes, My Pumpkin Basket), Help (Report a
-    bug, Share feedback, Request a feature) and Fine print (Terms `soon`, Privacy `soon`),
+    bug, Share feedback, Request a costume) and Fine print (Terms `soon`, Privacy `soon`),
     their small-capital titles on one line.
   - Bottom row: the year (small capitals) on the left, the language links on the right.
   - Small screens: everything stacks; the columns go two, then one, per row.
@@ -557,11 +557,12 @@ title, toolbar or empty state for one.
 - "The Fitting Room" block: "2 free try-ons waiting" + `soon` + price line.
 - Sign out (outline button). Signed-out visitors are redirected to sign in (with `next`).
 
-### 11.7 Feedback `/feedback` (`?type=bug|feedback|feature`)
+### 11.7 Feedback `/feedback` (`?type=bug|feedback|costume`)
 
 - H1 "Tell us what haunts you" (lead: "Found a bug, have an idea, or want a feature? We read
   every message.").
-- Segmented control: Report a bug · Share feedback · Request a feature (preselected by `type`).
+- Segmented control: Report a bug · Share feedback · Request a costume (preselected by `type`;
+  the owner asked for costume requests instead of feature requests).
 - Message textarea (label changes with type; 10–2000 characters, counter), optional email ("Only
   if you want a reply"), reCAPTCHA, submit "Send".
 - Success replaces the form: check icon, "Received.", "Thank you. We read every message.",
@@ -578,7 +579,7 @@ the global one for unmatched URLs) look the same; the global one has no header.
 
 Shared panel ("trailer"): `label` with a blinking red REC dot (1 Hz, static under reduced
 motion) "Coming soon"; `display` title; lead; up to 3 feature bullets; primary action back to
-something that works now; secondary "Want it sooner? Tell us." → `/feedback?type=feature`.
+something that works now; secondary "Want it sooner? Tell us." → `/feedback?type=feedback`.
 
 | Route                  | Title            | Content                                                                                                                                                                                                                                                                                                                             |
 | ---------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

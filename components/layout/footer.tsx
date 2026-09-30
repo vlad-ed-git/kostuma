@@ -48,8 +48,8 @@ export function Footer() {
               <FooterLink href="/feedback?type=feedback">
                 {t("shareFeedback")}
               </FooterLink>
-              <FooterLink href="/feedback?type=feature">
-                {t("requestFeature")}
+              <FooterLink href="/feedback?type=costume">
+                {t("requestCostume")}
               </FooterLink>
             </Column>
             <Column title={t("finePrint")}>

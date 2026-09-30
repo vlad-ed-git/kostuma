@@ -27,7 +27,7 @@ describe("Footer", () => {
     expect(hrefs("Help")).toEqual([
       "/feedback?type=bug",
       "/feedback?type=feedback",
-      "/feedback?type=feature",
+      "/feedback?type=costume",
     ])
   })
 
