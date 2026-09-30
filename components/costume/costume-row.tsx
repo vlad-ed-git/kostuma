@@ -5,7 +5,8 @@ import { CostumeImage } from "./costume-image"
 import { filmLine } from "./format"
 
 /**
- * A costume in a list (spec §10.3): its thumbnail, its name in the title
+ * A costume in a list (spec §10.3): its thumbnail (114 px wide, 156 px
+ * from `lg`: the owner asked for one and a half times), its name in the title
  * face, its film underneath. The whole row is one link; it turns blood red
  * under the pointer or the keyboard. Prefetches on intent only.
  */
@@ -15,9 +16,9 @@ export function CostumeRow({ costume }: { costume: CostumeCard }) {
       href={`/costumes/${costume.slug}`}
       className="group/row grid grid-cols-[auto_minmax(0,1fr)] items-center gap-4 py-2.5 outline-offset-4 lg:gap-6"
     >
-      <span className="relative aspect-4/5 w-19 overflow-hidden border border-foreground/8 bg-card transition-[border-color,box-shadow] duration-300 group-hover/row:border-blood-text/50 group-hover/row:shadow-[0_0_34px_color-mix(in_oklch,var(--blood)_45%,transparent)] group-focus-visible/row:border-blood-text/50 lg:w-26">
+      <span className="relative aspect-4/5 w-28.5 overflow-hidden border border-foreground/8 bg-card transition-[border-color,box-shadow] duration-300 group-hover/row:border-blood-text/50 group-hover/row:shadow-[0_0_34px_color-mix(in_oklch,var(--blood)_45%,transparent)] group-focus-visible/row:border-blood-text/50 lg:w-39">
         <CostumeImage
-          sizes="104px"
+          sizes="(min-width: 1024px) 156px, 114px"
           className="object-cover brightness-80 transition-[filter] duration-300 group-hover/row:brightness-100 group-focus-visible/row:brightness-100"
         />
       </span>
