@@ -1,5 +1,5 @@
 import { IntentLink } from "@/components/navigation/intent-link"
-import type { CostumeCard } from "@/lib/catalog/types"
+import type { CostumeSummary } from "@/lib/catalog/types"
 
 import { CostumeImage } from "./costume-image"
 import { filmLine } from "./format"
@@ -10,7 +10,7 @@ import { filmLine } from "./format"
  * face, its film underneath. The whole row is one link; it turns blood red
  * under the pointer or the keyboard. Prefetches on intent only.
  */
-export function CostumeRow({ costume }: { costume: CostumeCard }) {
+export function CostumeRow({ costume }: { costume: CostumeSummary }) {
   return (
     <IntentLink
       href={`/costumes/${costume.slug}`}

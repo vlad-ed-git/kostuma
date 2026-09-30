@@ -13,8 +13,8 @@ test.describe("the countdown to Halloween", () => {
   }) => {
     const errors = collectErrors(page)
     // Held at three seconds before midnight in New York, whatever the time
-    // the page takes to load.
-    await page.clock.install({ time: new Date("2026-10-30T23:59:50-04:00") })
+    // the page takes to load (the clock starts five minutes earlier).
+    await page.clock.install({ time: new Date("2026-10-30T23:55:00-04:00") })
     await page.goto("/")
     await page.clock.pauseAt(new Date("2026-10-30T23:59:57-04:00"))
     await expect(
@@ -48,7 +48,7 @@ test.describe("the countdown to Halloween", () => {
   test("keeps its size from the dashes to the count and to tonight", async ({
     page,
   }) => {
-    await page.clock.install({ time: new Date("2026-10-30T23:59:50-04:00") })
+    await page.clock.install({ time: new Date("2026-10-30T23:55:00-04:00") })
     await page.goto("/")
     await page.clock.pauseAt(new Date("2026-10-30T23:59:58-04:00"))
     const block = page.getByText("Choose your costume")

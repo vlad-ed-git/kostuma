@@ -35,7 +35,7 @@ test.describe("browsing the costumes", () => {
     expect(errors).toEqual([])
   })
 
-  test("a card opens the costume's one-sheet", async ({ page }) => {
+  test("a costume row opens the costume's page", async ({ page }) => {
     const errors = collectErrors(page)
     await page.goto("/")
     await costumes(page).getByRole("link", { name: "Ghostface" }).click()
@@ -152,7 +152,7 @@ test.describe("browsing the costumes", () => {
     await expectAtCostumes(page)
   })
 
-  test("cards prefetch their page when hovered, not when scrolled past", async ({
+  test("rows prefetch their page when hovered, not when scrolled past", async ({
     page,
     isMobile,
   }) => {
@@ -164,7 +164,7 @@ test.describe("browsing the costumes", () => {
       if (pathname.startsWith("/costumes/")) asked.push(pathname)
     })
     await page.goto("/")
-    // Down to the last card, half a screen at a time, as a reader would.
+    // Down to the last row, half a screen at a time, as a reader would.
     const lastCard = costumes(page).getByRole("listitem").last()
     const end = await lastCard.evaluate(
       (card) => card.getBoundingClientRect().top + window.scrollY
@@ -302,10 +302,10 @@ test.describe("with motion", () => {
 })
 
 test.describe("costumes without JavaScript", () => {
-  // Motion on: the fade-up is what could leave a card invisible.
+  // Motion on: the scroll light is what could leave a row faint.
   test.use({ javaScriptEnabled: false, reducedMotion: "no-preference" })
 
-  test("the home page's last costume fades up when scrolled to", async ({
+  test("the home page's last costume lights up when scrolled to", async ({
     page,
   }) => {
     await page.goto("/")

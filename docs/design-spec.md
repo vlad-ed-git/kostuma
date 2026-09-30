@@ -1,13 +1,10 @@
 # Kostuma — Design Spec
 
-Status: v3 (2026-10-01). Source of truth for how Kostuma looks, moves, reads and behaves.
-Dark mode only.
-
-v3 replaces v2 (film-era, "restraint"), which the owner found bland: "the typical AI-generated
-website … there is no horror here". The owner kept only the dark mode and approved v3 as a
-live prototype (https://claude.ai/artifact/1cjyDUCzhrvimjhPgLQ9AG, version 3) before it was
-built. The preset's **structure** stays: Base UI components, square corners, underline form
-fields, borderless text badges.
+Status: 2026-10-01. Source of truth for how Kostuma looks, moves, reads and behaves. Dark mode
+only. The owner approved this design as a live prototype
+(https://claude.ai/artifact/1cjyDUCzhrvimjhPgLQ9AG) before it was built. The shadcn preset's
+**structure** stays: Base UI components, square corners, underline form fields, borderless text
+badges.
 
 Scope: the public site (home with the costumes, costume pages, My Pumpkin Basket, feedback),
 accounts (register, sign in, reset password, account) and polished "coming soon" pages for the
@@ -29,8 +26,7 @@ lighting up as your light passes.
 light of a window, the contrast of classic horror lighting. Gothic titles like the titles of
 80s slashers, a bookish serif for everything read, like the lore of an old horror novel.
 
-**Horror you can see.** The owner judged v2 by what was on screen and saw nothing: effects must
-be visible at a glance (fog you notice, a flickering title, eyes in the dark), while pages stay
+**Horror you can see.** Effects must be visible at a glance (fog you notice, a flickering title, eyes in the dark), while pages stay
 simple (8, 12). Ruled out: neon/VHS/synthwave, futuristic chrome, and the generic dark site
 (condensed capitals, typewriter labels, a grid of identical cards).
 
@@ -70,8 +66,8 @@ Basket, nothing else. The Fitting Room and Buy live inside the basket; a costume
 
 1. **Horror in the atmosphere, clarity in the controls.** The night lives in color, type, light,
    fog and motion, never in how a control works: clean grids, readable forms, fast, accessible.
-2. **Visible, not subtle.** Every effect must be noticeable at a glance on an ordinary screen
-   (the owner could not see v2's 6 % fog). Minimal structure (no extra titles, labels or
+2. **Visible, not subtle.** Every effect must be noticeable at a glance on an ordinary screen.
+   Minimal structure (no extra titles, labels or
    sections) and a strong atmosphere are not in conflict.
 3. **Clarity beats spookiness where people act.** Forms, errors, buttons and prices are plain and
    instantly readable. Atmosphere lives around them, never on them.
@@ -102,8 +98,7 @@ Basket, nothing else. The Fitting Room and Buy live inside the basket; a costume
 Short. Ominous. Confident. Second person, present tense. A little wry, never cheesy.
 
 - Wordplay at most once per page: "Behind the screams", "The night is young".
-- Never a label that needs explaining. The owner dropped "New blood" (a badge for the
-  2024–2026 breakouts) because it said nothing to them, and ranks ("No. 001") likewise.
+- Never a label that needs explaining: no ranks, no badges for trends or eras.
 - Actions and errors say **what happened and what to do**, in that order. Flavor, if any, comes
   after and is optional ("Wrong email or password." not "The spirits reject you.").
 - Never gory in UI copy, never mocking victims, no ableist words ("insane", "psycho" as insults;
@@ -183,9 +178,15 @@ blood-text and destructive on background, card and muted ≥ 4.5; ember on backg
 | `lead`                 | text    | 1.3125rem                    | 1.5         | 400    |
 | `body-lg` (lore)       | text    | 1.25rem                      | 1.65        | 400    |
 | body                   | text    | 1.125rem (18 px)             | 1.55        | 400    |
-| `billing` (credits)    | text    | 1.1875rem, small caps        | 1.3         | 600    |
-| `label`                | text    | 1.0625rem, small caps        | 1.3         | 600    |
-| `micro`                | text    | 0.9375rem, small caps        | 1.3         | 600    |
+| `ui` (nav, buttons)    | text    | 17 → 20 px, small caps       | 1.1         | 600    |
+| `label`                | text    | 17 → 20.4 px, small caps     | 1.2         | 600    |
+| `micro` (units, meta)  | text    | 15 → 18 px, small caps       | 1.2         | 600    |
+| `billing` (credits)    | text    | 19 → 22.8 px, small caps     | 1.2         | 600    |
+| `badge`                | text    | 14 → 16.8 px, small caps     | 1           | 600    |
+
+The small-capital sizes grow fluidly from phones to desktop (`clamp()`, `app/globals.css`); on
+desktop they are 1.2 times the phone size (owner). Footer links, legal lines and language links
+stay at 16 px.
 
 ### 4.3 Rules
 
@@ -203,8 +204,9 @@ blood-text and destructive on background, card and muted ≥ 4.5; ember on backg
 - Vertical rhythm: sections `py-[clamp(4rem,10vw,9rem)]`; stacks use multiples of 4 px
   (8, 12, 16, 24, 32, 48, 64).
 - Header height 64 px; sticky toolbars sit below it (`top-16`).
-- Z-index scale: content 0 · sticky toolbar 30 · header 40 · menus/overlays 50 · atmosphere
-  (grain, vignette, leaks) 60, `pointer-events: none` · cue mark 65 · toasts 70 · skip link 80.
+- Z-index scale: the vignette and the night scene behind the content · content 0 · ground fog
+  20 · sticky toolbar 30 · header 40 · menus/overlays 50 · grain 60 · cue mark 65 · toasts 70 ·
+  skip link 80. Decorative layers take no pointer events.
 
 ---
 
@@ -223,23 +225,18 @@ blood-text and destructive on background, card and muted ≥ 4.5; ember on backg
 
 ### 7.1 Tokens
 
-| Token                | Value                          | Use                                                   |
-| -------------------- | ------------------------------ | ----------------------------------------------------- |
-| `--ease-dread`       | cubic-bezier(0.16, 1, 0.3, 1)  | Fades up from black, reveals (fast start, long tail). |
-| `--ease-heavy`       | cubic-bezier(0.65, 0, 0.35, 1) | Toggles, overlays, the heartbeat, the reel change.    |
-| `--duration-fast`    | 150 ms                         | Color and opacity on hover/press.                     |
-| `--duration-base`    | 300 ms                         | Small state changes, menus.                           |
-| `--duration-slow`    | 700 ms                         | Reveals.                                              |
-| `--duration-glacial` | 1200 ms                        | Image drift on hover.                                 |
-| Frame                | 1000 / 24 ≈ 42 ms              | Film-rate steps (grain, weave, cue mark).             |
-| Stagger              | 60 ms, max 12 items            | Grids and lists.                                      |
+| Token             | Value                          | Use                                                |
+| ----------------- | ------------------------------ | -------------------------------------------------- |
+| `--ease-dread`    | cubic-bezier(0.16, 1, 0.3, 1)  | Row hover, the drip (fast start, long tail).       |
+| `--ease-heavy`    | cubic-bezier(0.65, 0, 0.35, 1) | Toggles, overlays, the heartbeat, the reel change. |
+| `--duration-fast` | 150 ms                         | Color and opacity on hover/press.                  |
+| `--duration-base` | 300 ms                         | Small state changes, menus.                        |
+| `--duration-slow` | 700 ms                         | The mobile menu's items fading up.                 |
+| Frame             | 1000 / 24 ≈ 42 ms              | Film-rate steps (grain, cue mark).                 |
+| Stagger           | 60 ms, max 12 items            | The mobile menu's links.                           |
 
 ### 7.2 Patterns
 
-- **Fade up from black (reveal):** opacity 0 → 1, `translateY(12px)` → 0, `--ease-dread`, as
-  the element scrolls into view. CSS only (the `reveal` class: a scroll-driven animation,
-  `animation-timeline: view()`), so it needs no JavaScript and content is never stuck invisible;
-  browsers without scroll-driven animations show it at once. Never on the LCP element.
 - **Title-card cut:** page titles never fade in; they are there on the first frame. The home
   title then **flickers** like a dying bulb: three dips in seven seconds, at most two in one
   second (7.3), never below 42 % opacity.
@@ -276,10 +273,10 @@ Under `prefers-reduced-motion: reduce`:
 
 - Reveals are off: content is simply there.
 - The reel change becomes an instant cut; no scratches.
-- Ambient loops stop: grain frozen, fog still, no flicker, no heartbeat, the flashlight still, no projector
-  flicker, no leader sweep, no drip, no VHS roll. The cue mark shows steadily instead of blinking.
-- The flashlight effect is replaced by a static, faint reveal.
-- Hover zooms are removed; color changes stay.
+- Ambient loops stop: grain frozen, fog still, no flicker, no heartbeat, no blinking eyes, no
+  lamp stutter, no drip, no VHS roll; the flashlight stays where it is; costume rows stay fully
+  lit. The cue mark shows steadily.
+- Hover keeps its color changes, without movement.
 
 Always, regardless of settings: no element flashes more than 3 times per second; flicker
 changes opacity by at most 10 % of the layer and never involves saturated red fields larger than
@@ -311,8 +308,8 @@ test measures brightness across the title's bottom edge and fails on a step of 1
 6. **The figure in the window (home title).** An SVG: an arched window lit blood red (its lamp
    stutters now and then), a hooded figure standing in it with two red eyes that blink, a red
    light spill and glow. Between the tagline and the countdown on desktop, a small tableau above
-   the title on phones. Its feet dissolve into the fog. The owner rejected a second lit window
-   with shadow figures and scrawled writing on the wall: neither exists.
+   the title on phones. Its feet dissolve into the fog. Nothing else stands in the scene: no
+   second window, no figures behind glass, no writing on the wall (owner).
 7. **Fog (home title and the 404).** The same texture in two layers rolling at different speeds
    (70 s and 44 s, opposite directions) over the bottom three quarters, fading out top and
    bottom.
@@ -336,7 +333,7 @@ nothing flickers or beats).
     something is inside.
 - Icons never carry meaning alone: they pair with text or an `aria-label`.
 
-### 9.2 The placeholder image (v1: one image for every costume)
+### 9.2 The placeholder image (one image for every costume)
 
 - File: `public/images/costume-placeholder.webp` (+ `.avif`), 1200 × 1500 (4:5), generated
   from an SVG source (`design/costume-placeholder.svg`) with sharp.
@@ -356,31 +353,29 @@ nothing flickers or beats).
 
 Client components are marked (C). Everything else renders on the server.
 
-### 10.1 Primitives (preset structure, film palette)
+### 10.1 Primitives (preset structure, night palette)
 
-- **Button** (preset cva): variants `default` (arterial red, bone text, hover darkens to 80 %),
+- **Button** (preset cva, `ui` small capitals): variants `default` (blood-red fill, bone text,
+  hover darkens to 80 %),
   `outline` (`--field-border`), `secondary`, `ghost`, `link` (`--blood-text`), `destructive`.
   Sizes preset. Focus: the global outline (3.2). Loading state: spinner (Remix `loader-4-line`,
   spin 800 ms linear) replaces the leading icon, label switches to the "…ing" message,
   `aria-busy`. Preset heights (default 40 px); header, menu and other touch-first controls use
   `lg` / `icon-lg` (44 px). Links styled as buttons use `buttonVariants` on the
   link itself.
-- **Badge** (preset: borderless, uppercase, 10 px, tracking-widest). Kostuma variants add a 1 px
-  border and 2 × 6 px padding so they read as stamped labels:
-  - `soon` — border bone/20, text muted: "Soon".
-  - `premium` — border `--blood-text` at 50 %, text `--foreground`, ticket icon
-    (`ticket-2-line`) in `--blood-text`: "Premium". An admission ticket.
-
-  - `count` — `--ember` fill, `--background` text, no border, tabular numbers (basket count).
+- **Badge** (preset: borderless, small capitals, `badge` size). The `soon` variant adds a 1 px
+  border (bone at 20 %) and 2 × 6 px padding so it reads as a stamped label, text muted: "Soon".
+  Each feature that needs another badge adds it with its tests (the basket count comes with My
+  Pumpkin Basket).
 - **Field** (preset `field.tsx`: Field, FieldLabel, FieldDescription, FieldError with
-  `role="alert"`, FieldGroup, FieldSet, FieldSeparator). Label is the preset's uppercase
-  `text-xs` semibold, always visible above the control; description muted `small`; error
+  `role="alert"`, FieldGroup, FieldSet, FieldSeparator). Label in `ui` small capitals, always
+  visible above the control; description muted `small`; error
   `--destructive` `small`, linked by `aria-describedby`, control gets `aria-invalid`.
 - **Input / Textarea** (preset underline fields): transparent, no box, a 1 px underline in
   `--field-border`, 40 px tall (44 px hit area with the label), no side padding. Hover: underline
   at bone 70 %. Focus: underline turns bone and doubles to 2 px (inset shadow, no layout shift);
   no outline box. Invalid: underline `--destructive`. Textarea grows with content
-  (`field-sizing: content`) and shows a live character count `n / max` (mono micro).
+  (`field-sizing: content`) and shows a live character count `n / max` (`micro`).
 - **Password input** (C): input + show/hide toggle button (eye icons, `aria-pressed`, label
   "Show password"/"Hide password").
 - **Checkbox**: 18 px square, `--field-border`, checked = arterial fill + bone check, focus =
@@ -392,8 +387,8 @@ Client components are marked (C). Everything else renders on the server.
   as a link to this same page in that language (`hreflang`, `lang`), the current one checked in
   `--blood-text`. The highlighted row gets `--muted` and a 2 px `--blood` bar at its edge, like a
   splice mark. Accessible name "Language: English" (a message). Arrow keys, type-ahead, Escape.
-- **Language links** (C, footer and mobile menu): the same links inline, uppercase, the current
-  one underlined in `--blood`. No popup, and they work without JavaScript.
+- **Language links** (C, footer and mobile menu): the same links inline, small capitals at
+  16 px, the current one underlined in `--blood`. No popup, and they work without JavaScript.
 - **FormAlert**: whole-form message, `role="alert"`, 1 px destructive border at 40 %, destructive
   text, alert icon. Success variant: foreground text, check icon, border bone/20.
 - **Skeleton**: `--muted` blocks with a slow sheen (1.6 s); static under reduced motion.
@@ -424,7 +419,7 @@ Client components are marked (C). Everything else renders on the server.
   second, while loading. The mark itself is `aria-hidden`; a visually hidden status message says
   "Loading…" only once the wait passes 1 s (quick pages stay quiet). Reduced motion: steady, no
   blink.
-- **Footer** (on the page's grid, no top border, no sign-off: the owner removed "The end?"):
+- **Footer** (on the page's grid; no top border and no sign-off line, owner):
   - Top row, aligned at the top: the wordmark and the legal lines (2.3) on the left (5 of 12
     columns); on the right (6 columns), Explore (Costumes, My Pumpkin Basket), Help (Report a
     bug, Share feedback, Request a costume) and Fine print (Terms `soon`, Privacy `soon`),
@@ -438,7 +433,7 @@ Client components are marked (C). Everything else renders on the server.
 
 - **Countdown** (C): see 11.1.
 - **CostumeRow** (`components/costume/costume-row.tsx`): one link per costume, in a list.
-  - The 4:5 thumbnail (78 px, 104 px from `lg`) with a hairline edge, slightly dimmed; then the
+  - The 4:5 thumbnail (114 × 143 px, 156 × 195 px from `lg`) with a hairline edge, slightly dimmed; then the
     name (`h3` size, display face) with the film under it in italics ("Pearl (2022) / X
     (2022)" for several). Nothing else: no rank, no badge, no picture following the pointer.
   - Hover and focus per 7.2; prefetches on intent only (15). The basket toggle comes with
@@ -561,8 +556,7 @@ title, toolbar or empty state for one.
 
 - H1 "Tell us what haunts you" (lead: "Found a bug, have an idea, or want a feature? We read
   every message.").
-- Segmented control: Report a bug · Share feedback · Request a costume (preselected by `type`;
-  the owner asked for costume requests instead of feature requests).
+- Segmented control: Report a bug · Share feedback · Request a costume (preselected by `type`).
 - Message textarea (label changes with type; 10–2000 characters, counter), optional email ("Only
   if you want a reply"), reCAPTCHA, submit "Send".
 - Success replaces the form: check icon, "Received.", "Thank you. We read every message.",
@@ -632,10 +626,14 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 
 ## 14. Internationalization
 
-- Every visible string is a message (`messages/en.json` first; `es`, `zh` fall back to English
-  until translated).
+- Every visible string is a message, translated into Spanish and Chinese (`messages/{en,es,zh}.json`;
+  informal "tú" in Spanish). `i18n/messages.test.ts` checks that each language has every English
+  key and keeps each message's arguments and tags. Any key a language lacks falls back to English.
+- The costume data (`content/costumes.ts`: lore, looks, fun facts, credits) is English in every
+  language; character names and film titles are never translated. "My Pumpkin Basket" is
+  translated as its proper name ("Mi cesta de calabaza", "我的南瓜篮").
 - Dates, numbers, currency via next-intl formatters (countdown date, counts, price).
-- Messages in sentence case; CSS applies uppercase.
+- Messages in sentence case; CSS applies the small capitals.
 - Endonyms in the language menu and links: English · Español · 中文, each with its own `lang`
   and `hreflang`.
 - Test layouts with the longest language (Spanish) and with CJK line breaking (Chinese).
@@ -659,29 +657,29 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 - Images: `next/image`, explicit `sizes`, `priority` only on the costume page image.
 - Prefetching: every page renders per request (the CSP nonce), so each prefetch costs the
   server a render. Long lists of links prefetch on intent only (hover, focus, touch:
-  `components/navigation/intent-link.tsx`); scrolling the 100 cards used to fire ~150
-  prefetches (measured). Language links never prefetch (12, Prefetching).
+  `components/navigation/intent-link.tsx`); prefetching every row on sight would fire ~150
+  per visit to the home page (measured). Language links never prefetch (12, Prefetching).
 
 ---
 
 ## 16. Implementation map
 
-| Piece                    | Where                                                                                                     |
-| ------------------------ | --------------------------------------------------------------------------------------------------------- |
-| Tokens (palette, motion) | `app/globals.css` `:root` + `@theme inline`                                                               |
-| Fonts                    | `app/fonts.ts`                                                                                            |
-| Atmosphere               | `components/horror/{atmosphere,fog}.tsx` + `app/film.css` (grain, vignette, leaks, scratches, weave, VHS) |
-| Reel change              | `app/[locale]/template.tsx` (`<ViewTransition>`), `::view-transition` rules in `app/film.css`             |
-| Cue mark                 | `components/horror/cue-mark.tsx`, fed by `lib/navigation-status.ts` from `i18n/navigation.tsx`            |
-| Shell                    | `components/layout/{header,mobile-menu,footer,wordmark,skip-link,lost-in-the-dark}.tsx`                   |
-| Primitives               | `components/ui/*` (shadcn style, cva)                                                                     |
-| Feature components       | `components/{costume,basket,auth,forms,countdown}/*`                                                      |
-| Catalog                  | `content/costumes.ts` (the owner's list, typed) → `lib/catalog` → `components/costume/*`                  |
-| Links on intent          | `components/navigation/intent-link.tsx` (the costume rows)                                                |
-| Night scene              | `components/home/{night-scene,flashlight}.tsx`, fog texture `scripts/fog.mjs` → `public/images/fog.webp`  |
-| Countdown                | `lib/countdown` (logic, tested per time zone) + `components/countdown/countdown.tsx`                      |
-| Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`                        |
-| Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit                    |
+| Piece                    | Where                                                                                                    |
+| ------------------------ | -------------------------------------------------------------------------------------------------------- |
+| Tokens (palette, motion) | `app/globals.css` `:root` + `@theme inline`                                                              |
+| Fonts                    | `app/fonts.ts`                                                                                           |
+| Atmosphere               | `components/horror/{atmosphere,fog}.tsx` + `app/film.css` (grain, vignette, ground fog, scratches, VHS)  |
+| Reel change              | `app/[locale]/template.tsx` (`<ViewTransition>`), `::view-transition` rules in `app/film.css`            |
+| Cue mark                 | `components/horror/cue-mark.tsx`, fed by `lib/navigation-status.ts` from `i18n/navigation.tsx`           |
+| Shell                    | `components/layout/{header,mobile-menu,footer,wordmark,skip-link,lost-in-the-dark}.tsx`                  |
+| Primitives               | `components/ui/*` (shadcn style, cva)                                                                    |
+| Feature components       | `components/{costume,basket,auth,forms,countdown}/*`                                                     |
+| Catalog                  | `content/costumes.ts` (the owner's list, typed) → `lib/catalog` → `components/costume/*`                 |
+| Links on intent          | `components/navigation/intent-link.tsx` (the costume rows)                                               |
+| Night scene              | `components/home/{night-scene,flashlight}.tsx`, fog texture `scripts/fog.mjs` → `public/images/fog.webp` |
+| Countdown                | `lib/countdown` (logic, tested per time zone) + `components/countdown/countdown.tsx`                     |
+| Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`                       |
+| Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit                   |
 
 ---
 

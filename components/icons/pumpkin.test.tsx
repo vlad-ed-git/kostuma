@@ -18,7 +18,7 @@ describe("Pumpkin", () => {
     expect(container.querySelector("[fill='currentColor']")).toBeNull()
   })
 
-  it("lights up in sodium orange with its face carved out", () => {
+  it("lights up in pumpkin orange with its face carved out", () => {
     const { container } = render(<Pumpkin lit />)
     const svg = container.querySelector("svg")
     expect(svg).toHaveAttribute("data-lit", "true")

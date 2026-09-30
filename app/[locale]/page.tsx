@@ -6,7 +6,7 @@ import { Countdown } from "@/components/countdown/countdown"
 import { NightScene } from "@/components/home/night-scene"
 import { costumesHref } from "@/components/layout/nav"
 import { Link } from "@/i18n/navigation"
-import { getCostumes, toCard } from "@/lib/catalog"
+import { getCostumes, toSummary } from "@/lib/catalog"
 import { countdownTo } from "@/lib/countdown"
 
 /**
@@ -70,7 +70,7 @@ export default async function HomePage() {
         <ol className="grid gap-x-16 gap-y-2 lg:grid-cols-2">
           {getCostumes().map((costume) => (
             <li key={costume.slug} className="lit">
-              <CostumeRow costume={toCard(costume)} />
+              <CostumeRow costume={toSummary(costume)} />
             </li>
           ))}
         </ol>

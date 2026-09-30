@@ -1,7 +1,8 @@
 /*
- * The cinema layer (docs/design-spec.md §7–8): film texture, title cards,
- * reel changes and the cue mark. CSS only, transform and opacity only, no
- * mix-blend-mode. Every loop lives inside `prefers-reduced-motion:
+ * The night's motion and atmosphere (docs/design-spec.md §7–8): grain, fog,
+ * the night scene, the flickering title, the lit costume rows, reel changes
+ * and the cue mark. CSS only; transforms and opacity (plus the heartbeat's
+ * glow), no mix-blend-mode. Every loop lives inside `prefers-reduced-motion:
  * no-preference`, so reduced motion gets a still frame by default.
  */
 
@@ -66,12 +67,6 @@
       )
       0 0 / 61% 100%;
   background-repeat: no-repeat;
-}
-
-/* ── Title cards: the gate's weave (spec §8.3) ─────────────────────────── */
-
-.film-weave {
-  will-change: translate;
 }
 
 /* ── The cue mark, a "cigarette burn" (components/horror/cue-mark.tsx) ─── */
@@ -311,8 +306,8 @@
   animation: reel-in 320ms var(--ease-dread) 240ms both;
 }
 
-/* ── Reveal: fade up from black as it scrolls in (spec §7.2) ─────────── */
-/* No JavaScript: browsers without scroll-driven animations just show it. */
+/* ── Lit by scroll: the costume rows (`.lit`, spec §7.2), below ──────── */
+/* No JavaScript: browsers without scroll-driven animations show every row. */
 
 /* ── Motion, only for those who haven't asked for less ──────────────────── */
 
@@ -323,9 +318,6 @@
   /* Only while a view transition runs: the reel change, never at rest. */
   html:active-view-transition .film-scratches {
     animation: scratches 450ms steps(1) forwards;
-  }
-  .film-weave {
-    animation: weave 500ms steps(1) infinite;
   }
   .cue-mark[data-active] {
     animation:
@@ -380,12 +372,6 @@
       animation: pass linear both;
       animation-timeline: view();
     }
-    .reveal {
-      animation: reveal linear both;
-      animation-timeline: view();
-      animation-range: entry 5% entry 65%;
-      animation-timing-function: var(--ease-dread);
-    }
   }
 }
 
@@ -435,24 +421,6 @@
   }
   87.5% {
     translate: 2% -12%;
-  }
-}
-
-@keyframes weave {
-  0% {
-    translate: 0 0;
-  }
-  20% {
-    translate: 0.3px 0.5px;
-  }
-  40% {
-    translate: -0.3px 0.2px;
-  }
-  60% {
-    translate: 0.2px -0.4px;
-  }
-  80% {
-    translate: -0.2px 0.6px;
   }
 }
 
@@ -657,13 +625,6 @@
 @keyframes reel-in {
   from {
     opacity: 0;
-  }
-}
-
-@keyframes reveal {
-  from {
-    opacity: 0;
-    translate: 0 12px;
   }
 }
 

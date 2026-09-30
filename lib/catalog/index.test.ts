@@ -6,7 +6,7 @@ import {
   getCostumes,
   getNeighbors,
   getRelated,
-  toCard,
+  toSummary,
 } from "./index"
 
 const costume = (slug: string) => {
@@ -55,8 +55,8 @@ describe("the catalog", () => {
     expect(related.costumes).not.toContain(last)
   })
 
-  it("gives cards only what they show", () => {
-    expect(toCard(costume("ghostface"))).toEqual({
+  it("gives lists only what they show", () => {
+    expect(toSummary(costume("ghostface"))).toEqual({
       slug: "ghostface",
       name: "Ghostface",
       films: [{ title: "Scream", year: 1996 }],

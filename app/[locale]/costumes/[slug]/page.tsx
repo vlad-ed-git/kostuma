@@ -11,7 +11,7 @@ import { filmLine } from "@/components/costume/format"
 import { WardrobeList } from "@/components/costume/wardrobe-list"
 import { costumesHref } from "@/components/layout/nav"
 import { Link } from "@/i18n/navigation"
-import { getCostume, getNeighbors, getRelated, toCard } from "@/lib/catalog"
+import { getCostume, getNeighbors, getRelated, toSummary } from "@/lib/catalog"
 import type { Costume } from "@/lib/catalog/types"
 
 export async function generateMetadata({
@@ -173,7 +173,7 @@ async function Related({ costume }: { costume: Costume }) {
       <ul className="mt-6 grid gap-x-16 gap-y-2 lg:grid-cols-2">
         {related.costumes.map((other) => (
           <li key={other.slug}>
-            <CostumeRow costume={toCard(other)} />
+            <CostumeRow costume={toSummary(other)} />
           </li>
         ))}
       </ul>

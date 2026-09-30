@@ -34,5 +34,5 @@ export type Costume = {
   stores: Store[]
 }
 
-/** What a card shows, and nothing more (cards also render in the browser). */
-export type CostumeCard = Pick<Costume, "slug" | "name" | "films">
+/** What a list shows of a costume, and nothing more. */
+export type CostumeSummary = Pick<Costume, "slug" | "name" | "films">

@@ -1,6 +1,6 @@
 import { costumes } from "@/content/costumes"
 
-import type { Costume, CostumeCard, Film } from "./types"
+import type { Costume, CostumeSummary, Film } from "./types"
 
 /**
  * The collection (content/costumes.ts), read by the pages. Static data, so
@@ -28,7 +28,7 @@ export function getNeighbors(costume: Costume) {
   }
 }
 
-export type Related =
+type Related =
   | { kind: "film"; film: Film; costumes: Costume[] }
   | { kind: "wanted"; costumes: Costume[] }
 
@@ -59,8 +59,8 @@ export function getRelated(costume: Costume, count = 4): Related {
   return { kind: "wanted", costumes: next }
 }
 
-/** What a card shows, and nothing more. */
-export function toCard(costume: Costume): CostumeCard {
+/** What a list shows of a costume, and nothing more. */
+export function toSummary(costume: Costume): CostumeSummary {
   const { slug, name, films } = costume
   return { slug, name, films }
 }

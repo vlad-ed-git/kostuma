@@ -35,7 +35,7 @@ export function LostInTheDark({
     >
       <div aria-hidden="true" className="vhs-tracking" />
       <Fog />
-      <div className="film-weave flex max-w-xl flex-col items-center gap-6">
+      <div className="flex max-w-xl flex-col items-center gap-6">
         <p className="vhs-ghost font-heading text-h2 tracking-[0.2em] text-muted-foreground">
           {code}
         </p>
