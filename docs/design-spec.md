@@ -8,7 +8,7 @@ v2 replaces v1's palette and fonts. The owner released the shadcn preset's color
 corners, uppercase tracked buttons, underline form fields, borderless text badges. Colors and
 type now come from one period: horror cinema of 1978–1984, seen through modern restraint.
 
-Scope of v1: the public site (home, costumes, costume pages, Pumpkin Basket, feedback),
+Scope of v1: the public site (home, costumes, costume pages, My Pumpkin Basket, feedback),
 accounts (register, sign in, reset password, account) and polished "coming soon" pages for
 virtual try-on (The Mirror), pricing, terms and privacy. Every costume uses one placeholder image
 until real photography exists.
@@ -130,7 +130,7 @@ is sodium-streetlight orange.
 | `--blood`                              | oklch(0.58 0.22 28)   | `#df2321` | Wordmark disc, rim light, glows, REC dot. Never body text.      |
 | `--blood-text`                         | oklch(0.665 0.2 27)   | `#f6544b` | Red text that must be readable.                                 |
 | `--destructive`                        | oklch(0.73 0.16 24)   | `#fc7a75` | Error text and icons.                                           |
-| `--ember`                              | oklch(0.77 0.155 62)  | `#f99b39` | Sodium orange: the Pumpkin Basket and Halloween touches only.   |
+| `--ember`                              | oklch(0.77 0.155 62)  | `#f99b39` | Sodium orange: My Pumpkin Basket and Halloween touches only.    |
 | `--border`                             | bone / 10 %           |           | Hairlines, dividers, card edges.                                |
 | `--input` / `--field-border`           | bone / 45 %           |           | The underline of fields, checkbox and outline-button borders.   |
 | `--ring` / `--focus`                   | = `--foreground`      |           | Focus indicators.                                               |
@@ -423,8 +423,13 @@ Client components are marked (C). Everything else renders on the server.
   global outline; label to the right, clickable.
 - **Segmented control** (C): radio group rendered as joined square tabs; selected = `--muted`
   fill + 2 px `--blood` bottom bar; arrow keys move selection.
-- **Select** (locale): native `<select>` (dark via `color-scheme`) for robustness, styled like the
-  underline Input. Compact header variant: globe icon + current endonym.
+- **Language menu** (C, header, from `lg`): globe + current endonym + chevron opens a Base UI
+  Menu: a `--card` panel with a hairline border, a Courier "Language" label, then every language
+  as a link to this same page in that language (`hreflang`, `lang`), the current one checked in
+  `--blood-text`. The highlighted row gets `--muted` and a 2 px `--blood` bar at its edge, like a
+  splice mark. Accessible name "Language: English" (a message). Arrow keys, type-ahead, Escape.
+- **Language links** (C, footer and mobile menu): the same links inline, uppercase, the current
+  one underlined in `--blood`. No popup, and they work without JavaScript.
 - **FormAlert**: whole-form message, `role="alert"`, 1 px destructive border at 40 %, destructive
   text, alert icon. Success variant: foreground text, check icon, border bone/20.
 - **Skeleton**: `--muted` blocks with a slow sheen (1.6 s); static under reduced motion.
@@ -434,15 +439,15 @@ Client components are marked (C). Everything else renders on the server.
 - **Wordmark** (2.1).
 - **Header** (server; the mobile menu is the only client part, the scroll state is CSS):
   - Left: wordmark → home. Desktop nav: Costumes · The Mirror (`soon`) · Pricing (`soon`).
-  - Right: Pumpkin Basket link (icon + `count`, label "Pumpkin Basket, 3 saved"), locale select
-    (compact), account: "Sign in" (ghost) or a square avatar with initials → menu (Account,
+  - Right: My Pumpkin Basket link (icon + `count`, label "My Pumpkin Basket, 3 saved"), language
+    menu, account: "Sign in" (ghost) or a square avatar with initials → menu (Account,
     Sign out).
   - Transparent over a title card (any page with `[data-title-card]`: the home hero, the 404);
     after 24 px of scroll (and on every other page) it becomes `--background` at 80 % +
     `backdrop-blur-md` + bottom hairline. A scroll-driven animation; browsers without one keep
     it solid.
   - Below `lg` (1024 px; the full row needs the room): wordmark, basket, menu button. Menu = full-screen overlay (`--background` 96 %),
-    big `h2` links with stagger, locale select and account actions at the bottom. Focus trapped,
+    big `h2` links with stagger, language links and account actions at the bottom. Focus trapped,
     Escape closes, focus returns to the menu button, body scroll locked.
   - Anchored during reel changes (`view-transition-name: site-header`).
 - **Skip link**: first focusable, "Skip to content", visible on focus, jumps to `<main id>`.
@@ -454,10 +459,12 @@ Client components are marked (C). Everything else renders on the server.
   blink.
 - **Footer**:
   - Sign-off line in `display` size, outline text (1 px `--muted-foreground` stroke, transparent
-    fill; fills to bone on hover): "The end?" (message).
-  - Columns: Explore (Costumes, Pumpkin Basket, The Mirror `soon`), Help (Report a bug, Share
+    fill; fills to bone on hover): "The end?", the last card of a horror film, where the question
+    mark promises the monster will be back. Under it, in Courier `label`, the line that lands the
+    joke: "Every monster comes back. See you next Halloween."
+  - Columns: Explore (Costumes, My Pumpkin Basket, The Mirror `soon`), Help (Report a bug, Share
     feedback, Request a feature, support email), Fine print (Terms `soon`, Privacy `soon`).
-  - Locale select. Legal lines (2.3). Fog layer behind.
+  - Language links. Legal lines (2.3). Fog layer behind.
 - **Section heading**: `label` overline (Courier, muted, e.g. "01 — Most wanted") + `h2` +
   optional lead + optional right-aligned link ("See all 100 →").
 - **Breadcrumb**: Courier `label`, `/` separators, current page `aria-current="page"`.
@@ -471,14 +478,15 @@ Client components are marked (C). Everything else renders on the server.
   - 4:5 image, bottom gradient (`--background` → transparent, 55 % height).
   - Top-left: case-file rank `No. 001` (Courier label). Top-right: basket toggle (C) above the
     stretched link (`z-10`), 40 × 40 with a 44 px hit area, `aria-pressed`, label "Save {name} to
-    your Pumpkin Basket" / "Remove {name} from your Pumpkin Basket".
+    My Pumpkin Basket" / "Remove {name} from My Pumpkin Basket".
   - Bottom: `newBlood` badge if trending, name (`h3`, 2-line clamp), film + year (Courier micro,
     muted).
   - Hover/focus-within motion per 7.2.
 - **Basket toggle** (C): outline pumpkin ↔ lit pumpkin, ignite animation on add; announces
-  "Saved to your Pumpkin Basket" / "Removed" through a polite live region.
+  "Saved to My Pumpkin Basket" / "Removed" through a polite live region.
 - **Collection toolbar** (C): sticky under the header. Search input (search icon, clear button),
-  era chips (All · New blood · Before 1980 · 1980–1999 · 2000–2019 · 2020 and later), sort select
+  era chips (All · New blood · Before 1980 · 1980–1999 · 2000–2019 · 2020 and later), sort menu
+  (a Base UI Select styled like the language menu)
   (Rank · A–Z · Newest · Oldest), live result count ("24 costumes"). State mirrors the URL
   (`?q=&era=&sort=`) with `history.replaceState` so views are shareable.
 - **Billing block**: the credits of a costume page, set like the credit block at the foot of a
@@ -554,7 +562,7 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
   - Case-file line (`label`): "No. 001 · 1978" + `newBlood` badge.
   - H1 `display`: the character.
   - Film line: film icon + "Scream (1996)" (lead, muted).
-  - Actions: basket toggle as a labelled button ("Save to Pumpkin Basket" / "Saved"),
+  - Actions: basket toggle as a labelled button ("Save to My Pumpkin Basket" / "Saved"),
     "Try it on" outline with `soon` + `premium` → `/try-on?costume={slug}`.
   - **The lore** (`label` + `body-lg`).
   - **The look** (wardrobe list).
@@ -564,9 +572,9 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
 - Prev / next by rank ("← No. 000 {name}" / "{name} No. 002 →").
 - "More from {film}" when the film has other characters, else "More most wanted" (next 4).
 
-### 11.4 Pumpkin Basket `/basket`
+### 11.4 My Pumpkin Basket `/basket`
 
-- H1 "Your Pumpkin Basket", count, note "Saved on this device." (muted small).
+- H1 "My Pumpkin Basket", count, note "Saved on this device." (muted small).
 - Rows: thumbnail (4:5, 72 px wide), name + film, actions: "Find it" (first store link),
   "Remove" (ghost, icon). "Clear basket" asks for a second click ("Click again to clear") within
   4 s.
@@ -631,6 +639,10 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 
 ## 12. Patterns
 
+- **Naming**: the wishlist is **My Pumpkin Basket**, a proper name used the same way everywhere
+  (link text, page title, toggle labels, announcements), like "My List" on a streaming service.
+- **Dropdowns**: never the browser's native popup, which breaks the look (owner's call). Menus
+  and selects are Base UI components styled like the language menu (10.1).
 - **Premium**: any paid capability shows the `premium` badge next to its first mention on a
   screen, and the price line near its call to action. Never hide the price.
 - **Coming soon**: never a disabled button (unfocusable, unexplained). Use a working link to the
@@ -668,7 +680,8 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
   until translated).
 - Dates, numbers, currency via next-intl formatters (countdown date, counts, price).
 - Messages in sentence case; CSS applies uppercase.
-- Endonyms in the locale select: English · Español · 中文, each with its own `lang`.
+- Endonyms in the language menu and links: English · Español · 中文, each with its own `lang`
+  and `hreflang`.
 - Test layouts with the longest language (Spanish) and with CJK line breaking (Chinese).
 
 ---
