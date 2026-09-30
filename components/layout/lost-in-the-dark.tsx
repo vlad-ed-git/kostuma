@@ -39,7 +39,7 @@ export function LostInTheDark({
         <p className="vhs-ghost font-heading text-h2 tracking-[0.2em] text-muted-foreground">
           {code}
         </p>
-        <h1 className="font-heading text-display uppercase">{title}</h1>
+        <h1 className="font-heading text-display font-semibold">{title}</h1>
         <p className="text-lead text-muted-foreground">{description}</p>
         <div className="mt-2">{action}</div>
       </div>
