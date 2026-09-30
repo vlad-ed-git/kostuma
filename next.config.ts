@@ -24,6 +24,18 @@ const nextConfig: NextConfig = {
     // The 404 page for URLs outside every language: app/global-not-found.tsx.
     globalNotFound: true,
   },
+  async rewrites() {
+    return {
+      // Checked after files and fixed routes (favicon.ico, robots.txt…). A
+      // leftover one-segment path with a dot (`/missing.txt`, `/.env`) would
+      // be taken for a language by app/[locale]; send it where no route
+      // matches, so the server-rendered 404 (app/global-not-found.tsx)
+      // answers.
+      afterFiles: [
+        { source: "/:file([^/]*\\.[^/]*)", destination: "/_/unknown/:file" },
+      ],
+    }
+  },
 }
 
 export default withNextIntl(nextConfig)

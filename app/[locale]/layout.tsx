@@ -2,22 +2,16 @@ import type { Metadata, Viewport } from "next"
 import { hasLocale, NextIntlClientProvider } from "next-intl"
 import { getTranslations } from "next-intl/server"
 import { notFound } from "next/navigation"
+import { connection } from "next/server"
 
 import { documentClassName } from "@/app/fonts"
 import { languageTags, routing } from "@/i18n/routing"
 
 import "../globals.css"
 
-// Every language is rendered at build time.
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }))
-}
-
-// Any other first segment (`/missing.txt`, `/xx/…`) matches no route, so it
-// gets the server-rendered 404 (app/global-not-found.tsx). Nested dynamic
-// segments inherit this: list their params in generateStaticParams, or set
-// `dynamicParams = true` on them.
-export const dynamicParams = false
+// Only real languages reach this layout: proxy.ts rewrites every page path to
+// one (`/xx` → `/en/xx`, a 404), and next.config.ts sends leftover dotted
+// paths (`/missing.txt`) to the server-rendered global 404.
 
 export async function generateMetadata({
   params,
@@ -44,6 +38,8 @@ export default async function RootLayout({
   children,
   params,
 }: LayoutProps<"/[locale]">) {
+  // The CSP nonce from proxy.ts is per request, so no page is prerendered.
+  await connection()
   const { locale } = await params
   if (!hasLocale(routing.locales, locale)) notFound()
 
