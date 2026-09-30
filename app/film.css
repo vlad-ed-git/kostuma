@@ -1,0 +1,470 @@
+/*
+ * The cinema layer (docs/design-spec.md §7–8): film texture, title cards,
+ * reel changes and the cue mark. CSS only, transform and opacity only, no
+ * mix-blend-mode. Every loop lives inside `prefers-reduced-motion:
+ * no-preference`, so reduced motion gets a still frame by default.
+ */
+
+/* ── Atmosphere (components/horror/atmosphere.tsx) ─────────────────────── */
+
+.film-grain,
+.film-vignette,
+.film-leak {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+/*
+ * Grain: bone specks from fractal noise (alpha only where the noise is
+ * bright), so it reads as grain on black instead of greying the page.
+ * Above the content, like the grain of the print itself.
+ */
+.film-grain {
+  z-index: 60;
+  overflow: hidden;
+}
+.film-grain::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.94 0 0 0 0 0.91 0 0 0 0 0.85 2.4 0 0 0 -1.25'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  opacity: 0.09;
+}
+
+/* The falloff of a projector lamp. Behind the content: it never dims text. */
+.film-vignette {
+  z-index: -1;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 55%,
+    rgb(0 0 0 / 0.6) 100%
+  );
+}
+
+/* A warm bloom at the frame's edge, about twice a minute (spec §8.4). */
+.film-leak {
+  z-index: -1;
+  overflow: hidden;
+}
+.film-leak::before,
+.film-leak::after {
+  content: "";
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklch, var(--ember) 45%, transparent) 0%,
+    color-mix(in oklch, var(--blood) 25%, transparent) 40%,
+    transparent 70%
+  );
+}
+.film-leak::before {
+  top: -40vmax;
+  left: -35vmax;
+}
+.film-leak::after {
+  right: -40vmax;
+  bottom: -45vmax;
+}
+
+/* ── Scratches: only while a reel changes (see the motion rules below) ─── */
+
+.film-scratches {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    linear-gradient(
+        to right,
+        transparent calc(50% - 0.5px),
+        color-mix(in oklch, var(--foreground) 25%, transparent) 0,
+        transparent calc(50% + 0.5px)
+      )
+      0 0 / 37% 100%,
+    linear-gradient(
+        to right,
+        transparent calc(50% - 0.5px),
+        color-mix(in oklch, var(--foreground) 18%, transparent) 0,
+        transparent calc(50% + 0.5px)
+      )
+      0 0 / 61% 100%;
+  background-repeat: no-repeat;
+}
+
+/* ── Title cards: the gate's weave (spec §8.3) ─────────────────────────── */
+
+.film-weave {
+  will-change: translate;
+}
+
+/* ── The cue mark, a "cigarette burn" (components/horror/cue-mark.tsx) ─── */
+
+.cue-mark {
+  position: fixed;
+  top: calc(4rem + 1.5rem);
+  right: 1.5rem;
+  z-index: 65;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  /* Bone burnt through the emulsion, a ragged ember edge, a soft glow. */
+  background: radial-gradient(
+    circle,
+    var(--foreground) 0 42%,
+    color-mix(in oklch, var(--foreground) 70%, var(--ember)) 55%,
+    color-mix(in oklch, var(--ember) 60%, transparent) 68%,
+    transparent 72%
+  );
+  filter: drop-shadow(
+    0 0 6px color-mix(in oklch, var(--ember) 55%, transparent)
+  );
+}
+.cue-mark[data-active] {
+  visibility: visible;
+  /* Fast navigations never show it (spec §7.2). */
+  animation: cue-appear 1ms linear 150ms forwards;
+}
+
+/* ── VHS tracking: the 404 only, the one place video appears (§8.9) ───── */
+
+.vhs-tracking {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.vhs-tracking::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 100%;
+  height: 14%;
+  opacity: 0.15;
+  background: repeating-linear-gradient(
+    to bottom,
+    color-mix(in oklch, var(--foreground) 60%, transparent) 0 1px,
+    transparent 1px 3px,
+    color-mix(in oklch, var(--foreground) 25%, transparent) 3px 4px,
+    transparent 4px 7px
+  );
+}
+.vhs-ghost {
+  text-shadow:
+    -2px 0 color-mix(in oklch, var(--blood) 80%, transparent),
+    2px 0 color-mix(in oklch, var(--foreground) 35%, transparent);
+}
+
+/* ── Fog (home hero and footer, components/horror/fog.tsx) ─────────────── */
+
+.fog {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.fog::before,
+.fog::after {
+  content: "";
+  position: absolute;
+  bottom: -30%;
+  width: 90%;
+  height: 70%;
+  border-radius: 50%;
+  filter: blur(60px);
+}
+.fog::before {
+  left: -20%;
+  background: color-mix(in oklch, var(--muted-foreground) 6%, transparent);
+}
+.fog::after {
+  right: -25%;
+  background: color-mix(in oklch, var(--primary) 10%, transparent);
+}
+
+/* ── Reel changes between pages (app/[locale]/template.tsx) ────────────── */
+
+/* Clicks during the fade reach the live page, not the snapshot. */
+::view-transition {
+  pointer-events: none;
+}
+/* The header is the fixed reference: it never fades. */
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+/* Fade to black, one beat of black, fade up (spec §7.2). */
+::view-transition-old(.reel) {
+  animation: reel-out 180ms var(--ease-heavy) both;
+}
+::view-transition-new(.reel) {
+  animation: reel-in 320ms var(--ease-dread) 240ms both;
+}
+
+/* ── Reveal: fade up from black as it scrolls in (spec §7.2) ─────────── */
+/* No JavaScript: browsers without scroll-driven animations just show it. */
+
+/* ── Motion, only for those who haven't asked for less ──────────────────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  .film-grain::before {
+    animation: grain 330ms steps(1) infinite;
+  }
+  .film-leak::before {
+    animation: leak 29s linear 6s infinite;
+  }
+  .film-leak::after {
+    animation: leak 41s linear 21s infinite;
+  }
+  /* Only while a view transition runs: the reel change, never at rest. */
+  html:active-view-transition .film-scratches {
+    animation: scratches 450ms steps(1) forwards;
+  }
+  .film-weave {
+    animation: weave 500ms steps(1) infinite;
+  }
+  .cue-mark[data-active] {
+    animation:
+      cue-appear 1ms linear 150ms forwards,
+      cue-blink 1s steps(1) 150ms infinite;
+  }
+  .vhs-tracking::before {
+    animation: vhs-roll 7s linear 1.5s infinite;
+  }
+  .fog::before {
+    animation: fog-drift 70s var(--ease-heavy) infinite alternate;
+  }
+  .fog::after {
+    animation: fog-drift 53s var(--ease-heavy) -20s infinite alternate-reverse;
+  }
+  /* The wordmark's disc beats once on hover (components/layout/wordmark). */
+  @media (hover: hover) {
+    .wordmark:hover .wordmark-disc {
+      animation: heartbeat 1s var(--ease-heavy);
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 5% entry 65%;
+      animation-timing-function: var(--ease-dread);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* An instant cut instead of the reel change. */
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
+/* ── The header over a title card (components/layout/header.tsx) ────────── */
+/* Transparent over the home hero until 24 px of scroll, then solid. */
+
+@supports (animation-timeline: scroll()) {
+  body:has([data-title-card]) .site-header {
+    animation: header-solidify linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 24px;
+  }
+}
+
+/* ── Keyframes ──────────────────────────────────────────────────────────── */
+
+@keyframes grain {
+  0% {
+    translate: 0 0;
+  }
+  12.5% {
+    translate: -6% -9%;
+  }
+  25% {
+    translate: -14% 4%;
+  }
+  37.5% {
+    translate: 7% -17%;
+  }
+  50% {
+    translate: -4% 11%;
+  }
+  62.5% {
+    translate: -17% -3%;
+  }
+  75% {
+    translate: 13% 6%;
+  }
+  87.5% {
+    translate: 2% -12%;
+  }
+}
+
+@keyframes weave {
+  0% {
+    translate: 0 0;
+  }
+  20% {
+    translate: 0.3px 0.5px;
+  }
+  40% {
+    translate: -0.3px 0.2px;
+  }
+  60% {
+    translate: 0.2px -0.4px;
+  }
+  80% {
+    translate: -0.2px 0.6px;
+  }
+}
+
+/* 2 s swell, 1 s hold, 3 s fade, then dark for the rest of the cycle. */
+@keyframes leak {
+  0%,
+  78% {
+    opacity: 0;
+  }
+  85% {
+    opacity: 0.1;
+  }
+  88% {
+    opacity: 0.1;
+  }
+  98%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes scratches {
+  0% {
+    opacity: 1;
+    background-position:
+      12% 0,
+      71% 0;
+  }
+  18% {
+    background-position:
+      64% 0,
+      23% 0;
+  }
+  36% {
+    opacity: 0.6;
+    background-position:
+      38% 0,
+      88% 0;
+  }
+  54% {
+    opacity: 1;
+    background-position:
+      81% 0,
+      47% 0;
+  }
+  72% {
+    opacity: 0.5;
+    background-position:
+      27% 0,
+      9% 0;
+  }
+  90%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes cue-appear {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Four frames on (≈ 170 ms at 24 fps), then off: once a second. */
+@keyframes cue-blink {
+  0% {
+    opacity: 1;
+  }
+  17% {
+    opacity: 0;
+  }
+}
+
+@keyframes vhs-roll {
+  0% {
+    translate: 0 0;
+  }
+  17%,
+  100% {
+    translate: 0 -900%;
+  }
+}
+
+@keyframes fog-drift {
+  from {
+    translate: -8% 0;
+  }
+  to {
+    translate: 12% -4%;
+  }
+}
+
+/* Lub-dub (spec §7.2). */
+@keyframes heartbeat {
+  0%,
+  100% {
+    scale: 1;
+  }
+  20% {
+    scale: 1.18;
+  }
+  35% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.08;
+  }
+}
+
+@keyframes reel-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes reel-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+@keyframes header-solidify {
+  from {
+    background-color: transparent;
+    border-color: transparent;
+    backdrop-filter: none;
+  }
+}

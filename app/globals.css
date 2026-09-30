@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "./film.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -182,17 +183,19 @@
 
   /*
    * Chinese (spec §4.3): no tracking, real weights from the system fonts,
-   * and room between lines. `!important` beats the utility classes.
+   * and room between lines. `!important` beats the utility classes. Each
+   * element's own language counts, so Latin marked `lang="en"` inside a
+   * Chinese page (the wordmark) keeps its spacing.
    */
-  :lang(zh-Hans) * {
+  *:lang(zh-Hans) {
     letter-spacing: normal !important;
     font-style: normal !important;
   }
-  :lang(zh-Hans) .font-heading {
+  .font-heading:lang(zh-Hans) {
     font-weight: 600 !important;
     line-height: 1.2 !important;
   }
-  :lang(zh-Hans) body {
+  body:lang(zh-Hans) {
     line-height: 1.8;
   }
 }

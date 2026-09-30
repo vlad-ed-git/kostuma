@@ -6,6 +6,9 @@
   "LocaleSwitcher": {
     "label": "Language"
   },
+  "CueMark": {
+    "loading": "Loading…"
+  },
   "NotFound": {
     "title": "Lost in the dark",
     "description": "This page does not exist, or it has already been claimed by the night.",
