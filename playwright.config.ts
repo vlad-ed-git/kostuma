@@ -17,6 +17,12 @@ export default defineConfig({
     trace: "on-first-retry",
     // Kostuma is dark only: tests run with a light system theme to prove it.
     colorScheme: "light",
+    // The film never stops moving (grain, fog, light leaks). Headless
+    // Chromium draws that without a GPU, which costs about a CPU core per
+    // idle home page (measured) and starved parallel runs. Tests check
+    // behavior with the loops stilled; those about motion opt back in
+    // (`reducedMotion: "no-preference"`).
+    reducedMotion: "reduce",
   },
   projects: [
     { name: "chromium", use: { ...devices["Desktop Chrome"] } },
