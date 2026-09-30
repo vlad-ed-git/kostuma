@@ -6,6 +6,7 @@ import { buttonVariants } from "@/components/ui/button"
 import { Link } from "@/i18n/navigation"
 
 import { MobileMenu } from "./mobile-menu"
+import { costumesHref } from "./nav"
 import { Wordmark } from "./wordmark"
 
 /**
@@ -26,7 +27,7 @@ export function Header() {
         {/* The two places of the flow: browse, then My Pumpkin Basket. */}
         <nav aria-label={t("label")} className="flex flex-1 items-center">
           <Link
-            href="/costumes"
+            href={costumesHref}
             className="hidden min-h-11 items-center text-xs font-semibold tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground lg:inline-flex"
           >
             {t("costumes")}

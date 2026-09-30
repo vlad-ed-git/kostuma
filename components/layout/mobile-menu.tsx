@@ -67,7 +67,7 @@ export function MobileMenu({ className }: { className?: string }) {
             <ul className="flex flex-col gap-1">
               {sections.map((item, index) => (
                 <li
-                  key={item.href}
+                  key={item.label}
                   style={{ "--i": index } as CSSProperties}
                   // Each link fades up after the one before (60 ms stagger).
                   className="transition-[opacity,translate] delay-[calc(var(--i)*60ms+100ms)] duration-700 ease-dread group-data-ending-style/menu:delay-0 group-data-starting-style/menu:translate-y-3 group-data-starting-style/menu:opacity-0 motion-reduce:transition-none"

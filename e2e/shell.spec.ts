@@ -206,6 +206,6 @@ test.describe("without JavaScript", () => {
     await expect(page.getByRole("contentinfo")).toBeVisible()
     await expect(
       page.getByRole("contentinfo").getByRole("link", { name: "Costumes" })
-    ).toHaveAttribute("href", "/costumes")
+    ).toHaveAttribute("href", "/#costumes")
   })
 })

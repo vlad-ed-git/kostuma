@@ -1,10 +1,12 @@
 import { useTranslations } from "next-intl"
-import type { ReactNode } from "react"
+import type { ComponentProps, ReactNode } from "react"
 
 import { Fog } from "@/components/horror/fog"
 import { LanguageLinks } from "@/components/language/language-links"
 import { Badge } from "@/components/ui/badge"
 import { Link } from "@/i18n/navigation"
+
+import { costumesHref } from "./nav"
 
 /** The end credits (spec §10.2). */
 export function Footer() {
@@ -29,7 +31,7 @@ export function Footer() {
 
         <div className="mt-16 grid gap-10 sm:grid-cols-3">
           <Column title={t("explore")}>
-            <FooterLink href="/costumes">{nav("costumes")}</FooterLink>
+            <FooterLink href={costumesHref}>{nav("costumes")}</FooterLink>
             <FooterLink href="/basket">{nav("basket")}</FooterLink>
           </Column>
           <Column title={t("help")}>
@@ -78,7 +80,13 @@ function Column({ title, children }: { title: string; children: ReactNode }) {
   )
 }
 
-function FooterLink({ href, children }: { href: string; children: ReactNode }) {
+function FooterLink({
+  href,
+  children,
+}: {
+  href: ComponentProps<typeof Link>["href"]
+  children: ReactNode
+}) {
   return (
     <li>
       <Link

@@ -33,7 +33,7 @@ describe("MobileMenu", () => {
       within(nav)
         .getAllByRole("link")
         .map((link) => link.getAttribute("href"))
-    ).toEqual(["/costumes", "/basket"])
+    ).toEqual(["/#costumes", "/basket"])
     expect(
       within(dialog).getByRole("navigation", { name: "Language" })
     ).toBeInTheDocument()
