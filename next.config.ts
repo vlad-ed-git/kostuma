@@ -9,6 +9,8 @@ const withNextIntl = createNextIntlPlugin()
 const e2e = process.env.E2E === "1"
 
 const nextConfig: NextConfig = {
+  // Memoizes components automatically (React Compiler, stable in Next 16).
+  reactCompiler: true,
   distDir: e2e ? ".next-e2e" : ".next",
   // Next 16 removed the `eslint` option: `next build` no longer lints, so
   // `npm run lint` runs on its own (and in CI).
