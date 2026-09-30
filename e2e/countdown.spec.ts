@@ -1,0 +1,126 @@
+import { expect, test, type Page } from "@playwright/test"
+
+import { collectErrors } from "./console"
+
+const cells = (page: Page) =>
+  page.getByRole("timer").locator("li > span:first-child")
+
+test.describe("the countdown to Halloween", () => {
+  test.use({ timezoneId: "America/New_York" })
+
+  test("counts down in the visitor's time and turns to tonight at midnight", async ({
+    page,
+  }) => {
+    const errors = collectErrors(page)
+    // Held at three seconds before midnight in New York, whatever the time
+    // the page takes to load.
+    await page.clock.install({ time: new Date("2026-10-30T23:59:50-04:00") })
+    await page.goto("/")
+    await page.clock.pauseAt(new Date("2026-10-30T23:59:57-04:00"))
+    await expect(
+      page.getByText("Until Halloween · Saturday, October 31")
+    ).toBeVisible()
+    await expect(cells(page)).toHaveText(["00", "00", "00", "03"])
+    await expect(
+      page.getByText("0 days, 0 hours and 0 minutes until Halloween.")
+    ).toBeAttached()
+
+    await page.clock.runFor(3_000)
+    await expect(page.getByText("Tonight.")).toBeVisible()
+    await expect(page.getByText("The darkest day is here.")).toBeVisible()
+    expect(errors).toEqual([])
+  })
+
+  test("counts to next year's Halloween once this one has passed", async ({
+    page,
+  }) => {
+    await page.clock.install({ time: new Date("2026-11-01T00:00:01-04:00") })
+    await page.goto("/")
+    await expect(
+      page.getByText("Until Halloween · Sunday, October 31")
+    ).toBeVisible()
+    // One second past midnight: 363 days and 23 hours and more (the two
+    // daylight-saving changes on the way cancel out).
+    await expect(cells(page).nth(0)).toHaveText("363")
+    await expect(cells(page).nth(1)).toHaveText("23")
+  })
+
+  test("keeps its size from the dashes to the count and to tonight", async ({
+    page,
+  }) => {
+    await page.clock.install({ time: new Date("2026-10-30T23:59:50-04:00") })
+    await page.goto("/")
+    await page.clock.pauseAt(new Date("2026-10-30T23:59:58-04:00"))
+    const block = page.getByText("Choose your costume")
+    const top = () => block.evaluate((el) => el.getBoundingClientRect().top)
+    await expect(cells(page).first()).toHaveText("00")
+    const counting = await top()
+    await page.clock.runFor(3_000)
+    await expect(page.getByText("Tonight.")).toBeVisible()
+    expect(await top()).toBe(counting)
+  })
+
+  test('"Choose your costume" leads to the costumes', async ({ page }) => {
+    await page.goto("/")
+    await page.getByRole("link", { name: "Choose your costume" }).click()
+    await expect(page).toHaveURL(/\/#costumes$/)
+    await expect
+      .poll(() =>
+        page
+          .getByRole("region", { name: "Costumes" })
+          .evaluate((el) => Math.round(el.getBoundingClientRect().top))
+      )
+      .toBe(64)
+  })
+})
+
+test.describe("the countdown in another time zone", () => {
+  test.use({ timezoneId: "Asia/Tokyo" })
+
+  test("it is already Halloween in Tokyo when New York still counts", async ({
+    page,
+  }) => {
+    // 12:30 on October 30 in New York is 01:30 on October 31 in Tokyo.
+    await page.clock.install({ time: new Date("2026-10-30T12:30:00-04:00") })
+    await page.goto("/")
+    await expect(page.getByText("Tonight.")).toBeVisible()
+  })
+})
+
+test.describe("the countdown without JavaScript", () => {
+  test.use({ javaScriptEnabled: false })
+
+  test("shows the date and dashes, and the way to the costumes", async ({
+    page,
+  }) => {
+    await page.goto("/")
+    await expect(page.getByText(/^Until Halloween · /)).toBeVisible()
+    await expect(cells(page)).toHaveText(["--", "--", "--", "--"])
+    await expect(
+      page.getByRole("link", { name: "Choose your costume" })
+    ).toHaveAttribute("href", "/#costumes")
+  })
+
+  test("takes the same room as the live count: nothing jumps", async ({
+    browser,
+  }) => {
+    const heights: number[] = []
+    for (const javaScriptEnabled of [false, true]) {
+      const context = await browser.newContext({
+        javaScriptEnabled,
+        reducedMotion: "reduce",
+      })
+      const page = await context.newPage()
+      await page.goto("/")
+      if (javaScriptEnabled)
+        await expect(cells(page).first()).not.toHaveText("--")
+      heights.push(
+        await page
+          .getByRole("timer")
+          .evaluate((el) => el.getBoundingClientRect().height)
+      )
+      await context.close()
+    }
+    expect(heights[1]).toBe(heights[0])
+  })
+})

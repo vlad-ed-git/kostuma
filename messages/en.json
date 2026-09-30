@@ -5,6 +5,20 @@
     "taglineLead": "The darkest day is coming.",
     "taglineTail": "Transform into a monster."
   },
+  "Home": {
+    "chooseCostume": "Choose your costume"
+  },
+  "Countdown": {
+    "label": "Time until Halloween",
+    "until": "Until Halloween · {date}",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "left": "{days, plural, one {# day} other {# days}}, {hours, plural, one {# hour} other {# hours}} and {minutes, plural, one {# minute} other {# minutes}} until Halloween.",
+    "tonight": "Tonight.",
+    "tonightLine": "The darkest day is here."
+  },
   "Nav": {
     "label": "Main",
     "costumes": "Costumes",

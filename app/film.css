@@ -198,6 +198,20 @@
   background: color-mix(in oklch, var(--primary) 10%, transparent);
 }
 
+/* ── The countdown's seconds (components/countdown/countdown.tsx) ──────── */
+
+/* Each second the digits beat once, lub-dub, with a pulse of red light.
+   Still under reduced motion. */
+.heartbeat {
+  transform-origin: 50% 60%;
+}
+
+/* ── "Choose your costume": the arrow drips toward the costumes ────────── */
+
+.drip {
+  display: inline-block;
+}
+
 /* ── Reel changes between pages (app/[locale]/template.tsx) ────────────── */
 
 /* Clicks during the fade reach the live page, not the snapshot. */
@@ -258,6 +272,12 @@
   }
   .fog::after {
     animation: fog-drift 53s var(--ease-heavy) -20s infinite alternate-reverse;
+  }
+  .heartbeat {
+    animation: pulse 1s var(--ease-heavy);
+  }
+  .drip {
+    animation: drip 2.4s var(--ease-heavy) infinite;
   }
   /* The wordmark's disc beats once on hover (components/layout/wordmark). */
   @media (hover: hover) {
@@ -446,6 +466,42 @@
   }
   50% {
     scale: 1.08;
+  }
+}
+
+/* A heartbeat for the countdown's seconds: smaller than the wordmark's. */
+@keyframes pulse {
+  0%,
+  100% {
+    scale: 1;
+    text-shadow: 0 0 0 transparent;
+  }
+  15% {
+    scale: 1.07;
+    text-shadow: 0 0 0.35em color-mix(in oklch, var(--blood) 70%, transparent);
+  }
+  30% {
+    scale: 1;
+  }
+  45% {
+    scale: 1.035;
+    text-shadow: 0 0 0.2em color-mix(in oklch, var(--blood) 45%, transparent);
+  }
+}
+
+/* A small fall and fade, centered on the line's words. */
+@keyframes drip {
+  0% {
+    translate: 0 -0.1em;
+    opacity: 0;
+  }
+  30%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    translate: 0 0.12em;
+    opacity: 0;
   }
 }
 
