@@ -5,3 +5,12 @@ node_modules/
 coverage/
 pnpm-lock.yaml
 .pnpm-store/
+.next-e2e/
+test-results/
+playwright-report/
+# Written by `next dev`.
+AGENTS.md
+CLAUDE.md
+# Local notes and the owner's source data.
+checkpoint.md
+halloween_horror_top_100.md
