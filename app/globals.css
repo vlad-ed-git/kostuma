@@ -7,37 +7,39 @@
 
 /*
  * Kostuma is dark only, so there is one palette (docs/design-spec.md §3):
- * horror cinema of 1978–1984, on film. Warm projected blacks, bone-white
- * film stock, arterial red, and sodium-streetlight orange as the only other
- * hue. <html> keeps the `dark` class so the preset components' `dark:`
+ * Halloween night. A cold, moonlit black, bone-white text, blood red for
+ * light and action, cold fog, and pumpkin orange for My Pumpkin Basket
+ * only. <html> keeps the `dark` class so the preset components' `dark:`
  * variants apply. app/palette.test.ts checks every contrast pair the spec
  * promises, so change a value here and the test tells you what broke.
  */
 :root {
   color-scheme: dark;
 
-  --background: oklch(0.145 0.009 50);
-  --foreground: oklch(0.935 0.022 85);
-  --card: oklch(0.19 0.011 50);
+  --background: oklch(0.135 0.007 269);
+  --foreground: oklch(0.926 0.017 85);
+  --card: oklch(0.164 0.011 268);
   --card-foreground: var(--foreground);
   --popover: var(--card);
   --popover-foreground: var(--foreground);
   --primary: oklch(0.5 0.195 27);
   --primary-foreground: var(--foreground);
-  --secondary: oklch(0.245 0.013 50);
+  --secondary: oklch(0.209 0.015 267);
   --secondary-foreground: var(--foreground);
   --muted: var(--secondary);
-  --muted-foreground: oklch(0.72 0.022 75);
+  --muted-foreground: oklch(0.656 0.015 300);
   --accent: var(--secondary);
   --accent-foreground: var(--foreground);
   --destructive: oklch(0.73 0.16 24);
-  --border: oklch(0.935 0.022 85 / 10%);
-  --input: oklch(0.935 0.022 85 / 45%);
+  --border: oklch(0.926 0.017 85 / 9%);
+  --input: oklch(0.926 0.017 85 / 45%);
   --ring: var(--foreground);
 
   /* Kostuma's own tokens. */
-  --blood: oklch(0.58 0.22 28);
-  --blood-text: oklch(0.665 0.2 27);
+  --blood: oklch(0.529 0.209 26);
+  --blood-text: oklch(0.627 0.22 24);
+  /* Moonlight and fog: cold, never text. */
+  --moon: oklch(0.8 0.035 250);
   --ember: oklch(0.77 0.155 62);
   --field-border: var(--input);
   --focus: var(--ring);
@@ -68,14 +70,13 @@
 @theme inline {
   /* The families come from app/fonts.ts (next/font sets the variables). */
   --font-sans:
-    var(--font-libre-franklin), var(--font-cjk), ui-sans-serif, system-ui,
-    sans-serif;
-  --font-heading: var(--font-league-gothic), var(--font-cjk), sans-serif;
-  --font-mono:
-    var(--font-courier-prime), var(--font-cjk), ui-monospace, monospace;
+    var(--font-crimson-pro), var(--font-cjk), "Iowan Old Style", Georgia, serif;
+  --font-heading: var(--font-grenze-gotisch), var(--font-cjk), Georgia, serif;
+  --font-mono: var(--font-sans);
 
   --color-blood: var(--blood);
   --color-blood-text: var(--blood-text);
+  --color-moon: var(--moon);
   --color-ember: var(--ember);
   --color-field-border: var(--field-border);
   --color-focus: var(--focus);
@@ -120,35 +121,30 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-/* The type scale (spec §4.2): size, line height and tracking together. */
+/* The type scale (spec §4.2): size, line height and tracking together. The
+   gothic display face runs wide, the book serif runs small: sizes follow. */
 @theme {
-  --text-display-xl: clamp(3.75rem, 12vw, 11rem);
-  --text-display-xl--line-height: 0.86;
-  --text-display-xl--letter-spacing: 0.005em;
-  --text-display: clamp(3rem, 8vw, 6.5rem);
-  --text-display--line-height: 0.9;
-  --text-display--letter-spacing: 0.01em;
-  --text-h2: clamp(2.25rem, 5vw, 4rem);
-  --text-h2--line-height: 0.95;
-  --text-h2--letter-spacing: 0.01em;
-  --text-h3: 1.625rem;
-  --text-h3--line-height: 1;
-  --text-h3--letter-spacing: 0.02em;
-  --text-billing: 1.125rem;
-  --text-billing--line-height: 1.15;
-  --text-billing--letter-spacing: 0.04em;
-  --text-lead: 1.1875rem;
-  --text-lead--line-height: 1.6;
-  --text-body-lg: 1.0625rem;
-  --text-body-lg--line-height: 1.75;
-  --text-label: 0.8125rem;
-  --text-label--line-height: 1.4;
-  --text-label--letter-spacing: 0.08em;
-  --text-micro: 0.75rem;
-  --text-micro--line-height: 1.4;
-  --text-micro--letter-spacing: 0.1em;
-  --text-numeral: clamp(3rem, 9vw, 7rem);
-  --text-numeral--line-height: 1;
+  --text-display-xl: clamp(3.25rem, 7.2vw, 7rem);
+  --text-display-xl--line-height: 0.92;
+  --text-display-xl--letter-spacing: -0.005em;
+  --text-display: clamp(2.75rem, 6vw, 5.5rem);
+  --text-display--line-height: 0.95;
+  --text-h2: clamp(1.9rem, 3.4vw, 3rem);
+  --text-h2--line-height: 1;
+  --text-h3: clamp(1.75rem, 3vw, 2.75rem);
+  --text-h3--line-height: 1.02;
+  --text-billing: 1.1875rem;
+  --text-billing--line-height: 1.3;
+  --text-lead: 1.3125rem;
+  --text-lead--line-height: 1.5;
+  --text-body-lg: 1.25rem;
+  --text-body-lg--line-height: 1.65;
+  --text-label: 1.0625rem;
+  --text-label--line-height: 1.3;
+  --text-micro: 0.9375rem;
+  --text-micro--line-height: 1.3;
+  --text-numeral: clamp(3rem, 6.2vw, 5.75rem);
+  --text-numeral--line-height: 0.95;
 
   /* Motion (spec §7.1). */
   --ease-dread: cubic-bezier(0.16, 1, 0.3, 1);
@@ -161,11 +157,15 @@
   }
   html {
     @apply font-sans;
-    /* League Gothic has one weight: never let a browser fake bold or italic. */
-    font-synthesis: none;
+    /* Never a faked bold or italic; small capitals may be drawn from the
+       capitals where the font has none (the `caps` utility). */
+    font-synthesis: small-caps;
   }
   body {
     @apply bg-background text-foreground;
+    /* The book serif runs small: text starts at 18 px. */
+    font-size: 1.125rem;
+    line-height: 1.55;
   }
   button:not(:disabled),
   [role="button"]:not(:disabled) {
@@ -198,4 +198,13 @@
   body:lang(zh-Hans) {
     line-height: 1.8;
   }
+}
+
+/* Labels, buttons, badges and navigation: small capitals of the book
+   serif, a little tracked (spec §4.1). Chinese has no small capitals and
+   keeps its own spacing (the rule above). */
+@utility caps {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.09em;
+  font-weight: 600;
 }

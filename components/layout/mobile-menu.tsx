@@ -75,7 +75,7 @@ export function MobileMenu({ className }: { className?: string }) {
                   <Link
                     href={item.href}
                     onClick={close}
-                    className="flex min-h-11 items-center gap-3 py-2 font-heading text-h2 uppercase"
+                    className="flex min-h-11 items-center gap-3 py-2 font-heading text-h2"
                   >
                     {t(item.label)}
                   </Link>

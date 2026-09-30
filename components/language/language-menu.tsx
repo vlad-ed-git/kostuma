@@ -27,7 +27,7 @@ export function LanguageMenu({ className }: { className?: string }) {
         // "Language: English". A message, as punctuation differs by language.
         aria-label={t("current", { language: endonyms[locale] })}
         className={cn(
-          "group/language inline-flex h-11 items-center gap-2 text-xs font-semibold tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground data-popup-open:text-foreground",
+          "group/language inline-flex h-11 items-center gap-2 text-base caps text-muted-foreground transition-colors hover:text-foreground data-popup-open:text-foreground",
           className
         )}
       >
@@ -47,7 +47,7 @@ export function LanguageMenu({ className }: { className?: string }) {
         >
           <Menu.Popup className="min-w-56 origin-(--transform-origin) border border-border bg-card py-2 transition-[opacity,translate] duration-200 ease-dread outline-none data-ending-style:opacity-0 data-ending-style:duration-100 data-starting-style:-translate-y-1 data-starting-style:opacity-0 motion-reduce:transition-none">
             <Menu.Group>
-              <Menu.GroupLabel className="px-4 pt-1 pb-2 font-mono text-micro text-muted-foreground uppercase">
+              <Menu.GroupLabel className="px-4 pt-1 pb-2 text-micro caps text-muted-foreground">
                 {t("label")}
               </Menu.GroupLabel>
               {routing.locales.map((option) => {

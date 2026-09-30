@@ -28,13 +28,13 @@ export function Header() {
         <nav aria-label={t("label")} className="flex flex-1 items-center">
           <Link
             href={costumesHref}
-            className="hidden min-h-11 items-center text-xs font-semibold tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground lg:inline-flex"
+            className="hidden min-h-11 items-center text-lg caps text-muted-foreground transition-colors hover:text-foreground lg:inline-flex"
           >
             {t("costumes")}
           </Link>
           <Link
             href="/basket"
-            className="ms-auto inline-flex min-h-11 min-w-11 items-center justify-center gap-2.5 text-xs font-semibold tracking-widest text-muted-foreground uppercase transition-colors hover:text-ember"
+            className="ms-auto inline-flex min-h-11 min-w-11 items-center justify-center gap-2.5 text-lg caps text-muted-foreground transition-colors hover:text-ember"
           >
             <Pumpkin className="size-6" />
             {/* The icon alone on small screens; the name stays for readers. */}

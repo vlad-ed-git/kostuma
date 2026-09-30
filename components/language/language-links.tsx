@@ -38,7 +38,7 @@ export function LanguageLinks({ className }: { className?: string }) {
                 lang={languageTags[option]}
                 aria-current={current ? "true" : undefined}
                 className={cn(
-                  "relative inline-flex min-h-11 items-center text-xs font-semibold tracking-widest uppercase transition-colors",
+                  "relative inline-flex min-h-11 items-center text-base caps transition-colors",
                   current
                     ? "text-foreground after:absolute after:inset-x-0 after:bottom-2.5 after:h-px after:bg-blood"
                     : "text-muted-foreground hover:text-foreground"

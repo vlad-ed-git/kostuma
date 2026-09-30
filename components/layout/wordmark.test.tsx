@@ -4,10 +4,10 @@ import { describe, expect, it } from "vitest"
 import { Wordmark } from "./wordmark"
 
 describe("Wordmark", () => {
-  it("reads as the brand name, not as spaced letters and a disc", () => {
+  it("reads as the brand name, not as three pieces", () => {
     render(<Wordmark />)
     const mark = screen.getByRole("img", { name: "Kostuma" })
-    expect(mark).toHaveTextContent("KSTUMA")
+    expect(mark).toHaveTextContent("Kostuma")
     for (const part of mark.children) {
       expect(part).toHaveAttribute("aria-hidden", "true")
     }
