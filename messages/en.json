@@ -31,9 +31,7 @@
   },
   "Badge": {
     "soon": "Soon",
-    "premium": "Premium",
-    "newBlood": "New blood",
-    "newBloodHint": "A 2024–2026 breakout"
+    "premium": "Premium"
   },
   "SkipLink": {
     "label": "Skip to content"

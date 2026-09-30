@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest"
 import { Badge } from "./badge"
 
 describe("Badge", () => {
-  it.each(["soon", "premium", "newBlood"] as const)(
+  it.each(["soon", "premium"] as const)(
     "stamps the %s variant with a border and padding",
     (variant) => {
       render(<Badge variant={variant}>Label</Badge>)

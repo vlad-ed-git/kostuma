@@ -27,8 +27,6 @@ const badgeVariants = cva(
           stamp,
           "border-blood-text/50 text-foreground [&>svg]:text-blood-text"
         ),
-        /** A 2024–2026 breakout character. */
-        newBlood: cn(stamp, "border-blood-text/40 text-blood-text"),
         /** How many costumes the Pumpkin Basket holds. */
         count: "min-w-5 bg-ember px-1.5 py-0.5 text-background tabular-nums",
       },
