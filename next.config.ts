@@ -41,6 +41,12 @@ const nextConfig: NextConfig = {
     // still checks everything.
     tsconfigPath: "tsconfig.build.json",
   },
+  images: {
+    // AVIF where the browser takes it, else WebP. Next 16 requires the
+    // allowed qualities to be listed.
+    formats: ["image/avif", "image/webp"],
+    qualities: [75],
+  },
   experimental: {
     // The 404 page for URLs outside every language: app/global-not-found.tsx.
     globalNotFound: true,

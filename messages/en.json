@@ -14,6 +14,22 @@
     "openMenu": "Open the menu",
     "closeMenu": "Close the menu"
   },
+  "Costume": {
+    "metaTitle": "{name} costume",
+    "breadcrumb": "Breadcrumb",
+    "costumes": "Costumes",
+    "lore": "The lore",
+    "look": "The look",
+    "funFact": "Behind the screams",
+    "credits": "Credits",
+    "createdBy": "Created by",
+    "broughtToLifeBy": "Brought to life by",
+    "neighbors": "Previous and next costumes",
+    "previous": "Previous",
+    "next": "Next",
+    "moreFrom": "More from {film}",
+    "moreWanted": "More costumes"
+  },
   "Footer": {
     "signOff": "The end?",
     "signOffLine": "Every monster comes back. See you next Halloween.",

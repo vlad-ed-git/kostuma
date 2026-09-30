@@ -115,8 +115,8 @@ test.describe("site shell", () => {
 test.describe("the cue mark", () => {
   test("burns while a slow page loads, then goes out", async ({ page }) => {
     await page.goto("/")
-    // Hold the Spanish page's requests for 1.5 s. (A link to another page
-    // gets the same treatment once feat/catalog builds one to link to.)
+    // Hold the Spanish page's requests for 1.5 s. (e2e/catalog.spec.ts does
+    // the same with a costume's link.)
     await page.route(
       (url) => url.pathname === "/es",
       async (route) => {
