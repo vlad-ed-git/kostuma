@@ -41,6 +41,28 @@ test.describe("languages", () => {
     expect(links).toContain('hreflang="x-default"')
   })
 
+  test("language links are never prefetched", async ({ page }) => {
+    // A prefetch carries the language cookie of its moment; the click that
+    // follows changes it, so a prefetched answer would be the wrong one.
+    const prefetched: string[] = []
+    page.on("request", (request) => {
+      const { pathname } = new URL(request.url())
+      if (
+        request.headers()["next-router-prefetch"] &&
+        ["/en", "/es", "/zh"].includes(pathname)
+      ) {
+        prefetched.push(pathname)
+      }
+    })
+    await page.goto("/")
+    await page
+      .getByRole("contentinfo")
+      .getByRole("navigation", { name: "Language" })
+      .scrollIntoViewIfNeeded()
+    await page.waitForTimeout(1000)
+    expect(prefetched).toEqual([])
+  })
+
   test("switching languages keeps the page and logs no errors", async ({
     page,
   }) => {

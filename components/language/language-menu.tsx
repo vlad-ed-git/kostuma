@@ -60,6 +60,8 @@ export function LanguageMenu({ className }: { className?: string }) {
                       <Link
                         href={pathname}
                         locale={option}
+                        // Never prefetched (see language-links.tsx).
+                        prefetch={false}
                         hrefLang={languageTags[option]}
                         lang={languageTags[option]}
                         aria-current={current ? "true" : undefined}

@@ -28,6 +28,12 @@ export function LanguageLinks({ className }: { className?: string }) {
               <Link
                 href={pathname}
                 locale={option}
+                // Never prefetched: where a language link lands depends on
+                // the language cookie, which the click itself changes.
+                // A prefetch made before the click (say while "Español"
+                // is being clicked) caches the old answer, and "English"
+                // then sends the visitor back to Spanish (found in e2e).
+                prefetch={false}
                 hrefLang={languageTags[option]}
                 lang={languageTags[option]}
                 aria-current={current ? "true" : undefined}
