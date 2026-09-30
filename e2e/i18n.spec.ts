@@ -27,6 +27,24 @@ test.describe("languages", () => {
     })
   }
 
+  test("Spanish and Chinese pages speak their language", async ({ page }) => {
+    await page.clock.install({ time: new Date("2026-10-01T12:00:00Z") })
+    for (const [path, title, choose, date] of [
+      [
+        "/es",
+        "Se acerca el día más oscuro.",
+        "Elige tu disfraz",
+        "sábado, 31 de octubre",
+      ],
+      ["/zh", "最黑暗的一天即将来临。", "挑选你的装扮", "10月31日星期六"],
+    ]) {
+      await page.goto(path)
+      await expect(page.getByRole("heading", { level: 1 })).toHaveText(title)
+      await expect(page.getByRole("link", { name: choose })).toBeVisible()
+      await expect(page.getByText(date)).toBeVisible()
+    }
+  })
+
   test("the default locale's prefix redirects to the root", async ({
     page,
   }) => {
@@ -57,7 +75,8 @@ test.describe("languages", () => {
     await page.goto("/")
     await page
       .getByRole("contentinfo")
-      .getByRole("navigation", { name: "Language" })
+      // The label is in the page's own language.
+      .getByRole("navigation", { name: /^(Language|Idioma|语言)$/ })
       .scrollIntoViewIfNeeded()
     await page.waitForTimeout(1000)
     expect(prefetched).toEqual([])
@@ -72,7 +91,8 @@ test.describe("languages", () => {
     const language = (name: string) =>
       page
         .getByRole("contentinfo")
-        .getByRole("navigation", { name: "Language" })
+        // The label is in the page's own language.
+        .getByRole("navigation", { name: /^(Language|Idioma|语言)$/ })
         .getByRole("link", { name })
     await page.goto("/")
     await language("Español").click()
@@ -88,11 +108,11 @@ test.describe("languages", () => {
 })
 
 test.describe("unknown pages", () => {
-  for (const [path, tag] of [
-    ["/no-such-page", "en"],
-    ["/es/no-such-page", "es"],
-    ["/zh/a/b", "zh-Hans"],
-    ["/missing.txt", "en"],
+  for (const [path, tag, title] of [
+    ["/no-such-page", "en", "Lost in the dark"],
+    ["/es/no-such-page", "es", "Perdido en la oscuridad"],
+    ["/zh/a/b", "zh-Hans", "迷失在黑暗中"],
+    ["/missing.txt", "en", "Lost in the dark"],
   ]) {
     test(`${path} is a server-rendered 404 in ${tag}`, async ({ request }) => {
       const response = await request.get(path)
@@ -101,7 +121,7 @@ test.describe("unknown pages", () => {
       // Server-rendered: the page's own <html>, not Next's error shell.
       expect(html).toContain(`<html lang="${tag}"`)
       expect(html).not.toContain("__next_error__")
-      expect(html).toContain("Lost in the dark")
+      expect(html).toContain(title)
     })
   }
 })

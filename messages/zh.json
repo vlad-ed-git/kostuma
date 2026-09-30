@@ -1,1 +1,91 @@
-{}
+{
+  "App": {
+    "name": "Kostuma",
+    "tagline": "最黑暗的一天即将来临。化身为怪物吧。",
+    "taglineLead": "最黑暗的一天即将来临。",
+    "taglineTail": "化身为怪物吧。"
+  },
+  "Home": {
+    "chooseCostume": "挑选你的装扮"
+  },
+  "Countdown": {
+    "label": "距离万圣节还有",
+    "until": "距离万圣节 · <b>{date}</b>",
+    "days": "天",
+    "hours": "小时",
+    "minutes": "分钟",
+    "seconds": "秒",
+    "left": "距离万圣节还有 {days} 天 {hours} 小时 {minutes} 分钟。",
+    "tonight": "就在今夜。",
+    "tonightLine": "最黑暗的一天已经到来。"
+  },
+  "Nav": {
+    "label": "主导航",
+    "costumes": "装扮",
+    "basket": "我的南瓜篮",
+    "signIn": "登录",
+    "menu": "菜单",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单"
+  },
+  "Costume": {
+    "metaTitle": "{name} 装扮",
+    "breadcrumb": "面包屑导航",
+    "costumes": "装扮",
+    "lore": "背景故事",
+    "look": "造型",
+    "funFact": "尖叫幕后",
+    "credits": "创作人员",
+    "createdBy": "创作者",
+    "broughtToLifeBy": "赋予其生命",
+    "neighbors": "上一个和下一个装扮",
+    "previous": "上一个",
+    "next": "下一个",
+    "moreFrom": "更多来自《{film}》",
+    "moreWanted": "更多装扮"
+  },
+  "Footer": {
+    "explore": "探索",
+    "help": "帮助",
+    "finePrint": "条款细则",
+    "reportBug": "报告问题",
+    "shareFeedback": "分享反馈",
+    "requestFeature": "建议新功能",
+    "terms": "服务条款",
+    "privacy": "隐私政策",
+    "contentWarning": "含恐怖画面，不适合儿童。",
+    "trademarks": "角色名称和电影标题归其各自所有者所有。Kostuma 与任何电影公司或零售商均无关联。",
+    "copyright": "© {year} Kostuma"
+  },
+  "Badge": {
+    "soon": "即将推出",
+    "premium": "高级"
+  },
+  "SkipLink": {
+    "label": "跳到内容"
+  },
+  "CueMark": {
+    "loading": "加载中…"
+  },
+  "Language": {
+    "label": "语言",
+    "current": "语言：{language}"
+  },
+  "NotFound": {
+    "code": "404",
+    "title": "迷失在黑暗中",
+    "description": "此页面不存在，或已被黑夜吞噬。",
+    "home": "返回 Kostuma"
+  },
+  "AuthErrors": {
+    "invalid_login_credentials": "邮箱或密码错误。",
+    "email_change_needs_verification": "请先确认你的新邮箱地址，查收收件箱中的链接。",
+    "email_exists": "该邮箱已注册账户，请直接登录。",
+    "invalid_email": "请输入完整的邮箱地址，例如 you@example.com。",
+    "invalid_password": "密码错误。请重试，或重置密码。",
+    "too_many_attempts_try_later": "尝试次数过多。请等几分钟后再试。",
+    "weak_password": "请设置更强的密码：更长，并混合字母、数字和符号。",
+    "unknown_auth_error": "出了点问题。请重试。",
+    "network_error": "没有网络连接。请检查后重试。"
+  }
+}

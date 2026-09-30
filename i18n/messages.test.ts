@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest"
 
 import en from "@/messages/en.json"
+import es from "@/messages/es.json"
+import zh from "@/messages/zh.json"
 
 import { messagesFor, withFallback } from "./messages"
 
@@ -59,6 +61,47 @@ describe("messagesFor", () => {
       expect(keysOf(messages)).toEqual(keysOf(en))
     }
   )
+})
+
+describe("the translations", () => {
+  const entries = (messages: object) =>
+    keysOf(messages).map(
+      (key) =>
+        [
+          key,
+          key
+            .split(".")
+            .reduce<unknown>(
+              (group, part) => (group as Record<string, unknown>)[part],
+              messages
+            ) as string,
+        ] as const
+    )
+  // The arguments (`{date}`, `{days, plural, …}`) and tags (`<b>`) a
+  // message uses: a translation that drops or renames one breaks the page.
+  const shape = (message: string) => ({
+    args: [...message.matchAll(/\{\s*([A-Za-z_]\w*)\s*[,}]/g)]
+      .map(([, name]) => name)
+      .sort(),
+    tags: [...message.matchAll(/<(\w+)>/g)].map(([, name]) => name).sort(),
+  })
+
+  it.each([
+    ["es", es],
+    ["zh", zh],
+  ] as const)("%s translates every English message", (_, messages) => {
+    expect(keysOf(messages)).toEqual(keysOf(en))
+  })
+
+  it.each([
+    ["es", es],
+    ["zh", zh],
+  ] as const)("%s keeps every message's arguments and tags", (_, messages) => {
+    const english = new Map(entries(en))
+    for (const [key, message] of entries(messages)) {
+      expect(shape(message), key).toEqual(shape(english.get(key)!))
+    }
+  })
 })
 
 function keysOf(messages: object, prefix = ""): string[] {

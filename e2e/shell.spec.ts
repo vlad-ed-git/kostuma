@@ -85,7 +85,7 @@ test.describe("site shell", () => {
     await page.getByRole("menuitem", { name: "Español" }).click()
     await expect(page).toHaveURL(/\/es$/)
     await expect(
-      page.getByRole("button", { name: "Language: Español" })
+      page.getByRole("button", { name: "Idioma: Español" })
     ).toBeVisible()
     expect(errors).toEqual([])
   })

@@ -12,8 +12,8 @@ const costumesTop = (page: Page) =>
   )
 
 /** Scrolled to the costumes: their top just under the 64 px header. */
-const expectAtCostumes = (page: Page) =>
-  expect.poll(() => costumesTop(page)).toBe(64)
+const expectAtCostumes = (page: Page, timeout?: number) =>
+  expect.poll(() => costumesTop(page), { timeout }).toBe(64)
 
 test.describe("browsing the costumes", () => {
   test("the home page shows all 100 costumes, each a link to its page", async ({
@@ -186,12 +186,12 @@ test.describe("browsing the costumes", () => {
     await page.goto("/es/costumes/ghostface")
     await expect(
       page
-        .getByRole("navigation", { name: "Breadcrumb" })
-        .getByRole("link", { name: "Costumes" })
+        .getByRole("navigation", { name: "Ruta de navegación" })
+        .getByRole("link", { name: "Disfraces" })
     ).toHaveAttribute("href", "/es#costumes")
     await expect(
       page
-        .getByRole("navigation", { name: "Previous and next costumes" })
+        .getByRole("navigation", { name: "Disfraz anterior y siguiente" })
         .getByRole("link")
     ).toHaveAttribute("href", "/es/costumes/michael-myers")
   })
@@ -294,7 +294,9 @@ test.describe("with motion", () => {
       .getByRole("navigation", { name: "Breadcrumb" })
       .getByRole("link", { name: "Costumes" })
       .click()
-    await expectAtCostumes(page)
+    // With every loop running, headless Chromium draws without a GPU and
+    // other tests compete for the CPU: allow more time to settle.
+    await expectAtCostumes(page, 15_000)
     expect(errors).toEqual([])
   })
 })
