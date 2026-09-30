@@ -39,9 +39,8 @@ weave, light leaking at the edge of a reel. Two looks are ruled out on purpose:
 | -------------------------------- | ------------------------------------------------- |
 | Title card                       | Home hero ("The darkest day is coming.")          |
 | Film leader countdown            | Countdown to Halloween                            |
-| The cast / most wanted           | The collection: 100 characters, ranked            |
+| The cast                         | The collection: 100 characters, the owner's order |
 | One-sheet poster + billing block | Costume page (image, name, credits)               |
-| Case file / production notes     | Ranks, years, labels ("No. 001 · 1978")           |
 | Behind the scenes                | Fun facts ("Behind the screams")                  |
 | Wardrobe department notes        | "The look": what the costume needs                |
 | Cue mark ("cigarette burn")      | Loading and page-change indicator                 |
@@ -105,7 +104,9 @@ Basket, nothing else. The Fitting Room and Buy live inside the basket; a costume
 
 Short. Ominous. Confident. Second person, present tense. A little wry, never cheesy.
 
-- Wordplay at most once per page: "Behind the screams", "The night is young", "New blood".
+- Wordplay at most once per page: "Behind the screams", "The night is young".
+- Never a label that needs explaining. The owner dropped "New blood" (a badge for the
+  2024–2026 breakouts) because it said nothing to them, and ranks ("No. 001") likewise.
 - Actions and errors say **what happened and what to do**, in that order. Flavor, if any, comes
   after and is optional ("Wrong email or password." not "The spirits reject you.").
 - Never gory in UI copy, never mocking victims, no ableist words ("insane", "psycho" as insults;
@@ -214,20 +215,20 @@ the document so no browser ever fakes a bold or italic.
 
 ### 4.2 Scale (fluid)
 
-| Style                  | Family  | Size                         | Line height | Tracking | Weight | Case         |
-| ---------------------- | ------- | ---------------------------- | ----------- | -------- | ------ | ------------ |
-| `display-xl` (home H1) | heading | clamp(3.75rem, 12vw, 11rem)  | 0.86        | 0.005em  | 400    | upper        |
-| `display` (page H1)    | heading | clamp(3rem, 8vw, 6.5rem)     | 0.9         | 0.01em   | 400    | upper        |
-| `h2` (section)         | heading | clamp(2.25rem, 5vw, 4rem)    | 0.95        | 0.01em   | 400    | upper        |
-| `h3` (card/name)       | heading | 1.625rem                     | 1           | 0.02em   | 400    | upper        |
-| `billing`              | heading | 0.9375rem, `font-stretch` 75 | 1.15        | 0.04em   | 400    | upper        |
-| `lead`                 | sans    | 1.1875rem                    | 1.6         | 0        | 400    | sentence     |
-| `body-lg` (lore)       | sans    | 1.0625rem                    | 1.75        | 0        | 400    | sentence     |
-| `body`                 | sans    | 1rem                         | 1.6         | 0        | 400    | sentence     |
-| `small`                | sans    | 0.875rem                     | 1.5         | 0        | 400    | sentence     |
-| `label`                | mono    | 0.8125rem                    | 1.4         | 0.08em   | 400    | upper        |
-| `micro`                | mono    | 0.75rem                      | 1.4         | 0.1em    | 700    | upper        |
-| `numeral` (countdown)  | heading | clamp(3rem, 9vw, 7rem)       | 1           | 0        | 400    | tabular-nums |
+| Style                  | Family  | Size                        | Line height | Tracking | Weight | Case         |
+| ---------------------- | ------- | --------------------------- | ----------- | -------- | ------ | ------------ |
+| `display-xl` (home H1) | heading | clamp(3.75rem, 12vw, 11rem) | 0.86        | 0.005em  | 400    | upper        |
+| `display` (page H1)    | heading | clamp(3rem, 8vw, 6.5rem)    | 0.9         | 0.01em   | 400    | upper        |
+| `h2` (section)         | heading | clamp(2.25rem, 5vw, 4rem)   | 0.95        | 0.01em   | 400    | upper        |
+| `h3` (card/name)       | heading | 1.625rem                    | 1           | 0.02em   | 400    | upper        |
+| `billing`              | heading | 1.125rem, `font-stretch` 75 | 1.15        | 0.04em   | 400    | upper        |
+| `lead`                 | sans    | 1.1875rem                   | 1.6         | 0        | 400    | sentence     |
+| `body-lg` (lore)       | sans    | 1.0625rem                   | 1.75        | 0        | 400    | sentence     |
+| `body`                 | sans    | 1rem                        | 1.6         | 0        | 400    | sentence     |
+| `small`                | sans    | 0.875rem                    | 1.5         | 0        | 400    | sentence     |
+| `label`                | mono    | 0.8125rem                   | 1.4         | 0.08em   | 400    | upper        |
+| `micro`                | mono    | 0.75rem                     | 1.4         | 0.1em    | 700    | upper        |
+| `numeral` (countdown)  | heading | clamp(3rem, 9vw, 7rem)      | 1           | 0        | 400    | tabular-nums |
 
 Courier is monospaced and already wide, so it needs far less tracking than v1's Geist Mono.
 `micro` uses Courier's bold so its thin strokes hold up at 12 px on black.
@@ -364,8 +365,12 @@ layout; the rest belong to the section that owns them. No `mix-blend-mode` on fu
 6. **Projector beam (home hero only).** A soft bone-white cone from the top center at 8 %
    opacity with a red underglow, flickering irregularly by at most 3 % (lamp flicker, never a
    strobe).
-7. **Fog (home hero and footer only).** Two or three blurred ellipses (warm grey at 6 %,
-   `--primary` at 10 %, `filter: blur(60px)`), drifting horizontally 40–90 s, alternate.
+7. **Fog (home hero, 404 and, upside down, footer).** Two or three blurred ellipses (warm grey
+   at 6 %, `--primary` at 10 %, `filter: blur(60px)`), drifting horizontally 40–90 s,
+   alternate. Behind all content (`z-index: -1`) and never clipped by its section: the glow
+   spills past the section's edge and fades out there, so no line ever marks where one
+   section ends and the next begins (owner, 2026-09-30). Clipped sideways only, so the page
+   never scrolls sideways.
 8. **Flashlight (home hero only).** A hidden layer with a giant outline phrase (message
    `Home.hidden`, e.g. "We all wear masks") revealed through a 260 px radial mask that follows the
    pointer (`--x`/`--y` CSS vars updated in `requestAnimationFrame`). On touch / no hover the
@@ -400,8 +405,8 @@ layout; the rest belong to the section that owns them. No `mix-blend-mode` on fu
   gradient that carries the card's text.
 - Alt policy: while it's a placeholder, the image is decorative (`alt=""`); the character's name
   is always in text next to it. Real photos later get `alt="{Character} costume"`.
-- OG images are generated (next/og) in the same language: warm black, red rim glow, rank in
-  Courier, name in League Gothic, film in muted text, wordmark bottom-left. 1200 × 630.
+- OG images are generated (next/og) in the same language: warm black, red rim glow, name in
+  League Gothic, film in muted Courier, wordmark bottom-left. No rank. 1200 × 630.
 
 ---
 
@@ -423,8 +428,7 @@ Client components are marked (C). Everything else renders on the server.
   - `soon` — border bone/20, text muted: "Soon".
   - `premium` — border `--blood-text` at 50 %, text `--foreground`, ticket icon
     (`ticket-2-line`) in `--blood-text`: "Premium". An admission ticket.
-  - `newBlood` — border `--blood-text` at 40 %, text `--blood-text`, fire icon: "New blood"
-    (the 2024–2026 breakouts marked 🔥 in the catalog). sr-only hint: "A 2024–2026 breakout".
+
   - `count` — `--ember` fill, `--background` text, no border, tabular numbers (basket count).
 - **Field** (preset `field.tsx`: Field, FieldLabel, FieldDescription, FieldError with
   `role="alert"`, FieldGroup, FieldSet, FieldSeparator). Label is the preset's uppercase
@@ -456,8 +460,8 @@ Client components are marked (C). Everything else renders on the server.
 
 - **Wordmark** (2.1).
 - **Header** (server; the mobile menu is the only client part, the scroll state is CSS):
-  - Wordmark → home, then the main nav: the two places of the flow (1.3). Costumes (from `lg`)
-    and, pushed right, My Pumpkin Basket: the pumpkin plus its name from `lg`, the icon alone
+  - Wordmark → home, then the main nav: the two places of the flow (1.3). Costumes (from `lg`;
+    the home page's costumes section, `/#costumes`, 11.1) and, pushed right, My Pumpkin Basket: the pumpkin plus its name from `lg`, the icon alone
     below (the name kept for screen readers), with the `count` badge once the basket works
     ("My Pumpkin Basket, 3 costumes"). Places only, never actions.
   - Then the language menu and the account: "Sign in" (ghost) or a square avatar with initials → menu (Account,
@@ -487,8 +491,7 @@ Client components are marked (C). Everything else renders on the server.
     feedback, Request a feature), Fine print (Terms `soon`, Privacy `soon`).
   - Language links. Legal lines (2.3). No top border: the fog layer is flipped upside down, so
     it and its red glow hang from the top and the page runs into the credits.
-- **Section heading**: `label` overline (Courier, muted, e.g. "01 — Most wanted") + `h2` +
-  optional lead + optional right-aligned link ("See all 100 →").
+
 - **Breadcrumb**: Courier `label`, `/` separators, current page `aria-current="page"`.
 
 ### 10.3 Feature components
@@ -498,21 +501,19 @@ Client components are marked (C). Everything else renders on the server.
   - `article` with a stretched link (the name link's `::after` covers the card) so the whole card
     is clickable without nesting interactive elements.
   - 4:5 image, bottom gradient (`--background` → transparent, 55 % height).
-  - Top-left: case-file rank `No. 001` (Courier label). Top-right: basket toggle (C) above the
-    stretched link (`z-10`), 40 × 40 with a 44 px hit area, `aria-pressed`, label "Add {name} to
-    My Pumpkin Basket" / "Remove {name} from My Pumpkin Basket".
-  - Bottom: `newBlood` badge if trending, name (`h3`, 2-line clamp), film + year (Courier micro,
-    muted).
-  - Hover/focus-within motion per 7.2.
+  - Top-right: basket toggle (C, feat/basket) above the stretched link (`z-10`), 40 × 40 with a
+    44 px hit area, `aria-pressed`, label "Add {name} to My Pumpkin Basket" / "Remove {name}
+    from My Pumpkin Basket".
+  - Bottom: name (`h2` in a grid of the page, `h3` under a section heading; 2-line clamp), film
+    \+ year (Courier micro, muted; "Pearl (2022) / X (2022)" for several). Nothing else: no
+    rank, no badge.
+  - Hover/focus-within motion per 7.2. The link prefetches on intent only (15).
 - **Basket toggle** (C): outline pumpkin ↔ lit pumpkin, ignite animation on add; announces
   "Added to My Pumpkin Basket" / "Removed from My Pumpkin Basket" through a polite live region.
-- **Collection toolbar** (C): sticky under the header. Search input (search icon, clear button),
-  era chips (All · New blood · Before 1980 · 1980–1999 · 2000–2019 · 2020 and later), sort as a
-  row of four links (Rank · A–Z · Newest · Oldest: no dropdown needed), live result count ("24 costumes"). State mirrors the URL
-  (`?q=&era=&sort=`) with `history.replaceState` so views are shareable.
+
 - **Billing block**: the credits of a costume page, set like the credit block at the foot of a
   one-sheet: centered, League Gothic at 75 % width (`billing`), muted, role words small and names
-  tall ("Created by", "Brought to life by").
+  tall ("Created by", "Brought to life by"). A role with no names is left out.
 - **Wardrobe list** ("The look"): the catalog's look text split into items, each with a thin
   square bullet, `body`. Reads as a wardrobe department checklist.
 - **Buy** (in the basket only, 1.3): opens the outfit's shop in a new tab, with an
@@ -535,7 +536,7 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
 
 ### 11.1 Home `/`
 
-1. **Hero (title card)** — min-height `100svh` (max 60rem), content bottom-left aligned on desktop,
+1. **Hero (title card)** — min-height `88svh` (max 60rem), content bottom-left aligned on desktop,
    centered on mobile. Projector beam + fog + flashlight layer; the title block carries the gate
    weave.
    - Overline (`label`, `--ember`): "Halloween · {Saturday, October 31}" (date formatted per
@@ -550,50 +551,48 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
      `display` `--ember` and "The darkest day is here."; after Halloween it counts to next year.
      `role="timer"`, `aria-live="off"`, and a visually hidden sentence updated once per minute
      for screen readers ("31 days, 4 hours until Halloween").
-   - Action: primary "Browse the costumes" → `/costumes`.
+   - Action: primary "Browse the costumes" → the costumes below (`/#costumes`).
    - Scroll cue: Courier micro "Scroll" above a 48 px line that drips downward (2.4 s loop;
      hidden under reduced motion).
-2. **Most wanted** — section heading "01 — Most wanted" / "This season's most wanted" / link "See
-   all 100". Grid: top 8 by rank (2 / 3 / 4 columns).
-3. **New blood** — "02 — New blood" / "Fresh from the screen": the trending costumes in a
-   horizontal scroll-snap row (cards 70 % width on mobile, 4 visible on desktop), arrow buttons
-   on desktop.
-4. **How it works** — "03 — How it works": the flow (1.3) in four steps with huge League Gothic
-   numerals `01 02 03 04`: Browse · Add to My Pumpkin Basket · Try on in the Fitting Room (`soon`
-   \+ `premium`) · Buy.
-5. **The Fitting Room teaser** — split layout: left copy ("Coming soon", `h2` "The Fitting Room",
-   one paragraph: try on what's in your basket with one full-body photo and one face close-up,
-   special-effects makeup included; price line; link to My Pumpkin Basket); right a
-   fitting-room mirror (double hairline) holding the placeholder figure behind slow fog.
+     The hero stands a little short of the screen (`88svh`) so the first costumes peek below it.
+     What exists today: H1, line 2 and fog; the rest of the title card comes with
+     `feat/landing`.
+2. **The costumes** (`<section id="costumes" aria-label="Costumes">`) — right below the title
+   card, all 100 cards in the owner's order (2 / 3 / 4 columns), server-rendered and
+   crawlable. No heading, intro, overline, count or footnote on screen, no search, filters or
+   sort (owner, 2026-09-30: "only 100 products, let users browse"; "a new page adds
+   friction"). Every "Costumes" link (header, menu, footer, breadcrumb) leads here:
+   `/#costumes`, `/es#costumes`; the section keeps `scroll-margin-top` for the header.
 
-The home page is re-planned with the owner before `feat/landing` (the owner likes the
-placeholder's window lit by a sodium streetlight for the hero). 6. **Final call** — centered `display`: "Who will you become?" + primary button to costumes.
+Anything more on the home page (how it works, a Fitting Room teaser, a final call) is planned
+with the owner before `feat/landing` (the owner likes the placeholder's window lit by a sodium
+streetlight for the hero).
 
-### 11.2 Costumes `/costumes`
+### 11.2 No `/costumes` page
 
-- H1 `display` "The most wanted", lead "100 horror characters people want to become this
-  Halloween."
-- Collection toolbar (10.3), then the grid (2 / 3 / 4 columns). All 100 cards are server-rendered
-  (crawlable); filtering happens in the browser.
-- No results: empty state "Nothing lurks here." / "Try another name or film." / "Clear filters".
+The costumes live on the home page (11.1). There is no collection page, so there is no page
+title, toolbar or empty state for one.
 
 ### 11.3 Costume `/costumes/[slug]` — the one-sheet
 
-- Breadcrumb Costumes / {name}.
-- Desktop two columns (5 / 7): left sticky image (4:5) with the rank as a huge outline numeral
-  behind it (`display-xl`, 8 % opacity); right content. Mobile: image then content.
+- Breadcrumb Costumes (→ `/#costumes`) / {name}.
+- Desktop two columns (5 / 7): left sticky image (4:5); right content. Mobile: image then
+  content. No rank anywhere.
 - Content, in order:
-  - Case-file line (`label`): "No. 001 · 1978" + `newBlood` badge.
   - H1 `display`: the character.
   - Film line: film icon + "Scream (1996)" (lead, muted).
   - Action: one primary button, "Add to My Pumpkin Basket" (in the basket: "In My Pumpkin
     Basket", with a link to it). No try-on and no shop here (1.3): both live in the basket.
+    Comes with `feat/basket`.
   - **The lore** (`label` + `body-lg`).
   - **The look** (wardrobe list).
   - **Behind the screams** (fun fact, `body`, inside a left hairline in `--blood`).
   - **Credits** (billing block).
-- Prev / next by rank ("← No. 000 {name}" / "{name} No. 002 →").
-- "More from {film}" when the film has other characters, else "More most wanted" (next 4).
+- Previous / next in the owner's order, by name only ("← Previous" over {name} / "Next →" over
+  {name}); none before the first costume or after the last.
+- "More from {film}" when the film has other characters, else "More costumes": the next 4,
+  wrapping past the last to the first.
+- An unknown slug is a 404.
 
 ### 11.4 My Pumpkin Basket `/basket`
 
@@ -677,7 +676,11 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
   full-page spinners.
 - **Errors**: say what happened and what to do; keep the user's input; focus moves to the first
   invalid field (or the form alert) after submit.
-- **Live regions**: result counts and basket changes announce politely; form alerts assertively.
+- **Live regions**: basket changes announce politely; form alerts assertively.
+- **Prefetching**: default Next.js prefetching for single links; lists of many links prefetch
+  on intent only (15). Language links never prefetch: where they land depends on the language
+  cookie, which the click itself changes, so an answer fetched before the click is wrong
+  (found by e2e: "English" sent the visitor back to Spanish).
 
 ---
 
@@ -726,6 +729,10 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
   islands, through `LazyMotion` + `domAnimation` + `m.*`. Reveals, the menu's stagger, the
   header over the hero and every atmosphere layer are CSS.
 - Images: `next/image`, explicit `sizes`, `priority` only on the costume page image.
+- Prefetching: every page renders per request (the CSP nonce), so each prefetch costs the
+  server a render. Long lists of links prefetch on intent only (hover, focus, touch:
+  `components/navigation/intent-link.tsx`); scrolling the 100 cards used to fire ~150
+  prefetches (measured). Language links never prefetch (12, Prefetching).
 
 ---
 
@@ -741,6 +748,8 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 | Shell                    | `components/layout/{header,mobile-menu,footer,wordmark,skip-link,lost-in-the-dark}.tsx`                   |
 | Primitives               | `components/ui/*` (shadcn style, cva)                                                                     |
 | Feature components       | `components/{costume,basket,auth,forms,countdown}/*`                                                      |
+| Catalog                  | `content/costumes.ts` (the owner's list, typed) → `lib/catalog` → `components/costume/*`                  |
+| Links on intent          | `components/navigation/intent-link.tsx` (the costume cards)                                               |
 | Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`                        |
 | Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit                    |
 
@@ -762,8 +771,11 @@ Each feature branch ships unit and end-to-end tests for the cases that apply to 
   without JavaScript (no content stuck invisible).
 - **Network and services:** slow networks (the cue mark, skeletons); reCAPTCHA failing to load
   or expiring; every Firebase Auth error code mapped to a translated message; rate limits.
-- **Content states:** empty basket, no search results, a filter combination with no costumes,
-  unknown costume slugs (404), 1 item vs many (plurals).
+- **Content states:** empty basket; unknown costume slugs, including a wrong case (404); the
+  first and last costume (no previous / next, related wraps around); a character in several
+  films; a credit role with no names; 1 item vs many (plurals).
+- **Server cost:** scrolling the costumes prefetches nothing, hovering a card prefetches it;
+  language links never prefetch; no section clips its fog; nothing scrolls sideways.
 
 ---
 
