@@ -464,7 +464,8 @@ Client components are marked (C). Everything else renders on the server.
     joke: "Every monster comes back. See you next Halloween."
   - Columns: Explore (Costumes, My Pumpkin Basket, The Mirror `soon`), Help (Report a bug, Share
     feedback, Request a feature, support email), Fine print (Terms `soon`, Privacy `soon`).
-  - Language links. Legal lines (2.3). Fog layer behind.
+  - Language links. Legal lines (2.3). No top border: the fog layer is flipped upside down, so
+    it and its red glow hang from the top and the page runs into the credits.
 - **Section heading**: `label` overline (Courier, muted, e.g. "01 — Most wanted") + `h2` +
   optional lead + optional right-aligned link ("See all 100 →").
 - **Breadcrumb**: Courier `label`, `/` separators, current page `aria-current="page"`.

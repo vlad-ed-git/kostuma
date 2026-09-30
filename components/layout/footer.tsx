@@ -15,8 +15,10 @@ export function Footer() {
   const soon = <Badge variant="soon">{badge("soon")}</Badge>
 
   return (
-    <footer className="relative isolate overflow-hidden border-t border-border">
-      <Fog />
+    <footer className="relative isolate overflow-hidden">
+      {/* Upside down: the fog and its red glow hang from the top, so the
+          page runs into the credits without a line between them. */}
+      <Fog className="-scale-y-100" />
       <div className="mx-auto max-w-7xl px-4 pt-20 pb-10 sm:px-6 lg:px-8">
         {/* The last card of a horror film: it's never really over. */}
         <p className="font-heading text-display text-transparent uppercase transition-colors duration-700 [-webkit-text-stroke:1px_var(--muted-foreground)] hover:text-foreground">
