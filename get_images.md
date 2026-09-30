@@ -62,10 +62,16 @@ for (const c of costumes)
    head to knees is the least you may accept, and only if every piece in `look.pieces` shows.
    Front or three-quarter front, standing, not crouching, lying or turned away; arms, props,
    furniture or other objects do not cover the costume.
-5. **Big enough, not too big.** The longer side is at least **1024 px** and the shorter side at
-   least **768 px** (YouCam recommends 1024 × 768; its minimum of 512 × 384 is too small for the
-   site). No side over **4096 px** and no file over **10 MB** for the try-on copy (make a
-   smaller copy; keep the original). JPEG or PNG for the try-on copy.
+5. **High resolution, never low.** The owner's rule: _a low-resolution photo must be avoided
+   completely; a large one is always fine, because it can be scaled down._ The **shorter side
+   must be at least 1000 px** in the file itself, and more is always better, with no upper
+   limit: 3000, 5000 or 8000 px originals are welcome. A photo below 1000 px is rejected even
+   if everything else about it is perfect; if nothing larger exists, the costume stays
+   `unresolved` rather than getting a small photo. Check the real pixel size of the downloaded
+   file, not the size a page displays, and reject files that were enlarged to look big (soft,
+   smeared detail at 100 % zoom): that is low resolution in disguise. YouCam's limits (at most
+   4096 px per side and 10 MB) apply only to the try-on copy you make by scaling down (see
+   "What to save"), never to the photo you choose.
 6. **Clean.** Sharp and in focus, no motion blur, little noise or film grain, no heavy JPEG
    blocks or banding, no watermark, logo, caption, subtitle, border, frame, or collage, not a
    screenshot of a website or a video player. Lit well enough that the costume's details and
@@ -79,7 +85,7 @@ for (const c of costumes)
 | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 25     | **Costume visibility and fidelity**: every piece of `look.pieces` clearly visible, true colors, full body                                                |
 | 15     | **Framing**: the person fills most of the height (80 % or more is ideal), portrait orientation, a clean 4:5 crop around them without cutting the costume |
-| 15     | **Resolution**: 1500 px or more on the shorter side scores full points; 768 px scores none                                                               |
+| 15     | **Resolution**: larger is better; 1000 px on the shorter side scores none, 2000 px or more scores full points                                            |
 | 15     | **Image quality**: sharpness, low noise, no compression artifacts, good exposure                                                                         |
 | 10     | **Pose**: facing the camera, standing straight, arms away from the body                                                                                  |
 | 10     | **Background**: plain or uncluttered, separates clearly from the costume (helps try-on and the dark page)                                                |
@@ -125,8 +131,10 @@ Start from real photos of the performer in costume; they are the best source by 
 ## What to save
 
 - `photos/originals/{slug}.{ext}`: the file exactly as downloaded.
-- `photos/youcam/{slug}.jpg`: the try-on copy. JPEG at quality 92, sRGB, longer side at most
-  4096 px (only shrink, never enlarge), under 10 MB. The project has `sharp` installed:
+- `photos/youcam/{slug}.jpg`: the try-on copy, scaled down from the original to fit YouCam:
+  JPEG at quality 92, sRGB, longer side at most 4096 px, under 10 MB (lower the quality a
+  little if it is still over). Only ever scale down, never up. The project has `sharp`
+  installed:
 
   ```sh
   node --input-type=module -e '
