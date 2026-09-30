@@ -48,9 +48,46 @@ test.describe("site shell", () => {
     const menu = page.getByRole("dialog", { name: "Menu" })
     await expect(menu).toBeVisible()
     await expect(menu.getByRole("link", { name: "Costumes" })).toBeVisible()
+    await expect(
+      menu
+        .getByRole("navigation", { name: "Language" })
+        .getByRole("link", { name: "Español" })
+    ).toBeVisible()
     await page.keyboard.press("Escape")
     await expect(menu).toBeHidden()
     await expect(trigger).toBeFocused()
+    expect(errors).toEqual([])
+  })
+
+  test("the header's language menu lists every language as a link", async ({
+    page,
+    isMobile,
+  }) => {
+    test.skip(isMobile, "the header's menu is for wide screens")
+    const errors = collectErrors(page)
+    await page.goto("/")
+    const trigger = page.getByRole("button", { name: "Language: English" })
+    await trigger.click()
+    const menu = page.getByRole("menu")
+    await expect(menu.getByRole("menuitem")).toHaveText([
+      "English",
+      "Español",
+      "中文",
+    ])
+    await expect(menu.getByRole("menuitem", { name: "中文" })).toHaveAttribute(
+      "href",
+      "/zh"
+    )
+    await page.keyboard.press("Escape")
+    await expect(menu).toBeHidden()
+    await expect(trigger).toBeFocused()
+
+    await trigger.click()
+    await page.getByRole("menuitem", { name: "Español" }).click()
+    await expect(page).toHaveURL(/\/es$/)
+    await expect(
+      page.getByRole("button", { name: "Language: Español" })
+    ).toBeVisible()
     expect(errors).toEqual([])
   })
 
@@ -92,8 +129,8 @@ test.describe("the cue mark", () => {
     await expect(mark).not.toHaveAttribute("data-active")
     await page
       .getByRole("contentinfo")
-      .getByLabel("Language")
-      .selectOption("es")
+      .getByRole("link", { name: "Español" })
+      .click()
     await expect(mark).toHaveAttribute("data-active")
     await expect(mark).toBeVisible()
     await expect(page.getByRole("status")).toHaveText("Loading…")

@@ -43,8 +43,9 @@
   "CueMark": {
     "loading": "Loading…"
   },
-  "LocaleSwitcher": {
-    "label": "Language"
+  "Language": {
+    "label": "Language",
+    "current": "Language: {language}"
   },
   "NotFound": {
     "code": "404",

@@ -5,7 +5,7 @@ import { RiCloseLine, RiMenuLine } from "@remixicon/react"
 import { useTranslations } from "next-intl"
 import { useEffect, useState, type CSSProperties } from "react"
 
-import { LocaleSwitcher } from "@/components/locale-switcher"
+import { LanguageLinks } from "@/components/language/language-links"
 import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Link } from "@/i18n/navigation"
@@ -88,7 +88,7 @@ export function MobileMenu({ className }: { className?: string }) {
           </nav>
 
           <div className="mt-auto flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6">
-            <LocaleSwitcher />
+            <LanguageLinks />
             <Link
               href="/sign-in"
               onClick={close}

@@ -1,7 +1,7 @@
 import { useTranslations } from "next-intl"
 
 import { Pumpkin } from "@/components/icons/pumpkin"
-import { LocaleSwitcher } from "@/components/locale-switcher"
+import { LanguageMenu } from "@/components/language/language-menu"
 import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "@/components/ui/button"
 import { Link } from "@/i18n/navigation"
@@ -54,7 +54,7 @@ export function Header() {
           >
             <Pumpkin className="size-6" />
           </Link>
-          <LocaleSwitcher className="hidden lg:inline-flex" />
+          <LanguageMenu className="hidden lg:inline-flex" />
           <Link
             href="/sign-in"
             className={buttonVariants({

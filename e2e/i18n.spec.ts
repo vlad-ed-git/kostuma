@@ -46,14 +46,18 @@ test.describe("languages", () => {
   }) => {
     const errors = collectErrors(page)
 
-    // The footer's switcher: the header's hides on small screens.
-    const language = () => page.getByRole("contentinfo").getByLabel("Language")
+    // The footer's language links: the header's menu hides on small screens.
+    const language = (name: string) =>
+      page
+        .getByRole("contentinfo")
+        .getByRole("navigation", { name: "Language" })
+        .getByRole("link", { name })
     await page.goto("/")
-    await language().selectOption("es")
+    await language("Español").click()
     await expect(page).toHaveURL(/\/es$/)
     await expect(page.locator("html")).toHaveAttribute("lang", "es")
 
-    await language().selectOption("en")
+    await language("English").click()
     await expect(page).toHaveURL(/\/$/)
     await expect(page.locator("html")).toHaveAttribute("lang", "en")
 

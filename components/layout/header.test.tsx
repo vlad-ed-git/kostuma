@@ -45,7 +45,9 @@ describe("Header", () => {
       "href",
       "/sign-in"
     )
-    expect(screen.getByLabelText("Language")).toBeInTheDocument()
+    expect(
+      screen.getByRole("button", { name: "Language: English" })
+    ).toBeInTheDocument()
     expect(
       screen.getByRole("button", { name: "Open the menu" })
     ).toBeInTheDocument()

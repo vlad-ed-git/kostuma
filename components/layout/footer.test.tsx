@@ -47,6 +47,11 @@ describe("Footer", () => {
     expect(within(finePrint).getAllByText("Soon")).toHaveLength(2)
   })
 
+  it("offers every language as a plain link", () => {
+    renderInEnglish(<Footer />)
+    expect(hrefs("Language")).toEqual(["/", "/es", "/zh"])
+  })
+
   it("carries the legal lines and this year, without digit grouping", () => {
     vi.useFakeTimers({ toFake: ["Date"] })
     vi.setSystemTime(new Date("2031-06-01T12:00:00Z"))

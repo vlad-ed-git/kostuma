@@ -58,7 +58,10 @@ test("browsing triggers no CSP violations", async ({ page }) => {
   })
 
   await page.goto("/")
-  await page.getByRole("contentinfo").getByLabel("Language").selectOption("es")
+  await page
+    .getByRole("contentinfo")
+    .getByRole("link", { name: "Español" })
+    .click()
   await expect(page).toHaveURL(/\/es$/)
   await page.goto("/zh")
   await page.goto("/no-such-page")

@@ -34,7 +34,9 @@ describe("MobileMenu", () => {
         .getAllByRole("link")
         .map((link) => link.getAttribute("href"))
     ).toEqual(["/costumes", "/try-on", "/pricing"])
-    expect(within(dialog).getByLabelText("Language")).toBeInTheDocument()
+    expect(
+      within(dialog).getByRole("navigation", { name: "Language" })
+    ).toBeInTheDocument()
     expect(within(dialog).getByRole("link", { name: "Sign in" })).toBeVisible()
   })
 

@@ -2,7 +2,7 @@ import { useTranslations } from "next-intl"
 import type { ReactNode } from "react"
 
 import { Fog } from "@/components/horror/fog"
-import { LocaleSwitcher } from "@/components/locale-switcher"
+import { LanguageLinks } from "@/components/language/language-links"
 import { Badge } from "@/components/ui/badge"
 import { Link } from "@/i18n/navigation"
 import { supportEmail } from "@/lib/site"
@@ -70,7 +70,7 @@ export function Footer() {
               {t("copyright", { year: String(new Date().getFullYear()) })}
             </p>
           </div>
-          <LocaleSwitcher />
+          <LanguageLinks />
         </div>
       </div>
     </footer>
