@@ -103,7 +103,8 @@ Short. Ominous. Confident. Second person, present tense. A little wry, never che
 - Content warning: "Horror imagery. Not intended for children."
 - "Character names and film titles belong to their owners. Kostuma is not affiliated with any
   studio or retailer."
-- © year Kostuma · support email.
+- © year Kostuma. No email address in the footer (owner's call): people reach Kostuma through
+  the feedback form.
 
 ---
 
@@ -463,7 +464,7 @@ Client components are marked (C). Everything else renders on the server.
     mark promises the monster will be back. Under it, in Courier `label`, the line that lands the
     joke: "Every monster comes back. See you next Halloween."
   - Columns: Explore (Costumes, My Pumpkin Basket, The Mirror `soon`), Help (Report a bug, Share
-    feedback, Request a feature, support email), Fine print (Terms `soon`, Privacy `soon`).
+    feedback, Request a feature), Fine print (Terms `soon`, Privacy `soon`).
   - Language links. Legal lines (2.3). No top border: the fog layer is flipped upside down, so
     it and its red glow hang from the top and the page runs into the credits.
 - **Section heading**: `label` overline (Courier, muted, e.g. "01 — Most wanted") + `h2` +
@@ -633,8 +634,8 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 | ---------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `/try-on`  | The Mirror       | What it does (one full-body photo + one face close-up → you in the costume with special-effects makeup), `premium` badge, price line, privacy note ("Your photos stay private."), CTA browse. Accepts `?costume=` to name the costume. |
 | `/pricing` | Admission        | Two columns: Free (browse, basket, feedback) / Premium (`premium`: 2 free transformations, then {price} per costume). Both marked `soon` where relevant.                                                                               |
-| `/terms`   | Terms of service | "The fine print is being written." + support email. `noindex`.                                                                                                                                                                         |
-| `/privacy` | Privacy policy   | Same pattern; states plainly what is stored today (account email and name, feedback messages) + support email. `noindex`.                                                                                                              |
+| `/terms`   | Terms of service | "The fine print is being written." + a link to the feedback form. `noindex`.                                                                                                                                                           |
+| `/privacy` | Privacy policy   | Same pattern; states plainly what is stored today (account email and name, feedback messages) + a link to the feedback form. `noindex`.                                                                                                |
 
 ---
 

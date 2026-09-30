@@ -1,7 +1,6 @@
 import { screen, within } from "@testing-library/react"
 import { afterEach, describe, expect, it, vi } from "vitest"
 
-import { supportEmail } from "@/lib/site"
 import { renderInEnglish } from "@/test/intl"
 
 import { Footer } from "./footer"
@@ -32,7 +31,6 @@ describe("Footer", () => {
       "/feedback?type=bug",
       "/feedback?type=feedback",
       "/feedback?type=feature",
-      `mailto:${supportEmail}`,
     ])
   })
 

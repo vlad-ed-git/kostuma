@@ -5,7 +5,6 @@ import { Fog } from "@/components/horror/fog"
 import { LanguageLinks } from "@/components/language/language-links"
 import { Badge } from "@/components/ui/badge"
 import { Link } from "@/i18n/navigation"
-import { supportEmail } from "@/lib/site"
 
 /** The end credits (spec §10.2). */
 export function Footer() {
@@ -44,14 +43,6 @@ export function Footer() {
             <FooterLink href="/feedback?type=feature">
               {t("requestFeature")}
             </FooterLink>
-            <li>
-              <a
-                href={`mailto:${supportEmail}`}
-                className="inline-flex min-h-11 items-center text-sm text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {supportEmail}
-              </a>
-            </li>
           </Column>
           <Column title={t("finePrint")}>
             <FooterLink href="/terms">
