@@ -6,6 +6,7 @@ import Link from "next/link"
 
 import { documentClassName } from "@/app/fonts"
 import { languageTags, routing } from "@/i18n/routing"
+import { themeColor } from "@/lib/design/theme"
 
 import "./globals.css"
 
@@ -29,7 +30,7 @@ async function visitorLocale() {
 
 export const viewport: Viewport = {
   colorScheme: "dark",
-  themeColor: "#09090b",
+  themeColor,
 }
 
 export async function generateMetadata(): Promise<Metadata> {

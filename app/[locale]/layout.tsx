@@ -6,6 +6,7 @@ import { connection } from "next/server"
 
 import { documentClassName } from "@/app/fonts"
 import { languageTags, routing } from "@/i18n/routing"
+import { themeColor } from "@/lib/design/theme"
 
 import "../globals.css"
 
@@ -27,10 +28,10 @@ export async function generateMetadata({
 }
 
 // Dark only: browser UI (scrollbars, form controls, the address bar on
-// mobile) follows the preset's dark background.
+// mobile) follows the page's warm black.
 export const viewport: Viewport = {
   colorScheme: "dark",
-  themeColor: "#09090b",
+  themeColor,
 }
 
 // The root layout: every page lives under a language (app/[locale]).
