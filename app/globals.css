@@ -133,16 +133,23 @@
   --text-h2--line-height: 1;
   --text-h3: clamp(1.75rem, 3vw, 2.75rem);
   --text-h3--line-height: 1.02;
-  --text-billing: 1.1875rem;
-  --text-billing--line-height: 1.3;
+  /* Small capitals for the interface: one and a half times their first
+     size on desktop (owner), a little less on phones, where four units
+     must fit side by side. */
+  --text-billing: clamp(1.25rem, 0.5rem + 1.45vw, 1.78125rem);
+  --text-billing--line-height: 1.2;
+  --text-ui: clamp(1.125rem, 0.5rem + 1.25vw, 1.625rem);
+  --text-ui--line-height: 1.1;
+  --text-badge: clamp(0.9375rem, 1.46vw, 1.3125rem);
+  --text-badge--line-height: 1;
   --text-lead: 1.3125rem;
   --text-lead--line-height: 1.5;
   --text-body-lg: 1.25rem;
   --text-body-lg--line-height: 1.65;
-  --text-label: 1.0625rem;
-  --text-label--line-height: 1.3;
-  --text-micro: 0.9375rem;
-  --text-micro--line-height: 1.3;
+  --text-label: clamp(1.125rem, 0.5rem + 1.25vw, 1.59375rem);
+  --text-label--line-height: 1.2;
+  --text-micro: clamp(1rem, 0.5rem + 1.02vw, 1.40625rem);
+  --text-micro--line-height: 1.2;
   --text-numeral: clamp(3rem, 6.2vw, 5.75rem);
   --text-numeral--line-height: 0.95;
 

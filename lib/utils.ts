@@ -10,6 +10,8 @@ export const typeScale = [
   "h2",
   "h3",
   "billing",
+  "ui",
+  "badge",
   "lead",
   "body-lg",
   "label",

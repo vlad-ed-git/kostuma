@@ -70,7 +70,9 @@ export function Countdown({
       <p className="text-label caps text-muted-foreground">
         {t.rich("until", {
           date,
-          b: (chunks) => <b className="text-foreground">{chunks}</b>,
+          b: (chunks) => (
+            <b className="whitespace-nowrap text-foreground">{chunks}</b>
+          ),
         })}
       </p>
       <div role="timer" aria-label={t("label")} className="mt-3">

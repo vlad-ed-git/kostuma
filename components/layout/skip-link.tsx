@@ -7,7 +7,7 @@ export function SkipLink() {
   return (
     <a
       href="#content"
-      className="sr-only bg-foreground px-4 py-3 text-base caps text-background focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-80"
+      className="sr-only bg-foreground px-4 py-3 text-ui caps text-background focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-80"
     >
       {t("label")}
     </a>

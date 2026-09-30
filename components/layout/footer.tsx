@@ -29,10 +29,10 @@ export function Footer() {
             <Link href="/" className="flex min-h-11 items-center">
               <Wordmark />
             </Link>
-            <p className="max-w-md text-base text-muted-foreground">
+            <p className="max-w-md text-lg text-muted-foreground">
               {t("contentWarning")}
             </p>
-            <p className="max-w-md text-base text-muted-foreground">
+            <p className="max-w-md text-lg text-muted-foreground">
               {t("trademarks")}
             </p>
           </div>
@@ -96,7 +96,7 @@ function FooterLink({
     <li>
       <Link
         href={href}
-        className="inline-flex min-h-11 items-center gap-2 text-base transition-colors hover:text-blood-text"
+        className="inline-flex min-h-11 items-center gap-2 text-2xl transition-colors hover:text-blood-text"
       >
         {children}
       </Link>
