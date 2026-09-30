@@ -274,18 +274,25 @@ transparent)`), never drop shadows.
 
 ### 7.2 Patterns
 
-- **Fade up from black (reveal):** opacity 0 → 1, `translateY(12px)` → 0, 700 ms
-  `--ease-dread`, once, when 10 % in view. Never on the LCP element.
+- **Fade up from black (reveal):** opacity 0 → 1, `translateY(12px)` → 0, `--ease-dread`, as
+  the element scrolls into view. CSS only (the `reveal` class: a scroll-driven animation,
+  `animation-timeline: view()`), so it needs no JavaScript and content is never stuck invisible;
+  browsers without scroll-driven animations show it at once. Never on the LCP element.
 - **Title-card cut:** page titles (`display`) never fade; they are there on the first frame, like
   a title card cut in. On the home hero and the 404 the title card also carries the gate weave
   (8.3).
 - **Reel change (between pages):** the old page fades to black (180 ms, `--ease-heavy`), holds
   black for one beat (60 ms), and the new page fades up (320 ms, `--ease-dread`). Two or three
   scratches flicker down the frame while it runs (8.5). The header does not move. Implemented
-  with React's `<ViewTransition>` in `app/[locale]/template.tsx`; browsers without the View
-  Transitions API swap instantly.
+  with React's `<ViewTransition>` in `app/[locale]/template.tsx` (a Server Component: Next 16.3
+  serves the chunk of a Client Component imported there without the CSP nonce); browsers without
+  the View Transitions API swap instantly.
 - **Cue mark (loading):** the cigarette burn (10.2) appears top right when the next page takes
-  longer than 150 ms, and stays until it arrives. Fast navigations never show it.
+  longer than 150 ms, and stays until it arrives. Fast navigations never show it. Like a real cue
+  mark it shows on the _current_ reel, before the change: every app `Link` (i18n/navigation)
+  reports its pending state (`useLinkStatus`), and the language switch reports its transition.
+  Not a `loading.tsx` fallback: streamed fallbacks need JavaScript to be replaced, which would
+  break reading without it.
 - **Press:** buttons `translateY(1px)` (preset) and 150 ms color.
 - **Card hover (fine pointer):** image `scale(1.05)` over 1200 ms; red rim light rises from the
   bottom (opacity 0 → 1, 300 ms); a 1 px red line draws under the name (`scaleX` 0 → 1 from the
@@ -301,7 +308,7 @@ transparent)`), never drop shadows.
 
 Under `prefers-reduced-motion: reduce`:
 
-- Reveals become a 150 ms opacity fade (no movement).
+- Reveals are off: content is simply there.
 - The reel change becomes an instant cut; no scratches.
 - Ambient loops stop: grain frozen, no gate weave, no light leaks, fog still, no projector
   flicker, no leader sweep, no drip, no VHS roll. The cue mark shows steadily instead of blinking.
@@ -325,15 +332,17 @@ layout; the rest belong to the section that owns them. No `mix-blend-mode` on fu
    every other frame (`steps` timing, 8 positions over 330 ms): film grain, not TV static. Frozen
    under reduced motion.
 2. **Vignette (global).** `radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.6)
-100%)`: the falloff of a projector lamp.
+100%)`: the falloff of a projector lamp. Behind the content, so it never dims text.
 3. **Gate weave (title cards only: home hero, 404).** The title block drifts by at most 0.6 px
    on a 12 fps stepped loop, like a print weaving in the projector gate. Never on body text,
    forms or anything a person reads for more than a glance.
 4. **Light leak (global, occasional).** A warm bloom (`--ember` into `--blood`, radial) swells
    at one edge of the frame to at most 10 % opacity over 2 s, holds, and fades over 3 s, about
-   once every 30 s. Transform and opacity only.
+   once every 30 s (two leaks on 29 s and 41 s cycles, so it never feels regular). Behind the
+   content. Opacity only.
 5. **Scratches (reel changes only).** Two or three 1 px vertical lines in bone at 25 % that jump
-   position every frame for the 450 ms of a page change, then vanish. Never at rest.
+   position every frame for the 450 ms of a page change, then vanish. Never at rest: the layer
+   is always there but only animates while a view transition runs (`html:active-view-transition`).
 6. **Projector beam (home hero only).** A soft bone-white cone from the top center at 8 %
    opacity with a red underglow, flickering irregularly by at most 3 % (lamp flicker, never a
    strobe).
@@ -423,14 +432,16 @@ Client components are marked (C). Everything else renders on the server.
 ### 10.2 Brand and shell
 
 - **Wordmark** (2.1).
-- **Header** (C for scroll state + menu):
+- **Header** (server; the mobile menu is the only client part, the scroll state is CSS):
   - Left: wordmark → home. Desktop nav: Costumes · The Mirror (`soon`) · Pricing (`soon`).
   - Right: Pumpkin Basket link (icon + `count`, label "Pumpkin Basket, 3 saved"), locale select
     (compact), account: "Sign in" (ghost) or a square avatar with initials → menu (Account,
     Sign out).
-  - Transparent over the home hero; after 24 px of scroll (and on every other page) it becomes
-    `--background` at 80 % + `backdrop-blur-md` + bottom hairline.
-  - Mobile (< md): wordmark, basket, menu button. Menu = full-screen overlay (`--background` 96 %),
+  - Transparent over a title card (any page with `[data-title-card]`: the home hero, the 404);
+    after 24 px of scroll (and on every other page) it becomes `--background` at 80 % +
+    `backdrop-blur-md` + bottom hairline. A scroll-driven animation; browsers without one keep
+    it solid.
+  - Below `lg` (1024 px; the full row needs the room): wordmark, basket, menu button. Menu = full-screen overlay (`--background` 96 %),
     big `h2` links with stagger, locale select and account actions at the bottom. Focus trapped,
     Escape closes, focus returns to the menu button, body scroll locked.
   - Anchored during reel changes (`view-transition-name: site-header`).
@@ -438,8 +449,9 @@ Client components are marked (C). Everything else renders on the server.
 - **Cue mark** (the "cigarette burn"): a 28 px circle 24 px from the top-right corner, below the
   header. Bone center fading to a ragged, burnt ember edge with a soft glow, as if scratched
   through the emulsion. Blinks like a real cue: 4 frames on (~170 ms), then off, once per
-  second, while loading. `role="status"` with a visually hidden "Loading…" message. Reduced
-  motion: steady, no blink.
+  second, while loading. The mark itself is `aria-hidden`; a visually hidden status message says
+  "Loading…" only once the wait passes 1 s (quick pages stay quiet). Reduced motion: steady, no
+  blink.
 - **Footer**:
   - Sign-off line in `display` size, outline text (1 px `--muted-foreground` stroke, transparent
     fill; fills to bone on hover): "The end?" (message).
@@ -597,7 +609,8 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
 
 ### 11.8 Not found
 
-Centered title card with the VHS tracking layer (8.9): `label` "404" in its red/bone ghost split,
+Centered title card with the VHS tracking layer (8.9): "404" in League Gothic at `h2` size, split
+into its red and bone ghosts,
 `display` "Lost in the dark", one line, button "Back to Kostuma". Both 404s (the in-app one and
 the global one for unmatched URLs) look the same; the global one has no header.
 
@@ -671,25 +684,27 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 | Fonts               | 3 families (2 variable + Courier 400/700), Latin subset preloaded, `display: swap`; CJK from the system |
 
 - Ambient effects: CSS, `transform`/`opacity` only, no `mix-blend-mode` on full-screen layers.
-- `motion` only in client islands, through `LazyMotion` + `domAnimation` + `m.*`.
+- `motion` only where CSS can't do the job (first use: the basket count's roll), in client
+  islands, through `LazyMotion` + `domAnimation` + `m.*`. Reveals, the menu's stagger, the
+  header over the hero and every atmosphere layer are CSS.
 - Images: `next/image`, explicit `sizes`, `priority` only on the costume page image.
 
 ---
 
 ## 16. Implementation map
 
-| Piece                    | Where                                                                                   |
-| ------------------------ | --------------------------------------------------------------------------------------- |
-| Tokens (palette, motion) | `app/globals.css` `:root` + `@theme inline`                                             |
-| Fonts                    | `app/fonts.ts`                                                                          |
-| Atmosphere               | `components/horror/{atmosphere,projector-beam,fog,flashlight,vhs-tracking}.tsx` + CSS   |
-| Reel change + scratches  | `app/[locale]/template.tsx`, `components/horror/scratches.tsx`, `::view-transition` CSS |
-| Cue mark                 | `components/horror/cue-mark.tsx`, used by `app/[locale]/loading.tsx`                    |
-| Shell                    | `components/layout/{header,header-bar,mobile-menu,footer,wordmark,skip-link}.tsx`       |
-| Primitives               | `components/ui/*` (shadcn style, cva)                                                   |
-| Feature components       | `components/{costume,basket,auth,forms,countdown}/*`                                    |
-| Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`      |
-| Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit  |
+| Piece                    | Where                                                                                                     |
+| ------------------------ | --------------------------------------------------------------------------------------------------------- |
+| Tokens (palette, motion) | `app/globals.css` `:root` + `@theme inline`                                                               |
+| Fonts                    | `app/fonts.ts`                                                                                            |
+| Atmosphere               | `components/horror/{atmosphere,fog}.tsx` + `app/film.css` (grain, vignette, leaks, scratches, weave, VHS) |
+| Reel change              | `app/[locale]/template.tsx` (`<ViewTransition>`), `::view-transition` rules in `app/film.css`             |
+| Cue mark                 | `components/horror/cue-mark.tsx`, fed by `lib/navigation-status.ts` from `i18n/navigation.tsx`            |
+| Shell                    | `components/layout/{header,mobile-menu,footer,wordmark,skip-link,lost-in-the-dark}.tsx`                   |
+| Primitives               | `components/ui/*` (shadcn style, cva)                                                                     |
+| Feature components       | `components/{costume,basket,auth,forms,countdown}/*`                                                      |
+| Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`                        |
+| Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit                    |
 
 ---
 
