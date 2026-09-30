@@ -17,12 +17,9 @@ const hrefs = (name: string) =>
     .map((link) => link.getAttribute("href"))
 
 describe("Footer", () => {
-  it("signs off like a horror film: it's never really over", () => {
+  it("has no sign-off (owner: removed)", () => {
     renderInEnglish(<Footer />)
-    expect(screen.getByText("The end?")).toBeInTheDocument()
-    expect(
-      screen.getByText("Every monster comes back. See you next Halloween.")
-    ).toBeInTheDocument()
+    expect(screen.queryByText("The end?")).not.toBeInTheDocument()
   })
 
   it("links every help channel, each form preselected", () => {

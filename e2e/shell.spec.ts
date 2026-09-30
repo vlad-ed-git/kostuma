@@ -90,12 +90,12 @@ test.describe("site shell", () => {
     expect(errors).toEqual([])
   })
 
-  test("the footer signs off with help and the fine print", async ({
+  test("the footer carries help and the fine print, no sign-off", async ({
     page,
   }) => {
     await page.goto("/")
     const footer = page.getByRole("contentinfo")
-    await expect(footer.getByText("The end?")).toBeVisible()
+    await expect(footer.getByText("The end?")).toHaveCount(0)
     await expect(
       footer.getByRole("link", { name: "Report a bug" })
     ).toHaveAttribute("href", "/feedback?type=bug")
