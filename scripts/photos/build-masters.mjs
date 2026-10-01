@@ -9,6 +9,7 @@
 // against the trimmed, resized source). The sources are never touched. Then
 // every photo content/costumes.ts names must have its master, and every
 // master a costume.
+import { existsSync } from "node:fs"
 import { mkdir, readdir, rm, stat, writeFile } from "node:fs/promises"
 import { fileURLToPath } from "node:url"
 import sharp from "sharp"
@@ -52,12 +53,19 @@ async function build(name) {
   }
 }
 
+// The sources first: without them, the masters (maybe the only local copy)
+// must stay as they are.
+const names = existsSync(SOURCE)
+  ? (await readdir(SOURCE)).filter((name) => name.endsWith(".png")).sort()
+  : []
+if (!names.length) {
+  console.error(
+    "No cut-outs in photos/no_bg: nothing to build, photos/masters left as it is."
+  )
+  process.exit(1)
+}
 await rm(OUT, { recursive: true, force: true })
 await mkdir(OUT, { recursive: true })
-
-const names = (await readdir(SOURCE))
-  .filter((name) => name.endsWith(".png"))
-  .sort()
 const masters = []
 for (const name of names) masters.push(await build(name))
 await writeFile(`${OUT}report.json`, JSON.stringify(masters, null, 2) + "\n")

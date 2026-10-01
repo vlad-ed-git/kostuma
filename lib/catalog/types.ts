@@ -17,7 +17,7 @@ export type Store = {
 
 /** A costume photo: a cut-out on a transparent background (PNG). */
 export type Photo = {
-  /** The master's file name (photos/masters, built from photos/no_bg). */
+  /** The master's file name, as in photos/masters (`npm run photos:masters`). */
   file: string
   /** Where the site loads it: Firebase Storage, public and read-only. */
   url: string
