@@ -28,6 +28,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Black hooded robe", "White mask", "Prop knife"],
     },
+    images: { og: ["ghostface.jpg"], noBg: ["ghostface.png"] },
     stores: [],
   },
   {
@@ -52,6 +53,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Navy-blue mechanic coveralls", "White mask", "Kitchen knife"],
     },
+    images: { og: ["michael-myers.jpg"], noBg: ["michael-myers.png"] },
     stores: [],
   },
   {
@@ -79,6 +81,10 @@ export const costumes: Costume[] = [
         "Fake blood",
       ],
       alternative: "Or the purple floral dress from the finale.",
+    },
+    images: {
+      og: ["nikki-freaky-nikki-freeman.jpg"],
+      noBg: ["nikki-freaky-nikki-freeman.png"],
     },
     stores: [],
   },
@@ -109,6 +115,7 @@ export const costumes: Costume[] = [
         "Gloves",
       ],
     },
+    images: { og: ["art-the-clown.jpg"], noBg: ["art-the-clown.png"] },
     stores: [],
   },
   {
@@ -135,6 +142,7 @@ export const costumes: Costume[] = [
         "Red lip streaks",
       ],
     },
+    images: { og: ["pennywise.jpg"], noBg: ["pennywise.png"] },
     stores: [],
   },
   {
@@ -165,6 +173,7 @@ export const costumes: Costume[] = [
         "90s track suit",
       ],
     },
+    images: { og: ["aunt-gladys.png"], noBg: ["aunt-gladys.png"] },
     stores: [],
   },
   {
@@ -192,6 +201,7 @@ export const costumes: Costume[] = [
         "Kitchen knife",
       ],
     },
+    images: { og: ["chucky.jpg"], noBg: ["chucky.png"] },
     stores: [],
   },
   {
@@ -218,6 +228,7 @@ export const costumes: Costume[] = [
         "Bladed glove",
       ],
     },
+    images: { og: ["freddy-krueger.jpg"], noBg: ["freddy-krueger.png"] },
     stores: [],
   },
   {
@@ -243,6 +254,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Hockey goalie mask", "Torn coveralls", "Machete"],
     },
+    images: { og: ["jason-voorhees.jpg"], noBg: ["jason-voorhees.png"] },
     stores: [],
   },
   {
@@ -274,6 +286,7 @@ export const costumes: Costume[] = [
         "Moldy skin makeup",
       ],
     },
+    images: { og: ["beetlejuice.jpg"], noBg: ["beetlejuice.png"] },
     stores: [],
   },
   {
@@ -300,6 +313,7 @@ export const costumes: Costume[] = [
         "Fangs",
       ],
     },
+    images: { og: ["dracula.jpg"], noBg: ["dracula.png"] },
     stores: [],
   },
   {
@@ -327,6 +341,10 @@ export const costumes: Costume[] = [
         "Too-small jacket",
       ],
     },
+    images: {
+      og: ["frankensteins-monster.jpg"],
+      noBg: ["frankensteins-monster.png"],
+    },
     stores: [],
   },
   {
@@ -350,6 +368,10 @@ export const costumes: Costume[] = [
         "White gown and wrappings",
         "Towering black wig with white lightning streaks",
       ],
+    },
+    images: {
+      og: ["bride-of-frankenstein.jpg"],
+      noBg: ["bride-of-frankenstein.png"],
     },
     stores: [],
   },
@@ -379,6 +401,7 @@ export const costumes: Costume[] = [
         "Lollipop",
       ],
     },
+    images: { og: ["sam.jpg"], noBg: ["sam.png"] },
     stores: [],
   },
   {
@@ -400,6 +423,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Skin-mask", "Blood-stained butcher's apron", "Chainsaw"],
     },
+    images: { og: ["leatherface.webp"], noBg: ["leatherface.png"] },
     stores: [],
   },
   {
@@ -430,6 +454,7 @@ export const costumes: Costume[] = [
         "Nails in a grid pattern on the head",
       ],
     },
+    images: { og: ["pinhead.jpg"], noBg: ["pinhead.png"] },
     stores: [],
   },
   {
@@ -452,6 +477,10 @@ export const costumes: Costume[] = [
       pieces: ["Red robe and black cape (Jigsaw)"],
       alternative:
         "Or Billy: white face, red spiral cheeks, black suit and bow tie.",
+    },
+    images: {
+      og: ["jigsaw-and-billy-the-puppet.jpg"],
+      noBg: ["jigsaw-and-billy-the-puppet.png"],
     },
     stores: [],
   },
@@ -482,6 +511,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Bob wig", "Pale porcelain makeup", "Plaid dress", "Mary janes"],
     },
+    images: { og: ["m3gan.jpg"], noBg: ["m3gan.png"] },
     stores: [],
   },
   {
@@ -507,6 +537,7 @@ export const costumes: Costume[] = [
         "Pale makeup",
       ],
     },
+    images: { og: ["samara-morgan.jpg"], noBg: ["samara-morgan.png"] },
     stores: [],
   },
   {
@@ -535,6 +566,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Black habit", "Pale face", "Dark eyes", "Jagged teeth"],
     },
+    images: { og: ["the-nun-valak.jpg"], noBg: ["the-nun-valak.png"] },
     stores: [],
   },
   {
@@ -556,6 +588,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Braided pigtails", "Vintage dress", "Cracked porcelain makeup"],
     },
+    images: { og: ["annabelle.jpg"], noBg: ["annabelle.png"] },
     stores: [],
   },
   {
@@ -589,6 +622,7 @@ export const costumes: Costume[] = [
         "Fake vomit optional",
       ],
     },
+    images: { og: ["regan-macneil.jpg"], noBg: ["regan-macneil.png"] },
     stores: [],
   },
   {
@@ -610,6 +644,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Pale pink prom dress", "Tiara", "Blood-soaked"],
     },
+    images: { og: ["carrie-white.webp"], noBg: ["carrie-white.png"] },
     stores: [],
   },
   {
@@ -631,6 +666,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Tattered shirt", "Wolf mask", "Hairy hands", "Torn trousers"],
     },
+    images: { og: ["the-wolf-man.jpg"], noBg: ["the-wolf-man.png"] },
     stores: [],
   },
   {
@@ -652,6 +688,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Bandages (soaked in tea for aging)", "Dust", "Glowing eyes"],
     },
+    images: { og: ["the-mummy.jpg"], noBg: ["the-mummy.png"] },
     stores: [],
   },
   {
@@ -682,6 +719,7 @@ export const costumes: Costume[] = [
         "Black coat",
       ],
     },
+    images: { og: ["count-orlok.jpg"], noBg: ["count-orlok.png"] },
     stores: [],
   },
   {
@@ -711,6 +749,7 @@ export const costumes: Costume[] = [
         "Pitchfork or ax",
       ],
     },
+    images: { og: ["pearl.jpg"], noBg: ["pearl.png"] },
     stores: [],
   },
   {
@@ -732,6 +771,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Brown bear costume with top hat and bow tie"],
     },
+    images: { og: ["freddy-fazbear.jpg"], noBg: ["freddy-fazbear.png"] },
     stores: [],
   },
   {
@@ -758,6 +798,7 @@ export const costumes: Costume[] = [
         "Blank stares",
       ],
     },
+    images: { og: ["the-grady-twins.jpg"], noBg: ["the-grady-twins.png"] },
     stores: [],
   },
   {
@@ -779,6 +820,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Plaid flannel", "Work jacket", "Prop axe", "Frost or blood"],
     },
+    images: { og: ["jack-torrance.jpg"], noBg: ["jack-torrance.png"] },
     stores: [],
   },
   {
@@ -804,6 +846,7 @@ export const costumes: Costume[] = [
       pieces: ["Orange jumpsuit and restraint mask"],
       alternative: "Or a sharp suit.",
     },
+    images: { og: ["hannibal-lecter.jpg"], noBg: ["hannibal-lecter.png"] },
     stores: [],
   },
   {
@@ -826,6 +869,7 @@ export const costumes: Costume[] = [
       pieces: ["Cardigan", "White shirt", "Boyish hair"],
       alternative: "Or 'Mother' in wig and shawl.",
     },
+    images: { og: ["norman-bates.jpg"], noBg: ["norman-bates.png"] },
     stores: [],
   },
   {
@@ -852,6 +896,7 @@ export const costumes: Costume[] = [
         "Hawaiian shirt",
       ],
     },
+    images: { og: ["captain-spaulding.jpg"], noBg: ["captain-spaulding.png"] },
     stores: [],
   },
   {
@@ -877,6 +922,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Metal pyramid helmet", "Apron", "Oversized blade"],
     },
+    images: { og: ["pyramid-head.png"], noBg: ["pyramid-head.png"] },
     stores: [],
   },
   {
@@ -900,6 +946,10 @@ export const costumes: Costume[] = [
       "The film won the Oscar for Art Direction. Walken had his teeth sharpened for his brief head-on appearances.",
     look: {
       pieces: ["Black cape", "Hidden head", "Jack-o'-lantern or sword"],
+    },
+    images: {
+      og: ["the-headless-horseman.jpg"],
+      noBg: ["the-headless-horseman.png"],
     },
     stores: [],
   },
@@ -928,6 +978,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Long leather coat", "Hook hand", "Bee-covered makeup"],
     },
+    images: { og: ["candyman.jpg"], noBg: ["candyman.png"] },
     stores: [],
   },
   {
@@ -952,6 +1003,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Top hat", "Long black coat", "Claw fingers", "Pale face"],
     },
+    images: { og: ["the-babadook.jpg"], noBg: ["the-babadook.png"] },
     stores: [],
   },
   {
@@ -976,6 +1028,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Pirate hat and coat", "Eyepatch", "Stretched proportions"],
     },
+    images: { og: ["pirate-clark.jpg"], noBg: ["pirate-clark.png"] },
     stores: [],
   },
   {
@@ -1001,6 +1054,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Blue button-up shirt", "Chainsaw hand", "Sawed-off shotgun"],
     },
+    images: { og: ["ash-williams.jpg"], noBg: ["ash-williams.png"] },
     stores: [],
   },
   {
@@ -1021,6 +1075,10 @@ export const costumes: Costume[] = [
       "The film was shot in Hungary. The flower-covered gown became the defining image of the movie.",
     look: {
       pieces: ["White gown", "Tall flower crown", "Dress covered in blossoms"],
+    },
+    images: {
+      og: ["dani-the-may-queen.jpg"],
+      noBg: ["dani-the-may-queen.png"],
     },
     stores: [],
   },
@@ -1046,6 +1104,10 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Red jumpsuit", "Single golden glove", "Gold scissors"],
     },
+    images: {
+      og: ["red-and-the-tethered.png"],
+      noBg: ["red-and-the-tethered.png"],
+    },
     stores: [],
   },
   {
@@ -1070,6 +1132,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Torn", "Bloodied wedding dress", "Sneakers", "Revolver"],
     },
+    images: { og: ["grace-the-bride.jpg"], noBg: ["grace-the-bride.png"] },
     stores: [],
   },
   {
@@ -1092,6 +1155,7 @@ export const costumes: Costume[] = [
       pieces: ["Black dress", "Veil", "Bob haircut"],
       alternative: "Or the red wedding dress.",
     },
+    images: { og: ["lydia-deetz.jpg"], noBg: ["lydia-deetz.png"] },
     stores: [],
   },
   {
@@ -1113,6 +1177,7 @@ export const costumes: Costume[] = [
       pieces: ["Black leather jacket", "Blonde wig", "Stitched face"],
       alternative: "Or the wedding dress.",
     },
+    images: { og: ["tiffany-valentine.jpg"], noBg: ["tiffany-valentine.png"] },
     stores: [],
   },
   {
@@ -1134,6 +1199,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Black shiny suit", "Elongated head", "Tail", "Second jaw"],
     },
+    images: { og: ["xenomorph.jpg"], noBg: ["xenomorph.png"] },
     stores: [],
   },
   {
@@ -1163,6 +1229,7 @@ export const costumes: Costume[] = [
         "Prop candles",
       ],
     },
+    images: { og: ["the-craft-coven.jpg"], noBg: ["the-craft-coven.png"] },
     stores: [],
   },
   {
@@ -1184,6 +1251,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Cheerleader uniform", "Blood", "Dark eye makeup"],
     },
+    images: { og: ["jennifer-check.jpg"], noBg: ["jennifer-check.png"] },
     stores: [],
   },
   {
@@ -1210,6 +1278,7 @@ export const costumes: Costume[] = [
         "Black robe",
       ],
     },
+    images: { og: ["the-pale-man.jpg"], noBg: ["the-pale-man.png"] },
     stores: [],
   },
   {
@@ -1231,6 +1300,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Gray metal-toothed rabbit mask", "Suit"],
     },
+    images: { og: ["frank-the-rabbit.jpg"], noBg: ["frank-the-rabbit.png"] },
     stores: [],
   },
   {
@@ -1256,6 +1326,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Green scaled suit with gills", "Webbed hands and feet", "Fin"],
     },
+    images: { og: ["the-gill-man.jpg"], noBg: ["the-gill-man.png"] },
     stores: [],
   },
   {
@@ -1276,6 +1347,10 @@ export const costumes: Costume[] = [
       "Chaney created his own makeup and kept the unmasked face secret until the premiere, reportedly using wires to hoist his nostrils.",
     look: {
       pieces: ["Black cape", "Opera hat", "Skull-like makeup or half-mask"],
+    },
+    images: {
+      og: ["the-phantom-of-the-opera.jpg"],
+      noBg: ["the-phantom-of-the-opera.png"],
     },
     stores: [],
   },
@@ -1298,6 +1373,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Horned goat mask", "Fur", "Chains", "Bell"],
     },
+    images: { og: ["krampus.jpg"], noBg: ["krampus.png"] },
     stores: [],
   },
   {
@@ -1319,6 +1395,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["School uniform", "Tricycle", "'666' mark on scalp"],
     },
+    images: { og: ["damien-thorn.jpg"], noBg: ["damien-thorn.png"] },
     stores: [],
   },
   {
@@ -1340,6 +1417,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["White dress", "Long black hair", "Pale skin", "Crawling pose"],
     },
+    images: { og: ["kayako-saeki.jpg"], noBg: ["kayako-saeki.png"] },
     stores: [],
   },
   {
@@ -1361,6 +1439,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["White dress", "Long hair covering the face"],
     },
+    images: { og: ["sadako-yamamura.jpg"], noBg: ["sadako-yamamura.png"] },
     stores: [],
   },
   {
@@ -1382,6 +1461,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["White nightgown", "Blonde curls", "TV static", "Teddy bear"],
     },
+    images: { og: [], noBg: [] },
     stores: [],
   },
   {
@@ -1403,6 +1483,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Burlap mask or scarred face", "Torn clothes", "Hatchet"],
     },
+    images: { og: ["victor-crowley.jpg"], noBg: ["victor-crowley.png"] },
     stores: [],
   },
   {
@@ -1424,6 +1505,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Plaid shirt", "Jeans", "Kitchen knife", "70s hair"],
     },
+    images: { og: ["laurie-strode.jpg"], noBg: ["laurie-strode.png"] },
     stores: [],
   },
   {
@@ -1449,6 +1531,10 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Burlap or doll-face mask", "Dark clothes", "Axe"],
     },
+    images: {
+      og: ["dollface.jpg", "strangers_1.png", "strangers_2.jpg"],
+      noBg: ["dollface.png", "strangers_1.png", "strangers_2.png"],
+    },
     stores: [],
   },
   {
@@ -1473,6 +1559,10 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Creepy grinning or police-style mask", "Dark hooded clothes"],
     },
+    images: {
+      og: ["the-purge-lady-liberty.png", "the-purge-uncle-sam.jpg"],
+      noBg: ["the-purge-lady-liberty.png", "the-purge-uncle-sam.png"],
+    },
     stores: [],
   },
   {
@@ -1493,6 +1583,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Baby-face mask", "Dark hoodie", "Knife"],
     },
+    images: { og: ["babyface.jpg"], noBg: ["babyface.png"] },
     stores: [],
   },
   {
@@ -1519,6 +1610,7 @@ export const costumes: Costume[] = [
         "Popcorn gun",
       ],
     },
+    images: { og: ["killer-klowns.jpg"], noBg: ["killer-klowns.png"] },
     stores: [],
   },
   {
@@ -1544,6 +1636,7 @@ export const costumes: Costume[] = [
       pieces: ["80s aerobics-show outfits and headband"],
       alternative: "Or the melted Monstro look for the ambitious.",
     },
+    images: { og: [], noBg: [] },
     stores: [],
   },
   {
@@ -1568,6 +1661,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["1930s period wear", "Vampire makeup and fangs"],
     },
+    images: { og: ["remmick.png"], noBg: ["remmick.png"] },
     stores: [],
   },
   {
@@ -1593,6 +1687,7 @@ export const costumes: Costume[] = [
         "Prosthetic nose and chin",
       ],
     },
+    images: { og: ["longlegs.png"], noBg: ["longlegs.png"] },
     stores: [],
   },
   {
@@ -1613,6 +1708,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Black horns", "Goat mask", "Hoofed shoes"],
     },
+    images: { og: [], noBg: [] },
     stores: [],
   },
   {
@@ -1637,6 +1733,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Long blond mullet", "Leather duster", "Fangs", "Earring"],
     },
+    images: { og: ["david.jpg"], noBg: ["david.png"] },
     stores: [],
   },
   {
@@ -1658,6 +1755,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Wide-brim hat", "Long trench coat", "Wings", "Monster mask"],
     },
+    images: { og: ["the-creeper.jpg"], noBg: ["the-creeper.png"] },
     stores: [],
   },
   {
@@ -1682,6 +1780,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Furry Gizmo suit or green Stripe costume with white mohawk"],
     },
+    images: { og: ["stripe-and-gizmo.jpg"], noBg: ["stripe-and-gizmo.png"] },
     stores: [],
   },
   {
@@ -1703,6 +1802,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Corset", "Pearls", "Fishnets", "Heels", "Dark makeup"],
     },
+    images: { og: ["dr-frank-n-furter.jpg"], noBg: ["dr-frank-n-furter.png"] },
     stores: [],
   },
   {
@@ -1724,6 +1824,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Cardigan", "Bun hairstyle", "Sledgehammer"],
     },
+    images: { og: ["annie-wilkes.jpg"], noBg: ["annie-wilkes.png"] },
     stores: [],
   },
   {
@@ -1745,6 +1846,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Sharp suit", "Slicked hair", "Business card", "Axe"],
     },
+    images: { og: ["patrick-bateman.jpg"], noBg: ["patrick-bateman.png"] },
     stores: [],
   },
   {
@@ -1766,6 +1868,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Black funeral suit", "Hollow cheeks", "Silver sphere"],
     },
+    images: { og: ["the-tall-man.jpg"], noBg: ["the-tall-man.png"] },
     stores: [],
   },
   {
@@ -1787,6 +1890,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Black tar-dripping body suit", "Zombie makeup"],
     },
+    images: { og: ["tarman.jpg"], noBg: ["tarman.png"] },
     stores: [],
   },
   {
@@ -1808,6 +1912,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Torn clothes", "Gray makeup", "Fake blood"],
     },
+    images: { og: ["the-zombie.jpg"], noBg: ["the-zombie.png"] },
     stores: [],
   },
   {
@@ -1828,6 +1933,10 @@ export const costumes: Costume[] = [
       "The design was reportedly inspired by Darth Maul. The film cost about $1.5M and earned over $100M.",
     look: {
       pieces: ["Red face paint", "Black claws", "Black clothes"],
+    },
+    images: {
+      og: ["the-lipstick-face-demon.jpg"],
+      noBg: ["the-lipstick-face-demon.png"],
     },
     stores: [],
   },
@@ -1850,6 +1959,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Torn T-shirt", "Claw marks", "Werewolf mask"],
     },
+    images: { og: ["david-kessler.jpg"], noBg: ["david-kessler.png"] },
     stores: [],
   },
   {
@@ -1871,6 +1981,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Black clothes", "White face paint with black mouth lines"],
     },
+    images: { og: ["eric-draven.jpg"], noBg: ["eric-draven.png"] },
     stores: [],
   },
   {
@@ -1896,6 +2007,10 @@ export const costumes: Costume[] = [
       // Curated: one mask in three designs, not three pieces.
       pieces: ["Witch, skull, or pumpkin mask", "Jingle optional"],
     },
+    images: {
+      og: ["silver-shamrock-masks.jpg"],
+      noBg: ["silver-shamrock-masks.png"],
+    },
     stores: [],
   },
   {
@@ -1917,6 +2032,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Green cardigan", "50s-style hair", "Hunting knife"],
     },
+    images: { og: ["pamela-voorhees.jpg"], noBg: ["pamela-voorhees.png"] },
     stores: [],
   },
   {
@@ -1938,6 +2054,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Bandages", "Dark goggles", "Hat", "Overcoat"],
     },
+    images: { og: ["the-invisible-man.jpg"], noBg: ["the-invisible-man.png"] },
     stores: [],
   },
   {
@@ -1965,6 +2082,10 @@ export const costumes: Costume[] = [
       pieces: ["Lab coat", "Insect makeup"],
       alternative: "Or half-mutated makeup.",
     },
+    images: {
+      og: ["seth-brundle-brundlefly.png"],
+      noBg: ["seth-brundle-brundlefly.png"],
+    },
     stores: [],
   },
   {
@@ -1986,6 +2107,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Black coat", "White streak in hair", "Razor"],
     },
+    images: { og: ["sweeney-todd.jpg"], noBg: ["sweeney-todd.png"] },
     stores: [],
   },
   {
@@ -2006,6 +2128,10 @@ export const costumes: Costume[] = [
       "Rice initially objected to Cruise's casting but later praised his performance.",
     look: {
       pieces: ["Frock coat", "Ruffled cravat", "Blond hair", "Fangs"],
+    },
+    images: {
+      og: ["lestat-de-lioncourt.jpg"],
+      noBg: ["lestat-de-lioncourt.png"],
     },
     stores: [],
   },
@@ -2028,6 +2154,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Yellow raincoat", "Paper boat", "Storm drain"],
     },
+    images: { og: ["georgie-denbrough.jpg"], noBg: ["georgie-denbrough.png"] },
     stores: [],
   },
   {
@@ -2049,6 +2176,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Green suit and hat", "Red beard", "Gold coins"],
     },
+    images: { og: ["the-leprechaun.jpg"], noBg: ["the-leprechaun.png"] },
     stores: [],
   },
   {
@@ -2070,6 +2198,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Long black hair and coat", "White face"],
     },
+    images: { og: ["mr-boogie-bughuul.jpg"], noBg: ["mr-boogie-bughuul.png"] },
     stores: [],
   },
   {
@@ -2091,6 +2220,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Long-limbed demon suit", "Pumpkin-shaped head"],
     },
+    images: { og: ["pumpkinhead.jpg"], noBg: ["pumpkinhead.png"] },
     stores: [],
   },
   {
@@ -2112,6 +2242,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Frozen grin", "Blank stare", "Mundane clothes"],
     },
+    images: { og: ["the-smile-entity.jpg"], noBg: ["the-smile-entity.png"] },
     stores: [],
   },
   {
@@ -2136,6 +2267,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Nostromo jumpsuit", "Short hair", "Cat carrier"],
     },
+    images: { og: ["ellen-ripley.jpg"], noBg: ["ellen-ripley.png"] },
     stores: [],
   },
   {
@@ -2159,6 +2291,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Ventriloquist dummy outfit and mask"],
     },
+    images: { og: ["slappy.jpg"], noBg: ["slappy.png"] },
     stores: [],
   },
   {
@@ -2180,6 +2313,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Beanie", "Hoodie", "Camcorder", "Stick figure"],
     },
+    images: { og: ["heather-donahue.png"], noBg: ["heather-donahue.png"] },
     stores: [],
   },
   {
@@ -2201,6 +2335,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Pilgrim hat and mask", "Black clothes", "Axe"],
     },
+    images: { og: ["john-carver.jpg"], noBg: ["john-carver.png"] },
     stores: [],
   },
   {
@@ -2225,6 +2360,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Black leather coat", "Sunglasses", "Sword"],
     },
+    images: { og: ["blade.jpg"], noBg: ["blade.png"] },
     stores: [],
   },
   {
@@ -2246,6 +2382,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Red sweater with Apollo 11 rocket", "Tricycle"],
     },
+    images: { og: ["danny-torrance.png"], noBg: ["danny-torrance.png"] },
     stores: [],
   },
   {
@@ -2267,6 +2404,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Casual 90s outfit", "Denim jacket", "Phone"],
     },
+    images: { og: ["sidney-prescott.jpg"], noBg: ["sidney-prescott.png"] },
     stores: [],
   },
   {
@@ -2292,6 +2430,10 @@ export const costumes: Costume[] = [
         "Bramford apartment",
       ],
     },
+    images: {
+      og: ["rosemary-woodhouse.jpg"],
+      noBg: ["rosemary-woodhouse.png"],
+    },
     stores: [],
   },
   {
@@ -2313,6 +2455,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Victorian nightgown", "Loose hair", "Pale makeup"],
     },
+    images: { og: ["ellen-hutter.jpg"], noBg: ["ellen-hutter.png"] },
     stores: [],
   },
   {
@@ -2333,6 +2476,10 @@ export const costumes: Costume[] = [
       "TriStar pulled the film from theaters after protests, and Siskel and Ebert condemned it. It became a cult classic.",
     look: {
       pieces: ["Santa suit", "Fake beard", "Axe"],
+    },
+    images: {
+      og: ["billy-chapman-killer-santa.jpg"],
+      noBg: ["billy-chapman-killer-santa.png"],
     },
     stores: [],
   },
@@ -2358,6 +2505,7 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Red dress", "Thigh holster", "Boots"],
     },
+    images: { og: ["alice.jpg"], noBg: ["alice.png"] },
     stores: [],
   },
 ]

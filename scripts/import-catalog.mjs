@@ -19,6 +19,7 @@ if (!source) {
 
 const entries = parseCatalog(await readFile(source, "utf8")).map((entry) => ({
   ...entry,
+  images: { og: [], noBg: [] },
   stores: [],
 }))
 

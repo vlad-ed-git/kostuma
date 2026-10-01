@@ -61,6 +61,38 @@ describe("the collection", () => {
     }
   )
 
+  it("names each photo by its file, the original and its cut-out in pairs", () => {
+    const file = /^[a-z0-9]+([-_][a-z0-9]+)*\.(jpe?g|png|webp)$/
+    const stem = (name: string) => name.replace(/\.[^.]+$/, "")
+    for (const { name, images } of costumes) {
+      expect(images.noBg.length, name).toBe(images.og.length)
+      images.og.forEach((og, index) => {
+        const noBg = images.noBg[index]
+        expect(og, name).toMatch(file)
+        // A cut-out keeps its transparency: always PNG.
+        expect(noBg, name).toMatch(/\.png$/)
+        expect(stem(noBg), name).toBe(stem(og))
+      })
+    }
+  })
+
+  it("never gives two costumes the same photo", () => {
+    const all = costumes.flatMap((costume) => costume.images.og)
+    expect(new Set(all).size).toBe(all.length)
+  })
+
+  it("has a photo for every costume but the three the owner is removing", () => {
+    expect(
+      costumes
+        .filter((costume) => costume.images.og.length === 0)
+        .map((costume) => costume.slug)
+    ).toEqual([
+      "carol-anne-freeling",
+      "elisabeth-sparkle-monstro-elisasue",
+      "black-phillip",
+    ])
+  })
+
   it("marks the 2024–2026 breakouts", () => {
     expect(costumes.filter((costume) => costume.trending)).toHaveLength(12)
   })

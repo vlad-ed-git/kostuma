@@ -15,6 +15,16 @@ export type Store = {
   affiliate?: boolean
 }
 
+/**
+ * The costume's photos, by file name with its extension, in the order to
+ * show them. Some costumes have more than one (The Strangers, The Purge).
+ * `og[i]` and `noBg[i]` are the same photo: `og` is the original (in the
+ * owner's photos/original folder), `noBg` its cut-out on a transparent
+ * background (photos/no_bg, always PNG). Empty when the costume has no photo
+ * yet.
+ */
+export type Images = { og: string[]; noBg: string[] }
+
 /** One costume of the collection, as curated in content/costumes.ts. */
 export type Costume = {
   /** 1–100: the editorial ranking. */
@@ -31,6 +41,7 @@ export type Costume = {
   lore: string
   funFact: string
   look: Look
+  images: Images
   stores: Store[]
 }
 
