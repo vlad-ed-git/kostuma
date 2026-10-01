@@ -5,7 +5,7 @@ import { useState, type ComponentProps } from "react"
 import { Link } from "@/i18n/navigation"
 
 /**
- * The app's link for long lists (the 100 costume rows): it prefetches its
+ * The app's link for long lists (the costume rows): it prefetches its
  * page only once someone shows intent to follow it, by hovering, focusing or
  * touching it, not whenever it scrolls into view. Every page is rendered per
  * request (the CSP nonce), so prefetching each row that scrolls past cost

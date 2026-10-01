@@ -16,18 +16,18 @@ const expectAtCostumes = (page: Page, timeout?: number) =>
   expect.poll(() => costumesTop(page), { timeout }).toBe(64)
 
 test.describe("browsing the costumes", () => {
-  test("the home page shows all 100 costumes, each a link to its page", async ({
+  test("the home page shows all 82 costumes, each a link to its page", async ({
     page,
   }) => {
     const errors = collectErrors(page)
     await page.goto("/")
     const links = costumes(page).getByRole("link")
-    await expect(links).toHaveCount(100)
+    await expect(links).toHaveCount(82)
     const hrefs = await links.evaluateAll((all) =>
       all.map((link) => link.getAttribute("href"))
     )
     for (const href of hrefs) expect(href).toMatch(/^\/costumes\/[a-z0-9-]+$/)
-    expect(new Set(hrefs).size).toBe(100)
+    expect(new Set(hrefs).size).toBe(82)
     // In the owner's order, with no ranks, badges or headings on screen.
     await expect(links.first()).toContainText("Ghostface")
     await expect(links.last()).toContainText("Alice")

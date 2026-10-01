@@ -36,7 +36,7 @@ simple (8, 12). Ruled out: neon/VHS/synthwave, futuristic chrome, and the generi
 | -------------------------------- | ------------------------------------------------- |
 | Title card                       | Home hero ("The darkest day is coming.")          |
 | Film leader countdown            | Countdown to Halloween                            |
-| The cast                         | The collection: 100 characters, the owner's order |
+| The cast                         | The collection: 82 characters, the owner's order  |
 | One-sheet poster + billing block | Costume page (image, name, credits)               |
 | Behind the scenes                | Fun facts ("Behind the screams")                  |
 | Wardrobe department notes        | "The look": what the costume needs                |
@@ -484,7 +484,7 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
      minute ("29 days, 10 hours and 14 minutes until Halloween.").
    - **"Choose your costume"** (`Home.chooseCostume`), display face, with a red arrow dripping
      downward: a link to the costumes below (`/#costumes`).
-2. **The costumes** (`<section id="costumes" aria-label="Costumes">`), right below: all 100
+2. **The costumes** (`<section id="costumes" aria-label="Costumes">`), right below: all 82
    rows (10.3) in the owner's order, two columns from `lg`, lit by scroll (7.2),
    server-rendered and crawlable. No heading, intro, count or footnote on screen, no search,
    filters or sort (owner). Every "Costumes" link (header, menu, footer, breadcrumb) leads

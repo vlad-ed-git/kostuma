@@ -27,7 +27,7 @@ export type Images = { og: string[]; noBg: string[] }
 
 /** One costume of the collection, as curated in content/costumes.ts. */
 export type Costume = {
-  /** 1–100: the editorial ranking. */
+  /** 1–82: the editorial ranking, in the owner's order. */
   rank: number
   /** The URL segment: lowercase words and hyphens, never a dot. */
   slug: string

@@ -649,50 +649,6 @@ export const costumes: Costume[] = [
   },
   {
     rank: 24,
-    slug: "the-wolf-man",
-    name: "The Wolf Man",
-    trending: false,
-    films: [
-      {
-        title: "The Wolf Man",
-        year: 1941,
-      },
-    ],
-    createdBy: ["Curt Siodmak (writer)", "George Waggner (director)"],
-    broughtToLifeBy: ["Lon Chaney Jr.", "Makeup by Jack Pierce"],
-    lore: "Larry Talbot is bitten by a werewolf in Wales and transforms under the full moon.",
-    funFact:
-      "Much of the folklore, including the silver bullet and pentagram, was invented for the film, and the 'even a man who is pure in heart' rhyme was written by Siodmak.",
-    look: {
-      pieces: ["Tattered shirt", "Wolf mask", "Hairy hands", "Torn trousers"],
-    },
-    images: { og: ["the-wolf-man.jpg"], noBg: ["the-wolf-man.png"] },
-    stores: [],
-  },
-  {
-    rank: 25,
-    slug: "the-mummy",
-    name: "The Mummy",
-    trending: false,
-    films: [
-      {
-        title: "The Mummy",
-        year: 1932,
-      },
-    ],
-    createdBy: ["Karl Freund (director)", "Screenplay by John L. Balderston"],
-    broughtToLifeBy: ["Boris Karloff as Imhotep", "Makeup by Jack Pierce"],
-    lore: "An Egyptian priest who is revived and searches for the reincarnation of his lost love.",
-    funFact:
-      "The 1922 discovery of King Tut's tomb and the 'curse' craze inspired the film. Karloff's makeup reportedly took around eight hours. A new Lee Cronin's The Mummy landed in April 2026.",
-    look: {
-      pieces: ["Bandages (soaked in tea for aging)", "Dust", "Glowing eyes"],
-    },
-    images: { og: ["the-mummy.jpg"], noBg: ["the-mummy.png"] },
-    stores: [],
-  },
-  {
-    rank: 26,
     slug: "count-orlok",
     name: "Count Orlok",
     trending: true,
@@ -723,7 +679,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 27,
+    rank: 25,
     slug: "pearl",
     name: "Pearl",
     trending: true,
@@ -753,7 +709,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 28,
+    rank: 26,
     slug: "freddy-fazbear",
     name: "Freddy Fazbear",
     trending: true,
@@ -775,7 +731,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 29,
+    rank: 27,
     slug: "the-grady-twins",
     name: "The Grady Twins",
     trending: false,
@@ -802,7 +758,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 30,
+    rank: 28,
     slug: "jack-torrance",
     name: "Jack Torrance",
     trending: false,
@@ -824,7 +780,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 31,
+    rank: 29,
     slug: "hannibal-lecter",
     name: "Hannibal Lecter",
     trending: false,
@@ -850,7 +806,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 32,
+    rank: 30,
     slug: "norman-bates",
     name: "Norman Bates",
     trending: false,
@@ -873,7 +829,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 33,
+    rank: 31,
     slug: "captain-spaulding",
     name: "Captain Spaulding",
     trending: false,
@@ -900,33 +856,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 34,
-    slug: "pyramid-head",
-    name: "Pyramid Head",
-    trending: false,
-    films: [
-      {
-        title: "Silent Hill",
-        year: 2006,
-      },
-    ],
-    createdBy: [
-      "Konami (game series)",
-      "Masahiro Ito (character designer, 2001)",
-      "Christophe Gans (director)",
-    ],
-    broughtToLifeBy: ["Roberto Campanella in the film"],
-    lore: "A monstrous executioner who drags a giant blade through the fog of Silent Hill, tied to a character's guilt.",
-    funFact:
-      "Ito created him for the game Silent Hill 2, and the film adaptation brought him to a wider audience.",
-    look: {
-      pieces: ["Metal pyramid helmet", "Apron", "Oversized blade"],
-    },
-    images: { og: ["pyramid-head.png"], noBg: ["pyramid-head.png"] },
-    stores: [],
-  },
-  {
-    rank: 35,
+    rank: 32,
     slug: "the-headless-horseman",
     name: "The Headless Horseman",
     trending: false,
@@ -954,7 +884,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 36,
+    rank: 33,
     slug: "candyman",
     name: "Candyman",
     trending: false,
@@ -982,7 +912,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 37,
+    rank: 34,
     slug: "the-babadook",
     name: "The Babadook",
     trending: false,
@@ -1007,7 +937,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 38,
+    rank: 35,
     slug: "pirate-clark",
     name: "Pirate Clark",
     trending: true,
@@ -1032,7 +962,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 39,
+    rank: 36,
     slug: "ash-williams",
     name: "Ash Williams",
     trending: false,
@@ -1058,7 +988,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 40,
+    rank: 37,
     slug: "dani-the-may-queen",
     name: "Dani (the May Queen)",
     trending: false,
@@ -1083,7 +1013,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 41,
+    rank: 38,
     slug: "red-and-the-tethered",
     name: "Red & The Tethered",
     trending: false,
@@ -1111,7 +1041,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 42,
+    rank: 39,
     slug: "grace-the-bride",
     name: "Grace (the Bride)",
     trending: false,
@@ -1136,7 +1066,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 43,
+    rank: 40,
     slug: "lydia-deetz",
     name: "Lydia Deetz",
     trending: false,
@@ -1159,7 +1089,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 44,
+    rank: 41,
     slug: "tiffany-valentine",
     name: "Tiffany Valentine",
     trending: false,
@@ -1181,29 +1111,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 45,
-    slug: "xenomorph",
-    name: "Xenomorph",
-    trending: false,
-    films: [
-      {
-        title: "Alien",
-        year: 1979,
-      },
-    ],
-    createdBy: ["Dan O'Bannon (writer)", "Ridley Scott (director)"],
-    broughtToLifeBy: ["H. R. Giger (design)", "Bolaji Badejo in the suit"],
-    lore: "A parasitic, acid-blooded predator that gestates inside human hosts and hunts the crew of the spaceship Nostromo.",
-    funFact:
-      "Giger's biomechanical design won an Oscar for Visual Effects. Badejo was a nearly seven-foot-tall Nigerian design student. Cast members reportedly weren't told how violent the chestburster scene would be.",
-    look: {
-      pieces: ["Black shiny suit", "Elongated head", "Tail", "Second jaw"],
-    },
-    images: { og: ["xenomorph.jpg"], noBg: ["xenomorph.png"] },
-    stores: [],
-  },
-  {
-    rank: 46,
+    rank: 42,
     slug: "the-craft-coven",
     name: "The Craft Coven",
     trending: false,
@@ -1233,7 +1141,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 47,
+    rank: 43,
     slug: "jennifer-check",
     name: "Jennifer Check",
     trending: false,
@@ -1255,34 +1163,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 48,
-    slug: "the-pale-man",
-    name: "The Pale Man",
-    trending: false,
-    films: [
-      {
-        title: "Pan's Labyrinth",
-        year: 2006,
-      },
-    ],
-    createdBy: ["Guillermo del Toro"],
-    broughtToLifeBy: ["Doug Jones"],
-    lore: "A child-eating monster who sits before a banquet table with eyes in the palms of his hands. He wakes when Ofelia eats forbidden grapes.",
-    funFact:
-      "Jones also plays the Faun in the film. It won three Oscars: cinematography, art direction, and makeup.",
-    look: {
-      pieces: [
-        "Bald wrinkled skin",
-        "Sagging face",
-        "Eye-palm gloves",
-        "Black robe",
-      ],
-    },
-    images: { og: ["the-pale-man.jpg"], noBg: ["the-pale-man.png"] },
-    stores: [],
-  },
-  {
-    rank: 49,
+    rank: 44,
     slug: "frank-the-rabbit",
     name: "Frank the Rabbit",
     trending: false,
@@ -1304,7 +1185,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 50,
+    rank: 45,
     slug: "the-gill-man",
     name: "The Gill-man",
     trending: false,
@@ -1330,7 +1211,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 51,
+    rank: 46,
     slug: "the-phantom-of-the-opera",
     name: "The Phantom of the Opera",
     trending: false,
@@ -1355,7 +1236,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 52,
+    rank: 47,
     slug: "krampus",
     name: "Krampus",
     trending: false,
@@ -1377,7 +1258,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 53,
+    rank: 48,
     slug: "damien-thorn",
     name: "Damien Thorn",
     trending: false,
@@ -1399,7 +1280,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 54,
+    rank: 49,
     slug: "kayako-saeki",
     name: "Kayako Saeki",
     trending: false,
@@ -1421,51 +1302,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 55,
-    slug: "sadako-yamamura",
-    name: "Sadako Yamamura",
-    trending: false,
-    films: [
-      {
-        title: "Ringu",
-        year: 1998,
-      },
-    ],
-    createdBy: ["Kōji Suzuki (novel)", "Hideo Nakata (director)"],
-    broughtToLifeBy: ["Rie Inō"],
-    lore: "A psychic girl thrown into a well, whose vengeful spirit kills through a cursed videotape.",
-    funFact:
-      "Ringu made J-horror an international phenomenon and led to the American remake The Ring.",
-    look: {
-      pieces: ["White dress", "Long hair covering the face"],
-    },
-    images: { og: ["sadako-yamamura.jpg"], noBg: ["sadako-yamamura.png"] },
-    stores: [],
-  },
-  {
-    rank: 56,
-    slug: "carol-anne-freeling",
-    name: "Carol Anne Freeling",
-    trending: false,
-    films: [
-      {
-        title: "Poltergeist",
-        year: 1982,
-      },
-    ],
-    createdBy: ["Steven Spielberg (writer-producer)", "Tobe Hooper (director)"],
-    broughtToLifeBy: ["Heather O'Rourke"],
-    lore: "A little girl who communicates with spirits through the TV static and is pulled into the afterlife.",
-    funFact:
-      "Real skeletons were used for the pool scene because they were cheaper than fakes. Spielberg's involvement is debated to this day.",
-    look: {
-      pieces: ["White nightgown", "Blonde curls", "TV static", "Teddy bear"],
-    },
-    images: { og: [], noBg: [] },
-    stores: [],
-  },
-  {
-    rank: 57,
+    rank: 50,
     slug: "victor-crowley",
     name: "Victor Crowley",
     trending: false,
@@ -1487,7 +1324,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 58,
+    rank: 51,
     slug: "laurie-strode",
     name: "Laurie Strode",
     trending: false,
@@ -1509,7 +1346,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 59,
+    rank: 52,
     slug: "dollface",
     name: "Dollface",
     trending: false,
@@ -1538,7 +1375,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 60,
+    rank: 53,
     slug: "the-purge-anarchists",
     name: "The Purge Anarchists",
     trending: false,
@@ -1566,28 +1403,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 61,
-    slug: "babyface",
-    name: "Babyface",
-    trending: false,
-    films: [
-      {
-        title: "Happy Death Day",
-        year: 2017,
-      },
-    ],
-    createdBy: ["Scott Lobdell (writer)", "Christopher Landon (director)"],
-    broughtToLifeBy: ["Jessica Rothe as Tree", "Masked killer stuntperson"],
-    lore: "A college student relives her own murder on a loop until she works out who the baby-mask killer is. A slasher crossed with Groundhog Day.",
-    funFact: "The film cost about $4.8M and earned about $125M.",
-    look: {
-      pieces: ["Baby-face mask", "Dark hoodie", "Knife"],
-    },
-    images: { og: ["babyface.jpg"], noBg: ["babyface.png"] },
-    stores: [],
-  },
-  {
-    rank: 62,
+    rank: 54,
     slug: "killer-klowns",
     name: "Killer Klowns",
     trending: false,
@@ -1614,33 +1430,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 63,
-    slug: "elisabeth-sparkle-monstro-elisasue",
-    name: "Elisabeth Sparkle / Monstro Elisasue",
-    trending: true,
-    films: [
-      {
-        title: "The Substance",
-        year: 2024,
-      },
-    ],
-    createdBy: ["Coralie Fargeat (writer-director)"],
-    broughtToLifeBy: [
-      "Demi Moore, Margaret Qualley",
-      "Makeup by Pierre-Olivier Persin",
-    ],
-    lore: "A fading aerobics-show star injects a black-market serum that spawns a younger version of herself, with catastrophic results.",
-    funFact:
-      "It won the Oscar for Best Makeup and Hairstyling. The finale's grotesque Monstro Elisasue is a body-horror showpiece.",
-    look: {
-      pieces: ["80s aerobics-show outfits and headband"],
-      alternative: "Or the melted Monstro look for the ambitious.",
-    },
-    images: { og: [], noBg: [] },
-    stores: [],
-  },
-  {
-    rank: 64,
+    rank: 55,
     slug: "remmick",
     name: "Remmick",
     trending: true,
@@ -1665,7 +1455,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 65,
+    rank: 56,
     slug: "longlegs",
     name: "Longlegs",
     trending: true,
@@ -1691,28 +1481,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 66,
-    slug: "black-phillip",
-    name: "Black Phillip",
-    trending: false,
-    films: [
-      {
-        title: "The Witch",
-        year: 2015,
-      },
-    ],
-    createdBy: ["Robert Eggers (writer-director)"],
-    broughtToLifeBy: ["Real goats"],
-    lore: "The black goat on a 1630s New England farm that turns out to be the Devil.",
-    funFact: "Its 'live deliciously' line became a cult meme.",
-    look: {
-      pieces: ["Black horns", "Goat mask", "Hoofed shoes"],
-    },
-    images: { og: [], noBg: [] },
-    stores: [],
-  },
-  {
-    rank: 67,
+    rank: 57,
     slug: "david",
     name: "David",
     trending: false,
@@ -1737,7 +1506,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 68,
+    rank: 58,
     slug: "the-creeper",
     name: "The Creeper",
     trending: false,
@@ -1759,7 +1528,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 69,
+    rank: 59,
     slug: "stripe-and-gizmo",
     name: "Stripe & Gizmo",
     trending: false,
@@ -1784,7 +1553,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 70,
+    rank: 60,
     slug: "dr-frank-n-furter",
     name: "Dr. Frank-N-Furter",
     trending: false,
@@ -1806,7 +1575,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 71,
+    rank: 61,
     slug: "annie-wilkes",
     name: "Annie Wilkes",
     trending: false,
@@ -1828,7 +1597,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 72,
+    rank: 62,
     slug: "patrick-bateman",
     name: "Patrick Bateman",
     trending: false,
@@ -1850,29 +1619,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 73,
-    slug: "the-tall-man",
-    name: "The Tall Man",
-    trending: false,
-    films: [
-      {
-        title: "Phantasm",
-        year: 1979,
-      },
-    ],
-    createdBy: ["Don Coscarelli"],
-    broughtToLifeBy: ["Angus Scrimm"],
-    lore: "A funeral-home undertaker who turns the dead into slaves and hunts with flying silver spheres.",
-    funFact:
-      "Coscarelli was 25 when he directed it. Scrimm, a former critic and music writer, became a genre icon.",
-    look: {
-      pieces: ["Black funeral suit", "Hollow cheeks", "Silver sphere"],
-    },
-    images: { og: ["the-tall-man.jpg"], noBg: ["the-tall-man.png"] },
-    stores: [],
-  },
-  {
-    rank: 74,
+    rank: 63,
     slug: "tarman",
     name: "Tarman",
     trending: false,
@@ -1894,7 +1641,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 75,
+    rank: 64,
     slug: "the-zombie",
     name: "The Zombie",
     trending: false,
@@ -1916,7 +1663,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 76,
+    rank: 65,
     slug: "the-lipstick-face-demon",
     name: "The Lipstick-Face Demon",
     trending: false,
@@ -1941,29 +1688,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 77,
-    slug: "david-kessler",
-    name: "David Kessler",
-    trending: false,
-    films: [
-      {
-        title: "An American Werewolf in London",
-        year: 1981,
-      },
-    ],
-    createdBy: ["John Landis"],
-    broughtToLifeBy: ["David Naughton", "Makeup by Rick Baker"],
-    lore: "An American backpacker is mauled on the moors and transforms under the full moon.",
-    funFact:
-      "Baker won the first-ever Oscar for Best Makeup for the transformation scene.",
-    look: {
-      pieces: ["Torn T-shirt", "Claw marks", "Werewolf mask"],
-    },
-    images: { og: ["david-kessler.jpg"], noBg: ["david-kessler.png"] },
-    stores: [],
-  },
-  {
-    rank: 78,
+    rank: 66,
     slug: "eric-draven",
     name: "Eric Draven",
     trending: false,
@@ -1985,36 +1710,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 79,
-    slug: "silver-shamrock-masks",
-    name: "Silver Shamrock Masks",
-    trending: false,
-    films: [
-      {
-        title: "Halloween III: Season of the Witch",
-        year: 1982,
-      },
-    ],
-    createdBy: [
-      "Tommy Lee Wallace (director)",
-      "Nigel Kneale (uncredited writer)",
-    ],
-    broughtToLifeBy: ["Practical masks"],
-    lore: "A toy company sells masks that will kill children when a commercial airs on Halloween night.",
-    funFact:
-      "The film has no Michael Myers; it was meant to make Halloween an anthology series. The jingle borrows the tune of 'London Bridge'.",
-    look: {
-      // Curated: one mask in three designs, not three pieces.
-      pieces: ["Witch, skull, or pumpkin mask", "Jingle optional"],
-    },
-    images: {
-      og: ["silver-shamrock-masks.jpg"],
-      noBg: ["silver-shamrock-masks.png"],
-    },
-    stores: [],
-  },
-  {
-    rank: 80,
+    rank: 67,
     slug: "pamela-voorhees",
     name: "Pamela Voorhees",
     trending: false,
@@ -2036,7 +1732,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 81,
+    rank: 68,
     slug: "the-invisible-man",
     name: "The Invisible Man",
     trending: false,
@@ -2058,38 +1754,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 82,
-    slug: "seth-brundle-brundlefly",
-    name: "Seth Brundle (Brundlefly)",
-    trending: false,
-    films: [
-      {
-        title: "The Fly",
-        year: 1986,
-      },
-    ],
-    createdBy: [
-      "George Langelaan (short story)",
-      "David Cronenberg (director)",
-    ],
-    broughtToLifeBy: [
-      "Jeff Goldblum",
-      "Makeup by Chris Walas and Stephan Dupuis",
-    ],
-    lore: "A scientist whose teleportation experiment fuses him with a housefly.",
-    funFact: "The film won the Oscar for Best Makeup.",
-    look: {
-      pieces: ["Lab coat", "Insect makeup"],
-      alternative: "Or half-mutated makeup.",
-    },
-    images: {
-      og: ["seth-brundle-brundlefly.png"],
-      noBg: ["seth-brundle-brundlefly.png"],
-    },
-    stores: [],
-  },
-  {
-    rank: 83,
+    rank: 69,
     slug: "sweeney-todd",
     name: "Sweeney Todd",
     trending: false,
@@ -2111,7 +1776,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 84,
+    rank: 70,
     slug: "lestat-de-lioncourt",
     name: "Lestat de Lioncourt",
     trending: false,
@@ -2136,7 +1801,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 85,
+    rank: 71,
     slug: "georgie-denbrough",
     name: "Georgie Denbrough",
     trending: false,
@@ -2158,7 +1823,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 86,
+    rank: 72,
     slug: "the-leprechaun",
     name: "The Leprechaun",
     trending: false,
@@ -2180,7 +1845,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 87,
+    rank: 73,
     slug: "mr-boogie-bughuul",
     name: "Mr. Boogie (Bughuul)",
     trending: false,
@@ -2202,51 +1867,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 88,
-    slug: "pumpkinhead",
-    name: "Pumpkinhead",
-    trending: false,
-    films: [
-      {
-        title: "Pumpkinhead",
-        year: 1988,
-      },
-    ],
-    createdBy: ["Stan Winston (director)", "Poem by Ed Justin"],
-    broughtToLifeBy: ["Lance Henriksen", "Creature effects by Stan Winston"],
-    lore: "A vengeance demon summoned by a father whose son was killed.",
-    funFact:
-      "It was Winston's directorial debut. He also created creatures for The Terminator and Jurassic Park.",
-    look: {
-      pieces: ["Long-limbed demon suit", "Pumpkin-shaped head"],
-    },
-    images: { og: ["pumpkinhead.jpg"], noBg: ["pumpkinhead.png"] },
-    stores: [],
-  },
-  {
-    rank: 89,
-    slug: "the-smile-entity",
-    name: "The Smile Entity",
-    trending: false,
-    films: [
-      {
-        title: "Smile",
-        year: 2022,
-      },
-    ],
-    createdBy: ["Parker Finn (writer-director)"],
-    broughtToLifeBy: ["Sosie Bacon as Rose", "Grinning performers"],
-    lore: "A parasitic entity passed from victim to victim through a horrific act, revealed by an unsettling smile.",
-    funFact:
-      "The marketing sent planted smilers behind home plate at baseball games. It cost about $17M and earned about $217M.",
-    look: {
-      pieces: ["Frozen grin", "Blank stare", "Mundane clothes"],
-    },
-    images: { og: ["the-smile-entity.jpg"], noBg: ["the-smile-entity.png"] },
-    stores: [],
-  },
-  {
-    rank: 90,
+    rank: 74,
     slug: "ellen-ripley",
     name: "Ellen Ripley",
     trending: false,
@@ -2271,7 +1892,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 91,
+    rank: 75,
     slug: "slappy",
     name: "Slappy",
     trending: false,
@@ -2295,29 +1916,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 92,
-    slug: "heather-donahue",
-    name: "Heather Donahue",
-    trending: false,
-    films: [
-      {
-        title: "The Blair Witch Project",
-        year: 1999,
-      },
-    ],
-    createdBy: ["Daniel Myrick & Eduardo Sánchez"],
-    broughtToLifeBy: ["Heather Donahue"],
-    lore: "Three student filmmakers vanish in the Maryland woods while hunting a local legend.",
-    funFact:
-      "The film cost about $60K and earned roughly $248M. The actors reportedly were given progressively less food to heighten tension.",
-    look: {
-      pieces: ["Beanie", "Hoodie", "Camcorder", "Stick figure"],
-    },
-    images: { og: ["heather-donahue.png"], noBg: ["heather-donahue.png"] },
-    stores: [],
-  },
-  {
-    rank: 93,
+    rank: 76,
     slug: "john-carver",
     name: "John Carver",
     trending: true,
@@ -2339,7 +1938,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 94,
+    rank: 77,
     slug: "blade",
     name: "Blade",
     trending: false,
@@ -2364,7 +1963,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 95,
+    rank: 78,
     slug: "danny-torrance",
     name: "Danny Torrance",
     trending: false,
@@ -2386,7 +1985,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 96,
+    rank: 79,
     slug: "sidney-prescott",
     name: "Sidney Prescott",
     trending: false,
@@ -2408,36 +2007,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 97,
-    slug: "rosemary-woodhouse",
-    name: "Rosemary Woodhouse",
-    trending: false,
-    films: [
-      {
-        title: "Rosemary's Baby",
-        year: 1968,
-      },
-    ],
-    createdBy: ["Ira Levin (1967 novel)", "Roman Polanski (director)"],
-    broughtToLifeBy: ["Mia Farrow"],
-    lore: "A young wife who becomes convinced her neighbors are a coven who want her baby.",
-    funFact: "Vidal Sassoon cut Farrow's iconic pixie for the film.",
-    look: {
-      pieces: [
-        "Pixie cut",
-        "Nightgown",
-        "White sunglasses",
-        "Bramford apartment",
-      ],
-    },
-    images: {
-      og: ["rosemary-woodhouse.jpg"],
-      noBg: ["rosemary-woodhouse.png"],
-    },
-    stores: [],
-  },
-  {
-    rank: 98,
+    rank: 80,
     slug: "ellen-hutter",
     name: "Ellen Hutter",
     trending: true,
@@ -2459,7 +2029,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 99,
+    rank: 81,
     slug: "billy-chapman-killer-santa",
     name: "Billy Chapman (Killer Santa)",
     trending: false,
@@ -2484,7 +2054,7 @@ export const costumes: Costume[] = [
     stores: [],
   },
   {
-    rank: 100,
+    rank: 82,
     slug: "alice",
     name: "Alice",
     trending: false,

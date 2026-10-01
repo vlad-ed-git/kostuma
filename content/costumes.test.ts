@@ -6,9 +6,9 @@ import { costumes } from "./costumes"
 // The collection is curated by hand: these checks catch a typo before it
 // reaches a page.
 describe("the collection", () => {
-  it("ranks 100 costumes from 1 to 100, once each", () => {
+  it("ranks 82 costumes from 1 to 82, once each", () => {
     expect(costumes.map((costume) => costume.rank)).toEqual(
-      Array.from({ length: 100 }, (_, index) => index + 1)
+      Array.from({ length: 82 }, (_, index) => index + 1)
     )
   })
 
@@ -81,19 +81,15 @@ describe("the collection", () => {
     expect(new Set(all).size).toBe(all.length)
   })
 
-  it("has a photo for every costume but the three the owner is removing", () => {
+  it("has a photo for every costume", () => {
     expect(
       costumes
         .filter((costume) => costume.images.og.length === 0)
         .map((costume) => costume.slug)
-    ).toEqual([
-      "carol-anne-freeling",
-      "elisabeth-sparkle-monstro-elisasue",
-      "black-phillip",
-    ])
+    ).toEqual([])
   })
 
   it("marks the 2024–2026 breakouts", () => {
-    expect(costumes.filter((costume) => costume.trending)).toHaveLength(12)
+    expect(costumes.filter((costume) => costume.trending)).toHaveLength(11)
   })
 })
