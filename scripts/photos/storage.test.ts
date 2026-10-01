@@ -1,0 +1,79 @@
+// @vitest-environment node
+import { describe, expect, it } from "vitest"
+
+import { listedImages, objectPath, withPhotos } from "./storage.mjs"
+
+const data = `export const costumes: Costume[] = [
+  {
+    slug: "ghostface",
+    images: ["ghostface.png"],
+    stores: [],
+  },
+  {
+    slug: "dollface",
+    images: ["dollface.png", "strangers_1.png"],
+    stores: [],
+  },
+]
+`
+
+const photo = (file: string) => ({
+  file,
+  url: `https://example.com/${file}?alt=media&token=t`,
+  width: 1000,
+  height: 1500,
+})
+
+describe("objectPath", () => {
+  it("names the object after the file and its content", () => {
+    const path = objectPath("ghostface.png", new Uint8Array([1, 2, 3]))
+    expect(path).toMatch(/^costumes\/ghostface\.[a-f0-9]{10}\.png$/)
+    expect(objectPath("ghostface.png", new Uint8Array([1, 2, 3]))).toBe(path)
+    expect(objectPath("ghostface.png", new Uint8Array([1, 2, 4]))).not.toBe(
+      path
+    )
+  })
+
+  it("matches the names storage.rules lets anyone read", () => {
+    const name = objectPath("strangers_1.png", new Uint8Array([9])).split(
+      "/"
+    )[1]
+    expect(name).toMatch(/^[a-z0-9_-]+[.][a-f0-9]{10}[.]png$/)
+  })
+
+  it("refuses anything but a costume photo name", () => {
+    expect(() => objectPath("Ghostface.jpg", new Uint8Array())).toThrow()
+    expect(() => objectPath("../x.png", new Uint8Array())).toThrow()
+  })
+})
+
+describe("listedImages and withPhotos", () => {
+  it("lists each costume's files in order", () => {
+    expect(listedImages(data)).toEqual([
+      ["ghostface.png"],
+      ["dollface.png", "strangers_1.png"],
+    ])
+  })
+
+  it("writes the photos in place of the names, and reads them back", () => {
+    const photos = new Map(
+      ["ghostface.png", "dollface.png", "strangers_1.png"].map((file) => [
+        file,
+        photo(file),
+      ])
+    )
+    const updated = withPhotos(data, photos)
+    expect(updated).toContain(
+      'images: [{ file: "ghostface.png", url: "https://example.com/ghostface.png?alt=media&token=t", width: 1000, height: 1500 }],'
+    )
+    expect(listedImages(updated)).toEqual(listedImages(data))
+    // Running it again (new URLs) replaces the photos, never duplicates them.
+    expect(listedImages(withPhotos(updated, photos))).toEqual(
+      listedImages(data)
+    )
+  })
+
+  it("fails when a listed file has no photo", () => {
+    expect(() => withPhotos(data, new Map())).toThrow(/ghostface\.png/)
+  })
+})

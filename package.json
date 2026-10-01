@@ -20,7 +20,8 @@
     "check": "npm run lint && npm run typecheck && npm run format:check && npm test",
     "images": "node scripts/placeholder.mjs && node scripts/fog.mjs",
     "catalog:import": "node scripts/import-catalog.mjs",
-    "photos:masters": "node scripts/photos/build-masters.mjs"
+    "photos:masters": "node scripts/photos/build-masters.mjs",
+    "photos:upload": "node scripts/photos/upload.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",
@@ -47,6 +48,7 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "16.3.4",
+    "firebase-admin": "^14.5.0",
     "jsdom": "^30.1.1",
     "prettier": "^3.9.6",
     "prettier-plugin-tailwindcss": "^0.8.1",

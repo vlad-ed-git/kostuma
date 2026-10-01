@@ -15,6 +15,17 @@ export type Store = {
   affiliate?: boolean
 }
 
+/** A costume photo: a cut-out on a transparent background (PNG). */
+export type Photo = {
+  /** The master's file name (photos/masters, built from photos/no_bg). */
+  file: string
+  /** Where the site loads it: Firebase Storage, public and read-only. */
+  url: string
+  /** In pixels: the long side is at most 2048. */
+  width: number
+  height: number
+}
+
 /** One costume of the collection, as curated in content/costumes.ts. */
 export type Costume = {
   /** 1–82: the editorial ranking, in the owner's order. */
@@ -32,11 +43,10 @@ export type Costume = {
   funFact: string
   look: Look
   /**
-   * The costume's photos: cut-outs on a transparent background (PNG), by file
-   * name, in the order to show them. Usually one; The Strangers has three,
-   * The Purge two. Built by `npm run photos:masters` from photos/no_bg.
+   * The costume's photos, in the order to show them. Usually one; The
+   * Strangers has three, The Purge two. Set by `npm run photos:upload`.
    */
-  images: string[]
+  images: Photo[]
   stores: Store[]
 }
 

@@ -61,17 +61,30 @@ describe("the collection", () => {
     }
   )
 
-  it("names each photo by its cut-out file, a PNG", () => {
+  it("gives each photo its cut-out file, its public URL and its size", () => {
+    const url =
+      /^https:\/\/firebasestorage\.googleapis\.com\/v0\/b\/kostuma-73f77\.firebasestorage\.app\/o\/costumes%2F[a-z0-9_-]+\.[a-f0-9]{10}\.png\?alt=media&token=[0-9a-f-]{36}$/
     for (const { name, images } of costumes) {
-      for (const image of images) {
-        expect(image, name).toMatch(/^[a-z0-9]+([-_][a-z0-9]+)*\.png$/)
+      for (const photo of images) {
+        expect(photo.file, name).toMatch(/^[a-z0-9]+([-_][a-z0-9]+)*\.png$/)
+        expect(photo.url, name).toMatch(url)
+        // The object is named after its file (plus a hash of its content).
+        expect(decodeURIComponent(photo.url), name).toContain(
+          `/costumes/${photo.file.replace(/\.png$/, ".")}`
+        )
+        for (const side of [photo.width, photo.height]) {
+          expect(Number.isInteger(side), name).toBe(true)
+          expect(side, name).toBeGreaterThan(0)
+          expect(side, name).toBeLessThanOrEqual(2048)
+        }
       }
     }
   })
 
   it("never gives two costumes the same photo", () => {
-    const all = costumes.flatMap((costume) => costume.images)
-    expect(new Set(all).size).toBe(all.length)
+    const photos = costumes.flatMap((costume) => costume.images)
+    expect(new Set(photos.map((photo) => photo.file)).size).toBe(photos.length)
+    expect(new Set(photos.map((photo) => photo.url)).size).toBe(photos.length)
   })
 
   it("has a photo for every costume", () => {

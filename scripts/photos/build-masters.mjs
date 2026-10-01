@@ -64,7 +64,9 @@ await writeFile(`${OUT}report.json`, JSON.stringify(masters, null, 2) + "\n")
 
 // Every photo the data names has its master, and every master a costume.
 const { costumes } = await import("../../content/costumes.ts")
-const named = new Set(costumes.flatMap((costume) => costume.images))
+const named = new Set(
+  costumes.flatMap((costume) => costume.images.map((photo) => photo.file))
+)
 const built = new Set(masters.map((master) => master.name))
 const missing = [...named].filter((name) => !built.has(name))
 const unused = [...built].filter((name) => !named.has(name))
