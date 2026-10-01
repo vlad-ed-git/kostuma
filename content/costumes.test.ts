@@ -61,30 +61,23 @@ describe("the collection", () => {
     }
   )
 
-  it("names each photo by its file, the original and its cut-out in pairs", () => {
-    const file = /^[a-z0-9]+([-_][a-z0-9]+)*\.(jpe?g|png|webp)$/
-    const stem = (name: string) => name.replace(/\.[^.]+$/, "")
+  it("names each photo by its cut-out file, a PNG", () => {
     for (const { name, images } of costumes) {
-      expect(images.noBg.length, name).toBe(images.og.length)
-      images.og.forEach((og, index) => {
-        const noBg = images.noBg[index]
-        expect(og, name).toMatch(file)
-        // A cut-out keeps its transparency: always PNG.
-        expect(noBg, name).toMatch(/\.png$/)
-        expect(stem(noBg), name).toBe(stem(og))
-      })
+      for (const image of images) {
+        expect(image, name).toMatch(/^[a-z0-9]+([-_][a-z0-9]+)*\.png$/)
+      }
     }
   })
 
   it("never gives two costumes the same photo", () => {
-    const all = costumes.flatMap((costume) => costume.images.og)
+    const all = costumes.flatMap((costume) => costume.images)
     expect(new Set(all).size).toBe(all.length)
   })
 
   it("has a photo for every costume", () => {
     expect(
       costumes
-        .filter((costume) => costume.images.og.length === 0)
+        .filter((costume) => costume.images.length === 0)
         .map((costume) => costume.slug)
     ).toEqual([])
   })
