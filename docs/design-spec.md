@@ -592,6 +592,8 @@ All `noindex`. A signed-in visitor is sent on to `next` (sign in, register).
   every side, and "Are you ready for the dark?" (owner) in hollow gothic letters edged in bone,
   lit red. Right 7 columns: the title (`display`), the form (max 400 px), the way to the other
   page under it. Mobile: the form only (the header carries the wordmark).
+- Typed text: 20 px on phones, 18 px from `md` (owner: 4 px larger than the preset's); labels
+  and hints keep their sizes.
 - **Sign in:** "Continue with Google" (Google's dark style: fill `#131314`, 1 px border
   `#8E918F`, text `#E3E3E3` in Roboto/Arial, the multicolor G), "or" on a hairline, email,
   password (show/hide), "Forgot your password?", submit "Sign in". Under it: "New here? Create
