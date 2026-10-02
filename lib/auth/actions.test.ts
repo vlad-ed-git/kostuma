@@ -30,6 +30,7 @@ const mocks = vi.hoisted(() => ({
   hasProfile: vi.fn(),
   createProfile: vi.fn(),
   recordSignIn: vi.fn(),
+  currentVisitor: vi.fn(),
   saveSession: vi.fn(),
   deleteSession: vi.fn(),
   getUser: vi.fn(),
@@ -47,7 +48,7 @@ vi.mock("@/lib/users", () => ({
   createProfile: mocks.createProfile,
   recordSignIn: mocks.recordSignIn,
 }))
-vi.mock("@/lib/visitor", () => ({ currentVisitor: async () => visitor }))
+vi.mock("@/lib/visitor", () => ({ currentVisitor: mocks.currentVisitor }))
 vi.mock("next/server", () => ({
   after: (task: () => Promise<unknown>) => mocks.afterwards.push(task),
 }))
@@ -86,6 +87,7 @@ beforeEach(() => {
   mocks.hasProfile.mockResolvedValue(true)
   mocks.createProfile.mockResolvedValue(undefined)
   mocks.recordSignIn.mockResolvedValue(undefined)
+  mocks.currentVisitor.mockResolvedValue(visitor)
 })
 afterEach(() => {
   mocks.afterwards.length = 0
@@ -286,6 +288,17 @@ describe("register", () => {
       ok: false,
       fieldErrors: { email: E.EMAIL_EXISTS },
     })
+  })
+
+  it("removes the account again when its profile can't be put together", async () => {
+    mocks.currentVisitor.mockRejectedValue(new Error("No request"))
+    mocks.auth.deleteUser.mockResolvedValue(undefined)
+    expect(await register(input, "en")).toEqual({
+      ok: false,
+      error: E.UNKNOWN_AUTH_ERROR,
+    })
+    expect(mocks.createProfile).not.toHaveBeenCalled()
+    expect(mocks.auth.deleteUser).toHaveBeenCalledWith("u1")
   })
 
   it("removes the account again when its profile can't be made", async () => {

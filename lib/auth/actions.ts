@@ -149,9 +149,7 @@ export async function register(
       password,
       displayName: name,
     })
-    await createProfileOrUndo(
-      await newProfile(account, "password", languageOf(locale))
-    )
+    await createProfileOrUndo(account, "password", languageOf(locale))
     return { ok: true }
   } catch (error) {
     const problem = authErrorOf(error)
@@ -191,14 +189,19 @@ async function newProfile(
 
 /**
  * An account without a profile is incomplete: if the profile cannot be
- * made, remove the account too, so the visitor can simply register again.
+ * put together or made, remove the account too, so the visitor can simply
+ * register again.
  */
-async function createProfileOrUndo(profile: NewProfile) {
+async function createProfileOrUndo(
+  account: UserRecord,
+  provider: string,
+  locale: Locale
+) {
   try {
-    await createProfile(profile)
+    await createProfile(await newProfile(account, provider, locale))
   } catch (error) {
     await adminAuth()
-      .deleteUser(profile.uid)
+      .deleteUser(account.uid)
       .catch((undo) =>
         console.error("Could not remove an account without a profile.", undo)
       )
