@@ -492,7 +492,7 @@ Client components are marked (C). Everything else renders on the server.
 - **Empty state**: centered icon (64 px, muted), `h3`, one line of copy, one action.
 - **Coming soon panel**: see 11.9.
 - **Premium price line** (owner's words): "2 free try-ons, then {price} per costume."
-  `{price}` is USD 5 (`lib/fitting-room.ts`), no cents when whole ("$5"),
+  `{price}` is USD 5 (`lib/fitting-room/price.ts`), no cents when whole ("$5"),
   formatted by the locale's currency formatter (next-intl `format.number(5, {style: "currency",
 currency: "USD"})`), never a hardcoded "$5" string.
 

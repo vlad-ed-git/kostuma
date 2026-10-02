@@ -4,7 +4,7 @@ import { useFormatter, useTranslations } from "next-intl"
 import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "@/components/ui/button"
 import { Link } from "@/i18n/navigation"
-import { fittingRoomPrice } from "@/lib/fitting-room"
+import { fittingRoomPrice } from "@/lib/fitting-room/price"
 import { cn } from "@/lib/utils"
 
 /**
