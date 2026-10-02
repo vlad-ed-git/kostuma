@@ -118,6 +118,12 @@
     "description": "This page does not exist, or it has already been claimed by the night.",
     "home": "Back to Kostuma"
   },
+  "Error": {
+    "title": "Something went wrong",
+    "description": "Something on this page failed. Try again, or head back to Kostuma.",
+    "retry": "Try again",
+    "home": "Back to Kostuma"
+  },
   "AuthErrors": {
     "invalid_login_credentials": "Wrong email or password.",
     "email_change_needs_verification": "Confirm your new email address first. Check your inbox for the link.",

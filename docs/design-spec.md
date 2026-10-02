@@ -622,6 +622,15 @@ into its red and bone ghosts,
 `display` "Lost in the dark", one line, button "Back to Kostuma". Both 404s (the in-app one and
 the global one for unmatched URLs) look the same; the global one has no header.
 
+### 11.8b Something went wrong
+
+A page that breaks shows a title card in the visitor's language, never the error itself and
+never Next.js' English message: `display` "Something went wrong", one line ("Something on
+this page failed. Try again, or head back to Kostuma."), buttons "Try again" (retries) and
+"Back to Kostuma". Inside the shell for a page (`app/[locale]/error.tsx`); the whole document
+when the shell itself breaks (`app/global-error.tsx`, its language read from the URL).
+Developers find the details in the console; visitors only ever read messages.
+
 ### 11.9 Coming soon pages
 
 Shared panel ("trailer"): `label` with a blinking red REC dot (1 Hz, static under reduced
@@ -654,6 +663,8 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 - **Live regions**: basket changes announce politely, through one region the basket provider
   renders on every page (`aria-live="polite"`, not `role="status"`: the cue mark's "Loading…"
   is the page's status); form alerts assertively.
+- **Errors are messages**: every error a visitor can meet is a translated message, said in
+  words they can act on. Technical errors go to the console for developers, never on screen.
 - **Prefetching**: default Next.js prefetching for single links; lists of many links prefetch
   on intent only (15). Language links never prefetch: where they land depends on the language
   cookie, which the click itself changes, so an answer fetched before the click is wrong

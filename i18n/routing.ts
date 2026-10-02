@@ -21,3 +21,17 @@ export const languageTags: Record<Locale, string> = {
   es: "es",
   zh: "zh-Hans",
 }
+
+/**
+ * The language of a page by its path's prefix (`/es/basket` → `es`), else
+ * the default (English lives at the root). For the rare place outside
+ * next-intl's reach: app/global-error.tsx.
+ */
+export function localeOfPath(pathname: string | null | undefined): Locale {
+  const prefix = pathname?.split("/")[1]
+  return (
+    routing.locales.find(
+      (locale) => locale !== routing.defaultLocale && locale === prefix
+    ) ?? routing.defaultLocale
+  )
+}
