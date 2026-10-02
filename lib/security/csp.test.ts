@@ -42,6 +42,12 @@ describe("contentSecurityPolicy", () => {
     )
   })
 
+  it("lets a signed-in basket talk to Firestore, and nothing else of Google's", () => {
+    const connect = directives(contentSecurityPolicy(base)).get("connect-src")
+    expect(connect).toContain("https://firestore.googleapis.com")
+    expect(connect).not.toContain("https://*.googleapis.com")
+  })
+
   it("lets Firebase's sign-in frame load from the auth domain", () => {
     const policy = directives(
       contentSecurityPolicy({

@@ -1,0 +1,65 @@
+rules_version = '2';
+
+// Kostuma's Firestore. Browsers reach one thing only: a signed-in visitor's
+// own My Pumpkin Basket. Everything else is the server's, through the Admin
+// SDK, which these rules do not bind. Tested on the emulator
+// (`npm run test:firestore`, lib/basket/firestore.emulator.test.ts).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // baskets/{uid}: { slugs: the costumes in the order added, updatedAt }.
+    // Each write may add at most one costume, appended, so every costume a
+    // basket ever held was checked as it went in; removing and clearing may
+    // only take costumes out. lib/basket/firestore.ts writes it.
+    match /baskets/{uid} {
+      allow get: if isOwner(uid);
+      allow create: if isOwner(uid)
+        && isBasket(request.resource.data)
+        && addsAtMostOne([], request.resource.data.slugs);
+      allow update: if isOwner(uid)
+        && isBasket(request.resource.data)
+        && (takesOutOnly(resource.data.slugs, request.resource.data.slugs)
+          || addsAtMostOne(resource.data.slugs, request.resource.data.slugs));
+      allow list, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+function isOwner(uid) {
+  return request.auth != null && request.auth.uid == uid;
+}
+
+// Exactly the two fields, a list of at most 200 (lib/basket/codec.ts), and
+// the time of the server.
+function isBasket(data) {
+  return data.keys().hasOnly(['slugs', 'updatedAt'])
+    && data.keys().hasAll(['slugs', 'updatedAt'])
+    && data.slugs is list
+    && data.slugs.size() <= 200
+    && data.updatedAt == request.time;
+}
+
+// A costume's slug: lowercase words and hyphens.
+function isSlug(value) {
+  return value is string
+    && value.size() <= 64
+    && value.matches('[a-z0-9]+(-[a-z0-9]+)*');
+}
+
+// Nothing that wasn't there before.
+function takesOutOnly(before, after) {
+  return after.toSet().difference(before.toSet()).size() == 0;
+}
+
+// The same list, or the same list with one costume more at its end.
+function addsAtMostOne(before, after) {
+  return after == before
+    || (after.size() == before.size() + 1
+      // (An empty range is an error in the rules language.)
+      && (before.size() == 0 || after[0:before.size()] == before)
+      && isSlug(after[before.size()]));
+}

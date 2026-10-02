@@ -31,6 +31,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+# The Firebase emulators' (npm run test:firestore)
+firebase-debug.log*
+firestore-debug.log*
 
 # env files (can opt-in for committing if needed)
 .env*

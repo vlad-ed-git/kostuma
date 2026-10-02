@@ -18,6 +18,10 @@ const firebaseAuth = [
   "https://securetoken.googleapis.com",
 ]
 
+// Firestore, where a signed-in visitor's My Pumpkin Basket lives and is
+// listened to (lib/basket/firestore.ts).
+const firestore = "https://firestore.googleapis.com"
+
 // reCAPTCHA's script, the calls it makes from our page, and its frames.
 const recaptcha = "https://www.google.com/recaptcha/"
 const recaptchaScripts = [recaptcha, "https://www.gstatic.com/recaptcha/"]
@@ -54,7 +58,7 @@ export function contentSecurityPolicy({
     "style-src": ["'self'", "'unsafe-inline'"],
     "img-src": ["'self'", "blob:", "data:"],
     "font-src": ["'self'"],
-    "connect-src": ["'self'", ...firebaseAuth, recaptcha],
+    "connect-src": ["'self'", ...firebaseAuth, firestore, recaptcha],
     "frame-src": [...recaptchaFrames, ...firebaseFrame],
     "object-src": ["'none'"],
     "base-uri": ["'self'"],
