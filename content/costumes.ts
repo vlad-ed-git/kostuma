@@ -31,9 +31,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "ghostface.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fghostface.09f63e341a.png?alt=media&token=97ad842e-5ea2-420c-a2fc-516f37201a7f",
-        width: 1985,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fghostface.5d4f92417a.webp?alt=media",
+        width: 1357,
+        height: 1400,
       },
     ],
     stores: [],
@@ -63,9 +63,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "michael-myers.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fmichael-myers.ba1dab6c62.png?alt=media&token=171c25b0-6400-45f2-aa65-09afc8e976cf",
-        width: 933,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fmichael-myers.3f2d6ef00c.webp?alt=media",
+        width: 638,
+        height: 1400,
       },
     ],
     stores: [],
@@ -99,9 +99,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "nikki-freaky-nikki-freeman.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fnikki-freaky-nikki-freeman.7c21575bbd.png?alt=media&token=c64f2dba-4f91-43f1-8a02-698ecfe837e8",
-        width: 1890,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fnikki-freaky-nikki-freeman.b8c1af883b.webp?alt=media",
+        width: 1292,
+        height: 1400,
       },
     ],
     stores: [],
@@ -136,7 +136,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "art-the-clown.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fart-the-clown.400e539fac.png?alt=media&token=67e12b59-60c8-43bf-aa41-1d38e5731bbc",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fart-the-clown.19f83f46c5.webp?alt=media",
         width: 815,
         height: 1020,
       },
@@ -170,7 +170,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "pennywise.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fpennywise.8c4227f326.png?alt=media&token=55653646-42d0-4bdf-b193-5b0947bb29cb",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fpennywise.b5517aba89.webp?alt=media",
         width: 775,
         height: 1080,
       },
@@ -208,9 +208,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "aunt-gladys.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Faunt-gladys.a98db93d52.png?alt=media&token=3badb742-e9ef-4009-a41f-4b694f208cb3",
-        width: 784,
-        height: 1536,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Faunt-gladys.844a2de380.webp?alt=media",
+        width: 715,
+        height: 1400,
       },
     ],
     stores: [],
@@ -243,7 +243,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "chucky.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fchucky.78f14686ee.png?alt=media&token=76b88a38-a8e8-4f6f-b8aa-72a41437ceeb",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fchucky.7d6162a770.webp?alt=media",
         width: 1305,
         height: 1080,
       },
@@ -277,9 +277,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "freddy-krueger.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Ffreddy-krueger.e5e8ba2545.png?alt=media&token=20690cda-2c1b-4367-90db-bc84fd0824b0",
-        width: 988,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Ffreddy-krueger.6971af388e.webp?alt=media",
+        width: 675,
+        height: 1400,
       },
     ],
     stores: [],
@@ -310,9 +310,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "jason-voorhees.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fjason-voorhees.0f633f6eff.png?alt=media&token=daff691d-e518-4140-ba9a-047bcfd9b078",
-        width: 2048,
-        height: 1560,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fjason-voorhees.4163a6db59.webp?alt=media",
+        width: 1400,
+        height: 1066,
       },
     ],
     stores: [],
@@ -349,9 +349,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "beetlejuice.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fbeetlejuice.ed151ebc8d.png?alt=media&token=12935220-26b3-46a6-85d2-67954e3fe4e0",
-        width: 2048,
-        height: 1627,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fbeetlejuice.b325f09cc9.webp?alt=media",
+        width: 1400,
+        height: 1112,
       },
     ],
     stores: [],
@@ -383,9 +383,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "dracula.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fdracula.dd1500b14f.png?alt=media&token=e705155c-e0e3-4e28-a8a7-80621fcf2850",
-        width: 1919,
-        height: 1909,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fdracula.7907be6c54.webp?alt=media",
+        width: 1400,
+        height: 1393,
       },
     ],
     stores: [],
@@ -418,9 +418,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "frankensteins-monster.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Ffrankensteins-monster.39b1dea45c.png?alt=media&token=e0dc1091-b44b-49fd-bb25-84036d7da9ea",
-        width: 1372,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Ffrankensteins-monster.fdeab66749.webp?alt=media",
+        width: 938,
+        height: 1400,
       },
     ],
     stores: [],
@@ -450,9 +450,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "bride-of-frankenstein.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fbride-of-frankenstein.a3e3f45879.png?alt=media&token=4d496319-242b-40e0-8635-e786d69a9a0a",
-        width: 1110,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fbride-of-frankenstein.07e6563291.webp?alt=media",
+        width: 759,
+        height: 1400,
       },
     ],
     stores: [],
@@ -486,9 +486,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "sam.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fsam.65f7bb970a.png?alt=media&token=0f351184-3bda-474d-8672-e582137ab86f",
-        width: 848,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fsam.da48edba95.webp?alt=media",
+        width: 580,
+        height: 1400,
       },
     ],
     stores: [],
@@ -515,9 +515,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "leatherface.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fleatherface.0dace2ec4d.png?alt=media&token=87f92cc9-c907-4720-b687-20b34a6b9b59",
-        width: 1061,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fleatherface.a4fa1859e6.webp?alt=media",
+        width: 725,
+        height: 1400,
       },
     ],
     stores: [],
@@ -553,7 +553,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "pinhead.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fpinhead.146fbbf96f.png?alt=media&token=33253fbd-5fcd-4964-b3af-38c8eed69c4c",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fpinhead.5b8be422c1.webp?alt=media",
         width: 808,
         height: 1080,
       },
@@ -584,9 +584,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "jigsaw-and-billy-the-puppet.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fjigsaw-and-billy-the-puppet.546983c1d6.png?alt=media&token=94571bee-8114-4fec-bd63-aacbf9893214",
-        width: 1972,
-        height: 1673,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fjigsaw-and-billy-the-puppet.74b918903b.webp?alt=media",
+        width: 1400,
+        height: 1188,
       },
     ],
     stores: [],
@@ -621,9 +621,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "m3gan.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fm3gan.fd3b7f5f58.png?alt=media&token=3c50fc0a-2709-4321-a614-90bfcc34bc39",
-        width: 1590,
-        height: 1795,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fm3gan.84430d14e7.webp?alt=media",
+        width: 1240,
+        height: 1400,
       },
     ],
     stores: [],
@@ -654,7 +654,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "samara-morgan.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fsamara-morgan.334466f95f.png?alt=media&token=b00684fc-5347-4983-a2f5-d6d19e5e56a0",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fsamara-morgan.86630ad3e5.webp?alt=media",
         width: 581,
         height: 1080,
       },
@@ -690,9 +690,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "the-nun-valak.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-nun-valak.276275d531.png?alt=media&token=973307a6-7f53-46d5-8841-77dbe0bd662e",
-        width: 1298,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-nun-valak.755bb99b58.webp?alt=media",
+        width: 887,
+        height: 1400,
       },
     ],
     stores: [],
@@ -719,9 +719,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "annabelle.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fannabelle.fcfd3455e5.png?alt=media&token=212d466b-f6ff-4843-a1a3-2c8fe0a2dbbd",
-        width: 1415,
-        height: 1813,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fannabelle.590b65d71e.webp?alt=media",
+        width: 1093,
+        height: 1400,
       },
     ],
     stores: [],
@@ -760,9 +760,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "regan-macneil.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fregan-macneil.6432410994.png?alt=media&token=5131355b-8028-4c55-9ac4-be562156caee",
-        width: 768,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fregan-macneil.e65d57415d.webp?alt=media",
+        width: 525,
+        height: 1400,
       },
     ],
     stores: [],
@@ -789,9 +789,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "carrie-white.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fcarrie-white.62c0780940.png?alt=media&token=cd4670cc-95c3-46e8-b2d1-5e10c2095d76",
-        width: 995,
-        height: 1565,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fcarrie-white.22edadf7e2.webp?alt=media",
+        width: 890,
+        height: 1400,
       },
     ],
     stores: [],
@@ -827,9 +827,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "count-orlok.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fcount-orlok.703ebef200.png?alt=media&token=4c479879-fd3b-496c-b95d-d8e815347812",
-        width: 1002,
-        height: 1561,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fcount-orlok.ca5e051930.webp?alt=media",
+        width: 899,
+        height: 1400,
       },
     ],
     stores: [],
@@ -864,9 +864,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "pearl.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fpearl.2a3de91acd.png?alt=media&token=c1a6b5f3-04be-4874-88e7-fe1617ffdd7d",
-        width: 1747,
-        height: 1971,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fpearl.7502004f1c.webp?alt=media",
+        width: 1241,
+        height: 1400,
       },
     ],
     stores: [],
@@ -893,9 +893,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "freddy-fazbear.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Ffreddy-fazbear.5da041443f.png?alt=media&token=916476a6-cd16-4f22-a132-dbdbf7953a84",
-        width: 1559,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Ffreddy-fazbear.b4efd31638.webp?alt=media",
+        width: 1066,
+        height: 1400,
       },
     ],
     stores: [],
@@ -927,7 +927,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "the-grady-twins.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-grady-twins.40e76d2db6.png?alt=media&token=9f0a420e-fea5-48f3-9996-abbfc4983071",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-grady-twins.cdb128e84a.webp?alt=media",
         width: 968,
         height: 1000,
       },
@@ -956,9 +956,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "jack-torrance.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fjack-torrance.0c28ea519f.png?alt=media&token=01f2fa5f-f812-4ef7-af99-5dc5243e8dc9",
-        width: 1141,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fjack-torrance.3183418ab4.webp?alt=media",
+        width: 780,
+        height: 1400,
       },
     ],
     stores: [],
@@ -989,9 +989,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "hannibal-lecter.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fhannibal-lecter.893c56624d.png?alt=media&token=f452fb10-9b85-48bf-9be7-1733e82aced3",
-        width: 957,
-        height: 2042,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fhannibal-lecter.9535d56157.webp?alt=media",
+        width: 656,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1019,9 +1019,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "norman-bates.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fnorman-bates.0def40a42d.png?alt=media&token=5bd78cd8-76ab-4970-9d1e-4da3a22b493a",
-        width: 812,
-        height: 1532,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fnorman-bates.7d4bd0cd79.webp?alt=media",
+        width: 742,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1053,9 +1053,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "captain-spaulding.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fcaptain-spaulding.a73c424293.png?alt=media&token=210aec10-b3ba-424a-a29f-1e6ea78ad722",
-        width: 1914,
-        height: 1079,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fcaptain-spaulding.a723f55238.webp?alt=media",
+        width: 1400,
+        height: 789,
       },
     ],
     stores: [],
@@ -1085,9 +1085,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "the-headless-horseman.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-headless-horseman.5a3ca4d1f1.png?alt=media&token=4d43d6ed-2535-43f4-8d8c-d13cc759459c",
-        width: 1434,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-headless-horseman.cbe89b409e.webp?alt=media",
+        width: 980,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1120,9 +1120,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "candyman.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fcandyman.15a4fb55c3.png?alt=media&token=af538995-77f9-4a74-8a4c-ca119716f63b",
-        width: 1757,
-        height: 1080,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fcandyman.8efe0f5315.webp?alt=media",
+        width: 1400,
+        height: 861,
       },
     ],
     stores: [],
@@ -1152,9 +1152,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "the-babadook.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-babadook.4af1f1e5d4.png?alt=media&token=5334c8e7-1af3-4be5-ba53-f780e49ef95f",
-        width: 1717,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-babadook.b53e1349a2.webp?alt=media",
+        width: 1174,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1184,9 +1184,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "pirate-clark.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fpirate-clark.7b1bd98b73.png?alt=media&token=f33d2ced-475f-413e-a23f-25106f11fde0",
-        width: 906,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fpirate-clark.c95c8188cd.webp?alt=media",
+        width: 619,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1217,9 +1217,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "ash-williams.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fash-williams.0e3146f731.png?alt=media&token=c385fb10-c11a-40b4-b904-3ec90e776cae",
-        width: 1529,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fash-williams.7b7dcceea3.webp?alt=media",
+        width: 1045,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1246,9 +1246,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "dani-the-may-queen.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fdani-the-may-queen.05a9e353c7.png?alt=media&token=58b2eecb-bc17-4964-8cd9-f1299ac01aea",
-        width: 2048,
-        height: 1945,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fdani-the-may-queen.8bc16993b5.webp?alt=media",
+        width: 1400,
+        height: 1330,
       },
     ],
     stores: [],
@@ -1278,9 +1278,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "red-and-the-tethered.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fred-and-the-tethered.5ca3eab3b2.png?alt=media&token=5eb5a087-0cc2-4190-bb99-2cb282bc6a60",
-        width: 667,
-        height: 1536,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fred-and-the-tethered.0577147a52.webp?alt=media",
+        width: 608,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1310,9 +1310,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "grace-the-bride.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fgrace-the-bride.ef5bf8a89d.png?alt=media&token=82bdbefc-898b-48e8-832e-473965c3570a",
-        width: 1044,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fgrace-the-bride.01d7c20ed6.webp?alt=media",
+        width: 714,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1340,9 +1340,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "lydia-deetz.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Flydia-deetz.6062559644.png?alt=media&token=c4327092-b140-4f84-914b-7f7c168859ff",
-        width: 1928,
-        height: 1631,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Flydia-deetz.7ba7a43c6a.webp?alt=media",
+        width: 1400,
+        height: 1184,
       },
     ],
     stores: [],
@@ -1369,7 +1369,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "tiffany-valentine.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Ftiffany-valentine.8a42fd6a2c.png?alt=media&token=f79e5bfa-1a8d-43db-81e8-494a218c0885",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Ftiffany-valentine.2357860ac5.webp?alt=media",
         width: 1082,
         height: 1080,
       },
@@ -1406,9 +1406,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "the-craft-coven.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-craft-coven.57c50c7db7.png?alt=media&token=8ca350d8-bf82-495d-a74f-41921edd0299",
-        width: 2048,
-        height: 1175,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-craft-coven.5602284dee.webp?alt=media",
+        width: 1400,
+        height: 803,
       },
     ],
     stores: [],
@@ -1435,9 +1435,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "jennifer-check.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fjennifer-check.c4863c2ad4.png?alt=media&token=dd09f81e-641d-46ac-a5d6-e1cec29cf820",
-        width: 929,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fjennifer-check.551968b0d6.webp?alt=media",
+        width: 635,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1464,9 +1464,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "frank-the-rabbit.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Ffrank-the-rabbit.bf3251b4f2.png?alt=media&token=5282f050-72ea-4cc2-8a6c-90aa3e4e36a5",
-        width: 1365,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Ffrank-the-rabbit.433053ad57.webp?alt=media",
+        width: 933,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1497,9 +1497,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "the-gill-man.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-gill-man.0129e263c4.png?alt=media&token=ec3324fc-1532-4660-822e-37e7366b16cd",
-        width: 1700,
-        height: 1071,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-gill-man.ef5efb6691.webp?alt=media",
+        width: 1400,
+        height: 882,
       },
     ],
     stores: [],
@@ -1526,9 +1526,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "the-phantom-of-the-opera.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-phantom-of-the-opera.14cb8bd4e3.png?alt=media&token=83f51b94-eed0-405d-8e76-4e702f5590f4",
-        width: 1587,
-        height: 2040,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-phantom-of-the-opera.8d7f0e20b7.webp?alt=media",
+        width: 1089,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1555,9 +1555,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "krampus.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fkrampus.687d803103.png?alt=media&token=8e17534b-c3d7-4a97-87bb-691812106b27",
-        width: 724,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fkrampus.caa2d13fd7.webp?alt=media",
+        width: 495,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1584,9 +1584,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "damien-thorn.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fdamien-thorn.f08db574e4.png?alt=media&token=c5ffd6e6-8231-4c1a-9325-90738ad5f674",
-        width: 1625,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fdamien-thorn.0f41b3ee94.webp?alt=media",
+        width: 1111,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1613,9 +1613,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "kayako-saeki.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fkayako-saeki.2747cf2930.png?alt=media&token=ac890858-f94a-422d-98ba-9cacc33829c4",
-        width: 930,
-        height: 2000,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fkayako-saeki.64e837473e.webp?alt=media",
+        width: 651,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1642,9 +1642,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "victor-crowley.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fvictor-crowley.195f82fb33.png?alt=media&token=880bb932-695f-4dea-a920-cd2169d2499c",
-        width: 1099,
-        height: 1672,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fvictor-crowley.d128f3c7bc.webp?alt=media",
+        width: 920,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1671,9 +1671,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "laurie-strode.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Flaurie-strode.f3ad21965b.png?alt=media&token=67dab9f3-782f-42fd-881d-4dda2e028c48",
-        width: 1298,
-        height: 1954,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Flaurie-strode.cbd5413367.webp?alt=media",
+        width: 930,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1704,21 +1704,21 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "dollface.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fdollface.b5350dc7e1.png?alt=media&token=5d76138f-b8f6-42db-a69a-40ddbc35a8a1",
-        width: 1229,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fdollface.25f5496361.webp?alt=media",
+        width: 840,
+        height: 1400,
       },
       {
         file: "strangers_1.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fstrangers_1.a2dc74faa6.png?alt=media&token=43a4bbce-5eeb-4874-9488-7b250b575c4b",
-        width: 945,
-        height: 1536,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fstrangers_1.5945bf2075.webp?alt=media",
+        width: 861,
+        height: 1400,
       },
       {
         file: "strangers_2.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fstrangers_2.285b8f0c98.png?alt=media&token=58b58f0a-a0fc-4eb7-bb3a-b5938f23717d",
-        width: 1427,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fstrangers_2.7dbd656b9c.webp?alt=media",
+        width: 975,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1748,15 +1748,15 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "the-purge-lady-liberty.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-purge-lady-liberty.b4f4dd2ccf.png?alt=media&token=58d9eea4-a2e4-4257-a98d-727dffd7565a",
-        width: 703,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-purge-lady-liberty.5e3059037c.webp?alt=media",
+        width: 481,
+        height: 1400,
       },
       {
         file: "the-purge-uncle-sam.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-purge-uncle-sam.4147b55108.png?alt=media&token=950986fd-ac2e-4511-af5e-742ae74e991d",
-        width: 860,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-purge-uncle-sam.e0ce8e5da1.webp?alt=media",
+        width: 588,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1788,7 +1788,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "killer-klowns.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fkiller-klowns.546a2acd5a.png?alt=media&token=e3985372-0317-4e7a-b160-6571f00af79d",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fkiller-klowns.f0063f938d.webp?alt=media",
         width: 983,
         height: 964,
       },
@@ -1820,9 +1820,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "remmick.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fremmick.f2b81e7c00.png?alt=media&token=b3488b26-14f9-4a14-85d1-2f5785ad3b23",
-        width: 606,
-        height: 1536,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fremmick.fe1adbcdd7.webp?alt=media",
+        width: 552,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1853,7 +1853,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "longlegs.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Flonglegs.4b1e96bfcc.png?alt=media&token=bea4999f-3240-457e-8284-6d6b7d8d5b92",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Flonglegs.d2bcf992ba.webp?alt=media",
         width: 986,
         height: 1254,
       },
@@ -1885,9 +1885,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "david.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fdavid.35691fdd1f.png?alt=media&token=a25e41d0-a292-4f58-ad3d-3dcc57be6300",
-        width: 779,
-        height: 2000,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fdavid.f731b2a9a6.webp?alt=media",
+        width: 545,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1914,7 +1914,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "the-creeper.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-creeper.450603fcf4.png?alt=media&token=e8616c81-25f9-4d94-9ba9-129640381787",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-creeper.4efa6d3450.webp?alt=media",
         width: 1200,
         height: 1239,
       },
@@ -1946,9 +1946,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "stripe-and-gizmo.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fstripe-and-gizmo.2e0752577c.png?alt=media&token=eac453f6-9269-415c-827d-8c9759f009df",
-        width: 1043,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fstripe-and-gizmo.54944db746.webp?alt=media",
+        width: 713,
+        height: 1400,
       },
     ],
     stores: [],
@@ -1975,9 +1975,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "dr-frank-n-furter.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fdr-frank-n-furter.a9bb03117a.png?alt=media&token=0be5db14-d3f0-49be-ac30-ef847752358b",
-        width: 1475,
-        height: 2000,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fdr-frank-n-furter.d96eb4bcc6.webp?alt=media",
+        width: 1033,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2004,9 +2004,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "annie-wilkes.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fannie-wilkes.2583fbb5a2.png?alt=media&token=9feb4cc8-bafa-4ffa-bd32-b859871b2923",
-        width: 707,
-        height: 1401,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fannie-wilkes.cfb709428f.webp?alt=media",
+        width: 706,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2033,7 +2033,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "patrick-bateman.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fpatrick-bateman.23761fe190.png?alt=media&token=8b6468ae-a0a2-4cfd-8aaa-82be93c46e5c",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fpatrick-bateman.35546f09ce.webp?alt=media",
         width: 438,
         height: 1000,
       },
@@ -2062,9 +2062,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "tarman.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Ftarman.2dfe6c2fa5.png?alt=media&token=62545f82-dbe6-4e0b-8959-d270a0dd1f51",
-        width: 1015,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Ftarman.b7a2b9f335.webp?alt=media",
+        width: 694,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2091,9 +2091,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "the-zombie.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-zombie.d17ab1a344.png?alt=media&token=b89bba64-59e6-4baa-8c38-8386327b9e07",
-        width: 1138,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-zombie.3769f83e28.webp?alt=media",
+        width: 778,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2120,9 +2120,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "the-lipstick-face-demon.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-lipstick-face-demon.6aed5ab1c2.png?alt=media&token=5cd153fd-c8c8-4863-892a-8837f306624f",
-        width: 1290,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-lipstick-face-demon.ae2cb66dca.webp?alt=media",
+        width: 882,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2149,7 +2149,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "eric-draven.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Feric-draven.c7c2711b1a.png?alt=media&token=2195a5b5-3987-40e0-9ac2-3bfef2026b0d",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Feric-draven.f08bf6c547.webp?alt=media",
         width: 1028,
         height: 1230,
       },
@@ -2178,9 +2178,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "pamela-voorhees.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fpamela-voorhees.c91e592d0f.png?alt=media&token=0e25a379-e774-4d37-a2a2-f5e1d851ca10",
-        width: 1580,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fpamela-voorhees.89a96961c1.webp?alt=media",
+        width: 1080,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2207,9 +2207,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "the-invisible-man.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-invisible-man.eba1457c59.png?alt=media&token=44599716-164e-4c23-b336-f95a15fd5083",
-        width: 887,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-invisible-man.37d71a6db3.webp?alt=media",
+        width: 606,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2236,9 +2236,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "sweeney-todd.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fsweeney-todd.68fbcc1e6e.png?alt=media&token=63595916-45b9-4d3e-b382-95f823b0e8e9",
-        width: 1316,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fsweeney-todd.ab20f98b98.webp?alt=media",
+        width: 900,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2265,9 +2265,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "lestat-de-lioncourt.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Flestat-de-lioncourt.1d1451bb51.png?alt=media&token=fd94491a-bce3-40a9-8cde-37316a9e1e69",
-        width: 1259,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Flestat-de-lioncourt.f527c32a87.webp?alt=media",
+        width: 861,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2294,9 +2294,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "georgie-denbrough.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fgeorgie-denbrough.712f7f6bb2.png?alt=media&token=3f3ffe36-3aaf-4f74-8da6-ff43533a1515",
-        width: 1008,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fgeorgie-denbrough.0cb8c3f6d8.webp?alt=media",
+        width: 689,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2323,9 +2323,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "the-leprechaun.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-leprechaun.5b80d2ebe3.png?alt=media&token=b16b45c9-e467-4779-8d37-c5de5bceb7cb",
-        width: 1580,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fthe-leprechaun.ef9f824af8.webp?alt=media",
+        width: 1080,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2352,9 +2352,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "mr-boogie-bughuul.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fmr-boogie-bughuul.70a641f913.png?alt=media&token=1ad7e2d3-2715-4182-8c75-367d164c1b7d",
-        width: 969,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fmr-boogie-bughuul.28261866cf.webp?alt=media",
+        width: 662,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2384,9 +2384,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "ellen-ripley.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fellen-ripley.a936ba2e33.png?alt=media&token=addfe045-821a-407f-97d7-90bd24621f97",
-        width: 1551,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fellen-ripley.1465523fe8.webp?alt=media",
+        width: 1060,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2415,9 +2415,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "slappy.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fslappy.2c13679b47.png?alt=media&token=59d38ec0-925b-41c9-bd5a-9a389cb82459",
-        width: 1536,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fslappy.b08773e4e4.webp?alt=media",
+        width: 1050,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2444,9 +2444,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "john-carver.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fjohn-carver.9d0424f54f.png?alt=media&token=c62e55ca-d986-42b0-b3ab-50b8d64387a0",
-        width: 1030,
-        height: 2000,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fjohn-carver.e61b45482f.webp?alt=media",
+        width: 721,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2476,7 +2476,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "blade.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fblade.dfe62c9b4b.png?alt=media&token=ac0494c8-6d40-4246-a9b0-2017f5e13e48",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fblade.44172328cd.webp?alt=media",
         width: 913,
         height: 1315,
       },
@@ -2505,7 +2505,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "danny-torrance.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fdanny-torrance.c5c543e476.png?alt=media&token=a351393e-3687-4f8c-8d46-5e7913d976d5",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fdanny-torrance.c4b19ed432.webp?alt=media",
         width: 793,
         height: 1085,
       },
@@ -2534,9 +2534,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "sidney-prescott.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fsidney-prescott.3893ca7eed.png?alt=media&token=9d03d2ad-b491-4efa-8105-ae9fc9007661",
-        width: 1112,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fsidney-prescott.237dad6c0b.webp?alt=media",
+        width: 760,
+        height: 1400,
       },
     ],
     stores: [],
@@ -2563,7 +2563,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "ellen-hutter.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fellen-hutter.0e3f7f038b.png?alt=media&token=a4a3d108-d471-4ff1-8ce4-b2d06c636968",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fellen-hutter.3c5ac539d0.webp?alt=media",
         width: 897,
         height: 1300,
       },
@@ -2592,7 +2592,7 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "billy-chapman-killer-santa.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fbilly-chapman-killer-santa.612d28b64b.png?alt=media&token=4dffdb4c-f0fb-4b68-9c0f-a257f07204ac",
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fbilly-chapman-killer-santa.a7ff2864ad.webp?alt=media",
         width: 710,
         height: 1200,
       },
@@ -2624,9 +2624,9 @@ export const costumes: Costume[] = [
     images: [
       {
         file: "alice.png",
-        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Falice.65545a6b5b.png?alt=media&token=beacb2b7-4d10-4549-bddc-f67f35588820",
-        width: 848,
-        height: 2048,
+        url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Falice.7fabc37770.webp?alt=media",
+        width: 580,
+        height: 1400,
       },
     ],
     stores: [],

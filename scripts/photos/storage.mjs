@@ -14,17 +14,32 @@ export const CACHE_CONTROL = "public, max-age=31536000, immutable"
  */
 
 /**
- * The object's path for a master: its name plus the first ten hex digits of
- * its SHA-256, so a changed photo gets a new name (and URL).
- * @param {string} file e.g. "ghostface.png"
- * @param {Uint8Array} content the master's bytes
+ * The object's path for a master (`png`) or its web copy (`webp`): the
+ * master's name plus the first ten hex digits of the content's SHA-256, so a
+ * changed photo gets a new name (and URL).
+ * @param {string} file the master's name, e.g. "ghostface.png"
+ * @param {Uint8Array} content the bytes stored under that path
+ * @param {"png" | "webp"} [type]
  * @returns {string} e.g. "costumes/ghostface.1a2b3c4d5e.png"
  */
-export function objectPath(file, content) {
+export function objectPath(file, content, type = "png") {
   const match = /^([a-z0-9_-]+)\.png$/.exec(file)
   if (!match) throw new Error(`Not a costume photo name: ${file}`)
+  if (type !== "png" && type !== "webp") throw new Error(`Not a type: ${type}`)
   const hash = createHash("sha256").update(content).digest("hex").slice(0, 10)
-  return `${FOLDER}/${match[1]}.${hash}.png`
+  return `${FOLDER}/${match[1]}.${hash}.${type}`
+}
+
+/**
+ * The URL anyone can load an object from. storage.rules make the costume
+ * photos public, so it carries no download token: shorter, and the same
+ * every time.
+ * @param {string} bucket e.g. "kostuma-73f77.firebasestorage.app"
+ * @param {string} path the object's path, e.g. "costumes/ghostface.1a2b3c4d5e.webp"
+ * @returns {string}
+ */
+export function publicUrl(bucket, path) {
+  return `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/${encodeURIComponent(path)}?alt=media`
 }
 
 /**

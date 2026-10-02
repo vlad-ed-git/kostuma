@@ -1,6 +1,8 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest"
 
+import { WEB_SIDE } from "@/scripts/photos/web.mjs"
+
 import { costumes } from "./costumes"
 
 // The collection is curated by hand: these checks catch a typo before it
@@ -61,9 +63,9 @@ describe("the collection", () => {
     }
   )
 
-  it("gives each photo its cut-out file, its public URL and its size", () => {
+  it("gives each photo its cut-out file, its web copy's public URL and size", () => {
     const url =
-      /^https:\/\/firebasestorage\.googleapis\.com\/v0\/b\/kostuma-73f77\.firebasestorage\.app\/o\/costumes%2F[a-z0-9_-]+\.[a-f0-9]{10}\.png\?alt=media&token=[0-9a-f-]{36}$/
+      /^https:\/\/firebasestorage\.googleapis\.com\/v0\/b\/kostuma-73f77\.firebasestorage\.app\/o\/costumes%2F[a-z0-9_-]+\.[a-f0-9]{10}\.webp\?alt=media$/
     for (const { name, images } of costumes) {
       for (const photo of images) {
         expect(photo.file, name).toMatch(/^[a-z0-9]+([-_][a-z0-9]+)*\.png$/)
@@ -75,8 +77,10 @@ describe("the collection", () => {
         for (const side of [photo.width, photo.height]) {
           expect(Number.isInteger(side), name).toBe(true)
           expect(side, name).toBeGreaterThan(0)
-          expect(side, name).toBeLessThanOrEqual(2048)
         }
+        expect(Math.max(photo.width, photo.height), name).toBeLessThanOrEqual(
+          WEB_SIDE
+        )
       }
     }
   })

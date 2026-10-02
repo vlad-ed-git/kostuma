@@ -15,13 +15,16 @@ export type Store = {
   affiliate?: boolean
 }
 
-/** A costume photo: a cut-out on a transparent background (PNG). */
+/** A costume photo: a cut-out on a transparent background. */
 export type Photo = {
   /** The master's file name, as in photos/masters (`npm run photos:masters`). */
   file: string
-  /** Where the site loads it: Firebase Storage, public and read-only. */
+  /**
+   * Where the site loads it: the master's web copy (WebP) on Firebase
+   * Storage, public and read-only (`npm run photos:upload`).
+   */
   url: string
-  /** In pixels: the long side is at most 2048. */
+  /** The web copy's size in pixels: the long side is at most 1400. */
   width: number
   height: number
 }

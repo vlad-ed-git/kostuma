@@ -1,14 +1,15 @@
 rules_version = '2';
 
-// Kostuma's Cloud Storage. The costume photos (costumes/) are public and
-// read-only: anyone may fetch one by its name, nobody may list or change them.
+// Kostuma's Cloud Storage. The costume photos (costumes/: each master, PNG,
+// and its web copy, WebP) are public and read-only: anyone may fetch one by
+// its name, nobody may list or change them.
 // Everything else is closed. Uploads go through the Admin SDK
 // (scripts/photos/upload.mjs), which these rules do not bind; the script also
 // deploys this file.
 service firebase.storage {
   match /b/{bucket}/o {
     match /costumes/{photo} {
-      allow get: if photo.matches('[a-z0-9_-]+[.][a-f0-9]{10}[.]png');
+      allow get: if photo.matches('[a-z0-9_-]+[.][a-f0-9]{10}[.](png|webp)');
       allow list, write: if false;
     }
     match /{path=**} {

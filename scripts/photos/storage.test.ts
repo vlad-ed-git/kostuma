@@ -1,7 +1,9 @@
 // @vitest-environment node
+import { readFileSync } from "node:fs"
+import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
 
-import { listedImages, objectPath, withPhotos } from "./storage.mjs"
+import { listedImages, objectPath, publicUrl, withPhotos } from "./storage.mjs"
 
 const data = `export const costumes: Costume[] = [
   {
@@ -34,16 +36,47 @@ describe("objectPath", () => {
     )
   })
 
-  it("matches the names storage.rules lets anyone read", () => {
-    const name = objectPath("strangers_1.png", new Uint8Array([9])).split(
-      "/"
-    )[1]
-    expect(name).toMatch(/^[a-z0-9_-]+[.][a-f0-9]{10}[.]png$/)
+  it("names a web copy after its master, with its own type and content", () => {
+    expect(objectPath("ghostface.png", new Uint8Array([7]), "webp")).toMatch(
+      /^costumes\/ghostface\.[a-f0-9]{10}\.webp$/
+    )
   })
 
-  it("refuses anything but a costume photo name", () => {
+  it("only makes names storage.rules lets anyone read", () => {
+    // The pattern in storage.rules, as the rules engine applies it: whole.
+    const rules = readFileSync(
+      fileURLToPath(new URL("../../storage.rules", import.meta.url)),
+      "utf8"
+    )
+    const [, pattern] = /photo\.matches\('([^']+)'\)/.exec(rules) ?? []
+    const readable = new RegExp(`^${pattern}$`)
+    for (const type of ["png", "webp"] as const) {
+      const path = objectPath("strangers_1.png", new Uint8Array([9]), type)
+      expect(path.split("/")[1]).toMatch(readable)
+    }
+    expect("strangers_1.0123456789.svg").not.toMatch(readable)
+  })
+
+  it("refuses anything but a costume photo name and type", () => {
     expect(() => objectPath("Ghostface.jpg", new Uint8Array())).toThrow()
     expect(() => objectPath("../x.png", new Uint8Array())).toThrow()
+    expect(() =>
+      // @ts-expect-error: only png and webp are stored
+      objectPath("ghostface.png", new Uint8Array(), "svg")
+    ).toThrow()
+  })
+})
+
+describe("publicUrl", () => {
+  it("is the object's address on Firebase Storage, with no token", () => {
+    expect(
+      publicUrl(
+        "kostuma-73f77.firebasestorage.app",
+        "costumes/strangers_1.0123456789.webp"
+      )
+    ).toBe(
+      "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fstrangers_1.0123456789.webp?alt=media"
+    )
   })
 })
 
