@@ -18,6 +18,12 @@ const ghostface = {
   slug: "ghostface",
   name: "Ghostface",
   films: [{ title: "Scream", year: 1996 }],
+  photo: {
+    file: "ghostface.png",
+    url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fghostface.09f63e341a.webp?alt=media",
+    width: 1985,
+    height: 2048,
+  },
 }
 
 describe("CostumeRow", () => {
@@ -53,10 +59,26 @@ describe("CostumeRow", () => {
     expect(screen.getByText("Pearl (2022) / X (2022)")).toBeInTheDocument()
   })
 
-  it("keeps the placeholder thumbnail out of the way of screen readers", () => {
+  it("shows the costume's photo", () => {
+    const { container } = render(<CostumeRow costume={ghostface} />)
+    expect(container.querySelector("img")?.getAttribute("src")).toContain(
+      encodeURIComponent(ghostface.photo.url)
+    )
+  })
+
+  it("keeps the thumbnail out of the way of screen readers: the name is there", () => {
     const { container } = render(<CostumeRow costume={ghostface} />)
     expect(container.querySelector("img")).toHaveAttribute("alt", "")
     expect(screen.queryByRole("img")).not.toBeInTheDocument()
+  })
+
+  it("shows the placeholder for a costume without a photo", () => {
+    const { container } = render(
+      <CostumeRow costume={{ ...ghostface, photo: undefined }} />
+    )
+    expect(container.querySelector("img")?.getAttribute("src")).toContain(
+      "costume-placeholder"
+    )
   })
 
   it("loads its thumbnail lazily, since most rows start off screen", () => {

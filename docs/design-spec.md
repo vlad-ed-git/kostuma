@@ -8,8 +8,8 @@ badges.
 
 Scope: the public site (home with the costumes, costume pages, My Pumpkin Basket, feedback),
 accounts (register, sign in, reset password, account) and polished "coming soon" pages for the
-Fitting Room (virtual try-on, part of My Pumpkin Basket), terms and privacy. Every costume uses
-one placeholder image until real photography exists.
+Fitting Room (virtual try-on, part of My Pumpkin Basket), terms and privacy. Every costume shows
+its own photo, a cut-out (9.2).
 
 ---
 
@@ -259,6 +259,11 @@ stay at 16 px.
 - **Lit by scroll:** each costume row is at 30 % opacity away from the middle of the screen and
   at 100 % while it passes it, as if a flashlight swept down the list (`.lit`, a scroll-driven
   animation; browsers without one show every row at full strength).
+- **Into the light (costume photos):** a photo waits as a black silhouette rimmed in blood-red
+  backlight, like the figure in the window. Once it is loaded and in view (its top above the
+  bottom fifth of the screen), the red swells, a light catches, dies, and comes on, and the red
+  fades: 1.8 s, once (`into-the-light`, a `filter` animation on the photo's frame that leaves no
+  filter behind). Choosing another photo on a costume page brings it in the same way.
 - **Heartbeat:** scale 1 → 1.18 → 1 → 1.08 → 1 over 1000 ms (lub-dub): the wordmark's o on
   hover, the lit pumpkin when an item is added. The countdown's seconds beat on every tick with
   a smaller pulse (1.07) and a red glow.
@@ -271,7 +276,7 @@ stay at 16 px.
 
 Under `prefers-reduced-motion: reduce`:
 
-- Reveals are off: content is simply there.
+- Reveals are off: content is simply there; costume photos are lit from the start.
 - The reel change becomes an instant cut; no scratches.
 - Ambient loops stop: grain frozen, fog still, no flicker, no heartbeat, no blinking eyes, no
   lamp stutter, no drip, no VHS roll; the flashlight stays where it is; costume rows stay fully
@@ -333,7 +338,21 @@ nothing flickers or beats).
     something is inside.
 - Icons never carry meaning alone: they pair with text or an `aria-label`.
 
-### 9.2 The placeholder image (one image for every costume)
+### 9.2 Costume photos
+
+- Each costume has one or more photos (`images` in `content/costumes.ts`), cut-outs on a
+  transparent background: the subject trimmed with a 4 % margin. The site shows each one's web
+  copy (WebP, long side ≤ 1400 px, about 140 KB) from Firebase Storage, through `next/image`.
+  The lossless masters (PNG, 2048 px) are kept for the Fitting Room.
+- In a 4:5 frame on the dark well (`--card`, a hairline edge), **contained, never cropped**
+  (owner), standing on the frame's floor (`object-bottom`).
+- Alt: `"{name} costume"` (`Costume.photoAlt`) on the costume page; `""` in lists and on the
+  gallery's thumbnails, where the name is written next to it or the button is named.
+- Lists show the first photo; the costume page shows them all (11.3).
+- A photo that fails to load is asked for again twice (1.5 s, then 3 s, each plus up to 1 s of
+  spread); then the placeholder art takes its place.
+
+### 9.3 The placeholder image (a missing or failed photo)
 
 - File: `public/images/costume-placeholder.webp` (+ `.avif`), 1200 × 1500 (4:5), generated
   from an SVG source (`design/costume-placeholder.svg`) with sharp.
@@ -342,8 +361,7 @@ nothing flickers or beats).
   sodium-orange glow from off-frame, like a streetlight through a window. Film grain. No text,
   no character features: _the costume is waiting for whoever wears it_. Works under a bottom
   gradient that carries the card's text.
-- Alt policy: while it's a placeholder, the image is decorative (`alt=""`); the character's name
-  is always in text next to it. Real photos later get `alt="{Character} costume"`.
+- Alt: decorative (`alt=""`); the character's name is always in text nearby.
 - OG images are generated (next/og) in the same language: warm black, red rim glow, name in
   the display face, film in muted italics, wordmark bottom-left. No rank. 1200 × 630.
 
@@ -433,7 +451,8 @@ Client components are marked (C). Everything else renders on the server.
 
 - **Countdown** (C): see 11.1.
 - **CostumeRow** (`components/costume/costume-row.tsx`): one link per costume, in a list.
-  - The 4:5 thumbnail (114 × 143 px, 156 × 195 px from `lg`) with a hairline edge, slightly dimmed; then the
+  - The costume's first photo in its 4:5 frame (114 × 143 px, 156 × 195 px from `lg`; 9.2),
+    slightly dimmed, brought in by the reveal (7.2); then the
     name (`h3` size, display face) with the film under it in italics ("Pearl (2022) / X
     (2022)" for several). Nothing else: no rank, no badge, no picture following the pointer.
   - Hover and focus per 7.2; prefetches on intent only (15). The basket toggle comes with
@@ -498,8 +517,12 @@ title, toolbar or empty state for one.
 ### 11.3 Costume `/costumes/[slug]` — the one-sheet
 
 - Breadcrumb Costumes (→ `/#costumes`) / {name}.
-- Desktop two columns (5 / 7): left sticky image (4:5, hairline edge, a faint red glow
-  around it); right content. Mobile: image then content. No rank anywhere.
+- Desktop two columns (5 / 7): left sticky photo (4:5, hairline edge, a faint red glow around
+  it, the reveal); right content. Mobile: photo then content. No rank anywhere.
+- With several photos (The Strangers, The Purge), small thumbnails (72 px wide, 4:5) under the
+  large one, buttons named "Photo 2 of 3" (`aria-pressed`), dimmed until hovered or chosen; the
+  chosen one gets a red edge and glow. Choosing one shows it large, with its own reveal. Without
+  JavaScript the thumbnails are hidden (`@media (scripting: none)`) and the first photo stays.
 - Content, in order:
   - H1 `display`: the character.
   - Film line: film icon + "Scream (1996)" (lead, muted).
@@ -620,7 +643,8 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 - `lang` on `<html>` (`en`, `es`, `zh-Hans`) and on endonyms in the language list.
 - Decorative images and atmosphere `aria-hidden` / `alt=""`.
 - Content works without JavaScript for reading (catalog, costume pages); interactive features
-  degrade to links. Reveals must never leave content invisible when JavaScript is off.
+  degrade to links. Reveals must never leave content invisible when JavaScript is off: the
+  photos' silhouette exists only under `@media (scripting: enabled)`.
 
 ---
 
@@ -654,7 +678,12 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 - `motion` only where CSS can't do the job (first use: the basket count's roll), in client
   islands, through `LazyMotion` + `domAnimation` + `m.*`. Reveals, the menu's stagger, the
   header over the hero and every atmosphere layer are CSS.
-- Images: `next/image`, explicit `sizes`, `priority` only on the costume page image.
+- Images: `next/image`, explicit `sizes` (rows `(min-width: 1024px) 156px, 114px`; the costume
+  page `(min-width: 1280px) 470px, (min-width: 1024px) 37vw, calc(100vw - 2rem)`; thumbnails
+  `72px`), lazy except the costume page photo (`loading="eager"`, `fetchPriority="high"`). Remote
+  photos only from the project's `costumes/` folder on Storage (`next.config.ts`
+  `remotePatterns`, no redirects); the browser loads them from `/_next/image`, so the CSP stays
+  `'self'`.
 - Prefetching: every page renders per request (the CSP nonce), so each prefetch costs the
   server a render. Long lists of links prefetch on intent only (hover, focus, touch:
   `components/navigation/intent-link.tsx`); prefetching every row on sight would fire ~150
@@ -664,22 +693,23 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 
 ## 16. Implementation map
 
-| Piece                    | Where                                                                                                    |
-| ------------------------ | -------------------------------------------------------------------------------------------------------- |
-| Tokens (palette, motion) | `app/globals.css` `:root` + `@theme inline`                                                              |
-| Fonts                    | `app/fonts.ts`                                                                                           |
-| Atmosphere               | `components/horror/{atmosphere,fog}.tsx` + `app/film.css` (grain, vignette, ground fog, scratches, VHS)  |
-| Reel change              | `app/[locale]/template.tsx` (`<ViewTransition>`), `::view-transition` rules in `app/film.css`            |
-| Cue mark                 | `components/horror/cue-mark.tsx`, fed by `lib/navigation-status.ts` from `i18n/navigation.tsx`           |
-| Shell                    | `components/layout/{header,mobile-menu,footer,wordmark,skip-link,lost-in-the-dark}.tsx`                  |
-| Primitives               | `components/ui/*` (shadcn style, cva)                                                                    |
-| Feature components       | `components/{costume,basket,auth,forms,countdown}/*`                                                     |
-| Catalog                  | `content/costumes.ts` (the owner's list, typed) → `lib/catalog` → `components/costume/*`                 |
-| Links on intent          | `components/navigation/intent-link.tsx` (the costume rows)                                               |
-| Night scene              | `components/home/{night-scene,flashlight}.tsx`, fog texture `scripts/fog.mjs` → `public/images/fog.webp` |
-| Countdown                | `lib/countdown` (logic, tested per time zone) + `components/countdown/countdown.tsx`                     |
-| Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`                       |
-| Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit                   |
+| Piece                    | Where                                                                                                                                     |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Tokens (palette, motion) | `app/globals.css` `:root` + `@theme inline`                                                                                               |
+| Fonts                    | `app/fonts.ts`                                                                                                                            |
+| Atmosphere               | `components/horror/{atmosphere,fog}.tsx` + `app/film.css` (grain, vignette, ground fog, scratches, VHS)                                   |
+| Reel change              | `app/[locale]/template.tsx` (`<ViewTransition>`), `::view-transition` rules in `app/film.css`                                             |
+| Cue mark                 | `components/horror/cue-mark.tsx`, fed by `lib/navigation-status.ts` from `i18n/navigation.tsx`                                            |
+| Shell                    | `components/layout/{header,mobile-menu,footer,wordmark,skip-link,lost-in-the-dark}.tsx`                                                   |
+| Primitives               | `components/ui/*` (shadcn style, cva)                                                                                                     |
+| Feature components       | `components/{costume,basket,auth,forms,countdown}/*`                                                                                      |
+| Catalog                  | `content/costumes.ts` (the owner's list, typed) → `lib/catalog` → `components/costume/*`                                                  |
+| Links on intent          | `components/navigation/intent-link.tsx` (the costume rows)                                                                                |
+| Night scene              | `components/home/{night-scene,flashlight}.tsx`, fog texture `scripts/fog.mjs` → `public/images/fog.webp`                                  |
+| Countdown                | `lib/countdown` (logic, tested per time zone) + `components/countdown/countdown.tsx`                                                      |
+| Costume photos           | `components/costume/{costume-image,costume-gallery}.tsx`, `lib/in-view.ts`, `.photo-reveal` in `app/film.css`; pipeline `scripts/photos/` |
+| Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`                                                        |
+| Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit                                                    |
 
 ---
 
@@ -699,6 +729,9 @@ Each feature branch ships unit and end-to-end tests for the cases that apply to 
   without JavaScript (no content stuck invisible).
 - **Network and services:** slow networks (the cue mark, skeletons); reCAPTCHA failing to load
   or expiring; every Firebase Auth error code mapped to a translated message; rate limits.
+- **Photos:** a photo that fails to load (asked for again, then the placeholder); a costume
+  without a photo; one photo vs several (the gallery); a photo taller than the screen (the reveal
+  still starts); reduced motion and no JavaScript (lit from the start); no layout shift.
 - **Content states:** empty basket; unknown costume slugs, including a wrong case (404); the
   first and last costume (no previous / next, related wraps around); a character in several
   films; a credit role with no names; 1 item vs many (plurals).
@@ -709,7 +742,7 @@ Each feature branch ships unit and end-to-end tests for the cases that apply to 
 
 ## 18. Later
 
-Real costume photography (per-costume art direction) · The Fitting Room flow (upload guide, progress
+The Fitting Room flow (upload guide, progress
 as a "developing film" animation, result reveal) · Stripe checkout styled as a ticket stub ·
 translations · optional opt-in ambient sound: projector whir (never autoplay) · shared-element
 morphs between cards and costume pages.

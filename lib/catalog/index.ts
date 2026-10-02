@@ -59,8 +59,8 @@ export function getRelated(costume: Costume, count = 4): Related {
   return { kind: "wanted", costumes: next }
 }
 
-/** What a list shows of a costume, and nothing more. */
+/** What a list shows of a costume, and nothing more: its first photo. */
 export function toSummary(costume: Costume): CostumeSummary {
-  const { slug, name, films } = costume
-  return { slug, name, films }
+  const { slug, name, films, images } = costume
+  return { slug, name, films, photo: images[0] }
 }

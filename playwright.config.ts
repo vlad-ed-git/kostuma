@@ -25,8 +25,18 @@ export default defineConfig({
     reducedMotion: "reduce",
   },
   projects: [
-    { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-    { name: "mobile", use: { ...devices["Pixel 7"] } },
+    // Fills the image optimizer's cache before the tests (e2e/warm-up.setup.ts).
+    { name: "warm-up", testMatch: /warm-up\.setup\.ts$/ },
+    {
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
+      dependencies: ["warm-up"],
+    },
+    {
+      name: "mobile",
+      use: { ...devices["Pixel 7"] },
+      dependencies: ["warm-up"],
+    },
   ],
   webServer: {
     command: `npm run build && npm run start -- --port ${port}`,

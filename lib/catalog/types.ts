@@ -53,5 +53,7 @@ export type Costume = {
   stores: Store[]
 }
 
-/** What a list shows of a costume, and nothing more. */
-export type CostumeSummary = Pick<Costume, "slug" | "name" | "films">
+/** What a list shows of a costume, and nothing more: its first photo. */
+export type CostumeSummary = Pick<Costume, "slug" | "name" | "films"> & {
+  photo?: Photo
+}

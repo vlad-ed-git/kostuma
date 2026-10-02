@@ -30,6 +30,9 @@
   },
   "Costume": {
     "metaTitle": "Disfraz de {name}",
+    "photoAlt": "Disfraz de {name}",
+    "photos": "Fotos",
+    "showPhoto": "Foto {number} de {count}",
     "breadcrumb": "Ruta de navegación",
     "costumes": "Disfraces",
     "lore": "La leyenda",

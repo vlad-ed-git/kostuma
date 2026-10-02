@@ -1,7 +1,7 @@
 /*
  * The night's motion and atmosphere (docs/design-spec.md §7–8): grain, fog,
- * the night scene, the flickering title, the lit costume rows, reel changes
- * and the cue mark. CSS only; transforms and opacity (plus the heartbeat's
+ * the night scene, the flickering title, the lit costume rows, the costume
+ * photos' reveal, reel changes and the cue mark. CSS only; transforms and opacity (plus the heartbeat's
  * glow), no mix-blend-mode. Every loop lives inside `prefers-reduced-motion:
  * no-preference`, so reduced motion gets a still frame by default.
  */
@@ -306,6 +306,17 @@
   animation: reel-in 320ms var(--ease-dread) 240ms both;
 }
 
+/* ── The costume photos (components/costume/costume-image.tsx) ───────── */
+
+/* The photo's frame within its well. Before the reveal it is a black
+   silhouette lit from behind in blood red; the reveal turns the light on
+   (motion rules below). Reduced motion and no JavaScript: lit from the
+   start. */
+.photo-reveal {
+  position: absolute;
+  inset: 0;
+}
+
 /* ── Lit by scroll: the costume rows (`.lit`, spec §7.2), below ──────── */
 /* No JavaScript: browsers without scroll-driven animations show every row. */
 
@@ -362,6 +373,23 @@
   @media (hover: hover) {
     .wordmark:hover .wordmark-o {
       animation: heartbeat 1s var(--ease-heavy);
+    }
+  }
+
+  /* A costume photo waits in the dark as a silhouette, rimmed by the red
+     light behind it, until it is loaded and seen; then the light comes on.
+     Only where scripts run: without them nothing would turn it on. */
+  @media (scripting: enabled) {
+    .photo-reveal:not([data-revealed]) {
+      filter: brightness(0) drop-shadow(0 0 1.5px var(--blood))
+        drop-shadow(
+          0 0 var(--rim, 10px)
+            color-mix(in oklch, var(--blood) 75%, transparent)
+        );
+    }
+    /* Backwards only: once lit, no filter is left on the photo. */
+    .photo-reveal[data-revealed] {
+      animation: into-the-light 1.8s linear backwards;
     }
   }
 
@@ -560,6 +588,41 @@
   }
   100% {
     opacity: 0.3;
+  }
+}
+
+/* Into the light (spec §7.2): the red behind the silhouette swells, a lamp
+   catches, dies, and comes on; the red fades. One flash in the second it
+   flickers (photosensitivity, spec §7.3). */
+@keyframes into-the-light {
+  0% {
+    filter: brightness(0) drop-shadow(0 0 1.5px var(--blood))
+      drop-shadow(
+        0 0 var(--rim, 10px) color-mix(in oklch, var(--blood) 75%, transparent)
+      );
+  }
+  35% {
+    filter: brightness(0) drop-shadow(0 0 2px var(--blood))
+      drop-shadow(0 0 calc(var(--rim, 10px) * 1.8) var(--blood));
+  }
+  45% {
+    filter: brightness(0.85) drop-shadow(0 0 2px var(--blood))
+      drop-shadow(0 0 calc(var(--rim, 10px) * 1.5) var(--blood));
+  }
+  52% {
+    filter: brightness(0.12) drop-shadow(0 0 2px var(--blood))
+      drop-shadow(0 0 calc(var(--rim, 10px) * 1.4) var(--blood));
+  }
+  64% {
+    filter: brightness(1)
+      drop-shadow(0 0 1px color-mix(in oklch, var(--blood) 60%, transparent))
+      drop-shadow(
+        0 0 var(--rim, 10px) color-mix(in oklch, var(--blood) 45%, transparent)
+      );
+  }
+  100% {
+    filter: brightness(1) drop-shadow(0 0 0 transparent)
+      drop-shadow(0 0 0 transparent);
   }
 }
 

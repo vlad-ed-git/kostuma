@@ -56,10 +56,24 @@ describe("the catalog", () => {
   })
 
   it("gives lists only what they show", () => {
-    expect(toSummary(costume("ghostface"))).toEqual({
+    const ghostface = costume("ghostface")
+    expect(toSummary(ghostface)).toEqual({
       slug: "ghostface",
       name: "Ghostface",
       films: [{ title: "Scream", year: 1996 }],
+      photo: ghostface.images[0],
     })
+  })
+
+  it("shows the first of several photos in lists", () => {
+    const dollface = costume("dollface")
+    expect(dollface.images.length).toBeGreaterThan(1)
+    expect(toSummary(dollface).photo?.file).toBe("dollface.png")
+  })
+
+  it("lists a costume without a photo, with none", () => {
+    expect(toSummary({ ...costume("ghostface"), images: [] }).photo).toBe(
+      undefined
+    )
   })
 })

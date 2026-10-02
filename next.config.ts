@@ -27,6 +27,19 @@ const securityHeaders = [
   { key: "Cross-Origin-Opener-Policy", value: "same-origin-allow-popups" },
 ]
 
+/**
+ * Where the costume photos live: the `costumes/` folder of the project's
+ * Storage bucket. The browser loads them through the image optimizer
+ * (`/_next/image`, same origin), so the CSP needs no new host.
+ */
+export const costumePhotos = {
+  protocol: "https",
+  hostname: "firebasestorage.googleapis.com",
+  port: "",
+  pathname: "/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2F*",
+  search: "?alt=media",
+} as const
+
 const nextConfig: NextConfig = {
   // Memoizes components automatically (React Compiler, stable in Next 16).
   reactCompiler: true,
@@ -46,6 +59,16 @@ const nextConfig: NextConfig = {
     // allowed qualities to be listed.
     formats: ["image/avif", "image/webp"],
     qualities: [75],
+    // Only the widths the layout uses (spec §15): rows 114 and 156 px,
+    // thumbnails 72 px, the costume page up to 470 px, at 1× to 3×. Next
+    // lists them all in every srcset, and no photo is wider than 1400 px.
+    imageSizes: [96, 128, 256, 384],
+    deviceSizes: [640, 828, 1080, 1400],
+    // The costume photos on Firebase Storage (`npm run photos:upload`), and
+    // nothing else.
+    remotePatterns: [costumePhotos],
+    // Storage answers directly: never follow a redirect somewhere else.
+    maximumRedirects: 0,
   },
   experimental: {
     // The 404 page for URLs outside every language: app/global-not-found.tsx.

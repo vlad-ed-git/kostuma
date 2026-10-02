@@ -5,7 +5,7 @@ import { notFound } from "next/navigation"
 import type { ReactNode } from "react"
 
 import { BillingBlock } from "@/components/costume/billing-block"
-import { CostumeImage } from "@/components/costume/costume-image"
+import { CostumeGallery } from "@/components/costume/costume-gallery"
 import { CostumeRow } from "@/components/costume/costume-row"
 import { filmLine } from "@/components/costume/format"
 import { WardrobeList } from "@/components/costume/wardrobe-list"
@@ -61,13 +61,7 @@ export default async function CostumePage({
 
       <div className="mt-6 grid gap-10 lg:grid-cols-12 lg:gap-16">
         <div className="lg:sticky lg:top-24 lg:col-span-5 lg:self-start">
-          <div className="relative aspect-4/5 overflow-hidden border border-foreground/8 bg-card shadow-[0_0_80px_color-mix(in_oklch,var(--blood)_22%,transparent)]">
-            <CostumeImage
-              sizes="(min-width: 1024px) 40vw, 100vw"
-              eager
-              className="object-cover"
-            />
-          </div>
+          <CostumeGallery name={costume.name} photos={costume.images} />
         </div>
 
         <div className="flex flex-col gap-12 lg:col-span-7">

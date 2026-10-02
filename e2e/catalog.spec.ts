@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test"
+import { expect, test, type Locator, type Page } from "@playwright/test"
 import sharp from "sharp"
 
 import { collectErrors } from "./console"
@@ -14,6 +14,24 @@ const costumesTop = (page: Page) =>
 /** Scrolled to the costumes: their top just under the 64 px header. */
 const expectAtCostumes = (page: Page, timeout?: number) =>
   expect.poll(() => costumesTop(page), { timeout }).toBe(64)
+
+/** Whether an image has arrived, with its pixels. */
+const hasLoaded = (img: Locator) =>
+  img.evaluate(
+    (element: HTMLImageElement) => element.complete && element.naturalWidth > 0
+  )
+
+/** The filter on a photo's frame: a silhouette until the reveal. */
+const revealFilter = (img: Locator) =>
+  img.evaluate(
+    (element) => getComputedStyle(element.closest(".photo-reveal")!).filter
+  )
+
+/** The file an image was loaded from (picked from its srcset). */
+const loadedFrom = (img: Locator) =>
+  img.evaluate((element: HTMLImageElement) => element.currentSrc)
+
+const storage = "/_next/image?url=https%3A%2F%2Ffirebasestorage.googleapis.com"
 
 test.describe("browsing the costumes", () => {
   test("the home page shows all 82 costumes, each a link to its page", async ({
@@ -258,6 +276,113 @@ test.describe("browsing the costumes", () => {
   })
 })
 
+test.describe("the costume photos", () => {
+  test("each row shows its costume's photo, from Storage through the optimizer", async ({
+    page,
+  }) => {
+    const errors = collectErrors(page)
+    await page.goto("/")
+    await costumes(page).scrollIntoViewIfNeeded()
+    const rows = costumes(page).getByRole("listitem")
+    for (const [index, file] of [
+      [0, "ghostface."],
+      [1, "michael-myers."],
+    ] as const) {
+      const img = rows.nth(index).locator("img")
+      // The file the browser chose from the srcset.
+      await expect
+        .poll(() => loadedFrom(img), { timeout: 20_000 })
+        .toContain(storage)
+      expect(decodeURIComponent(await loadedFrom(img))).toContain(
+        `costumes%2F${file}`
+      )
+      // Decorative in a list: the name is written next to it.
+      await expect(img).toHaveAttribute("alt", "")
+      await expect.poll(() => hasLoaded(img), { timeout: 20_000 }).toBe(true)
+    }
+    // No CSP violation, no failed image.
+    expect(errors).toEqual([])
+  })
+
+  test("a costume's page shows its photo, described, without shifting the page", async ({
+    page,
+  }) => {
+    const errors = collectErrors(page)
+    await page.goto("/costumes/ghostface")
+    const photo = page.getByRole("img", { name: "Ghostface costume" })
+    await expect(photo).toBeVisible()
+    await expect.poll(() => hasLoaded(photo), { timeout: 20_000 }).toBe(true)
+    // Contained in its frame, never cropped (owner).
+    await expect(photo).toHaveCSS("object-fit", "contain")
+    const shift = await page.evaluate(
+      () =>
+        new Promise<number>((resolve) => {
+          let total = 0
+          new PerformanceObserver((list) => {
+            for (const entry of list.getEntries() as (PerformanceEntry & {
+              value: number
+              hadRecentInput: boolean
+            })[]) {
+              if (!entry.hadRecentInput) total += entry.value
+            }
+          }).observe({ type: "layout-shift", buffered: true })
+          setTimeout(() => resolve(total), 500)
+        })
+    )
+    expect(shift).toBeLessThan(0.02)
+    expect(errors).toEqual([])
+  })
+
+  test("with several photos, the thumbnails choose the large one", async ({
+    page,
+  }) => {
+    await page.goto("/costumes/dollface")
+    const choices = page.getByRole("group", { name: "Photos" })
+    await expect(choices.getByRole("button")).toHaveCount(3)
+    const large = page.getByRole("img", { name: "Dollface costume" })
+    await expect(large).toHaveAttribute("src", /dollface\./)
+    await choices.getByRole("button", { name: "Photo 2 of 3" }).click()
+    await expect(large).toHaveAttribute("src", /strangers_1\./)
+    await expect(
+      choices.getByRole("button", { name: "Photo 2 of 3" })
+    ).toHaveAttribute("aria-pressed", "true")
+    await expect.poll(() => hasLoaded(large), { timeout: 20_000 }).toBe(true)
+
+    // A costume with one photo has nothing to choose.
+    await page.goto("/costumes/ghostface")
+    await expect(page.getByRole("group", { name: "Photos" })).toHaveCount(0)
+  })
+
+  test("reduced motion: every photo is lit from the start", async ({
+    page,
+  }) => {
+    await page.goto("/")
+    // The last row, never scrolled to: no silhouette waiting there.
+    const last = costumes(page).getByRole("listitem").last().locator("img")
+    expect(await revealFilter(last)).toBe("none")
+  })
+})
+
+test.describe("the costume photos, with motion", () => {
+  test.use({ reducedMotion: "no-preference" })
+
+  test("wait as silhouettes in the dark, and light up when seen", async ({
+    page,
+  }) => {
+    await page.goto("/")
+    const row = costumes(page).getByRole("listitem").nth(9)
+    const img = row.locator("img")
+    // Not seen yet: a black silhouette in red light.
+    expect(await revealFilter(img)).toMatch(/^brightness\(0\) drop-shadow/)
+    await row.scrollIntoViewIfNeeded()
+    await expect(img.locator("xpath=..")).toHaveAttribute("data-revealed", {
+      timeout: 20_000,
+    })
+    // The light comes on and nothing is left on the photo.
+    await expect.poll(() => revealFilter(img), { timeout: 15_000 }).toBe("none")
+  })
+})
+
 test.describe("the cue mark on a costume link", () => {
   test("burns while the costume's page loads", async ({ page }) => {
     // Hold the costume page's requests (prefetches included) for 1.5 s.
@@ -315,6 +440,16 @@ test.describe("costumes without JavaScript", () => {
     await expect
       .poll(() => last.evaluate((card) => getComputedStyle(card).opacity))
       .toBe("1")
+  })
+
+  test("photos are lit, and the thumbnails that need scripts are hidden", async ({
+    page,
+  }) => {
+    await page.goto("/costumes/dollface")
+    const large = page.getByRole("img", { name: "Dollface costume" })
+    await expect(large).toBeVisible()
+    expect(await revealFilter(large)).toBe("none")
+    await expect(page.getByRole("group", { name: "Photos" })).toBeHidden()
   })
 
   test("a costume's page reads in full", async ({ page }) => {

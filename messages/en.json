@@ -30,6 +30,9 @@
   },
   "Costume": {
     "metaTitle": "{name} costume",
+    "photoAlt": "{name} costume",
+    "photos": "Photos",
+    "showPhoto": "Photo {number} of {count}",
     "breadcrumb": "Breadcrumb",
     "costumes": "Costumes",
     "lore": "The lore",
