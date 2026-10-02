@@ -24,6 +24,7 @@ import {
 import { Input } from "@/components/ui/input"
 import type { AuthErrorCodes } from "@/lib/auth/fireAuthError"
 import type { FieldErrors } from "@/lib/auth/schemas"
+import { cn } from "@/lib/utils"
 
 /** A form's state: codes, which the fields translate (`AuthErrors`). */
 export type FormState<Fields> = {
@@ -84,7 +85,7 @@ function Labelled({ label, hint, error, control }: LabelledProps) {
   const describedBy = [hint && hintId, error && errorId].filter(Boolean)
 
   return (
-    <Field data-invalid={error ? true : undefined}>
+    <Field data-invalid={error ? true : undefined} className="lg:gap-2">
       <FieldLabel htmlFor={id}>{label}</FieldLabel>
       {control({
         id,
@@ -194,7 +195,13 @@ export function CheckboxField({
 }
 
 /** A problem with the whole form, announced as soon as it shows. */
-export function FormAlert({ error }: { error?: AuthErrorCodes }) {
+export function FormAlert({
+  error,
+  className,
+}: {
+  error?: AuthErrorCodes
+  className?: string
+}) {
   const t = useTranslations("AuthErrors")
   if (!error) return null
   return (
@@ -202,7 +209,10 @@ export function FormAlert({ error }: { error?: AuthErrorCodes }) {
       role="alert"
       tabIndex={-1}
       data-form-alert
-      className="border border-destructive/40 px-4 py-3 text-destructive outline-none"
+      className={cn(
+        "border border-destructive/40 px-4 py-3 text-destructive outline-none",
+        className
+      )}
     >
       {t(error)}
     </p>
@@ -214,17 +224,19 @@ export function SubmitButton({
   pending,
   label,
   pendingLabel,
+  className,
 }: {
   pending: boolean
   label: string
   pendingLabel: string
+  className?: string
 }) {
   return (
     <Button
       type="submit"
       size="lg"
       aria-busy={pending || undefined}
-      className="w-full gap-2"
+      className={cn("w-full gap-2", className)}
     >
       {pending && (
         <RiLoader4Line

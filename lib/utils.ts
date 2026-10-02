@@ -7,6 +7,7 @@ import { createCn } from "cn/config"
 export const typeScale = [
   "display-xl",
   "display",
+  "display-fit",
   "h2",
   "h3",
   "billing",

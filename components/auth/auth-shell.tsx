@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server"
 import type { ReactNode } from "react"
 
 import { Fog } from "@/components/horror/fog"
+import { cn } from "@/lib/utils"
 
 type AuthShellProps = {
   title: string
@@ -10,18 +11,22 @@ type AuthShellProps = {
   children: ReactNode
   /** The way to the other account page, under the form. */
   footer?: ReactNode
+  /** Room for two fields side by side on desktop (register). */
+  wide?: boolean
 }
 
 /**
  * The account pages' frame (spec §11.5): on desktop, the night on the left
  * (fog, and "Are you ready for the dark?" in outlined gothic letters lit
- * red from below); the form on the right, at most 400 px wide. Phones: the form.
+ * red from below); the form on the right, at most 400 px wide (560 px when
+ * `wide`), all of it on one screen. Phones: the form.
  */
 export async function AuthShell({
   title,
   lead,
   children,
   footer,
+  wide = false,
 }: AuthShellProps) {
   const t = await getTranslations("Auth")
 
@@ -40,10 +45,15 @@ export async function AuthShell({
           {t("panel")}
         </p>
       </div>
-      <div className="flex py-12 lg:col-span-7 lg:items-center lg:py-20">
-        <div className="mx-auto flex w-full max-w-100 flex-col gap-8">
+      <div className="flex py-12 lg:col-span-7 lg:items-center lg:py-4">
+        <div
+          className={cn(
+            "mx-auto flex w-full max-w-100 flex-col gap-8 lg:gap-5",
+            wide && "lg:max-w-140"
+          )}
+        >
           <header className="flex flex-col gap-3">
-            <h1 className="font-heading text-display font-semibold text-balance">
+            <h1 className="font-heading text-display-fit font-semibold text-balance">
               {title}
             </h1>
             {lead && <p className="text-lead text-muted-foreground">{lead}</p>}

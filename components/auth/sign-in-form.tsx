@@ -60,7 +60,7 @@ export function SignInForm({ next }: { next: string }) {
   if (termsFor) return <TermsStep onConfirm={() => finish(termsFor, true)} />
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 lg:gap-4">
       <GoogleButton
         pending={googlePending}
         onClick={() => {
@@ -74,7 +74,7 @@ export function SignInForm({ next }: { next: string }) {
       <form ref={form} noValidate onSubmit={submitTo(dispatch)}>
         <fieldset
           disabled={pending || googlePending}
-          className="flex min-w-0 flex-col gap-6"
+          className="flex min-w-0 flex-col gap-6 lg:gap-4"
         >
           <TextField
             name="email"

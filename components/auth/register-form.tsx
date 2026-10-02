@@ -99,7 +99,7 @@ export function RegisterForm({
   if (termsFor) return <TermsStep onConfirm={() => finish(termsFor, true)} />
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 lg:gap-4">
       <GoogleButton
         pending={googlePending}
         onClick={() => {
@@ -113,60 +113,72 @@ export function RegisterForm({
       <form ref={form} noValidate onSubmit={submitTo(dispatch)}>
         <fieldset
           disabled={pending || googlePending}
-          className="flex min-w-0 flex-col gap-6"
+          className="flex min-w-0 flex-col gap-6 lg:gap-4"
         >
-          <TextField
-            name="name"
-            label={t("name")}
-            autoComplete="name"
-            required
-            maxLength={50}
-            error={fieldErrors?.name}
-          />
-          <TextField
-            name="email"
-            label={t("email")}
-            type="email"
-            autoComplete="email"
-            required
-            error={fieldErrors?.email}
-          />
-          <PasswordField
-            name="password"
-            label={t("password")}
-            hint={t("passwordHint")}
-            autoComplete="new-password"
-            required
-            error={fieldErrors?.password}
-          />
-          <PasswordField
-            name="confirmPassword"
-            label={t("confirmPassword")}
-            autoComplete="new-password"
-            required
-            error={fieldErrors?.confirmPassword}
-          />
+          {/* Desktop: name and email side by side, then the two passwords,
+              so the whole form fits on one screen. */}
+          <div className="grid gap-6 lg:grid-cols-2 lg:items-start lg:gap-x-6 lg:gap-y-4">
+            <TextField
+              name="name"
+              label={t("name")}
+              autoComplete="name"
+              required
+              maxLength={50}
+              error={fieldErrors?.name}
+            />
+            <TextField
+              name="email"
+              label={t("email")}
+              type="email"
+              autoComplete="email"
+              required
+              error={fieldErrors?.email}
+            />
+            <PasswordField
+              name="password"
+              label={t("password")}
+              hint={t("passwordHint")}
+              autoComplete="new-password"
+              required
+              error={fieldErrors?.password}
+            />
+            <PasswordField
+              name="confirmPassword"
+              label={t("confirmPassword")}
+              autoComplete="new-password"
+              required
+              error={fieldErrors?.confirmPassword}
+            />
+          </div>
           <CheckboxField
             name="terms"
             label={<TermsLabel />}
             error={fieldErrors?.terms}
           />
-          <Field data-invalid={fieldErrors?.recaptcha ? true : undefined}>
-            <Recaptcha
-              ref={recaptcha}
-              siteKey={recaptchaSiteKey}
-              locale={locale}
+          {/* Desktop: the robot check and the button side by side, the
+              form's problem under both (read in this order everywhere). */}
+          <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[304px_minmax(0,1fr)] lg:items-center lg:gap-4">
+            <Field data-invalid={fieldErrors?.recaptcha ? true : undefined}>
+              <Recaptcha
+                ref={recaptcha}
+                siteKey={recaptchaSiteKey}
+                locale={locale}
+              />
+              {fieldErrors?.recaptcha && (
+                <FieldError>{errors(fieldErrors.recaptcha)}</FieldError>
+              )}
+            </Field>
+            <FormAlert
+              error={state.error}
+              className="lg:col-span-2 lg:row-start-2"
             />
-            {fieldErrors?.recaptcha && (
-              <FieldError>{errors(fieldErrors.recaptcha)}</FieldError>
-            )}
-          </Field>
-          <FormAlert error={state.error} />
-          <SubmitButton
-            pending={pending}
-            label={t("createAccount")}
-            pendingLabel={t("creatingAccount")}
-          />
+            <SubmitButton
+              pending={pending}
+              label={t("createAccount")}
+              pendingLabel={t("creatingAccount")}
+              className="lg:col-start-2 lg:row-start-1"
+            />
+          </div>
         </fieldset>
       </form>
     </div>

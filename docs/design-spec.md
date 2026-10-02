@@ -168,21 +168,22 @@ blood-text and destructive on background, card and muted ≥ 4.5; ember on backg
 
 ### 4.2 Scale (fluid)
 
-| Style                  | Family  | Size                         | Line height | Weight |
-| ---------------------- | ------- | ---------------------------- | ----------- | ------ |
-| `display-xl` (home H1) | display | clamp(3.25rem, 7.2vw, 7rem)  | 0.92        | 600    |
-| `display` (page H1)    | display | clamp(2.75rem, 6vw, 5.5rem)  | 0.95        | 600    |
-| `h2` (section)         | display | clamp(1.9rem, 3.4vw, 3rem)   | 1           | 600    |
-| `h3` (names in lists)  | display | clamp(1.75rem, 3vw, 2.75rem) | 1.02        | 500    |
-| `numeral` (countdown)  | display | clamp(3rem, 6.2vw, 5.75rem)  | 0.95        | 500    |
-| `lead`                 | text    | 1.3125rem                    | 1.5         | 400    |
-| `body-lg` (lore)       | text    | 1.25rem                      | 1.65        | 400    |
-| body                   | text    | 1.125rem (18 px)             | 1.55        | 400    |
-| `ui` (nav, buttons)    | text    | 17 → 20 px, small caps       | 1.1         | 600    |
-| `label`                | text    | 17 → 20.4 px, small caps     | 1.2         | 600    |
-| `micro` (units, meta)  | text    | 15 → 18 px, small caps       | 1.2         | 600    |
-| `billing` (credits)    | text    | 19 → 22.8 px, small caps     | 1.2         | 600    |
-| `badge`                | text    | 14 → 16.8 px, small caps     | 1           | 600    |
+| Style                      | Family  | Size                                       | Line height | Weight |
+| -------------------------- | ------- | ------------------------------------------ | ----------- | ------ |
+| `display-xl` (home H1)     | display | clamp(3.25rem, 7.2vw, 7rem)                | 0.92        | 600    |
+| `display` (page H1)        | display | clamp(2.75rem, 6vw, 5.5rem)                | 0.95        | 600    |
+| `display-fit` (account H1) | display | clamp(2.75rem, min(5.2vw, 7.5svh), 5.5rem) | 0.95        | 600    |
+| `h2` (section)             | display | clamp(1.9rem, 3.4vw, 3rem)                 | 1           | 600    |
+| `h3` (names in lists)      | display | clamp(1.75rem, 3vw, 2.75rem)               | 1.02        | 500    |
+| `numeral` (countdown)      | display | clamp(3rem, 6.2vw, 5.75rem)                | 0.95        | 500    |
+| `lead`                     | text    | 1.3125rem                                  | 1.5         | 400    |
+| `body-lg` (lore)           | text    | 1.25rem                                    | 1.65        | 400    |
+| body                       | text    | 1.125rem (18 px)                           | 1.55        | 400    |
+| `ui` (nav, buttons)        | text    | 17 → 20 px, small caps                     | 1.1         | 600    |
+| `label`                    | text    | 17 → 20.4 px, small caps                   | 1.2         | 600    |
+| `micro` (units, meta)      | text    | 15 → 18 px, small caps                     | 1.2         | 600    |
+| `billing` (credits)        | text    | 19 → 22.8 px, small caps                   | 1.2         | 600    |
+| `badge`                    | text    | 14 → 16.8 px, small caps                   | 1           | 600    |
 
 The small-capital sizes grow fluidly from phones to desktop (`clamp()`, `app/globals.css`); on
 desktop they are 1.2 times the phone size (owner). Footer links, legal lines and language links
@@ -590,8 +591,12 @@ All `noindex`. A signed-in visitor is sent on to `next` (sign in, register).
 
 - Desktop split: left 5 columns, the night: a blood-red light rising under fog that fades out on
   every side, and "Are you ready for the dark?" (owner) in hollow gothic letters edged in bone,
-  lit red. Right 7 columns: the title (`display`), the form (max 400 px), the way to the other
-  page under it. Mobile: the form only (the header carries the wordmark).
+  lit red. Right 7 columns: the title (`display-fit`: `display`, held to the screen's height),
+  the form (max 400 px; register 560 px), the way to the other page under it, all on one
+  screen without scrolling (owner) from 1024 × 656 up: tighter gaps from `lg`, and register
+  sets name | email and password | confirm side by side, then the robot check and "Create
+  account" side by side (a form error under both). Mobile: the form only, one column (the
+  header carries the wordmark).
 - Typed text: 20 px on phones, 18 px from `md` (owner: 4 px larger than the preset's); labels
   and hints keep their sizes.
 - **Sign in:** "Continue with Google" (Google's dark style: fill `#131314`, 1 px border

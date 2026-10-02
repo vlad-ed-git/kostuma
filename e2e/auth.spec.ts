@@ -171,6 +171,36 @@ test.describe("a new password", () => {
   })
 })
 
+test.describe("on a laptop screen", () => {
+  // Each page's last line: the way to the other account page.
+  const lastLines = [
+    { path: "/sign-in", last: "Create an account" },
+    { path: "/register", last: "Sign in" },
+    { path: "/reset-password", last: "Back to sign in" },
+  ]
+  for (const { path, last } of lastLines) {
+    test(`${path} shows the whole form without scrolling`, async ({
+      page,
+      isMobile,
+    }) => {
+      test.skip(isMobile, "phones scroll")
+      // A 1366 × 768 laptop's browser window: the smallest common desktop.
+      await page.setViewportSize({ width: 1366, height: 657 })
+      // Google silent: the robot check keeps its place reserved.
+      await page.route("https://www.google.com/recaptcha/**", () => {})
+      await page.goto(path)
+      const line = page
+        .getByRole("main")
+        .getByRole("link", { name: last, exact: true })
+      const bottom = await line.evaluate(
+        (element) => element.getBoundingClientRect().bottom
+      )
+      expect(bottom).toBeLessThanOrEqual(657)
+      expect(await page.evaluate(() => window.scrollY)).toBe(0)
+    })
+  }
+})
+
 test.describe("signed in", () => {
   test.beforeEach(({ context, baseURL }) => signIn(context, baseURL!))
 

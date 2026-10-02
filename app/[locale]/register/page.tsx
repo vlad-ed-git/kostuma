@@ -26,6 +26,7 @@ export default async function RegisterPage({
   return (
     <AuthShell
       title={t("registerTitle")}
+      wide
       footer={t.rich("haveAccount", {
         link: (chunks) => (
           <Link href={withNext("/sign-in", next)} className={authLinkClass}>
