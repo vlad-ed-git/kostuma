@@ -65,6 +65,9 @@ const nextConfig: NextConfig = {
         "@/lib/auth/browser": "./lib/auth/browser.e2e.ts",
         "@/lib/users": "./lib/users.e2e.ts",
         "@/lib/basket/firestore": "./lib/basket/firestore.e2e.ts",
+        "@/lib/fitting-room/store": "./lib/fitting-room/store.e2e.ts",
+        "@/lib/fitting-room/renderer": "./lib/fitting-room/renderer.e2e.ts",
+        "@/lib/fitting-room/garment": "./lib/fitting-room/garment.e2e.ts",
       },
     },
   }),
@@ -97,6 +100,12 @@ const nextConfig: NextConfig = {
   experimental: {
     // The 404 page for URLs outside every language: app/global-not-found.tsx.
     globalNotFound: true,
+    serverActions: {
+      // The Fitting Room's two photos, which the browser shrinks to about
+      // 1 MB each first (lib/fitting-room/photo-rules.ts); Vercel takes 4.5 MB
+      // a request at most.
+      bodySizeLimit: "4mb",
+    },
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }]

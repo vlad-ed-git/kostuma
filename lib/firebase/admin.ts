@@ -3,6 +3,7 @@ import "server-only"
 import { cert, getApps, initializeApp, type App } from "firebase-admin/app"
 import { getAuth } from "firebase-admin/auth"
 import { getFirestore } from "firebase-admin/firestore"
+import { getStorage } from "firebase-admin/storage"
 
 // These errors are for developers (the server's log): a visitor only ever
 // reads a translated message.
@@ -59,4 +60,12 @@ export function adminAuth() {
 /** Firestore with admin rights: the security rules do not apply. */
 export function adminDb() {
   return getFirestore(adminApp())
+}
+
+/**
+ * The project's Cloud Storage bucket with admin rights: storage.rules do not
+ * apply (they keep everything but the costume photos closed to browsers).
+ */
+export function adminBucket() {
+  return getStorage(adminApp()).bucket(required("NEXT_PUBLIC_storageBucket"))
 }
