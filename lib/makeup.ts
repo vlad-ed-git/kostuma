@@ -1,6 +1,9 @@
 /**
- * Makeup guides (content/makeup.ts): the steps that turn a face into a
- * character, as the Fitting Room shows them. Each step is one YouCam render
+ * Makeup guides (content/makeup.ts): the everyday makeup that brings a face
+ * close to a character, as the Fitting Room shows it. Not a film's makeup
+ * department: what its artists do with paint and prosthetics becomes the
+ * closest makeup a visitor can do at home, which YouCam can render, and the
+ * face stays theirs (no face painted over). Each step is one YouCam render
  * on the previous step's picture (1 unit), so the visitor sees their face
  * after every step:
  * - Makeup VTO: `POST /s2s/v2.0/task/makeup-vto` with `version: "1.0"` and
@@ -322,11 +325,10 @@ export const smooth = (strength: number): MakeupEffect => ({
   skinSmoothColorIntensity: strength,
 })
 
-/** A base over the whole face: face paint at full coverage, a tint at less. */
-export const base = (
+const foundation = (
   color: Hex | FromSkin,
-  coverage = 100,
-  glow = 0
+  coverage: number,
+  glow: number
 ): MakeupEffect => ({
   category: "foundation",
   palettes: [
@@ -340,11 +342,20 @@ export const base = (
 })
 
 /**
- * A pale or porcelain foundation: `shades` lighter than the visitor's own
- * skin, whatever its tone. Face paint (white, green…) uses `base`.
+ * A paler foundation: `shades` lighter than the visitor's own skin, whatever
+ * its tone. Three shades at medium coverage, set with white powder, is how
+ * the guides "paint the face white".
  */
-export const paler = (shades: number, coverage = 80, glow = 0) =>
-  base({ lighterThanSkin: shades }, coverage, glow)
+export const paler = (shades: number, coverage = 60, glow = 0) =>
+  foundation({ lighterThanSkin: shades }, coverage, glow)
+
+/**
+ * A sheer color over the skin: a little color corrector or face paint mixed
+ * into foundation (green for a monster, gray for a corpse), never painted
+ * over the face.
+ */
+export const tint = (color: Hex, coverage = 30) =>
+  foundation(color, coverage, 0)
 
 /** Shadows under the cheekbones, at the temples and along the jaw. */
 export const contour = (color: Hex, intensity = 60): MakeupEffect => ({

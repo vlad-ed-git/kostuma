@@ -199,6 +199,42 @@ describe("the makeup guides", () => {
     expect(new Set(categories).size).toBe(categories.length)
   })
 
+  it.each(guides)("%s keeps the face the visitor's own", (_, guide) => {
+    // Everyday makeup close to the character, not a film's face paint
+    // (owner): the base is a paler foundation or a sheer tint, the shadows
+    // and lines stay moderate, and nothing needs a makeup department.
+    for (const step of guide.steps) {
+      if (step.render.tool === "hair") continue
+      for (const effect of step.render.effects) {
+        const where = `${step.title}: ${effect.category}`
+        if (effect.category === "foundation") {
+          const [palette] = effect.palettes
+          const fromSkin = typeof palette.color === "object"
+          expect(palette.coverageIntensity, where).toBeLessThanOrEqual(
+            fromSkin ? 70 : 35
+          )
+        }
+        if (effect.category === "eye_shadow" || effect.category === "eye_liner")
+          for (const palette of effect.palettes)
+            expect(palette.colorIntensity, where).toBeLessThanOrEqual(75)
+        if (effect.category === "contour" || effect.category === "bronzer")
+          expect(effect.palettes[0].colorIntensity, where).toBeLessThanOrEqual(
+            55
+          )
+        if (effect.category === "lip_liner")
+          expect(effect.palettes[0].thickness, where).toBeLessThanOrEqual(50)
+      }
+    }
+    const texts = [
+      ...guide.steps.map((step) => step.howTo),
+      ...(guide.finish ? [guide.finish] : []),
+    ]
+    for (const text of texts)
+      expect(text).not.toMatch(
+        /latex|prosthetic|bald cap|contact lens|scar wax|spirit gum|glue/i
+      )
+  })
+
   it.each(guides)("%s is renderable as it is", (_, guide) => {
     for (const step of guide.steps) {
       const { render } = step
