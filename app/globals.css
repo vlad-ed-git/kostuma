@@ -1,132 +1,215 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "./film.css";
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Kostuma is dark only, so there is one palette (docs/design-spec.md §3):
+ * Halloween night. A cold, moonlit black, bone-white text, blood red for
+ * light and action, cold fog, and pumpkin orange for My Pumpkin Basket
+ * only. <html> keeps the `dark` class so the preset components' `dark:`
+ * variants apply. app/palette.test.ts checks every contrast pair the spec
+ * promises, so change a value here and the test tells you what broke.
+ */
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.141 0.005 285.823);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.141 0.005 285.823);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.141 0.005 285.823);
-    --primary: oklch(0.505 0.213 27.518);
-    --primary-foreground: oklch(0.971 0.013 17.38);
-    --secondary: oklch(0.967 0.001 286.375);
-    --secondary-foreground: oklch(0.21 0.006 285.885);
-    --muted: oklch(0.967 0.001 286.375);
-    --muted-foreground: oklch(0.552 0.016 285.938);
-    --accent: oklch(0.967 0.001 286.375);
-    --accent-foreground: oklch(0.21 0.006 285.885);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.92 0.004 286.32);
-    --input: oklch(0.92 0.004 286.32);
-    --ring: oklch(0.705 0.015 286.067);
-    --chart-1: oklch(0.808 0.114 19.571);
-    --chart-2: oklch(0.637 0.237 25.331);
-    --chart-3: oklch(0.577 0.245 27.325);
-    --chart-4: oklch(0.505 0.213 27.518);
-    --chart-5: oklch(0.444 0.177 26.899);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.141 0.005 285.823);
-    --sidebar-primary: oklch(0.577 0.245 27.325);
-    --sidebar-primary-foreground: oklch(0.971 0.013 17.38);
-    --sidebar-accent: oklch(0.967 0.001 286.375);
-    --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-    --sidebar-border: oklch(0.92 0.004 286.32);
-    --sidebar-ring: oklch(0.705 0.015 286.067);
-}
+  color-scheme: dark;
 
-.dark {
-    --background: oklch(0.141 0.005 285.823);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.21 0.006 285.885);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.21 0.006 285.885);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.444 0.177 26.899);
-    --primary-foreground: oklch(0.971 0.013 17.38);
-    --secondary: oklch(0.274 0.006 286.033);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.274 0.006 286.033);
-    --muted-foreground: oklch(0.705 0.015 286.067);
-    --accent: oklch(0.274 0.006 286.033);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.552 0.016 285.938);
-    --chart-1: oklch(0.808 0.114 19.571);
-    --chart-2: oklch(0.637 0.237 25.331);
-    --chart-3: oklch(0.577 0.245 27.325);
-    --chart-4: oklch(0.505 0.213 27.518);
-    --chart-5: oklch(0.444 0.177 26.899);
-    --sidebar: oklch(0.21 0.006 285.885);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.637 0.237 25.331);
-    --sidebar-primary-foreground: oklch(0.971 0.013 17.38);
-    --sidebar-accent: oklch(0.274 0.006 286.033);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.552 0.016 285.938);
+  --background: oklch(0.135 0.007 269);
+  --foreground: oklch(0.926 0.017 85);
+  --card: oklch(0.164 0.011 268);
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.5 0.195 27);
+  --primary-foreground: var(--foreground);
+  --secondary: oklch(0.209 0.015 267);
+  --secondary-foreground: var(--foreground);
+  --muted: var(--secondary);
+  --muted-foreground: oklch(0.656 0.015 300);
+  --accent: var(--secondary);
+  --accent-foreground: var(--foreground);
+  --destructive: oklch(0.73 0.16 24);
+  --border: oklch(0.926 0.017 85 / 9%);
+  --input: oklch(0.926 0.017 85 / 45%);
+  --ring: var(--foreground);
+
+  /* Kostuma's own tokens. */
+  --blood: oklch(0.529 0.209 26);
+  --blood-text: oklch(0.627 0.22 24);
+  /* Moonlight and fog: cold, never text. */
+  --moon: oklch(0.8 0.035 250);
+  --ember: oklch(0.77 0.155 62);
+  --field-border: var(--input);
+  --focus: var(--ring);
+
+  /* The red ramp: glows and light (and charts, should there ever be any). */
+  --chart-1: oklch(0.8 0.1 25);
+  --chart-2: var(--blood-text);
+  --chart-3: var(--blood);
+  --chart-4: var(--primary);
+  --chart-5: oklch(0.4 0.15 27);
+
+  --radius: 0.625rem;
+  --sidebar: var(--card);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--secondary);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  /* System Chinese fonts: no CJK web font is downloaded. */
+  --font-cjk:
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC",
+    "Source Han Sans SC";
 }
 
 @theme inline {
-    --font-sans: var(--font-sans);
-    --font-heading: var(--font-heading);
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-accent: var(--accent);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-secondary: var(--secondary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-primary: var(--primary);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --color-foreground: var(--foreground);
-    --color-background: var(--background);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
+  /* The families come from app/fonts.ts (next/font sets the variables). */
+  --font-sans:
+    var(--font-crimson-pro), var(--font-cjk), "Iowan Old Style", Georgia, serif;
+  --font-heading: var(--font-grenze-gotisch), var(--font-cjk), Georgia, serif;
+  --font-mono: var(--font-sans);
+
+  --color-blood: var(--blood);
+  --color-blood-text: var(--blood-text);
+  --color-ember: var(--ember);
+  --color-field-border: var(--field-border);
+  --color-focus: var(--focus);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* The type scale (spec §4.2): size, line height and tracking together. The
+   gothic display face runs wide, the book serif runs small: sizes follow. */
+@theme {
+  --text-display-xl: clamp(3.25rem, 7.2vw, 7rem);
+  --text-display-xl--line-height: 0.92;
+  --text-display-xl--letter-spacing: -0.005em;
+  --text-display: clamp(2.75rem, 6vw, 5.5rem);
+  --text-display--line-height: 0.95;
+  --text-h2: clamp(1.9rem, 3.4vw, 3rem);
+  --text-h2--line-height: 1;
+  --text-h3: clamp(1.75rem, 3vw, 2.75rem);
+  --text-h3--line-height: 1.02;
+  /* Small capitals for the interface: 1.2 times their first size on
+     desktop (owner), their first size on phones. */
+  --text-billing: clamp(1.1875rem, 0.85rem + 0.65vw, 1.425rem);
+  --text-billing--line-height: 1.2;
+  --text-ui: clamp(1.0625rem, 0.75rem + 0.62vw, 1.25rem);
+  --text-ui--line-height: 1.1;
+  --text-badge: clamp(0.875rem, 0.6rem + 0.5vw, 1.05rem);
+  --text-badge--line-height: 1;
+  --text-lead: 1.3125rem;
+  --text-lead--line-height: 1.5;
+  --text-body-lg: 1.25rem;
+  --text-body-lg--line-height: 1.65;
+  --text-label: clamp(1.0625rem, 0.75rem + 0.6vw, 1.275rem);
+  --text-label--line-height: 1.2;
+  --text-micro: clamp(0.9375rem, 0.65rem + 0.55vw, 1.125rem);
+  --text-micro--line-height: 1.2;
+  --text-numeral: clamp(3rem, 6.2vw, 5.75rem);
+  --text-numeral--line-height: 0.95;
+
+  /* Motion (spec §7.1). */
+  --ease-dread: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-heavy: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    }
-  body {
-    @apply bg-background text-foreground;
-    }
-  button:not(:disabled), [role="button"]:not(:disabled) {
-    cursor: pointer;
-    }
+  }
   html {
     @apply font-sans;
-    }
+    /* Never a faked bold or italic; small capitals may be drawn from the
+       capitals where the font has none (the `caps` utility). */
+    font-synthesis: small-caps;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* The book serif runs small: text starts at 18 px. */
+    font-size: 1.125rem;
+    line-height: 1.55;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  /* One focus indicator for every control (spec §3.2): bone, 2 px, offset. */
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  /*
+   * Chinese (spec §4.3): no tracking, real weights from the system fonts,
+   * and room between lines. `!important` beats the utility classes. Each
+   * element's own language counts, so Latin marked `lang="en"` inside a
+   * Chinese page (the wordmark) keeps its spacing.
+   */
+  *:lang(zh-Hans) {
+    letter-spacing: normal !important;
+    font-style: normal !important;
+  }
+  .font-heading:lang(zh-Hans) {
+    font-weight: 600 !important;
+    line-height: 1.2 !important;
+  }
+  body:lang(zh-Hans) {
+    line-height: 1.8;
+  }
+}
+
+/* Labels, buttons, badges and navigation: small capitals of the book
+   serif, a little tracked (spec §4.1). Chinese has no small capitals and
+   keeps its own spacing (the rule above). */
+@utility caps {
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.09em;
+  font-weight: 600;
 }

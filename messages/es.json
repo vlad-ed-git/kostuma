@@ -1,0 +1,93 @@
+{
+  "App": {
+    "name": "Kostuma",
+    "tagline": "Se acerca el día más oscuro. Transfórmate en un monstruo.",
+    "taglineLead": "Se acerca el día más oscuro.",
+    "taglineTail": "Transfórmate en un monstruo."
+  },
+  "Home": {
+    "chooseCostume": "Elige tu disfraz"
+  },
+  "Countdown": {
+    "label": "Tiempo hasta Halloween",
+    "until": "Hasta Halloween · <b>{date}</b>",
+    "days": "Días",
+    "hours": "Horas",
+    "minutes": "Minutos",
+    "seconds": "Segundos",
+    "left": "{days, plural, one {# día} other {# días}}, {hours, plural, one {# hora} other {# horas}} y {minutes, plural, one {# minuto} other {# minutos}} para Halloween.",
+    "tonight": "Esta noche.",
+    "tonightLine": "El día más oscuro ha llegado."
+  },
+  "Nav": {
+    "label": "Principal",
+    "costumes": "Disfraces",
+    "basket": "Mi cesta de calabaza",
+    "signIn": "Iniciar sesión",
+    "menu": "Menú",
+    "openMenu": "Abrir el menú",
+    "closeMenu": "Cerrar el menú"
+  },
+  "Costume": {
+    "metaTitle": "Disfraz de {name}",
+    "photoAlt": "Disfraz de {name}",
+    "photos": "Fotos",
+    "showPhoto": "Foto {number} de {count}",
+    "breadcrumb": "Ruta de navegación",
+    "costumes": "Disfraces",
+    "lore": "La leyenda",
+    "look": "El atuendo",
+    "funFact": "Detrás de los gritos",
+    "credits": "Créditos",
+    "createdBy": "Creado por",
+    "broughtToLifeBy": "Le dieron vida",
+    "neighbors": "Disfraz anterior y siguiente",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "moreFrom": "Más de {film}",
+    "moreWanted": "Más disfraces"
+  },
+  "Footer": {
+    "explore": "Explorar",
+    "help": "Ayuda",
+    "finePrint": "Letra pequeña",
+    "reportBug": "Informar de un error",
+    "shareFeedback": "Enviar comentarios",
+    "requestCostume": "Pedir un disfraz",
+    "terms": "Términos del servicio",
+    "privacy": "Política de privacidad",
+    "contentWarning": "Imágenes de terror. No apto para niños.",
+    "trademarks": "Los nombres de los personajes y los títulos de las películas pertenecen a sus dueños. Kostuma no está afiliada a ningún estudio ni tienda.",
+    "copyright": "© {year} Kostuma"
+  },
+  "Badge": {
+    "soon": "Pronto"
+  },
+  "SkipLink": {
+    "label": "Saltar al contenido"
+  },
+  "CueMark": {
+    "loading": "Cargando…"
+  },
+  "Language": {
+    "label": "Idioma",
+    "current": "Idioma: {language}"
+  },
+  "NotFound": {
+    "code": "404",
+    "title": "Perdido en la oscuridad",
+    "description": "Esta página no existe, o la noche ya la reclamó.",
+    "home": "Volver a Kostuma"
+  },
+  "AuthErrors": {
+    "invalid_login_credentials": "Correo o contraseña incorrectos.",
+    "email_change_needs_verification": "Primero confirma tu nuevo correo. Busca el enlace en tu bandeja de entrada.",
+    "email_exists": "Ya hay una cuenta con este correo. Inicia sesión.",
+    "invalid_email": "Escribe un correo completo, como tu@ejemplo.com.",
+    "invalid_password": "Contraseña incorrecta. Inténtalo de nuevo o restablécela.",
+    "too_many_attempts_try_later": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
+    "weak_password": "Elige una contraseña más segura: más larga, con letras, números y símbolos.",
+    "unknown_auth_error": "Algo salió mal. Inténtalo de nuevo.",
+    "network_error": "Sin conexión a internet. Revísala y vuelve a intentarlo."
+  }
+}

@@ -10,9 +10,13 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
+/playwright/.cache/
 
 # next.js
 /.next/
+/.next-e2e/
 /out/
 
 # production
@@ -27,6 +31,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+# The Firebase emulators' (npm run test:firestore)
+firebase-debug.log*
+firestore-debug.log*
 
 # env files (can opt-in for committing if needed)
 .env*
@@ -40,3 +47,8 @@ idea.md
 
 # owner's brief and the working checkpoint (local notes)
 checkpoint.md
+
+# costume photos found by get_images.md: the owner clears their rights first
+/photos/
+/photos-alt/
+halloween_horror_top_100.md

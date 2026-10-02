@@ -1,0 +1,135 @@
+{
+  "App": {
+    "name": "Kostuma",
+    "tagline": "The darkest day is coming. Transform into a monster.",
+    "taglineLead": "The darkest day is coming.",
+    "taglineTail": "Transform into a monster."
+  },
+  "Home": {
+    "chooseCostume": "Choose your costume"
+  },
+  "Countdown": {
+    "label": "Time until Halloween",
+    "until": "Until Halloween · <b>{date}</b>",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds",
+    "left": "{days, plural, one {# day} other {# days}}, {hours, plural, one {# hour} other {# hours}} and {minutes, plural, one {# minute} other {# minutes}} until Halloween.",
+    "tonight": "Tonight.",
+    "tonightLine": "The darkest day is here."
+  },
+  "Nav": {
+    "label": "Main",
+    "costumes": "Costumes",
+    "basket": "My Pumpkin Basket",
+    "signIn": "Sign in",
+    "menu": "Menu",
+    "openMenu": "Open the menu",
+    "closeMenu": "Close the menu"
+  },
+  "Costume": {
+    "metaTitle": "{name} costume",
+    "photoAlt": "{name} costume",
+    "photos": "Photos",
+    "showPhoto": "Photo {number} of {count}",
+    "breadcrumb": "Breadcrumb",
+    "costumes": "Costumes",
+    "lore": "The lore",
+    "look": "The look",
+    "funFact": "Behind the screams",
+    "credits": "Credits",
+    "createdBy": "Created by",
+    "broughtToLifeBy": "Brought to life by",
+    "neighbors": "Previous and next costumes",
+    "previous": "Previous",
+    "next": "Next",
+    "moreFrom": "More from {film}",
+    "moreWanted": "More costumes"
+  },
+  "Basket": {
+    "title": "My Pumpkin Basket",
+    "count": "{count, plural, one {# costume} other {# costumes}}",
+    "label": "My Pumpkin Basket, {count, plural, one {# costume} other {# costumes}}",
+    "unreachable": "Your account can't be reached right now, so changes here may not be saved. Reload the page to try again.",
+    "add": "Add to My Pumpkin Basket",
+    "addNamed": "Add {name} to My Pumpkin Basket",
+    "removeNamed": "Remove {name} from My Pumpkin Basket",
+    "inBasket": "In My Pumpkin Basket",
+    "added": "{name} added to My Pumpkin Basket.",
+    "removed": "{name} removed from My Pumpkin Basket.",
+    "cleared": "My Pumpkin Basket is empty.",
+    "refused": "Your account didn't take that change, so it was undone. Try again.",
+    "costumes": "Costumes in My Pumpkin Basket",
+    "buy": "Buy",
+    "buyNamed": "Buy {name} (opens in a new tab)",
+    "chooseShop": "Buy {name}: choose a shop",
+    "buyAt": "Buy at {shop}",
+    "buyAtNamed": "Buy at {shop} (opens in a new tab)",
+    "shops": "Shops",
+    "tryOn": "Try on",
+    "tryOnNamed": "Try on {name} (soon)",
+    "remove": "Remove",
+    "clear": "Clear basket",
+    "clearConfirm": "Click again to clear",
+    "empty": "Your basket is empty.",
+    "emptyLine": "The night is young.",
+    "browse": "Browse costumes"
+  },
+  "FittingRoom": {
+    "title": "The Fitting Room",
+    "line": "Try on the outfits in your basket, special-effects makeup included.",
+    "price": "{free, plural, one {# free try-on} other {# free try-ons}}, then {price} per costume.",
+    "enter": "Step inside"
+  },
+  "Footer": {
+    "explore": "Explore",
+    "help": "Help",
+    "finePrint": "Fine print",
+    "reportBug": "Report a bug",
+    "shareFeedback": "Share feedback",
+    "requestCostume": "Request a costume",
+    "terms": "Terms of service",
+    "privacy": "Privacy policy",
+    "contentWarning": "Horror imagery. Not intended for children.",
+    "trademarks": "Character names and film titles belong to their owners. Kostuma is not affiliated with any studio or retailer.",
+    "copyright": "© {year} Kostuma"
+  },
+  "Badge": {
+    "soon": "Soon",
+    "premium": "Premium"
+  },
+  "SkipLink": {
+    "label": "Skip to content"
+  },
+  "CueMark": {
+    "loading": "Loading…"
+  },
+  "Language": {
+    "label": "Language",
+    "current": "Language: {language}"
+  },
+  "NotFound": {
+    "code": "404",
+    "title": "Lost in the dark",
+    "description": "This page does not exist, or it has already been claimed by the night.",
+    "home": "Back to Kostuma"
+  },
+  "Error": {
+    "title": "Something went wrong",
+    "description": "Something on this page failed. Try again, or head back to Kostuma.",
+    "retry": "Try again",
+    "home": "Back to Kostuma"
+  },
+  "AuthErrors": {
+    "invalid_login_credentials": "Wrong email or password.",
+    "email_change_needs_verification": "Confirm your new email address first. Check your inbox for the link.",
+    "email_exists": "An account already uses this email. Sign in instead.",
+    "invalid_email": "Enter a full email address, like you@example.com.",
+    "invalid_password": "Wrong password. Try again, or reset it.",
+    "too_many_attempts_try_later": "Too many attempts. Wait a few minutes, then try again.",
+    "weak_password": "Choose a stronger password: longer, with a mix of letters, numbers and symbols.",
+    "unknown_auth_error": "Something went wrong. Try again.",
+    "network_error": "No internet connection. Check it, then try again."
+  }
+}
