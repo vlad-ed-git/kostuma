@@ -4,9 +4,23 @@ import createNextIntlPlugin from "next-intl/plugin"
 // Loads each request's locale and messages from i18n/request.ts.
 const withNextIntl = createNextIntlPlugin()
 
-// `npm run test:e2e` builds into its own folder, so a running `next dev`
-// (which uses .next) is never disturbed.
-const e2e = process.env.E2E === "1"
+// The test builds, each in its own folder, so a running `next dev` (which
+// uses .next) is never disturbed:
+// - E2E=1 (`npm run test:e2e`): a browser with the `e2e-session` cookie
+//   counts as signed in, and nothing reaches Firebase (the `*.e2e.ts`
+//   stand-ins below).
+// - E2E=emulators (`npm run test:emulators`): the real thing, against the
+//   local Firebase emulators.
+// Neither may ever reach Vercel.
+const e2e = process.env.E2E
+if (
+  (e2e || process.env.NEXT_PUBLIC_FIREBASE_EMULATOR_HOST) &&
+  process.env.VERCEL
+) {
+  throw new Error("E2E and the Firebase emulators are for local tests only.")
+}
+const distDir =
+  e2e === "1" ? ".next-e2e" : e2e === "emulators" ? ".next-emulators" : ".next"
 
 // On every response. The Content Security Policy needs a fresh nonce per
 // request, so it is set in proxy.ts instead.
@@ -43,7 +57,17 @@ export const costumePhotos = {
 const nextConfig: NextConfig = {
   // Memoizes components automatically (React Compiler, stable in Next 16).
   reactCompiler: true,
-  distDir: e2e ? ".next-e2e" : ".next",
+  distDir,
+  ...(e2e === "1" && {
+    turbopack: {
+      resolveAlias: {
+        "@/lib/auth/session": "./lib/auth/session.e2e.ts",
+        "@/lib/auth/browser": "./lib/auth/browser.e2e.ts",
+        "@/lib/users": "./lib/users.e2e.ts",
+        "@/lib/basket/firestore": "./lib/basket/firestore.e2e.ts",
+      },
+    },
+  }),
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
   // Next 16 removed the `eslint` option: `next build` no longer lints, so

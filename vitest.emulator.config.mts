@@ -7,7 +7,13 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["**/*.emulator.test.ts"],
-    exclude: ["node_modules/**", ".next/**", ".next-e2e/**", "e2e/**"],
+    exclude: [
+      "node_modules/**",
+      ".next/**",
+      ".next-e2e/**",
+      ".next-emulators/**",
+      "e2e/**",
+    ],
     // One emulator, one database: files must not clear each other's data.
     fileParallelism: false,
     testTimeout: 20_000,

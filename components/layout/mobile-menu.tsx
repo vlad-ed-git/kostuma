@@ -5,6 +5,7 @@ import { RiCloseLine, RiMenuLine } from "@remixicon/react"
 import { useTranslations } from "next-intl"
 import { useEffect, useState, type CSSProperties } from "react"
 
+import { SignOutButton } from "@/components/auth/sign-out-button"
 import { LanguageLinks } from "@/components/language/language-links"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Link } from "@/i18n/navigation"
@@ -20,8 +21,16 @@ const WIDE = "(min-width: 64rem)"
  * Base UI's dialog traps focus, closes on Escape, returns focus to the menu
  * button and locks the page's scroll.
  */
-export function MobileMenu({ className }: { className?: string }) {
+export function MobileMenu({
+  signedIn,
+  className,
+}: {
+  /** Account and Sign out at the bottom, else Sign in. */
+  signedIn: boolean
+  className?: string
+}) {
   const t = useTranslations("Nav")
+  const account = useTranslations("Account")
   const [open, setOpen] = useState(false)
   const close = () => setOpen(false)
 
@@ -86,13 +95,26 @@ export function MobileMenu({ className }: { className?: string }) {
 
           <div className="mt-auto flex flex-wrap items-center justify-between gap-4 border-t border-border pt-6">
             <LanguageLinks />
-            <Link
-              href="/sign-in"
-              onClick={close}
-              className={buttonVariants({ variant: "outline", size: "lg" })}
-            >
-              {t("signIn")}
-            </Link>
+            {signedIn ? (
+              <div className="flex flex-wrap items-center gap-3">
+                <Link
+                  href="/account"
+                  onClick={close}
+                  className={buttonVariants({ variant: "ghost", size: "lg" })}
+                >
+                  {account("account")}
+                </Link>
+                <SignOutButton onSignOut={close} />
+              </div>
+            ) : (
+              <Link
+                href="/sign-in"
+                onClick={close}
+                className={buttonVariants({ variant: "outline", size: "lg" })}
+              >
+                {t("signIn")}
+              </Link>
+            )}
           </div>
         </Dialog.Popup>
       </Dialog.Portal>

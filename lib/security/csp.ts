@@ -10,6 +10,11 @@ type CspOptions = {
    * opens a popup that talks to the page through a hidden iframe there.
    */
   authDomain?: string
+  /**
+   * The local Firebase emulators' host (the emulator e2e tests only; never
+   * on Vercel, next.config.ts refuses it): their Auth and Firestore ports.
+   */
+  emulatorHost?: string
 }
 
 // Firebase Auth's REST endpoints, called by the sign-in forms.
@@ -41,8 +46,12 @@ export function contentSecurityPolicy({
   dev,
   https,
   authDomain,
+  emulatorHost,
 }: CspOptions) {
   const firebaseFrame = isHostname(authDomain) ? [`https://${authDomain}`] : []
+  const emulators = isHostname(emulatorHost)
+    ? [`http://${emulatorHost}:9099`, `http://${emulatorHost}:8085`]
+    : []
 
   const directives: Record<string, string[]> = {
     "default-src": ["'self'"],
@@ -58,8 +67,14 @@ export function contentSecurityPolicy({
     "style-src": ["'self'", "'unsafe-inline'"],
     "img-src": ["'self'", "blob:", "data:"],
     "font-src": ["'self'"],
-    "connect-src": ["'self'", ...firebaseAuth, firestore, recaptcha],
-    "frame-src": [...recaptchaFrames, ...firebaseFrame],
+    "connect-src": [
+      "'self'",
+      ...firebaseAuth,
+      firestore,
+      recaptcha,
+      ...emulators,
+    ],
+    "frame-src": [...recaptchaFrames, ...firebaseFrame, ...emulators],
     "object-src": ["'none'"],
     "base-uri": ["'self'"],
     "form-action": ["'self'"],

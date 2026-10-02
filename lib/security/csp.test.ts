@@ -48,6 +48,19 @@ describe("contentSecurityPolicy", () => {
     expect(connect).not.toContain("https://*.googleapis.com")
   })
 
+  it("reaches the local Firebase emulators only when told to", () => {
+    const local = directives(
+      contentSecurityPolicy({ ...base, emulatorHost: "127.0.0.1" })
+    )
+    expect(local.get("connect-src")).toContain("http://127.0.0.1:9099")
+    expect(local.get("connect-src")).toContain("http://127.0.0.1:8085")
+    const live = contentSecurityPolicy(base)
+    expect(live).not.toContain("9099")
+    expect(
+      contentSecurityPolicy({ ...base, emulatorHost: "evil.com; script-src *" })
+    ).not.toContain("evil.com")
+  })
+
   it("lets Firebase's sign-in frame load from the auth domain", () => {
     const policy = directives(
       contentSecurityPolicy({

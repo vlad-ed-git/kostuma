@@ -15,6 +15,7 @@ export function proxy(request: NextRequest) {
     dev: process.env.NODE_ENV === "development",
     https: request.nextUrl.protocol === "https:",
     authDomain: process.env.NEXT_PUBLIC_authDomain,
+    emulatorHost: process.env.NEXT_PUBLIC_FIREBASE_EMULATOR_HOST,
   })
 
   // Next.js reads the nonce from the request's CSP header and puts it on its

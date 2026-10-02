@@ -22,7 +22,7 @@ type BasketToggleProps = {
  */
 export function BasketToggle({ slug, name, className }: BasketToggleProps) {
   const t = useTranslations("Basket")
-  const { has, add, remove, announce } = useBasket()
+  const { ready, has, add, remove, announce } = useBasket()
   const inBasket = has(slug)
   // Each add lights it again.
   const [ignitions, setIgnitions] = useState(0)
@@ -30,6 +30,8 @@ export function BasketToggle({ slug, name, className }: BasketToggleProps) {
   return (
     <button
       type="button"
+      // Until the basket is read (the page's scripts), a press would be lost.
+      disabled={!ready}
       aria-label={
         inBasket ? t("removeNamed", { name }) : t("addNamed", { name })
       }

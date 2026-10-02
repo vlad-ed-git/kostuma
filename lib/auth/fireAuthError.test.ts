@@ -19,7 +19,11 @@ describe("mapAuthErrorToEnum", () => {
       AuthErrorCodes.EMAIL_EXISTS,
     ],
     ["Firebase: Error (auth/invalid-email).", AuthErrorCodes.INVALID_EMAIL],
-    ["Firebase: Error (auth/wrong-password).", AuthErrorCodes.INVALID_PASSWORD],
+    // Never which of the two was wrong: that would reveal the account.
+    [
+      "Firebase: Error (auth/wrong-password).",
+      AuthErrorCodes.INVALID_LOGIN_CREDENTIALS,
+    ],
     [
       "Firebase: Error (auth/too-many-requests).",
       AuthErrorCodes.TOO_MANY_ATTEMPTS_TRY_LATER,

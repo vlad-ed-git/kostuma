@@ -128,6 +128,10 @@
   --text-display-xl--letter-spacing: -0.005em;
   --text-display: clamp(2.75rem, 6vw, 5.5rem);
   --text-display--line-height: 0.95;
+  /* The account pages' titles: `display`, also held to the screen's
+     height, so a short desktop screen still shows the whole form. */
+  --text-display-fit: clamp(2.75rem, min(5.2vw, 7.5svh), 5.5rem);
+  --text-display-fit--line-height: 0.95;
   --text-h2: clamp(1.9rem, 3.4vw, 3rem);
   --text-h2--line-height: 1;
   --text-h3: clamp(1.75rem, 3vw, 2.75rem);

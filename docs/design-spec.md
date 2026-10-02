@@ -27,8 +27,9 @@ light of a window, the contrast of classic horror lighting. Gothic titles like t
 80s slashers, a bookish serif for everything read, like the lore of an old horror novel.
 
 **Horror you can see.** Effects must be visible at a glance (fog you notice, a flickering title, eyes in the dark), while pages stay
-simple (8, 12). Ruled out: neon/VHS/synthwave, futuristic chrome, and the generic dark site
-(condensed capitals, typewriter labels, a grid of identical cards).
+simple (8, 12). Ruled out: neon and synthwave (VHS appears only as a damaged tape on the title
+cards, 8.9), futuristic chrome, and the generic dark site (condensed capitals, typewriter labels,
+a grid of identical cards).
 
 ### 1.2 Vocabulary
 
@@ -168,21 +169,22 @@ blood-text and destructive on background, card and muted ≥ 4.5; ember on backg
 
 ### 4.2 Scale (fluid)
 
-| Style                  | Family  | Size                         | Line height | Weight |
-| ---------------------- | ------- | ---------------------------- | ----------- | ------ |
-| `display-xl` (home H1) | display | clamp(3.25rem, 7.2vw, 7rem)  | 0.92        | 600    |
-| `display` (page H1)    | display | clamp(2.75rem, 6vw, 5.5rem)  | 0.95        | 600    |
-| `h2` (section)         | display | clamp(1.9rem, 3.4vw, 3rem)   | 1           | 600    |
-| `h3` (names in lists)  | display | clamp(1.75rem, 3vw, 2.75rem) | 1.02        | 500    |
-| `numeral` (countdown)  | display | clamp(3rem, 6.2vw, 5.75rem)  | 0.95        | 500    |
-| `lead`                 | text    | 1.3125rem                    | 1.5         | 400    |
-| `body-lg` (lore)       | text    | 1.25rem                      | 1.65        | 400    |
-| body                   | text    | 1.125rem (18 px)             | 1.55        | 400    |
-| `ui` (nav, buttons)    | text    | 17 → 20 px, small caps       | 1.1         | 600    |
-| `label`                | text    | 17 → 20.4 px, small caps     | 1.2         | 600    |
-| `micro` (units, meta)  | text    | 15 → 18 px, small caps       | 1.2         | 600    |
-| `billing` (credits)    | text    | 19 → 22.8 px, small caps     | 1.2         | 600    |
-| `badge`                | text    | 14 → 16.8 px, small caps     | 1           | 600    |
+| Style                      | Family  | Size                                       | Line height | Weight |
+| -------------------------- | ------- | ------------------------------------------ | ----------- | ------ |
+| `display-xl` (home H1)     | display | clamp(3.25rem, 7.2vw, 7rem)                | 0.92        | 600    |
+| `display` (page H1)        | display | clamp(2.75rem, 6vw, 5.5rem)                | 0.95        | 600    |
+| `display-fit` (account H1) | display | clamp(2.75rem, min(5.2vw, 7.5svh), 5.5rem) | 0.95        | 600    |
+| `h2` (section)             | display | clamp(1.9rem, 3.4vw, 3rem)                 | 1           | 600    |
+| `h3` (names in lists)      | display | clamp(1.75rem, 3vw, 2.75rem)               | 1.02        | 500    |
+| `numeral` (countdown)      | display | clamp(3rem, 6.2vw, 5.75rem)                | 0.95        | 500    |
+| `lead`                     | text    | 1.3125rem                                  | 1.5         | 400    |
+| `body-lg` (lore)           | text    | 1.25rem                                    | 1.65        | 400    |
+| body                       | text    | 1.125rem (18 px)                           | 1.55        | 400    |
+| `ui` (nav, buttons)        | text    | 17 → 20 px, small caps                     | 1.1         | 600    |
+| `label`                    | text    | 17 → 20.4 px, small caps                   | 1.2         | 600    |
+| `micro` (units, meta)      | text    | 15 → 18 px, small caps                     | 1.2         | 600    |
+| `billing` (credits)        | text    | 19 → 22.8 px, small caps                   | 1.2         | 600    |
+| `badge`                    | text    | 14 → 16.8 px, small caps                   | 1           | 600    |
 
 The small-capital sizes grow fluidly from phones to desktop (`clamp()`, `app/globals.css`); on
 desktop they are 1.2 times the phone size (owner). Footer links, legal lines and language links
@@ -319,7 +321,14 @@ test measures brightness across the title's bottom edge and fails on a step of 1
    (70 s and 44 s, opposite directions) over the bottom three quarters, fading out top and
    bottom.
 8. **Scratches (page changes only).** Two 1 px bone lines jumping during the 450 ms reel change.
-9. **VHS tracking (404 only).** Unchanged (a rolling band of noise, a split `404`).
+9. **VHS tracking (the 404, the home title, the account pages; owner, 2026-10-02: "I love the
+   effect that the text 404 has and that vhs static band").** A band of bone scan lines (14 % of
+   its box, 15 % opacity) rolls up through the box in 1.2 s every 7 s, over what is in it.
+   Titles split into a red ghost (left) and a bone ghost (right): `404` by 2 px, the home title
+   and the account pages' titles by 0.035 em (at least 2 px). On the home title the band fades
+   in and out before the section's edges (no seam); on the account pages it runs from the
+   screen's left edge through the night and fades out before the form (never over a form, 1.4).
+   The 404 is unchanged. Reduced motion: the band never rolls; the ghosts stay.
 
 Reduced motion: everything above is still (the flashlight stays put, the fog and grain freeze,
 nothing flickers or beats).
@@ -423,8 +432,9 @@ Client components are marked (C). Everything else renders on the server.
     the link is named with the count ("My Pumpkin Basket, 3 costumes"), the badge itself is
     hidden from screen readers. Adding a costume anywhere on the page ignites it and rolls the
     count up; taking one out rolls it down (7.2). Places only, never actions.
-  - Then the language menu and the account: "Sign in" (ghost) or a square avatar with initials → menu (Account,
-    Sign out).
+  - Then the language menu and the account: "Sign in" (outline) or, signed in, a 44 px square
+    with the visitor's initials (bone on `--card`, a red glow on hover) named "Your account",
+    opening a menu like the language menu: their name and email, Account, Sign out.
   - Transparent over a title card (any page with `[data-title-card]`: the home hero, the 404);
     after 24 px of scroll (and on every other page) it becomes `--background` at 80 % +
     `backdrop-blur-md` + bottom hairline. A scroll-driven animation; browsers without one keep
@@ -499,7 +509,8 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
    (owner). Desktop: the tagline on the left, the countdown on the right with "Choose your
    costume" under it (owner), bottoms aligned; the figure in the window stands between them.
    Phones: the figure as a small tableau on top, then one column.
-   - H1 `display-xl`, flickering (7.2): "The darkest day is coming." (`App.taglineLead`).
+   - H1 `display-xl`, flickering (7.2) and split into the red and bone ghosts (8.9): "The
+     darkest day is coming." (`App.taglineLead`). The VHS band rolls over the whole title (8.9).
    - Under it, in `--blood-text` with a red glow: "Transform into a monster." (`App.taglineTail`).
    - **Countdown** (`components/countdown`, logic in `lib/countdown`): a small-capital line
      "Until Halloween · **Saturday, October 31**" (the date in bone, formatted per locale), then
@@ -585,27 +596,46 @@ title, toolbar or empty state for one.
 
 ### 11.5 Sign in `/sign-in`, Register `/register`, Reset password `/reset-password`
 
-- Desktop split: left 5 columns atmospheric panel (fog, grain, `display` line "Who will you
-  become?" in outline text), right 7 columns with the form column (max 400 px). Mobile: form only,
-  small wordmark above.
-- **Sign in:** "Continue with Google" button (Google's dark variant: fill `#131314`, 1 px border
-  `#8E918F`, text `#E3E3E3`, the multicolor G logo, "Continue with Google"), divider "or", email,
-  password (show/hide), "Forgot your password?" link, submit "Sign in". Footer link "New here?
-  Create an account".
-- **Register:** Google button, divider, name, email, password (hint: at least 8 characters),
-  confirm password, checkbox "I am 17 or older", reCAPTCHA (dark, 304 × 78 reserved), submit
-  "Create account". Footer link "Already have an account? Sign in".
-- **Reset:** email + submit "Send reset link"; always answers "If an account uses that email, a
-  reset link is on its way." (never reveals whether an account exists).
-- Errors: field errors under fields; form errors in a FormAlert; all from translated codes.
+All `noindex`. A signed-in visitor is sent on to `next` (sign in, register).
+
+- Desktop split: left 5 columns, the night: a blood-red light rising under fog that fades out on
+  every side, "Are you ready for the dark?" (owner) in hollow gothic letters edged in bone, lit
+  red, and the VHS band rolling through it (8.9). Right 7 columns: the title (`display-fit`:
+  `display`, held to the screen's height; split into the red and bone ghosts, 8.9, at every
+  size), the form (max 400 px; register 560 px), the way to the other page under it, all on
+  one screen without scrolling (owner) from 1024 × 656 up: tighter gaps from `lg`, and
+  register sets name | email and password | confirm side by side, then the robot check and
+  "Create account" side by side (a form error under both). Mobile: the form only, one column (the
+  header carries the wordmark).
+- Typed text: 20 px on phones, 18 px from `md` (owner: 4 px larger than the preset's); labels
+  and hints keep their sizes.
+- **Sign in:** "Continue with Google" (Google's dark style: fill `#131314`, 1 px border
+  `#8E918F`, text `#E3E3E3` in Roboto/Arial, the multicolor G), "or" on a hairline, email,
+  password (show/hide), "Forgot your password?", submit "Sign in". Under it: "New here? Create
+  an account" (keeps `next`).
+- **Register:** Google, "or", name, email, password (hint "At least 8 characters."), confirm
+  password, the checkbox "I agree to the Terms of service and Privacy policy" (owner: no age
+  checkbox), each a link to `/terms` and `/privacy` opening in a new tab so nothing typed is
+  lost, reCAPTCHA (dark, in the page's language; its 78 px kept so the form doesn't jump;
+  Google's compact box where 304 px doesn't fit; if Google fails or stays silent 10 s, a line
+  says so in words), submit "Create account". Under it: "Already have an account? Sign in".
+- **A first sign-in** (Google, or an account made elsewhere): before the account's profile
+  exists, `h2` "One more thing" (focused) and the same terms checkbox, then "Continue".
+- **Reset:** a line on what happens, email, "Send reset link"; always answers "If an account
+  uses that email, a reset link is on its way." (never reveals whether an account exists).
+- Errors: field errors under fields; form errors in a FormAlert; after a failed submit focus
+  goes to the first field in error, else the alert; all from translated codes (zod's and
+  Firebase's alike). Signing in never says which of the email or password was wrong. Closing
+  Google's window is the visitor's choice: nothing is said.
 - Pending: fieldset disabled, button spinner + "Signing in…" / "Creating account…" /
-  "Sending…".
+  "Sending…" / "Continuing…".
 
 ### 11.6 Account `/account`
 
-- H1 "Your account". Profile block: name, email, member since.
-- "The Fitting Room" block: "2 free try-ons waiting" + `soon` + price line.
-- Sign out (outline button). Signed-out visitors are redirected to sign in (with `next`).
+- H1 "Your account". Profile: name, email, member since (the locale's long date).
+- The Fitting Room panel (11.4) with the account's line: "2 free try-ons waiting".
+- Sign out (outline button, a form: works before scripts load). Signed-out visitors are
+  redirected to sign in (with `next`). `noindex`.
 
 ### 11.7 Feedback `/feedback` (`?type=bug|feedback|costume`)
 
@@ -643,7 +673,7 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 | ---------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `/basket/fitting-room` | The Fitting Room | Part of the basket: what it does (one full-body photo + one face close-up → you in each outfit from your basket, special-effects makeup included), the outfits in your basket (or a nudge to fill it), `premium` badge, price line, privacy note ("Your photos stay private."), CTA back to My Pumpkin Basket. Accepts `?costume=`. |
 | `/terms`               | Terms of service | "The fine print is being written." + a link to the feedback form. `noindex`.                                                                                                                                                                                                                                                        |
-| `/privacy`             | Privacy policy   | Same pattern; states plainly what is stored today (account email and name, feedback messages) + a link to the feedback form. `noindex`.                                                                                                                                                                                             |
+| `/privacy`             | Privacy policy   | Same pattern; states plainly what is kept today (an account's name, email and Google picture; when it was made, roughly where (country, region, city, time zone, from the connection) and on what (device, system, browser); when it last signed in and how often; feedback messages) + a link to the feedback form. `noindex`.     |
 
 ---
 

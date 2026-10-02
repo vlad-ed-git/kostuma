@@ -23,7 +23,7 @@ type AddToBasketProps = {
  */
 export function AddToBasket({ slug, name }: AddToBasketProps) {
   const t = useTranslations("Basket")
-  const { has, add, announce } = useBasket()
+  const { ready, has, add, announce } = useBasket()
   const inBasket = has(slug)
   const [justAdded, setJustAdded] = useState(false)
   const link = useRef<HTMLAnchorElement>(null)
@@ -60,7 +60,9 @@ export function AddToBasket({ slug, name }: AddToBasketProps) {
   return (
     <Button
       size="lg"
-      className={cn("w-fit gap-3", className)}
+      // Until the basket is read (the page's scripts), a press would be lost.
+      disabled={!ready}
+      className={cn("w-fit gap-3 disabled:opacity-100", className)}
       onClick={() => {
         focusLink.current = true
         add(slug)

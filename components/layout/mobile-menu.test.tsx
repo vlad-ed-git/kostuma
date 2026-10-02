@@ -7,10 +7,11 @@ import { renderInEnglish } from "@/test/intl"
 import { MobileMenu } from "./mobile-menu"
 
 vi.mock("@/i18n/navigation", () => import("@/test/navigation"))
+vi.mock("@/lib/auth/actions", () => ({ endSession: vi.fn() }))
 
-async function openMenu() {
+async function openMenu(signedIn = false) {
   const user = userEvent.setup()
-  renderInEnglish(<MobileMenu />)
+  renderInEnglish(<MobileMenu signedIn={signedIn} />)
   const trigger = screen.getByRole("button", { name: "Open the menu" })
   await user.click(trigger)
   const dialog = await screen.findByRole("dialog", { name: "Menu" })
@@ -19,7 +20,7 @@ async function openMenu() {
 
 describe("MobileMenu", () => {
   it("is closed until the menu button is pressed", () => {
-    renderInEnglish(<MobileMenu />)
+    renderInEnglish(<MobileMenu signedIn={false} />)
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
     expect(
       screen.getByRole("button", { name: "Open the menu" })
@@ -38,6 +39,17 @@ describe("MobileMenu", () => {
       within(dialog).getByRole("navigation", { name: "Language" })
     ).toBeInTheDocument()
     expect(within(dialog).getByRole("link", { name: "Sign in" })).toBeVisible()
+  })
+
+  it("offers the account and Sign out to a signed-in visitor", async () => {
+    const { dialog } = await openMenu(true)
+    expect(
+      within(dialog).getByRole("link", { name: "Account" })
+    ).toHaveAttribute("href", "/account")
+    expect(
+      within(dialog).getByRole("button", { name: "Sign out" })
+    ).toBeVisible()
+    expect(within(dialog).queryByRole("link", { name: "Sign in" })).toBeNull()
   })
 
   it("keeps focus inside while open", async () => {
