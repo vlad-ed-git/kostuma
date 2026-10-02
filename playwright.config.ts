@@ -44,6 +44,8 @@ export default defineConfig({
     env: {
       E2E: "1",
       SITE_URL: `http://localhost:${port}`,
+      // The Fitting Room's fake renders, quick.
+      FAKE_RENDER_MS: "400",
       // Google's public test key: its box always passes, on any domain.
       RECAPTCHA_SITE_KEY: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
     },

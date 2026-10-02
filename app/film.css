@@ -416,6 +416,27 @@
   background-position: 100% 0;
 }
 
+/* ── The Fitting Room's darkroom (components/fitting-room) ─────────────── */
+/* A step still rendering: a print in the developer tray under the red
+   safelight, which breathes (below; still under reduced motion). */
+.developing {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--card);
+}
+.developing::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(
+      ellipse 75% 60% at 50% 42%,
+      color-mix(in oklch, var(--blood) 45%, transparent),
+      transparent 72%
+    )
+    no-repeat;
+}
+
 /* ── Lit by scroll: the costume rows (`.lit`, spec §7.2), below ──────── */
 /* No JavaScript: browsers without scroll-driven animations show every row. */
 
@@ -424,6 +445,13 @@
 @media (prefers-reduced-motion: no-preference) {
   .film-grain::before {
     animation: grain 330ms steps(1) infinite;
+  }
+  .developing::before {
+    animation: safelight 2.4s ease-in-out infinite alternate;
+  }
+  /* A finished step's picture comes up out of the black, as a print does. */
+  .developed {
+    animation: develop 1.8s ease-out both;
   }
   /* Only while a view transition runs: the reel change, never at rest. */
   html:active-view-transition .film-scratches {
@@ -843,6 +871,18 @@
 }
 
 @keyframes reel-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes safelight {
+  from {
+    opacity: 0.35;
+  }
+}
+
+@keyframes develop {
   from {
     opacity: 0;
   }

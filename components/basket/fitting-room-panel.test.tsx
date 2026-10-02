@@ -10,10 +10,10 @@ import { FittingRoomPanel } from "./fitting-room-panel"
 vi.mock("@/i18n/navigation", () => import("@/test/navigation"))
 
 describe("FittingRoomPanel", () => {
-  it("says what it is, that it is coming, and its price", () => {
+  it("says what it is, and its price", () => {
     renderInEnglish(<FittingRoomPanel />)
     const panel = screen.getByRole("region", { name: "The Fitting Room" })
-    expect(panel).toHaveTextContent("Soon")
+    expect(panel).not.toHaveTextContent("Soon")
     expect(panel).toHaveTextContent("Premium")
     expect(panel).toHaveTextContent(
       "Try on the outfits in your basket, special-effects makeup included."

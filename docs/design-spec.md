@@ -7,8 +7,9 @@ only. The owner approved this design as a live prototype
 badges.
 
 Scope: the public site (home with the costumes, costume pages, My Pumpkin Basket, feedback),
-accounts (register, sign in, reset password, account) and polished "coming soon" pages for the
-Fitting Room (virtual try-on, part of My Pumpkin Basket), terms and privacy. Every costume shows
+accounts (register, sign in, reset password, account), the Fitting Room (virtual try-on and
+step-by-step makeup, part of My Pumpkin Basket, 11.4b) and polished "coming soon" pages for terms
+and privacy. Every costume shows
 its own photo, a cut-out (9.2).
 
 ---
@@ -33,19 +34,19 @@ a grid of identical cards).
 
 ### 1.2 Vocabulary
 
-| Cinema                           | Kostuma                                           |
-| -------------------------------- | ------------------------------------------------- |
-| Title card                       | Home hero ("The darkest day is coming.")          |
-| Film leader countdown            | Countdown to Halloween                            |
-| The cast                         | The collection: 82 characters, latest film first  |
-| One-sheet poster + billing block | Costume page (image, name, credits)               |
-| Behind the scenes                | Fun facts ("Behind the screams")                  |
-| Wardrobe department notes        | "The look": what the costume needs                |
-| Cue mark ("cigarette burn")      | Loading and page-change indicator                 |
-| Reel change                      | Moving between pages                              |
-| Wardrobe fitting                 | The Fitting Room: try on what's in your basket    |
-| Coming soon trailer              | Features not open yet (Fitting Room, legal pages) |
-| Admission ticket                 | The premium badge (paid try-ons)                  |
+| Cinema                           | Kostuma                                          |
+| -------------------------------- | ------------------------------------------------ |
+| Title card                       | Home hero ("The darkest day is coming.")         |
+| Film leader countdown            | Countdown to Halloween                           |
+| The cast                         | The collection: 82 characters, latest film first |
+| One-sheet poster + billing block | Costume page (image, name, credits)              |
+| Behind the scenes                | Fun facts ("Behind the screams")                 |
+| Wardrobe department notes        | "The look": what the costume needs               |
+| Cue mark ("cigarette burn")      | Loading and page-change indicator                |
+| Reel change                      | Moving between pages                             |
+| Wardrobe fitting                 | The Fitting Room: try on what's in your basket   |
+| Coming soon trailer              | Features not open yet (legal pages)              |
+| Admission ticket                 | The premium badge (paid try-ons)                 |
 
 ### 1.3 The flow (owner, 2026-09-30)
 
@@ -55,8 +56,9 @@ a grid of identical cards).
 2. **Add** the ones you like to **My Pumpkin Basket**, the cart (no sign-in, kept on the
    device).
 3. **Try them on** in the **Fitting Room**, which is part of the basket: it shows exactly the
-   outfits in your basket (virtual try-on: sign in, 2 free try-ons, then {price} per costume).
-   Coming soon.
+   outfits in your basket (sign in): the outfit on your photo, then the costume's makeup on
+   your own face, step by step (11.4b). Paid try-ons (2 free, then {price} per costume) come
+   later.
 4. **Buy**: an action on each outfit in the basket, opening its shop in a new tab.
 
 Menus hold places, never actions: the header and the mobile menu offer Costumes and My Pumpkin
@@ -573,11 +575,11 @@ title, toolbar or empty state for one.
   be saved. Reload the page to try again." (the visitor's changes are at risk: that they must
   know).
 - **The Fitting Room** panel (part of the basket, 1.3), at the top: a `--card` panel with a
-  `--blood` hairline at 40 % and a faint red glow; `h2` "The Fitting Room" + `soon` + `premium`,
+  `--blood` hairline at 40 % and a faint red glow; `h2` "The Fitting Room" + `premium`,
   one line ("Try on the outfits in your basket, special-effects makeup included."), the price
-  line (10.3), link "Step inside" → `/basket/fitting-room` (coming soon).
+  line (10.3), link "Step inside" → `/basket/fitting-room` (11.4b).
 - Rows, the last added first, separated by space (no lines): thumbnail (4:5, 72 px wide, no
-  reveal), name + film (a link to the costume), actions: **Buy** (10.3), "Try on" + `soon`
+  reveal), name + film (a link to the costume), actions: **Buy** (10.3), "Try on"
   (→ `/basket/fitting-room?costume={slug}`), "Remove" (ghost, ✕ icon). Removing keeps the
   visitor's place: focus moves to the next row's Remove (or the previous one's), or to the empty
   basket's title. "Clear basket" (ghost, under the rows) asks for a second click ("Click again
@@ -593,6 +595,43 @@ title, toolbar or empty state for one.
   brings the guest basket into the account once, then empties it; signing out leaves the
   basket in the account and the device empty. Whatever is read is checked: unknown costumes
   are dropped, broken or outdated data reads as an empty basket.
+
+### 11.4b The Fitting Room `/basket/fitting-room` (`?costume={slug}`)
+
+The core of Kostuma (owner, 2026-10-03). `noindex`; signed in only (signed out: sign in, then
+back here with the costume). Paid try-ons (the price line, 10.3) come later: no gating yet.
+
+- H1 "The Fitting Room", one lead line. Under it, the costumes in My Pumpkin Basket as 72 px
+  thumbnails (4:5, the last added first), each a link to its `?costume=`; the chosen one in a
+  `--blood-text` frame with a red glow (`aria-current`). No costume chosen: the one added last.
+  Empty basket: the unlit pumpkin, "Your basket is empty.", "Browse costumes". A chosen costume
+  not in the basket: "{name} isn't in My Pumpkin Basket yet." and "Add to My Pumpkin Basket".
+- **Your photos** (`h2`, "Two photos: your face, and you from head to toe. They stay
+  private."): two slots side by side (stacked on phones), "Your face" (3:4 frame) and "You,
+  head to toe" (2:3), each with its photo (contained, never cropped) or an empty frame, three
+  short tips, and "Choose a photo" / "Change" (outline). The photos used last are offered
+  again. A file is checked at once in the browser (an image, big enough, a photo's shape:
+  no AI): a problem shows under its photo in `--destructive`. "Continue" needs both.
+- **Confirm** (`h2` "Ready to try on {name}?"): the costume and both photos, "Check your photos
+  first: once the try-on starts, they can't be changed until it's finished.", "Start the
+  try-on" (primary; pending: spinner + "Checking your photos…") and "Change photos" (ghost).
+  Nothing is sent before this button.
+- **The try-on** (`h2` the character's name): locked while it runs (no control to change
+  anything), a polite status line ("Trying on the outfit…", "Doing your makeup: 2 of 4 steps
+  ready…", "Your try-on is ready."). **The outfit** (`h2`): the visitor in the costume (2:3,
+  max 448 px). **The makeup** (`h2`): the guide's look line, then a grid (3 / 2 / 1 columns):
+  "Before" (their face), then each step: its picture (3:4), "Step n" (`micro` small capitals,
+  `--blood-text`), the step's title, the how-to, and its products as links to a shop's search
+  (new tab, 10.3 external links); "To finish" and the guide's last line after the grid.
+- **The darkroom:** a step still rendering is a print in the developer tray: a `--card` frame
+  under a red safelight that breathes (opacity, 2.4 s), "Developing…" in small capitals; a
+  finished picture comes up out of the black (opacity, 1.8 s). Reduced motion: the light
+  still, the picture at once.
+- Ended: "Try with other photos" (outline). Failed: an alert saying what to do ("Your face
+  couldn't be found in the photo…") and "Choose other photos" (primary), which opens the photos
+  with the message under the one at fault. Steps not rendered say "Not rendered".
+- Pictures load from the server only, to their owner (`/api/fitting-room/…`, `private`
+  caching), never through the image optimizer.
 
 ### 11.5 Sign in `/sign-in`, Register `/register`, Reset password `/reset-password`
 
@@ -669,11 +708,10 @@ Shared panel ("trailer"): `label` with a blinking red REC dot (1 Hz, static unde
 motion) "Coming soon"; `display` title; lead; up to 3 feature bullets; primary action back to
 something that works now; secondary "Want it sooner? Tell us." → `/feedback?type=feedback`.
 
-| Route                  | Title            | Content                                                                                                                                                                                                                                                                                                                             |
-| ---------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/basket/fitting-room` | The Fitting Room | Part of the basket: what it does (one full-body photo + one face close-up → you in each outfit from your basket, special-effects makeup included), the outfits in your basket (or a nudge to fill it), `premium` badge, price line, privacy note ("Your photos stay private."), CTA back to My Pumpkin Basket. Accepts `?costume=`. |
-| `/terms`               | Terms of service | "The fine print is being written." + a link to the feedback form. `noindex`.                                                                                                                                                                                                                                                        |
-| `/privacy`             | Privacy policy   | Same pattern; states plainly what is kept today (an account's name, email and Google picture; when it was made, roughly where (country, region, city, time zone, from the connection) and on what (device, system, browser); when it last signed in and how often; feedback messages) + a link to the feedback form. `noindex`.     |
+| Route      | Title            | Content                                                                                                                                                                                                                                                                                                                         |
+| ---------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/terms`   | Terms of service | "The fine print is being written." + a link to the feedback form. `noindex`.                                                                                                                                                                                                                                                    |
+| `/privacy` | Privacy policy   | Same pattern; states plainly what is kept today (an account's name, email and Google picture; when it was made, roughly where (country, region, city, time zone, from the connection) and on what (device, system, browser); when it last signed in and how often; feedback messages) + a link to the feedback form. `noindex`. |
 
 ---
 
@@ -768,24 +806,25 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 
 ## 16. Implementation map
 
-| Piece                    | Where                                                                                                                                     |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Tokens (palette, motion) | `app/globals.css` `:root` + `@theme inline`                                                                                               |
-| Fonts                    | `app/fonts/` (the woff2 files, their OFL licenses, `index.ts`)                                                                            |
-| Atmosphere               | `components/horror/{atmosphere,fog}.tsx` + `app/film.css` (grain, vignette, ground fog, scratches, VHS)                                   |
-| Reel change              | `app/[locale]/template.tsx` (`<ViewTransition>`), `::view-transition` rules in `app/film.css`                                             |
-| Cue mark                 | `components/horror/cue-mark.tsx`, fed by `lib/navigation-status.ts` from `i18n/navigation.tsx`                                            |
-| Shell                    | `components/layout/{header,mobile-menu,footer,wordmark,skip-link,lost-in-the-dark}.tsx`                                                   |
-| Primitives               | `components/ui/*` (shadcn style, cva)                                                                                                     |
-| Feature components       | `components/{costume,basket,auth,forms,countdown}/*`                                                                                      |
-| Catalog                  | `content/costumes.ts` (the owner's list, typed) → `lib/catalog` → `components/costume/*`                                                  |
-| Links on intent          | `components/navigation/intent-link.tsx` (the costume rows)                                                                                |
-| Night scene              | `components/home/{night-scene,flashlight}.tsx`, fog texture `scripts/fog.mjs` → `public/images/fog.webp`                                  |
-| Countdown                | `lib/countdown` (logic, tested per time zone) + `components/countdown/countdown.tsx`                                                      |
-| My Pumpkin Basket        | `lib/basket` (store, storage format, Firestore) + `components/basket/*` + `app/[locale]/basket`; `firestore.rules`                        |
-| Costume photos           | `components/costume/{costume-image,costume-gallery}.tsx`, `lib/in-view.ts`, `.photo-reveal` in `app/film.css`; pipeline `scripts/photos/` |
-| Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`                                                        |
-| Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit                                                    |
+| Piece                    | Where                                                                                                                                                      |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tokens (palette, motion) | `app/globals.css` `:root` + `@theme inline`                                                                                                                |
+| Fonts                    | `app/fonts/` (the woff2 files, their OFL licenses, `index.ts`)                                                                                             |
+| Atmosphere               | `components/horror/{atmosphere,fog}.tsx` + `app/film.css` (grain, vignette, ground fog, scratches, VHS)                                                    |
+| Reel change              | `app/[locale]/template.tsx` (`<ViewTransition>`), `::view-transition` rules in `app/film.css`                                                              |
+| Cue mark                 | `components/horror/cue-mark.tsx`, fed by `lib/navigation-status.ts` from `i18n/navigation.tsx`                                                             |
+| Shell                    | `components/layout/{header,mobile-menu,footer,wordmark,skip-link,lost-in-the-dark}.tsx`                                                                    |
+| Primitives               | `components/ui/*` (shadcn style, cva)                                                                                                                      |
+| Feature components       | `components/{costume,basket,auth,forms,countdown}/*`                                                                                                       |
+| Catalog                  | `content/costumes.ts` (the owner's list, typed) → `lib/catalog` → `components/costume/*`                                                                   |
+| Links on intent          | `components/navigation/intent-link.tsx` (the costume rows)                                                                                                 |
+| Night scene              | `components/home/{night-scene,flashlight}.tsx`, fog texture `scripts/fog.mjs` → `public/images/fog.webp`                                                   |
+| Countdown                | `lib/countdown` (logic, tested per time zone) + `components/countdown/countdown.tsx`                                                                       |
+| My Pumpkin Basket        | `lib/basket` (store, storage format, Firestore) + `components/basket/*` + `app/[locale]/basket`; `firestore.rules`                                         |
+| The Fitting Room         | `lib/fitting-room` (photos, render plan, YouCam, steps, store) + `components/fitting-room/*` + `app/[locale]/basket/fitting-room` + `app/api/fitting-room` |
+| Costume photos           | `components/costume/{costume-image,costume-gallery}.tsx`, `lib/in-view.ts`, `.photo-reveal` in `app/film.css`; pipeline `scripts/photos/`                  |
+| Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`                                                                         |
+| Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit                                                                     |
 
 ---
 
@@ -817,6 +856,13 @@ Each feature branch ships unit and end-to-end tests for the cases that apply to 
 - **Content states:** empty basket; unknown costume slugs, including a wrong case (404); the
   first and last costume (no previous / next, related wraps around); a character in several
   films; a credit role with no names; 1 item vs many (plurals).
+- **Fitting Room:** signed out (sign in, then back); an empty basket; a costume not in the
+  basket; a photo too small, of a strip's shape, not an image, cut short, sideways (turned
+  upright), far too big; one photo only; a face or body the renderer can't read (the try-on
+  fails, the photo at fault is named); a hiccup (tried again, at most 3 times); a render that
+  never ends (given up after 5 minutes); two tabs following one try-on (each render sent once);
+  the same photos and costume again (the same try-on, never rendered twice); another visitor
+  or a signed-out request asking for someone's pictures (nothing).
 - **Server cost:** scrolling the costumes prefetches nothing, hovering a card prefetches it;
   language links never prefetch; no section clips its fog; nothing scrolls sideways.
 
@@ -824,7 +870,6 @@ Each feature branch ships unit and end-to-end tests for the cases that apply to 
 
 ## 18. Later
 
-The Fitting Room flow (upload guide, progress
-as a "developing film" animation, result reveal) · Stripe checkout styled as a ticket stub ·
+Paid try-ons and Stripe checkout styled as a ticket stub ·
 translations · optional opt-in ambient sound: projector whir (never autoplay) · shared-element
 morphs between cards and costume pages.

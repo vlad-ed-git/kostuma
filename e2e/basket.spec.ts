@@ -101,7 +101,7 @@ test.describe("My Pumpkin Basket", () => {
     await expect(page.getByText("2 costumes", { exact: true })).toBeVisible()
 
     const fittingRoom = page.getByRole("region", { name: "The Fitting Room" })
-    await expect(fittingRoom).toContainText("Soon")
+    await expect(fittingRoom).not.toContainText("Soon")
     await expect(fittingRoom).toContainText("Premium")
     await expect(fittingRoom).toContainText(
       "2 free try-ons, then $5 per costume."
@@ -113,7 +113,7 @@ test.describe("My Pumpkin Basket", () => {
     const pearl = rows(page).first()
     await expect(pearl.getByText("Buy")).toContainText("Soon")
     await expect(
-      pearl.getByRole("link", { name: "Try on Pearl (soon)" })
+      pearl.getByRole("link", { name: "Try on Pearl" })
     ).toHaveAttribute("href", "/basket/fitting-room?costume=pearl")
     await expect(pearl.getByRole("link", { name: /^Pearl/ })).toHaveAttribute(
       "href",

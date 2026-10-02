@@ -241,7 +241,6 @@ test.describe("signed in", () => {
     ])
     const fittingRoom = page.getByRole("region", { name: "The Fitting Room" })
     await expect(fittingRoom).toContainText("2 free try-ons waiting")
-    await expect(fittingRoom).toContainText("Soon")
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
       "content",
       /noindex/

@@ -69,7 +69,7 @@ describe("BasketList", () => {
     expect(screen.getByText("2 costumes")).toBeInTheDocument()
   })
 
-  it("gives each costume its page, Buy, Try on (soon) and Remove", () => {
+  it("gives each costume its page, Buy, Try on and Remove", () => {
     renderBasket(["ghostface"])
     const [row] = rows()
     const scope = within(row)
@@ -80,7 +80,7 @@ describe("BasketList", () => {
     // No shop yet: it says so, rather than a button that goes nowhere.
     expect(scope.getByText("Buy")).toHaveTextContent("BuySoon")
     expect(
-      scope.getByRole("link", { name: "Try on Ghostface (soon)" })
+      scope.getByRole("link", { name: "Try on Ghostface" })
     ).toHaveAttribute("href", "/basket/fitting-room?costume=ghostface")
     expect(
       scope.getByRole("button", {

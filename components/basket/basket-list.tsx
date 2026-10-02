@@ -9,7 +9,6 @@ import { filmLine } from "@/components/costume/format"
 import { Pumpkin } from "@/components/icons/pumpkin"
 import { costumesHref } from "@/components/layout/nav"
 import { IntentLink } from "@/components/navigation/intent-link"
-import { Badge } from "@/components/ui/badge"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Link } from "@/i18n/navigation"
 import type { CostumeSummary, Store } from "@/lib/catalog/types"
@@ -61,7 +60,7 @@ export function BasketSummary() {
 
 /**
  * The costumes in My Pumpkin Basket, the last added first, each with Buy,
- * Try on (soon) and Remove; then "Clear basket". The server never knows the
+ * Try on and Remove; then "Clear basket". The server never knows the
  * basket: it sends a placeholder, and the browser fills it in.
  */
 export function BasketList({
@@ -71,7 +70,6 @@ export function BasketList({
   costumes: readonly BasketCostume[]
 }) {
   const t = useTranslations("Basket")
-  const badge = useTranslations("Badge")
   const { ready, slugs, remove, clear, announce } = useBasket()
   const [armed, setArmed] = useState(false)
   const [focus, setFocus] = useState<FocusTarget | null>(null)
@@ -163,7 +161,6 @@ export function BasketList({
                 className="inline-flex h-10 items-center gap-2 text-ui caps text-muted-foreground transition-colors hover:text-foreground"
               >
                 {t("tryOn")}
-                <Badge variant="soon">{badge("soon")}</Badge>
               </IntentLink>
               <Button
                 variant="ghost"

@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 
 /**
  * The Fitting Room, at the top of My Pumpkin Basket, which it is part of
- * (spec §11.4): what it will do, that it is coming soon, and its price. On
+ * (spec §11.4): what it does, and its price. On
  * the account page (spec §11.6), the try-ons waiting there too.
  */
 export function FittingRoomPanel({
@@ -43,7 +43,6 @@ export function FittingRoomPanel({
         <h2 id="fitting-room" className="font-heading text-h2 font-semibold">
           {t("title")}
         </h2>
-        <Badge variant="soon">{badge("soon")}</Badge>
         <Badge variant="premium">{badge("premium")}</Badge>
       </div>
       <p className="max-w-[60ch] text-body-lg">{t("line")}</p>
