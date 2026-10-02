@@ -5,12 +5,14 @@ import { notFound } from "next/navigation"
 import { connection } from "next/server"
 
 import { documentClassName } from "@/app/fonts"
+import { BasketProvider } from "@/components/basket/basket-provider"
 import { Atmosphere } from "@/components/horror/atmosphere"
 import { CueMark } from "@/components/horror/cue-mark"
 import { Footer } from "@/components/layout/footer"
 import { Header } from "@/components/layout/header"
 import { SkipLink } from "@/components/layout/skip-link"
 import { languageTags, routing } from "@/i18n/routing"
+import { getCostumes } from "@/lib/catalog"
 import { themeColor } from "@/lib/design/theme"
 
 import "../globals.css"
@@ -54,13 +56,20 @@ export default async function RootLayout({
       <body className="flex min-h-svh flex-col">
         {/* Gives Client Components the locale and messages of this request. */}
         <NextIntlClientProvider>
-          <SkipLink />
-          <Header />
-          {/* Pages render sections; the shell owns the one <main>. */}
-          <main id="content" tabIndex={-1} className="flex-1 outline-none">
-            {children}
-          </main>
-          <Footer />
+          {/* My Pumpkin Basket on every page. Signed out for now: feat/auth
+              passes the session's uid, and the basket follows the account. */}
+          <BasketProvider
+            costumes={getCostumes().map(({ slug }) => slug)}
+            account={null}
+          >
+            <SkipLink />
+            <Header />
+            {/* Pages render sections; the shell owns the one <main>. */}
+            <main id="content" tabIndex={-1} className="flex-1 outline-none">
+              {children}
+            </main>
+            <Footer />
+          </BasketProvider>
           <CueMark />
           <Atmosphere />
         </NextIntlClientProvider>

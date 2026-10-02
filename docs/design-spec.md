@@ -383,8 +383,10 @@ Client components are marked (C). Everything else renders on the server.
   link itself.
 - **Badge** (preset: borderless, small capitals, `badge` size). The `soon` variant adds a 1 px
   border (bone at 20 %) and 2 × 6 px padding so it reads as a stamped label, text muted: "Soon".
-  Each feature that needs another badge adds it with its tests (the basket count comes with My
-  Pumpkin Basket).
+  `premium`: the same stamp in `--blood-text` (border at 50 %), "Premium", the admission ticket
+  of paid features. `count`: a 20 px ember square with the number in `--background`, tabular
+  figures and a soft ember glow, set on the header's pumpkin (the basket's count). Each feature
+  that needs another badge adds it with its tests.
 - **Field** (preset `field.tsx`: Field, FieldLabel, FieldDescription, FieldError with
   `role="alert"`, FieldGroup, FieldSet, FieldSeparator). Label in `ui` small capitals, always
   visible above the control; description muted `small`; error
@@ -417,8 +419,10 @@ Client components are marked (C). Everything else renders on the server.
 - **Header** (server; the mobile menu is the only client part, the scroll state is CSS):
   - Wordmark → home, then the main nav: the two places of the flow (1.3). Costumes (from `lg`;
     the home page's costumes section, `/#costumes`, 11.1) and, pushed right, My Pumpkin Basket: the pumpkin plus its name from `lg`, the icon alone
-    below (the name kept for screen readers), with the `count` badge once the basket works
-    ("My Pumpkin Basket, 3 costumes"). Places only, never actions.
+    below. The pumpkin is lit while the basket holds something, with the `count` badge on it;
+    the link is named with the count ("My Pumpkin Basket, 3 costumes"), the badge itself is
+    hidden from screen readers. Adding a costume anywhere on the page ignites it and rolls the
+    count up; taking one out rolls it down (7.2). Places only, never actions.
   - Then the language menu and the account: "Sign in" (ghost) or a square avatar with initials → menu (Account,
     Sign out).
   - Transparent over a title card (any page with `[data-title-card]`: the home hero, the 404);
@@ -455,10 +459,13 @@ Client components are marked (C). Everything else renders on the server.
     slightly dimmed, brought in by the reveal (7.2); then the
     name (`h3` size, display face) with the film under it in italics ("Pearl (2022) / X
     (2022)" for several). Nothing else: no rank, no badge, no picture following the pointer.
-  - Hover and focus per 7.2; prefetches on intent only (15). The basket toggle comes with
-    `feat/basket`, at the row's end.
-- **Basket toggle** (C): outline pumpkin ↔ lit pumpkin, ignite animation on add; announces
-  "Added to My Pumpkin Basket" / "Removed from My Pumpkin Basket" through a polite live region.
+  - Hover and focus per 7.2; prefetches on intent only (15). At the row's end, outside the
+    link, the basket toggle.
+- **Basket toggle** (C, `components/basket/basket-toggle.tsx`): a 48 px button, outline pumpkin
+  (ash, ember on hover) ↔ lit pumpkin; it ignites on add (7.2). Named "Add {name} to My Pumpkin
+  Basket" / "Remove {name} from My Pumpkin Basket"; announces "{name} added to My Pumpkin
+  Basket." / "{name} removed from My Pumpkin Basket." through the polite live region (12).
+  Hidden without JavaScript.
 
 - **Billing block**: the credits of a costume page: centered between hairlines, role words in
   small `micro` capitals, names in `billing` small capitals ("Created by", "Brought to life
@@ -468,11 +475,14 @@ Client components are marked (C). Everything else renders on the server.
 - **Buy** (in the basket only, 1.3): opens the outfit's shop in a new tab, with an
   `arrow-right-up-line` icon and sr-only "(opens in a new tab)"; `target="_blank"`
   `rel="noopener noreferrer nofollow"` (+ `sponsored` when a link is an affiliate link). With
-  several shops, a styled menu of them.
+  several shops, a styled menu of them ("Buy at {shop}"). A costume without a shop yet shows
+  "Buy" with a `soon` stamp and nothing to press. Each control is named by one whole message
+  ("Buy {name} (opens in a new tab)"), never words glued together, so every language orders
+  them its own way.
 - **Empty state**: centered icon (64 px, muted), `h3`, one line of copy, one action.
 - **Coming soon panel**: see 11.9.
-- **Premium price line**: "2 free try-ons in the Fitting Room. Then {price} per costume."
-  `{price}` is USD 5,
+- **Premium price line** (owner's words): "2 free try-ons, then {price} per costume."
+  `{price}` is USD 5 (`lib/fitting-room.ts`), no cents when whole ("$5"),
   formatted by the locale's currency formatter (next-intl `format.number(5, {style: "currency",
 currency: "USD"})`), never a hardcoded "$5" string.
 
@@ -527,9 +537,10 @@ title, toolbar or empty state for one.
 - Content, in order:
   - H1 `display`: the character.
   - Film line: film icon + "Scream (1996)" (lead, muted).
-  - Action: one primary button, "Add to My Pumpkin Basket" (in the basket: "In My Pumpkin
-    Basket", with a link to it). No try-on and no shop here (1.3): both live in the basket.
-    Comes with `feat/basket`.
+  - Action: one primary button with the pumpkin, "Add to My Pumpkin Basket". Once the costume
+    is in: "In My Pumpkin Basket" (outline, lit pumpkin), a link to the basket, which takes the
+    focus when the visitor's own click put it there. No try-on and no shop here (1.3): both live
+    in the basket. Hidden without JavaScript.
   - **The lore** (`label` + `body-lg`).
   - **The look** (wardrobe list).
   - **Behind the screams** (fun fact, `body`, inside a left hairline in `--blood`).
@@ -542,15 +553,33 @@ title, toolbar or empty state for one.
 
 ### 11.4 My Pumpkin Basket `/basket`
 
-- H1 "My Pumpkin Basket", count, note "Kept on this device." (muted small).
-- **The Fitting Room** panel (part of the basket, 1.3): `h2` "The Fitting Room" + `soon` +
-  `premium`, one line ("Try on the outfits in your basket, special-effects makeup included."),
-  price line, link "Step inside" → `/basket/fitting-room` (coming soon).
-- Rows: thumbnail (4:5, 72 px wide), name + film, actions: **Buy** (primary, 10.3), "Try on"
-  (→ `/basket/fitting-room?costume={slug}`, `soon`), "Remove" (ghost, icon). "Clear basket" asks for a second click ("Click again to clear") within
-  4 s.
-- Empty: unlit pumpkin, "Your basket is empty.", "The night is young.", button "Browse costumes".
-- Server renders a skeleton; the client reads storage after mount (no hydration mismatch).
+`noindex` (each visitor's own). No sign-in needed.
+
+- H1 "My Pumpkin Basket"; under it one line: "3 costumes · Kept on this device." (signed in:
+  "Kept in your account."; empty: the note alone). Signed in and the account can't be reached,
+  the line becomes an alert in `--destructive`: "Your account can't be reached right now, so
+  changes here may not be saved. Reload the page to try again."
+- **The Fitting Room** panel (part of the basket, 1.3), at the top: a `--card` panel with a
+  `--blood` hairline at 40 % and a faint red glow; `h2` "The Fitting Room" + `soon` + `premium`,
+  one line ("Try on the outfits in your basket, special-effects makeup included."), the price
+  line (10.3), link "Step inside" → `/basket/fitting-room` (coming soon).
+- Rows, the last added first, separated by space (no lines): thumbnail (4:5, 72 px wide, no
+  reveal), name + film (a link to the costume), actions: **Buy** (10.3), "Try on" + `soon`
+  (→ `/basket/fitting-room?costume={slug}`), "Remove" (ghost, ✕ icon). Removing keeps the
+  visitor's place: focus moves to the next row's Remove (or the previous one's), or to the empty
+  basket's title. "Clear basket" (ghost, under the rows) asks for a second click ("Click again
+  to clear", in `--blood-text`, announced) within 4 s.
+- Empty: unlit pumpkin (64 px), `h2` "Your basket is empty.", "The night is young.", button
+  "Browse costumes" → `/#costumes`.
+- The server never knows the basket: it renders a placeholder (skeleton count line and two
+  skeleton rows); the browser fills it in (no hydration mismatch). Without JavaScript the
+  placeholder is hidden and the empty basket shows (nothing can be added without it).
+- **Where it is kept** (`lib/basket`): a guest's basket in localStorage (`kostuma.basket`,
+  `{ v: 1, slugs }`), followed by every open tab. Signed in, in Firestore `baskets/{uid}`,
+  followed live by every tab and device; the device keeps a copy to show at once. Signing in
+  brings the guest basket into the account once, then empties it; signing out leaves the
+  basket in the account and the device empty. Whatever is read is checked: unknown costumes
+  are dropped, broken or outdated data reads as an empty basket.
 
 ### 11.5 Sign in `/sign-in`, Register `/register`, Reset password `/reset-password`
 
@@ -622,7 +651,9 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
   full-page spinners.
 - **Errors**: say what happened and what to do; keep the user's input; focus moves to the first
   invalid field (or the form alert) after submit.
-- **Live regions**: basket changes announce politely; form alerts assertively.
+- **Live regions**: basket changes announce politely, through one region the basket provider
+  renders on every page (`aria-live="polite"`, not `role="status"`: the cue mark's "Loading…"
+  is the page's status); form alerts assertively.
 - **Prefetching**: default Next.js prefetching for single links; lists of many links prefetch
   on intent only (15). Language links never prefetch: where they land depends on the language
   cookie, which the click itself changes, so an answer fetched before the click is wrong
@@ -708,6 +739,7 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 | Links on intent          | `components/navigation/intent-link.tsx` (the costume rows)                                                                                |
 | Night scene              | `components/home/{night-scene,flashlight}.tsx`, fog texture `scripts/fog.mjs` → `public/images/fog.webp`                                  |
 | Countdown                | `lib/countdown` (logic, tested per time zone) + `components/countdown/countdown.tsx`                                                      |
+| My Pumpkin Basket        | `lib/basket` (store, storage format, Firestore) + `components/basket/*` + `app/[locale]/basket`; `firestore.rules`                        |
 | Costume photos           | `components/costume/{costume-image,costume-gallery}.tsx`, `lib/in-view.ts`, `.photo-reveal` in `app/film.css`; pipeline `scripts/photos/` |
 | Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`                                                        |
 | Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit                                                    |
@@ -725,7 +757,13 @@ Each feature branch ships unit and end-to-end tests for the cases that apply to 
   fonts; dates, numbers and currency formatted per locale; untranslated keys falling back to
   English.
 - **Storage (basket):** absent, corrupted, oversized or outdated data in `localStorage`; storage
-  that throws (private mode, blocked); changes from another tab; costumes that no longer exist.
+  that throws (private mode, blocked) or is full; changes from another tab; costumes that no
+  longer exist.
+- **Account (basket, signed in):** the guest basket joining once; a costume removed on another
+  device never coming back from this device's copy; one account's basket never shown to a
+  guest or another account; changes made before the account answers, while it can't be
+  reached, and refused by it (undone, and said); the rules refusing everything but the owner's
+  own well-formed basket (`npm run test:firestore`, on the emulator).
 - **Motion and no-JS:** reduced motion turns every loop and transition off; every page reads
   without JavaScript (no content stuck invisible).
 - **Network and services:** slow networks (the cue mark, skeletons); reCAPTCHA failing to load

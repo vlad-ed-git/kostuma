@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server"
 import { notFound } from "next/navigation"
 import type { ReactNode } from "react"
 
+import { AddToBasket } from "@/components/basket/add-to-basket"
 import { BillingBlock } from "@/components/costume/billing-block"
 import { CostumeGallery } from "@/components/costume/costume-gallery"
 import { CostumeRow } from "@/components/costume/costume-row"
@@ -76,6 +77,7 @@ export default async function CostumePage({
               />
               {filmLine(costume.films)}
             </p>
+            <AddToBasket slug={costume.slug} name={costume.name} />
           </header>
 
           <Section title={t("lore")}>

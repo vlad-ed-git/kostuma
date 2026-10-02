@@ -34,9 +34,32 @@ setup("warm the image cache", async ({ browser }) => {
       ...device,
       reducedMotion: "reduce",
     })
+    // The basket's small thumbnails too: a basket of the costumes its
+    // tests put in (e2e/basket.spec.ts).
+    await context.addInitScript(() => {
+      localStorage.setItem(
+        "kostuma.basket",
+        JSON.stringify({
+          v: 1,
+          slugs: [
+            "ghostface",
+            "michael-myers",
+            "pearl",
+            "carrie-white",
+            "nikki-freaky-nikki-freeman",
+            "dani-the-may-queen",
+          ],
+        })
+      )
+    })
     const page = await context.newPage()
     // Every costume's first photo, then the pages whose photos tests open.
-    for (const path of ["/", "/costumes/ghostface", "/costumes/dollface"]) {
+    for (const path of [
+      "/",
+      "/costumes/ghostface",
+      "/costumes/dollface",
+      "/basket",
+    ]) {
       await page.goto(path)
       await loadEveryPhoto(page)
     }

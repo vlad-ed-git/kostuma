@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl"
 
-import { Pumpkin } from "@/components/icons/pumpkin"
+import { BasketLink } from "@/components/basket/basket-link"
 import { LanguageMenu } from "@/components/language/language-menu"
 import { buttonVariants } from "@/components/ui/button"
 import { Link } from "@/i18n/navigation"
@@ -32,14 +32,7 @@ export function Header() {
           >
             {t("costumes")}
           </Link>
-          <Link
-            href="/basket"
-            className="ms-auto inline-flex min-h-11 min-w-11 items-center justify-center gap-2.5 text-ui caps text-muted-foreground transition-colors hover:text-ember"
-          >
-            <Pumpkin className="size-6" />
-            {/* The icon alone on small screens; the name stays for readers. */}
-            <span className="sr-only lg:not-sr-only">{t("basket")}</span>
-          </Link>
+          <BasketLink className="ms-auto" />
         </nav>
 
         <div className="flex items-center gap-1 lg:gap-3">

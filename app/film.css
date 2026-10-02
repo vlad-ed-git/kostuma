@@ -317,6 +317,29 @@
   inset: 0;
 }
 
+/* ── My Pumpkin Basket (components/basket) ─────────────────────────────── */
+
+/* The count on the header's pumpkin: the old number leaves only while the
+   new one rolls in, so it is hidden where nothing moves. */
+.basket-count-out {
+  display: none;
+}
+
+/* A placeholder while the basket is read: a slow sheen, still under
+   reduced motion. */
+.skeleton {
+  background: var(--muted);
+  background-image: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in oklch, var(--foreground) 6%, transparent) 50%,
+    transparent 70%
+  );
+  background-size: 250% 100%;
+  background-repeat: no-repeat;
+  background-position: 100% 0;
+}
+
 /* ── Lit by scroll: the costume rows (`.lit`, spec §7.2), below ──────── */
 /* No JavaScript: browsers without scroll-driven animations show every row. */
 
@@ -368,6 +391,24 @@
   }
   .drip {
     animation: drip 2.4s var(--ease-heavy) infinite;
+  }
+  /* A costume goes into My Pumpkin Basket: the pumpkin catches fire,
+     flickers and beats once (spec §7.2, Ignite), and the count rolls. */
+  .ignite {
+    transform-origin: 50% 60%;
+    animation:
+      ignite 600ms var(--ease-heavy),
+      heartbeat 1s var(--ease-heavy);
+  }
+  .basket-count-in {
+    animation: count-in 320ms var(--ease-dread) both;
+  }
+  .basket-count-out {
+    display: flex;
+    animation: count-out 320ms var(--ease-dread) both;
+  }
+  .skeleton {
+    animation: sheen 1.6s linear infinite;
   }
   /* The wordmark's o beats once on hover (components/layout/wordmark). */
   @media (hover: hover) {
@@ -640,6 +681,46 @@
   }
   50% {
     scale: 1.08;
+  }
+}
+
+/* Outline to fire: dim, a flare of ember light, a falter, alight. */
+@keyframes ignite {
+  0% {
+    opacity: 0.4;
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  30% {
+    opacity: 1;
+    filter: drop-shadow(0 0 16px var(--ember));
+  }
+  55% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 10px var(--ember));
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* `--roll`: 1 counts up (in from below), -1 down (in from above). */
+@keyframes count-in {
+  from {
+    translate: 0 calc(var(--roll, 1) * 100%);
+    opacity: 0;
+  }
+}
+
+@keyframes count-out {
+  to {
+    translate: 0 calc(var(--roll, 1) * -100%);
+    opacity: 0;
+  }
+}
+
+@keyframes sheen {
+  to {
+    background-position: -150% 0;
   }
 }
 

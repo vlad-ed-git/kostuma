@@ -47,6 +47,44 @@
     "moreFrom": "More from {film}",
     "moreWanted": "More costumes"
   },
+  "Basket": {
+    "title": "My Pumpkin Basket",
+    "count": "{count, plural, one {# costume} other {# costumes}}",
+    "summary": "<b>{count, plural, one {# costume} other {# costumes}}</b> · {kept}",
+    "label": "My Pumpkin Basket, {count, plural, one {# costume} other {# costumes}}",
+    "keptOnDevice": "Kept on this device.",
+    "keptInAccount": "Kept in your account.",
+    "unreachable": "Your account can't be reached right now, so changes here may not be saved. Reload the page to try again.",
+    "add": "Add to My Pumpkin Basket",
+    "addNamed": "Add {name} to My Pumpkin Basket",
+    "removeNamed": "Remove {name} from My Pumpkin Basket",
+    "inBasket": "In My Pumpkin Basket",
+    "added": "{name} added to My Pumpkin Basket.",
+    "removed": "{name} removed from My Pumpkin Basket.",
+    "cleared": "My Pumpkin Basket is empty.",
+    "refused": "Your account didn't take that change, so it was undone. Try again.",
+    "costumes": "Costumes in My Pumpkin Basket",
+    "buy": "Buy",
+    "buyNamed": "Buy {name} (opens in a new tab)",
+    "chooseShop": "Buy {name}: choose a shop",
+    "buyAt": "Buy at {shop}",
+    "buyAtNamed": "Buy at {shop} (opens in a new tab)",
+    "shops": "Shops",
+    "tryOn": "Try on",
+    "tryOnNamed": "Try on {name} (soon)",
+    "remove": "Remove",
+    "clear": "Clear basket",
+    "clearConfirm": "Click again to clear",
+    "empty": "Your basket is empty.",
+    "emptyLine": "The night is young.",
+    "browse": "Browse costumes"
+  },
+  "FittingRoom": {
+    "title": "The Fitting Room",
+    "line": "Try on the outfits in your basket, special-effects makeup included.",
+    "price": "{free, plural, one {# free try-on} other {# free try-ons}}, then {price} per costume.",
+    "enter": "Step inside"
+  },
   "Footer": {
     "explore": "Explore",
     "help": "Help",
@@ -61,7 +99,8 @@
     "copyright": "© {year} Kostuma"
   },
   "Badge": {
-    "soon": "Soon"
+    "soon": "Soon",
+    "premium": "Premium"
   },
   "SkipLink": {
     "label": "Skip to content"

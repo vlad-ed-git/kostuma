@@ -1,5 +1,7 @@
-import { render, screen } from "@testing-library/react"
+import { screen, within } from "@testing-library/react"
 import { describe, expect, it, vi } from "vitest"
+
+import { renderInEnglish as render } from "@/test/intl"
 
 import { CostumeRow } from "./costume-row"
 
@@ -79,6 +81,15 @@ describe("CostumeRow", () => {
     expect(container.querySelector("img")?.getAttribute("src")).toContain(
       "costume-placeholder"
     )
+  })
+
+  it("ends with the pumpkin that puts it in My Pumpkin Basket, outside the link", () => {
+    render(<CostumeRow costume={ghostface} />)
+    const toggle = screen.getByRole("button", {
+      name: "Add Ghostface to My Pumpkin Basket",
+    })
+    expect(within(screen.getByRole("link")).queryByRole("button")).toBeNull()
+    expect(toggle.parentElement?.lastElementChild).toBe(toggle)
   })
 
   it("loads its thumbnail lazily, since most rows start off screen", () => {

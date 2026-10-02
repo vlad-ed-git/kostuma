@@ -63,6 +63,13 @@ describe("messagesFor", () => {
   )
 })
 
+// Messages waiting for their Spanish and Chinese (owner, 2026-10-02: English
+// first, the other languages later). Until then those pages show them in
+// English, never a raw key (withFallback). Translate, then empty this list.
+const untranslated = ["Basket.", "FittingRoom.", "Badge.premium"]
+const waiting = (key: string) =>
+  untranslated.some((prefix) => key === prefix || key.startsWith(prefix))
+
 describe("the translations", () => {
   const entries = (messages: object) =>
     keysOf(messages).map(
@@ -89,9 +96,14 @@ describe("the translations", () => {
   it.each([
     ["es", es],
     ["zh", zh],
-  ] as const)("%s translates every English message", (_, messages) => {
-    expect(keysOf(messages)).toEqual(keysOf(en))
-  })
+  ] as const)(
+    "%s translates every English message not waiting",
+    (_, messages) => {
+      expect(keysOf(messages)).toEqual(
+        keysOf(en).filter((key) => !waiting(key))
+      )
+    }
+  )
 
   it.each([
     ["es", es],
