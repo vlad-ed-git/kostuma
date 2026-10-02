@@ -17,6 +17,8 @@ export const createProfile: typeof Users.createProfile = async () => {
   throw new Error("The e2e build has no Firestore.")
 }
 
+export const recordSignIn: typeof Users.recordSignIn = async () => {}
+
 export const getProfile: typeof Users.getProfile = async (uid) =>
   uid === "e2e-visitor"
     ? {

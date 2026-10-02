@@ -18,10 +18,15 @@ const newEmail = () =>
 type Value = {
   stringValue?: string
   integerValue?: string
+  booleanValue?: boolean
+  nullValue?: null
   timestampValue?: string
   arrayValue?: { values?: Value[] }
+  mapValue?: { fields?: Record<string, Value> }
 }
 type Document = { fields: Record<string, Value> }
+
+const isNull = (value?: Value) => value !== undefined && "nullValue" in value
 
 /** A document as the emulator holds it, past the rules ("owner"). */
 async function documentAt(path: string) {
@@ -98,10 +103,31 @@ test("registering makes the account, its profile and a session", async ({
 
   const uid = await uidOf(email)
   const profile = await documentAt(`users/${uid}`)
+  expect(profile?.fields.uid.stringValue).toBe(uid)
   expect(profile?.fields.name.stringValue).toBe("Carrie White")
+  expect(profile?.fields.email.stringValue).toBe(email)
+  expect(profile?.fields.emailVerified.booleanValue).toBe(false)
+  expect(isNull(profile?.fields.photoURL)).toBe(true)
+  expect(profile?.fields.provider.stringValue).toBe("password")
   expect(profile?.fields.credits.integerValue).toBe("2")
   expect(profile?.fields.locale.stringValue).toBe("en")
   expect(profile?.fields.termsAcceptedAt.timestampValue).toBeTruthy()
+  // Where and on what: Playwright's desktop Chrome; no place off Vercel.
+  const signUp = profile?.fields.signUp.mapValue?.fields
+  expect(signUp?.device.stringValue).toBe("desktop")
+  expect(signUp?.os.stringValue).toBe("Windows")
+  expect(signUp?.browser.stringValue).toBe("Chrome")
+  expect(isNull(signUp?.country)).toBe(true)
+  // The session that followed is the first sign-in, counted after it.
+  await expect
+    .poll(async () => {
+      const fields = (await documentAt(`users/${uid}`))?.fields
+      return [
+        fields?.signIns.integerValue,
+        !!fields?.lastSignInAt.timestampValue,
+      ]
+    })
+    .toEqual(["1", true])
 
   await page.goto("/account")
   await expect(page.getByRole("definition").first()).toHaveText("Carrie White")
@@ -258,6 +284,19 @@ test("Google: a first sign-in agrees to the terms before the account is made", a
   await expect(
     page.getByRole("banner").getByRole("button", { name: "Your account" })
   ).toBeVisible({ timeout: 20_000 })
+
+  // The profile says the account came from Google, and counts the sign-in.
+  await page.goto("/account")
+  const email = await page.getByRole("definition").nth(1).textContent()
+  const uid = await uidOf(email ?? "")
+  const profile = await documentAt(`users/${uid}`)
+  expect(profile?.fields.uid.stringValue).toBe(uid)
+  expect(profile?.fields.provider.stringValue).toBe("google.com")
+  expect(typeof profile?.fields.emailVerified.booleanValue).toBe("boolean")
+  expect(profile?.fields.termsAcceptedAt.timestampValue).toBeTruthy()
+  await expect
+    .poll(async () => (await documentAt(`users/${uid}`))?.fields.signIns)
+    .toEqual({ integerValue: "1" })
 })
 
 test("a reset link never tells whether the account exists", async ({

@@ -1,11 +1,19 @@
 "use server"
 
+import type { UserRecord } from "firebase-admin/auth"
 import { hasLocale } from "next-intl"
+import { after } from "next/server"
 
 import { redirect } from "@/i18n/navigation"
 import { routing, type Locale } from "@/i18n/routing"
 import { adminAuth } from "@/lib/firebase/admin"
-import { createProfile, hasProfile } from "@/lib/users"
+import {
+  createProfile,
+  hasProfile,
+  recordSignIn,
+  type NewProfile,
+} from "@/lib/users"
+import { currentVisitor } from "@/lib/visitor"
 
 import { AuthErrorCodes, authErrorOf } from "./fireAuthError"
 import { safeNext } from "./next-path"
@@ -71,13 +79,10 @@ export async function startSession(
     }
     if (!(await hasProfile(token.uid))) {
       if (agreed !== true) return { needsTerms: true }
-      const user = await auth.getUser(token.uid)
-      await createProfile({
-        uid: user.uid,
-        name: user.displayName ?? "",
-        email: user.email ?? "",
-        locale: language,
-      }).catch((error: unknown) => {
+      const account = await auth.getUser(token.uid)
+      await createProfile(
+        await newProfile(account, token.firebase.sign_in_provider, language)
+      ).catch((error: unknown) => {
         // Made a moment ago, in another tab: that one counts.
         if (!alreadyExists(error)) throw error
       })
@@ -86,6 +91,13 @@ export async function startSession(
       await auth.createSessionCookie(idToken, {
         expiresIn: SESSION_SECONDS * 1000,
       })
+    )
+    // Once the answer is on its way: counting never slows or fails a
+    // sign-in.
+    after(() =>
+      recordSignIn(token.uid).catch((error: unknown) =>
+        console.error("Could not record a sign-in.", error)
+      )
     )
   } catch (error) {
     console.error("Could not start a session.", error)
@@ -132,12 +144,14 @@ export async function register(
         fieldErrors: { recaptcha: AuthErrorCodes.ROBOT_CHECK_FAILED },
       }
     }
-    const { uid } = await adminAuth().createUser({
+    const account = await adminAuth().createUser({
       email,
       password,
       displayName: name,
     })
-    await createProfileOrUndo(uid, name, email, languageOf(locale))
+    await createProfileOrUndo(
+      await newProfile(account, "password", languageOf(locale))
+    )
     return { ok: true }
   } catch (error) {
     const problem = authErrorOf(error)
@@ -155,20 +169,36 @@ export async function register(
 }
 
 /**
+ * A new account's profile: Firebase's record of the account, how it was
+ * made (`provider`), and where and on what (this request).
+ */
+async function newProfile(
+  account: UserRecord,
+  provider: string,
+  locale: Locale
+): Promise<NewProfile> {
+  return {
+    uid: account.uid,
+    name: account.displayName ?? "",
+    email: account.email ?? "",
+    emailVerified: account.emailVerified,
+    photoURL: account.photoURL ?? null,
+    provider,
+    locale,
+    signUp: await currentVisitor(),
+  }
+}
+
+/**
  * An account without a profile is incomplete: if the profile cannot be
  * made, remove the account too, so the visitor can simply register again.
  */
-async function createProfileOrUndo(
-  uid: string,
-  name: string,
-  email: string,
-  locale: Locale
-) {
+async function createProfileOrUndo(profile: NewProfile) {
   try {
-    await createProfile({ uid, name, email, locale })
+    await createProfile(profile)
   } catch (error) {
     await adminAuth()
-      .deleteUser(uid)
+      .deleteUser(profile.uid)
       .catch((undo) =>
         console.error("Could not remove an account without a profile.", undo)
       )

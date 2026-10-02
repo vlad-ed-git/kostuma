@@ -7,6 +7,17 @@ vi.mock("server-only", () => ({}))
 
 const now = () => Math.floor(Date.now() / 1000)
 
+/** Where and on what the account is made (lib/visitor.ts). */
+const visitor = vi.hoisted(() => ({
+  country: "US",
+  region: "ME",
+  city: "Chamberlain",
+  timeZone: "America/New_York",
+  device: "mobile",
+  os: "iOS",
+  browser: "Mobile Safari",
+}))
+
 const mocks = vi.hoisted(() => ({
   auth: {
     verifyIdToken: vi.fn(),
@@ -18,6 +29,7 @@ const mocks = vi.hoisted(() => ({
   },
   hasProfile: vi.fn(),
   createProfile: vi.fn(),
+  recordSignIn: vi.fn(),
   saveSession: vi.fn(),
   deleteSession: vi.fn(),
   getUser: vi.fn(),
@@ -25,12 +37,19 @@ const mocks = vi.hoisted(() => ({
   redirect: vi.fn((target: unknown) => {
     throw Object.assign(new Error("NEXT_REDIRECT"), { target })
   }),
+  // Work left for after the answer, run by `answerSent`.
+  afterwards: [] as (() => Promise<unknown>)[],
 }))
 
 vi.mock("@/lib/firebase/admin", () => ({ adminAuth: () => mocks.auth }))
 vi.mock("@/lib/users", () => ({
   hasProfile: mocks.hasProfile,
   createProfile: mocks.createProfile,
+  recordSignIn: mocks.recordSignIn,
+}))
+vi.mock("@/lib/visitor", () => ({ currentVisitor: async () => visitor }))
+vi.mock("next/server", () => ({
+  after: (task: () => Promise<unknown>) => mocks.afterwards.push(task),
 }))
 vi.mock("@/lib/auth/session", () => ({
   saveSession: mocks.saveSession,
@@ -44,19 +63,32 @@ vi.mock("@/i18n/navigation", () => ({ redirect: mocks.redirect }))
 const { endSession, firebaseToken, register, startSession } =
   await import("./actions")
 
+/** The answer has gone: the work left for after it runs. */
+async function answerSent() {
+  await Promise.all(mocks.afterwards.splice(0).map((task) => task()))
+}
+
 beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {})
-  mocks.auth.verifyIdToken.mockResolvedValue({ uid: "u1", auth_time: now() })
+  mocks.auth.verifyIdToken.mockResolvedValue({
+    uid: "u1",
+    auth_time: now(),
+    firebase: { sign_in_provider: "google.com" },
+  })
   mocks.auth.createSessionCookie.mockResolvedValue("cookie")
   mocks.auth.getUser.mockResolvedValue({
     uid: "u1",
     displayName: "Carrie White",
     email: "carrie@example.com",
+    emailVerified: true,
+    photoURL: "https://lh3.googleusercontent.com/a/carrie",
   })
   mocks.hasProfile.mockResolvedValue(true)
   mocks.createProfile.mockResolvedValue(undefined)
+  mocks.recordSignIn.mockResolvedValue(undefined)
 })
 afterEach(() => {
+  mocks.afterwards.length = 0
   vi.clearAllMocks()
   vi.restoreAllMocks()
 })
@@ -106,18 +138,51 @@ describe("startSession", () => {
     })
     expect(mocks.createProfile).not.toHaveBeenCalled()
     expect(mocks.saveSession).not.toHaveBeenCalled()
+    expect(mocks.afterwards).toEqual([])
   })
 
-  it("makes the profile once the terms are agreed to", async () => {
+  it("makes the profile once the terms are agreed to: the account, how, where", async () => {
     mocks.hasProfile.mockResolvedValue(false)
     await redirected(startSession("token", "/", "zh", true))
     expect(mocks.createProfile).toHaveBeenCalledWith({
       uid: "u1",
       name: "Carrie White",
       email: "carrie@example.com",
+      emailVerified: true,
+      photoURL: "https://lh3.googleusercontent.com/a/carrie",
+      provider: "google.com",
       locale: "zh",
+      signUp: visitor,
     })
     expect(mocks.saveSession).toHaveBeenCalled()
+  })
+
+  it("counts the sign-in once the answer has gone", async () => {
+    await redirected(startSession("token", "/", "en"))
+    expect(mocks.recordSignIn).not.toHaveBeenCalled()
+    await answerSent()
+    expect(mocks.recordSignIn).toHaveBeenCalledWith("u1")
+  })
+
+  it("never fails a sign-in over counting it", async () => {
+    mocks.recordSignIn.mockRejectedValue(new Error("Firestore is down"))
+    expect(await redirected(startSession("token", "/basket", "en"))).toEqual({
+      href: "/basket",
+      locale: "en",
+    })
+    await expect(answerSent()).resolves.toBeUndefined()
+    expect(console.error).toHaveBeenCalledWith(
+      "Could not record a sign-in.",
+      expect.any(Error)
+    )
+  })
+
+  it("counts nothing when no session starts", async () => {
+    mocks.auth.createSessionCookie.mockRejectedValue(new Error("Auth is down"))
+    expect(await startSession("token", "/", "en")).toEqual({
+      error: E.UNKNOWN_AUTH_ERROR,
+    })
+    expect(mocks.afterwards).toEqual([])
   })
 
   it("takes a profile made a moment ago in another tab", async () => {
@@ -168,7 +233,13 @@ describe("register", () => {
 
   beforeEach(() => {
     mocks.verifyRecaptcha.mockResolvedValue(true)
-    mocks.auth.createUser.mockResolvedValue({ uid: "u1" })
+    // What Firebase answers for a new account (a UserRecord).
+    mocks.auth.createUser.mockResolvedValue({
+      uid: "u1",
+      displayName: "Carrie White",
+      email: "carrie@example.com",
+      emailVerified: false,
+    })
   })
 
   it("makes the account and its profile, in the visitor's language", async () => {
@@ -182,7 +253,11 @@ describe("register", () => {
       uid: "u1",
       name: "Carrie White",
       email: "carrie@example.com",
+      emailVerified: false,
+      photoURL: null,
+      provider: "password",
       locale: "es",
+      signUp: visitor,
     })
   })
 
