@@ -112,6 +112,48 @@ test.describe("site shell", () => {
   })
 })
 
+test.describe("the fonts", () => {
+  test("ship with the app: every face loads, none from elsewhere", async ({
+    page,
+    baseURL,
+  }) => {
+    const fonts: string[] = []
+    page.on("request", (request) => {
+      if (request.resourceType() === "font") fonts.push(request.url())
+    })
+    await page.goto("/costumes/michael-myers")
+    const faces = await page.evaluate(async () => {
+      await document.fonts.ready
+      const loaded = new Set(
+        [...document.fonts]
+          .filter((face) => face.status === "loaded")
+          .map((face) => `${face.family.replace(/"/g, "")} ${face.style}`)
+      )
+      // The face each kind of text asks for first: titles, text, films.
+      const first = (selector: string) => {
+        const style = getComputedStyle(document.querySelector(selector)!)
+        const family = style.fontFamily.split(",")[0].replace(/"/g, "").trim()
+        return {
+          family,
+          style: style.fontStyle,
+          loaded: loaded.has(`${family} ${style.fontStyle}`),
+        }
+      }
+      return [first("h1"), first("main p.text-body-lg"), first("main p.italic")]
+    })
+    for (const face of faces)
+      expect(face, face.family).toMatchObject({ loaded: true })
+    expect(faces.map((face) => face.style)).toEqual([
+      "normal",
+      "normal",
+      "italic",
+    ])
+    expect(fonts.length).toBeGreaterThan(0)
+    for (const url of fonts)
+      expect(new URL(url).origin).toBe(new URL(baseURL!).origin)
+  })
+})
+
 test.describe("the cue mark", () => {
   test("burns while a slow page loads, then goes out", async ({ page }) => {
     await page.goto("/")

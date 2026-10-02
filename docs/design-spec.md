@@ -151,7 +151,7 @@ blood-text and destructive on background, card and muted ≥ 4.5; ember on backg
 
 ## 4. Typography
 
-### 4.1 Families (`app/fonts.ts`, `next/font/google`, self-hosted)
+### 4.1 Families (`app/fonts/`, `next/font/local`: the files ship with the app)
 
 | Role    | Family         | Why                                                                                 |
 | ------- | -------------- | ----------------------------------------------------------------------------------- |
@@ -667,13 +667,13 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 
 ## 15. Performance budgets
 
-| Metric              | Budget                                                                                                          |
-| ------------------- | --------------------------------------------------------------------------------------------------------------- |
-| LCP (4G, mid phone) | ≤ 2.0 s; the home LCP is the H1 text, visible from first paint (never starts at opacity 0)                      |
-| CLS                 | ≤ 0.02 (reserved sizes for countdown, reCAPTCHA, images)                                                        |
-| INP                 | ≤ 200 ms                                                                                                        |
-| JS per route        | ≤ 120 KB gz shared + ≤ 40 KB route                                                                              |
-| Fonts               | 2 variable families (Grenze Gotisch, Crimson Pro + italic), Latin subsets, `display: swap`; CJK from the system |
+| Metric              | Budget                                                                                                                                                                                                                                   |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LCP (4G, mid phone) | ≤ 2.0 s; the home LCP is the H1 text, visible from first paint (never starts at opacity 0)                                                                                                                                               |
+| CLS                 | ≤ 0.02 (reserved sizes for countdown, reCAPTCHA, images)                                                                                                                                                                                 |
+| INP                 | ≤ 200 ms                                                                                                                                                                                                                                 |
+| JS per route        | ≤ 120 KB gz shared + ≤ 40 KB route                                                                                                                                                                                                       |
+| Fonts               | 3 files in the repo (`app/fonts/`): Grenze Gotisch, Crimson Pro and its italic, variable, Latin and Latin Extended in one woff2 each (about 188 KB together), preloaded, `display: swap`; never fetched from Google; CJK from the system |
 
 - Ambient effects: CSS, `transform`/`opacity` only, no `mix-blend-mode` on full-screen layers.
 - `motion` only where CSS can't do the job (first use: the basket count's roll), in client
@@ -697,7 +697,7 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 | Piece                    | Where                                                                                                                                     |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | Tokens (palette, motion) | `app/globals.css` `:root` + `@theme inline`                                                                                               |
-| Fonts                    | `app/fonts.ts`                                                                                                                            |
+| Fonts                    | `app/fonts/` (the woff2 files, their OFL licenses, `index.ts`)                                                                            |
 | Atmosphere               | `components/horror/{atmosphere,fog}.tsx` + `app/film.css` (grain, vignette, ground fog, scratches, VHS)                                   |
 | Reel change              | `app/[locale]/template.tsx` (`<ViewTransition>`), `::view-transition` rules in `app/film.css`                                             |
 | Cue mark                 | `components/horror/cue-mark.tsx`, fed by `lib/navigation-status.ts` from `i18n/navigation.tsx`                                            |
