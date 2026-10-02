@@ -46,9 +46,9 @@ test.describe("browsing the costumes", () => {
     )
     for (const href of hrefs) expect(href).toMatch(/^\/costumes\/[a-z0-9-]+$/)
     expect(new Set(hrefs).size).toBe(82)
-    // In the owner's order, with no ranks, badges or headings on screen.
-    await expect(links.first()).toContainText("Ghostface")
-    await expect(links.last()).toContainText("Alice")
+    // By year, latest first, with no ranks, badges or headings on screen.
+    await expect(links.first()).toContainText("Nikki 'Freaky Nikki' Freeman")
+    await expect(links.last()).toContainText("Count Orlok")
     await expect(costumes(page)).not.toContainText(/No\. ?\d|New blood/)
     expect(errors).toEqual([])
   })
@@ -83,21 +83,22 @@ test.describe("browsing the costumes", () => {
   test("the first costume leads on, the last one back, by name only", async ({
     page,
   }) => {
-    await page.goto("/costumes/ghostface")
+    // The latest film first, the oldest last.
+    await page.goto("/costumes/nikki-freaky-nikki-freeman")
     const neighbors = page.getByRole("navigation", {
       name: "Previous and next costumes",
     })
     await expect(neighbors.getByRole("link")).toHaveCount(1)
-    await neighbors.getByRole("link", { name: /Next\s*Michael Myers/ }).click()
-    await expect(page).toHaveURL(/\/costumes\/michael-myers$/)
+    await neighbors.getByRole("link", { name: /Next\s*Pirate Clark/ }).click()
+    await expect(page).toHaveURL(/\/costumes\/pirate-clark$/)
 
-    await page.goto("/costumes/alice")
+    await page.goto("/costumes/count-orlok")
     await expect(neighbors.getByRole("link")).toHaveCount(1)
     await expect(
       neighbors.getByRole("link", {
-        name: /Previous\s*Billy Chapman \(Killer Santa\)/,
+        name: /Previous\s*The Phantom of the Opera/,
       })
-    ).toHaveAttribute("href", "/costumes/billy-chapman-killer-santa")
+    ).toHaveAttribute("href", "/costumes/the-phantom-of-the-opera")
   })
 
   test("more from the same film, else the costumes that follow", async ({
@@ -112,11 +113,16 @@ test.describe("browsing the costumes", () => {
       "Danny Torrance",
     ])
 
-    // The last costume wraps around to the first ones.
-    await page.goto("/costumes/alice")
+    // Next to last: the last costume, then around to the first ones.
+    await page.goto("/costumes/the-phantom-of-the-opera")
     const more = page.getByRole("region", { name: "More costumes" })
     await expect(more.getByRole("link")).toHaveCount(4)
-    await expect(more.getByRole("link").first()).toContainText("Ghostface")
+    await expect(more.getByRole("link")).toContainText([
+      "Count Orlok",
+      "Nikki 'Freaky Nikki' Freeman",
+      "Pirate Clark",
+      "Aunt Gladys",
+    ])
   })
 
   test("the breadcrumb leads back to the costumes on the home page", async ({
@@ -201,7 +207,7 @@ test.describe("browsing the costumes", () => {
   })
 
   test("links keep the language: the Spanish breadcrumb", async ({ page }) => {
-    await page.goto("/es/costumes/ghostface")
+    await page.goto("/es/costumes/nikki-freaky-nikki-freeman")
     await expect(
       page
         .getByRole("navigation", { name: "Ruta de navegación" })
@@ -211,7 +217,7 @@ test.describe("browsing the costumes", () => {
       page
         .getByRole("navigation", { name: "Disfraz anterior y siguiente" })
         .getByRole("link")
-    ).toHaveAttribute("href", "/es/costumes/michael-myers")
+    ).toHaveAttribute("href", "/es/costumes/pirate-clark")
   })
 
   test("an unknown costume is a 404", async ({ page }) => {
@@ -285,8 +291,8 @@ test.describe("the costume photos", () => {
     await costumes(page).scrollIntoViewIfNeeded()
     const rows = costumes(page).getByRole("listitem")
     for (const [index, file] of [
-      [0, "ghostface."],
-      [1, "michael-myers."],
+      [0, "nikki-freaky-nikki-freeman."],
+      [1, "pirate-clark."],
     ] as const) {
       const img = rows.nth(index).locator("img")
       // The file the browser chose from the srcset.

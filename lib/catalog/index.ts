@@ -7,12 +7,23 @@ import type { Costume, CostumeSummary, Film } from "./types"
  * every lookup is synchronous.
  */
 
-const byRank = [...costumes].sort((a, b) => a.rank - b.rank)
-const bySlug = new Map(byRank.map((costume) => [costume.slug, costume]))
+/** The year of the film a character is known from (its first). */
+const yearOf = (costume: Costume) => costume.films[0].year
 
-/** Every costume, in the owner's order. */
+/**
+ * The order costumes show in (owner): by year, latest first; costumes from
+ * the same year in the owner's ranking.
+ */
+export function byYear(a: Costume, b: Costume) {
+  return yearOf(b) - yearOf(a) || a.rank - b.rank
+}
+
+const ordered = [...costumes].sort(byYear)
+const bySlug = new Map(ordered.map((costume) => [costume.slug, costume]))
+
+/** Every costume, by year, latest first. */
 export function getCostumes(): readonly Costume[] {
-  return byRank
+  return ordered
 }
 
 export function getCostume(slug: string) {
@@ -21,10 +32,10 @@ export function getCostume(slug: string) {
 
 /** The costumes just before and after it (none past either end). */
 export function getNeighbors(costume: Costume) {
-  const index = byRank.indexOf(costume)
+  const index = ordered.indexOf(costume)
   return {
-    previous: byRank[index - 1] as Costume | undefined,
-    next: byRank[index + 1] as Costume | undefined,
+    previous: ordered[index - 1] as Costume | undefined,
+    next: ordered[index + 1] as Costume | undefined,
   }
 }
 
@@ -38,7 +49,7 @@ type Related =
  */
 export function getRelated(costume: Costume, count = 4): Related {
   const titles = new Set(costume.films.map((film) => film.title))
-  const sameFilm = byRank.filter(
+  const sameFilm = ordered.filter(
     (other) =>
       other !== costume && other.films.some((film) => titles.has(film.title))
   )
@@ -51,10 +62,10 @@ export function getRelated(costume: Costume, count = 4): Related {
       ) ?? costume.films[0]
     return { kind: "film", film, costumes: sameFilm.slice(0, count) }
   }
-  const index = byRank.indexOf(costume)
+  const index = ordered.indexOf(costume)
   const next = Array.from(
-    { length: Math.min(count, byRank.length - 1) },
-    (_, offset) => byRank[(index + 1 + offset) % byRank.length]
+    { length: Math.min(count, ordered.length - 1) },
+    (_, offset) => ordered[(index + 1 + offset) % ordered.length]
   )
   return { kind: "wanted", costumes: next }
 }

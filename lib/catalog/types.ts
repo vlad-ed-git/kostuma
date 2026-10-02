@@ -31,7 +31,10 @@ export type Photo = {
 
 /** One costume of the collection, as curated in content/costumes.ts. */
 export type Costume = {
-  /** 1–82: the editorial ranking, in the owner's order. */
+  /**
+   * 1–82: the owner's ranking. Costumes show by year, latest first; the
+   * ranking orders those from the same year.
+   */
   rank: number
   /** The URL segment: lowercase words and hyphens, never a dot. */
   slug: string
