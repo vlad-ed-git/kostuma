@@ -98,9 +98,7 @@ test.describe("My Pumpkin Basket", () => {
     await expect(
       page.getByRole("heading", { level: 1, name: "My Pumpkin Basket" })
     ).toBeVisible()
-    await expect(
-      page.getByText("2 costumes · Kept on this device.")
-    ).toBeVisible()
+    await expect(page.getByText("2 costumes", { exact: true })).toBeVisible()
 
     const fittingRoom = page.getByRole("region", { name: "The Fitting Room" })
     await expect(fittingRoom).toContainText("Soon")

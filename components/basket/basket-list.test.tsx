@@ -66,9 +66,7 @@ describe("BasketList", () => {
       "GhostfaceGhostface: the film (1996)",
       "PearlPearl: the film (2022)",
     ])
-    expect(screen.getByText(/· Kept on this device\./)).toHaveTextContent(
-      "2 costumes · Kept on this device."
-    )
+    expect(screen.getByText("2 costumes")).toBeInTheDocument()
   })
 
   it("gives each costume its page, Buy, Try on (soon) and Remove", () => {
@@ -133,7 +131,8 @@ describe("BasketList", () => {
     expect(
       screen.getByRole("link", { name: "Browse costumes" })
     ).toHaveAttribute("href", "/#costumes")
-    expect(screen.getByText("Kept on this device.")).toBeInTheDocument()
+    // No count over an empty basket: it says so itself.
+    expect(screen.queryByText(/\d costumes?/)).toBeNull()
   })
 
   it("clears the basket only on a second click", async () => {
@@ -162,6 +161,13 @@ describe("BasketList", () => {
     })
     await user.click(screen.getByRole("button", { name: "Clear basket" }))
     expect(storedSlugs()).toEqual(["pearl"])
+  })
+
+  it("never tells the visitor where or how the basket is kept", () => {
+    renderBasket(["pearl"])
+    expect(document.body).not.toHaveTextContent(
+      /device|account|stor(ed|age)|kept|saved|browser/i
+    )
   })
 
   it("shows the empty basket when nothing was ever added", () => {
@@ -196,7 +202,6 @@ describe("BasketList", () => {
       </NextIntlClientProvider>
     )
     expect(html).toContain("skeleton")
-    expect(html).not.toContain("Kept on this device.")
     // Shown only where scripts can't run.
     expect(html).toMatch(
       /hidden \[@media\(scripting:none\)\]:block.*Your basket is empty\./

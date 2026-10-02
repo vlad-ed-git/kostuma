@@ -64,7 +64,7 @@ describe("BasketProvider", () => {
     expect(document.body).not.toHaveTextContent("Firebase")
   })
 
-  it("says the basket is kept in the account once it is", async () => {
+  it("counts the account's basket once it answers", async () => {
     remote.open.mockResolvedValue({
       watch: (next) => {
         queueMicrotask(() => next({ slugs: ["pearl"], confirmed: true }))
@@ -73,9 +73,7 @@ describe("BasketProvider", () => {
       apply: () => Promise.resolve(),
     })
     renderWithBasket(<BasketSummary />, { account: "alice" })
-    expect(await screen.findByText(/Kept in your account\./)).toHaveTextContent(
-      "1 costume · Kept in your account."
-    )
+    expect(await screen.findByText("1 costume")).toBeInTheDocument()
     expect(remote.open).toHaveBeenCalledWith("alice")
   })
 

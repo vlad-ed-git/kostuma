@@ -555,10 +555,12 @@ title, toolbar or empty state for one.
 
 `noindex` (each visitor's own). No sign-in needed.
 
-- H1 "My Pumpkin Basket"; under it one line: "3 costumes · Kept on this device." (signed in:
-  "Kept in your account."; empty: the note alone). Signed in and the account can't be reached,
-  the line becomes an alert in `--destructive`: "Your account can't be reached right now, so
-  changes here may not be saved. Reload the page to try again."
+- H1 "My Pumpkin Basket"; under it the count, "3 costumes" (nothing when empty: the empty
+  basket says so). Never where or how the basket is kept (owner: no "Kept on this device."):
+  that is Kostuma's business. Signed in and the account can't be reached, the line becomes an
+  alert in `--destructive`: "Your account can't be reached right now, so changes here may not
+  be saved. Reload the page to try again." (the visitor's changes are at risk: that they must
+  know).
 - **The Fitting Room** panel (part of the basket, 1.3), at the top: a `--card` panel with a
   `--blood` hairline at 40 % and a faint red glow; `h2` "The Fitting Room" + `soon` + `premium`,
   one line ("Try on the outfits in your basket, special-effects makeup included."), the price

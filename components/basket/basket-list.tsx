@@ -27,16 +27,19 @@ export const CLEAR_WINDOW_MS = 4_000
 /** Where focus goes once a row is gone: a row's Remove, or the empty basket. */
 type FocusTarget = { slug: string | null }
 
-/** "3 costumes · Kept on this device." under the page's title. */
+/**
+ * How many costumes the basket holds, under the page's title. Never where
+ * or how it is kept: that is Kostuma's business, not the visitor's.
+ */
 export function BasketSummary() {
   const t = useTranslations("Basket")
-  const { ready, slugs, account, unreachable } = useBasket()
+  const { ready, slugs, unreachable } = useBasket()
 
   if (!ready) {
     return (
       <p
         aria-hidden="true"
-        className="skeleton mt-4 h-7 w-64 [@media(scripting:none)]:hidden"
+        className="skeleton mt-4 h-7 w-32 [@media(scripting:none)]:hidden"
       />
     )
   }
@@ -47,16 +50,11 @@ export function BasketSummary() {
       </p>
     )
   }
-  const kept = account ? t("keptInAccount") : t("keptOnDevice")
+  // Empty: the empty basket below says so.
+  if (slugs.length === 0) return null
   return (
     <p className="mt-4 text-lead text-muted-foreground">
-      {slugs.length > 0
-        ? t.rich("summary", {
-            count: slugs.length,
-            kept,
-            b: (chunks) => <span className="text-foreground">{chunks}</span>,
-          })
-        : kept}
+      {t("count", { count: slugs.length })}
     </p>
   )
 }

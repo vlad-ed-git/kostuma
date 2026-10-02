@@ -19,8 +19,6 @@ import {
 
 type Basket = {
   store: BasketStore
-  /** The signed-in account's uid, or `null` for a guest. */
-  account: string | null
   /** Says `message` to screen readers, politely (spec §12, Live regions). */
   announce(message: string): void
 }
@@ -31,7 +29,6 @@ type Basket = {
  */
 const inert: Basket = {
   store: createBasketStore({ known: [] }),
-  account: null,
   announce: () => {},
 }
 
@@ -76,7 +73,7 @@ export function BasketProvider({
     [store]
   )
 
-  const basket: Basket = { store, account, announce }
+  const basket: Basket = { store, announce }
 
   return (
     <BasketContext value={basket}>
@@ -91,7 +88,7 @@ export function BasketProvider({
 
 /** The basket and what can be done with it. */
 export function useBasket() {
-  const { store, account, announce } = use(BasketContext)
+  const { store, announce } = use(BasketContext)
   const { ready, slugs, unreachable } = useSyncExternalStore(
     store.subscribe,
     store.getSnapshot,
@@ -103,7 +100,6 @@ export function useBasket() {
     slugs,
     /** Signed in, and the account can't be reached right now. */
     unreachable,
-    account,
     has: (slug: string) => slugs.includes(slug),
     add: store.add,
     remove: store.remove,

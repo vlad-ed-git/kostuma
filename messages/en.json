@@ -50,10 +50,7 @@
   "Basket": {
     "title": "My Pumpkin Basket",
     "count": "{count, plural, one {# costume} other {# costumes}}",
-    "summary": "<b>{count, plural, one {# costume} other {# costumes}}</b> · {kept}",
     "label": "My Pumpkin Basket, {count, plural, one {# costume} other {# costumes}}",
-    "keptOnDevice": "Kept on this device.",
-    "keptInAccount": "Kept in your account.",
     "unreachable": "Your account can't be reached right now, so changes here may not be saved. Reload the page to try again.",
     "add": "Add to My Pumpkin Basket",
     "addNamed": "Add {name} to My Pumpkin Basket",
