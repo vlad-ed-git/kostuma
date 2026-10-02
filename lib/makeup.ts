@@ -24,7 +24,7 @@ export type Hex = `#${string}`
 
 /**
  * A foundation color taken from the visitor's own skin: that many shades
- * lighter, 0–3 (0 is their own shade).
+ * lighter, 0–4 (0 is their own shade; 4 is as pale as skin goes).
  */
 export type FromSkin = { lighterThanSkin: number }
 
@@ -35,7 +35,9 @@ export type FromSkin = { lighterThanSkin: number }
  */
 export const patterns = {
   eye_shadow: {
-    "1color57": 1, // the whole socket, brow bone to under the eye: hollow eyes
+    "1color30": 1, // all around the eye, lid to brow and under: hollow, sunken sockets
+    "1color55": 1, // a wide wash from the lid to the brow, and under the eye
+    "1color57": 1, // the lid to the brow bone, a little under the eye
     "1color23": 1, // close around the eye, under it too: shadowed, sunken eyes
     "1color22": 1, // the lid to the crease, flicked up at the outer corner
     "1color67": 1, // the lid up to the brow
@@ -72,10 +74,13 @@ export const patterns = {
   },
   contour: {
     HeartFace3: 1, // under the cheekbones, the temples and the jaw
+    TriangleFace5: 1, // deep hollows from the cheekbones down to the jaw: gaunt
+    OvalFace6: 1, // the hairline, the sides of the nose and under the jaw
   },
   bronzer: {
-    Bronzer2: 1, // around the eyes, the cheeks and the temples
+    Bronzer2: 1, // half-moons under the eyes, the temples and the brow: hollow, tired eyes
     Bronzer3: 1, // the edges of the face, the cheek hollows and the nose
+    Bronzer5: 1, // the temples, the cheek hollows and the jaw: a skull's shadows
   },
   highlighter: {
     OvalFace5: 1, // under the eyes, down the nose and the chin
@@ -343,10 +348,11 @@ const foundation = (
 
 /**
  * A paler foundation: `shades` lighter than the visitor's own skin, whatever
- * its tone. Three shades at medium coverage, set with white powder, is how
- * the guides "paint the face white".
+ * its tone. Four shades at full coverage, set with white powder, is how the
+ * guides "paint the face white" (YouCam's foundation shows about half of the
+ * change it is given, so the base needs this much to read as pale).
  */
-export const paler = (shades: number, coverage = 60, glow = 0) =>
+export const paler = (shades: number, coverage = 90, glow = 0) =>
   foundation({ lighterThanSkin: shades }, coverage, glow)
 
 /**
@@ -354,21 +360,33 @@ export const paler = (shades: number, coverage = 60, glow = 0) =>
  * into foundation (green for a monster, gray for a corpse), never painted
  * over the face.
  */
-export const tint = (color: Hex, coverage = 30) =>
+export const tint = (color: Hex, coverage = 45) =>
   foundation(color, coverage, 0)
 
-/** Shadows under the cheekbones, at the temples and along the jaw. */
-export const contour = (color: Hex, intensity = 60): MakeupEffect => ({
+/**
+ * Shadows sculpting the face (see `patterns.contour`; under the cheekbones,
+ * at the temples and along the jaw by default). YouCam's contour hardly
+ * shows below 70.
+ */
+export const contour = (
+  color: Hex,
+  intensity = 85,
+  name: PatternName<"contour"> = "HeartFace3"
+): MakeupEffect => ({
   category: "contour",
-  pattern: { name: "HeartFace3" },
+  pattern: { name },
   palettes: [{ color, colorIntensity: intensity }],
 })
 
-/** Color swept over larger parts of the face (see `patterns.bronzer`). */
+/**
+ * Color swept over larger parts of the face (see `patterns.bronzer`): the
+ * hollows under the eyes, the temples, the cheeks. Like contour, it shows
+ * from about 70.
+ */
 export const shading = (
   name: PatternName<"bronzer">,
   color: Hex,
-  intensity = 60
+  intensity = 85
 ): MakeupEffect => ({
   category: "bronzer",
   pattern: { name },

@@ -134,7 +134,7 @@ describe("renderPlan", () => {
       if (foundation.category !== "foundation")
         throw new Error("foundation expected")
       expect(foundation.palettes[0].color).toBe(lighter(skin, 2))
-      expect(foundation.palettes[0].coverageIntensity).toBe(60)
+      expect(foundation.palettes[0].coverageIntensity).toBe(90)
     }
   })
 

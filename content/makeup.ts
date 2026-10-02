@@ -47,89 +47,147 @@ const BLACK: Hex = "#111111"
 /** Each costume's guide, by its slug (content/costumes.ts). */
 export const makeupGuides: Record<string, MakeupGuide> = {
   ghostface: {
-    look: "A Ghostface face: pale skin, dark hollow-looking eyes, gray-shaded cheeks and black lips.",
+    look: "A Ghostface face: drained white skin, gray-shaded hollows, black sockets, faded brows and black lips, like the mask come to life.",
     steps: [
       {
-        title: "Pale base",
+        title: "Drained white base",
         howTo:
-          "Pat on a foundation two or three shades lighter than your skin, then set it with a white or translucent powder.",
-        products: ["light foundation", "translucent setting powder"],
-        render: makeup(paler(3)),
+          "Pat on a foundation four shades lighter than your skin over the face and lips, then press white powder over it.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 92)),
       },
       {
-        title: "Dark eyes",
+        title: "Gray hollows",
         howTo:
-          "Sweep black eyeshadow all around the eyes, from the crease to under the lashes, and smudge black eyeliner into the lash lines so they look hollow.",
+          "Shade from the cheekbones down to the jaw and at the temples with a cool gray eyeshadow, blended long and soft like the mask's folds.",
+        products: ["cool gray eyeshadow"],
+        render: makeup(contour("#6E6E6C", 85, "TriangleFace5")),
+      },
+      {
+        title: "Black sockets",
+        howTo:
+          "Pack black eyeshadow all around each eye, from the brow bone to under the lashes, and smudge black kohl into the lash lines.",
         products: ["black eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          shadow("1color57", matte(BLACK, 70)),
-          liner("PandaSmudge1", matte(BLACK, 75))
+          shadow("1color30", matte(BLACK, 90)),
+          liner("FullRim7", matte(BLACK, 85))
         ),
+      },
+      {
+        title: "Faded brows",
+        howTo:
+          "Brush the pale foundation through your brows and powder them so they almost disappear.",
+        products: ["brow concealer"],
+        render: makeup(brows("#D9CFC4", 60)),
       },
       {
         title: "Black lips",
         howTo:
-          "Wear a black lipstick, and shade under the cheekbones and at the temples with a gray contour powder.",
-        products: ["black lipstick", "gray contour powder"],
-        render: makeup(lips(matte(BLACK, 85)), contour("#8E8E8A", 40)),
+          "Wear a matte black lipstick, kept inside your natural lip line.",
+        products: ["black lipstick"],
+        render: makeup(lips(matte("#1E1E1E", 90))),
       },
     ],
     finish: "The black hooded robe, with the mask pushed up on your head.",
   },
   "michael-myers": {
-    look: "A Michael Myers face: pale, blank skin, faded brows, shadowed eyes and messy dark-brown hair.",
+    look: "A Michael Myers face: blank white skin, flat gray edges, eyes lost in shadow, faded brows, colorless lips and messy dark-brown hair.",
     steps: [
       {
-        title: "Blank pale skin",
+        title: "Blank white base",
         howTo:
-          "Use a matte foundation two shades lighter than your skin, and brush a little of it through your brows so they fade.",
-        products: ["light matte foundation"],
-        render: makeup(paler(2), brows("#D9CDBE", 45)),
+          "Use a matte foundation four shades lighter than your skin all over the face and lips, set with white powder for a flat, masklike finish.",
+        products: ["very light matte foundation", "white setting powder"],
+        render: makeup(paler(4, 90)),
       },
       {
-        title: "Shadowed eyes",
+        title: "Flat gray edges",
         howTo:
-          "Smudge a dark-brown eyeshadow all around the eyes so they look sunken.",
-        products: ["dark brown eyeshadow"],
-        render: makeup(shadow("1color57", matte("#2A211C", 60))),
+          "Shade the edges of your face, the cheek hollows and the sides of the nose with a soft gray, so the face looks molded and flat.",
+        products: ["soft gray eyeshadow"],
+        render: makeup(shading("Bronzer3", "#8A857E", 80)),
+      },
+      {
+        title: "Eyes lost in shadow",
+        howTo:
+          "Pack a dark brown-black eyeshadow all around each eye so it sinks into shadow, like the mask's eyeholes, and line the lashes in black.",
+        products: ["dark brown eyeshadow", "black kohl eyeliner"],
+        render: makeup(
+          shadow("1color30", matte("#1F1A17", 85)),
+          liner("FullRim7", matte("#1A1714", 80))
+        ),
+      },
+      {
+        title: "Faded brows",
+        howTo:
+          "Brush the foundation through your brows, then a little white powder, so they fade.",
+        products: ["brow concealer"],
+        render: makeup(brows("#D2C6B8", 60)),
+      },
+      {
+        title: "Colorless lips",
+        howTo:
+          "Cover your lips with the foundation and a pale nude lipstick, so the mouth has no color.",
+        products: ["pale nude lipstick"],
+        render: makeup(lips(matte("#CDB9AE", 82))),
       },
       {
         title: "Dark-brown hair",
         howTo: "Finish with messy dark-brown hair: your own or a short wig.",
         products: ["short dark brown wig"],
-        render: hair("#3B2A1E", 80, 15),
+        render: hair("#3B2A1E", 85, 15),
       },
     ],
     finish: "Navy coveralls and a plastic kitchen knife.",
   },
   "nikki-freaky-nikki-freeman": {
-    look: "Nikki's uncanny-valley face: flat pale skin, eyes that look too big, a mouth that looks too long, and black hair.",
+    look: "Nikki's uncanny-valley face: flat plastic skin, too-sculpted cheeks, eyes that look too big, flat brows, a mouth too long and black hair.",
     steps: [
       {
-        title: "Flat skin",
+        title: "Flat plastic skin",
         howTo:
-          "Pat a matte foundation a shade lighter than your skin over your face and lips, for a flat, mannequin-like finish.",
+          "Pat a matte foundation two shades lighter than your skin over the face and lips, and powder it for a flat, mannequin-like finish.",
         products: ["matte foundation", "translucent setting powder"],
-        render: makeup(paler(1)),
+        render: makeup(smooth(60), paler(2, 90)),
+      },
+      {
+        title: "Too-sculpted cheeks",
+        howTo:
+          "Shade under the cheekbones and at the temples with a cool brown, a little too sharp to be natural.",
+        products: ["cool brown contour powder"],
+        render: makeup(contour("#7A5E55", 85)),
       },
       {
         title: "Too-big eyes",
         howTo:
-          "Press brown eyeshadow into the under-eye hollows and up toward the brow, and line only the middle of the upper and lower lashes in black.",
-        products: ["matte brown eyeshadow", "black kohl eyeliner"],
+          "Press brown eyeshadow up toward the brow and into the under-eye hollows, line all around the eye in black, and add lashes top and bottom.",
+        products: [
+          "matte brown eyeshadow",
+          "black kohl eyeliner",
+          "false lashes",
+        ],
         render: makeup(
-          shadow("2colors25", matte("#6B4E44", 60), matte("#4A332C", 65)),
-          liner("FullRim7", matte(BLACK, 55))
+          shadow("2colors25", matte("#6B4E44", 82), matte("#4A332C", 85)),
+          liner("FullRim7", matte(BLACK, 82)),
+          lashes("Upper&Lower1")
+        ),
+      },
+      {
+        title: "Flat brows",
+        howTo: "Fill your brows straight and even with a dark pencil.",
+        products: ["dark brow pencil"],
+        render: makeup(
+          brows("#1E1A18", 78, { name: "Straight2", thickness: 10 })
         ),
       },
       {
         title: "Too-long mouth",
         howTo:
-          "Fill the lips with a deep berry and take the lip liner a little past the corners.",
+          "Fill the lips with a deep berry and take the lip liner a little past the corners of the mouth.",
         products: ["deep berry lipstick", "lip liner"],
         render: makeup(
-          lips(matte("#6E2A35", 80)),
-          lipLine("Wider1", "#5A1F2A", 75, 40, 40)
+          lips(matte("#7E3040", 85)),
+          lipLine("Wider1", "#5A1F2A", 85, 55, 40)
         ),
       },
       {
@@ -143,34 +201,53 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       "For the finale, a little fake blood on the face and her friend's tattoos drawn on your arms with eyeliner.",
   },
   "art-the-clown": {
-    look: "An Art the Clown face: pale skin, smudged black eyes, high black brows and black lips.",
+    look: "An Art the Clown face: clown-white skin, gray hollows, wide black eyes, high painted brows and black lips.",
     steps: [
       {
-        title: "Pale base",
+        title: "Clown-white base",
         howTo:
-          "Pat on a foundation two or three shades lighter than your skin and set it with a white or translucent powder.",
-        products: ["light foundation", "white setting powder"],
-        render: makeup(paler(3)),
+          "Pat on a foundation four shades lighter than your skin, then press white powder over it until the face looks painted white.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 95)),
       },
       {
-        title: "Eyes and brows",
+        title: "Gray hollows",
         howTo:
-          "Smudge black eyeshadow on the lids and under the eyes and drag it up and out; messy is right for Art. Draw thin, high-arched brows with a black pencil.",
-        products: ["black eyeshadow", "black brow pencil"],
+          "Shade under the eyes and at the temples with a gray eyeshadow so the white face looks hollow.",
+        products: ["gray eyeshadow"],
+        render: makeup(shading("Bronzer2", "#5A5754", 80)),
+      },
+      {
+        title: "Wide black eyes",
+        howTo:
+          "Pack black eyeshadow in a wide shape all around each eye, swept up at the outer corners, and smudge black kohl along the lashes.",
+        products: ["black eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          shadow("1color23", matte(BLACK, 65)),
-          liner("PandaSmudge11", matte(BLACK, 75)),
-          brows(BLACK, 80, { name: "HighArch4", curvature: 40, thickness: -10 })
+          shadow("1color30", matte(BLACK, 92)),
+          liner("PandaSmudge11", matte(BLACK, 90))
+        ),
+      },
+      {
+        title: "High painted brows",
+        howTo:
+          "Draw thick, high-arched black brows over your own with a black brow pencil.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows(BLACK, 90, {
+            name: "HighArch4",
+            curvature: 40,
+            thickness: 20,
+            definition: 80,
+          })
         ),
       },
       {
         title: "Black lips",
-        howTo:
-          "Wear a black lipstick and take it a little past the corners with a black lip liner.",
+        howTo: "Paint the lips matte black and line them sharply.",
         products: ["black lipstick", "black lip liner"],
         render: makeup(
-          lips(matte(BLACK, 85), "smile"),
-          lipLine("Wider1", BLACK, 80, 40, 40)
+          lips(matte("#1A1A1A", 92)),
+          lipLine("Natural1", BLACK, 90, 50, 60)
         ),
       },
     ],
@@ -178,357 +255,529 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       "A dot of black eyeliner on the tip of your nose, and the little black hat.",
   },
   pennywise: {
-    look: "A Pennywise face: pale skin, red-brown eyes, thin high brows, red lips and orange hair.",
+    look: "A Pennywise face: clown-white skin, soft taupe shadows, red-rimmed eyes, thin high brows, a red heart mouth and orange hair.",
     steps: [
       {
-        title: "Pale base",
+        title: "Clown-white base",
         howTo:
-          "Pat on a foundation two or three shades lighter than your skin and set it with a white or translucent powder.",
-        products: ["light foundation", "white setting powder"],
-        render: makeup(paler(3)),
+          "Pat on a foundation four shades lighter than your skin over the face and lips, then press white powder over it.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 95)),
       },
       {
-        title: "Eyes and brows",
+        title: "Soft shadows",
         howTo:
-          "Blend a red-brown eyeshadow over the lids and under the eyes, darken the outer corners, and draw thin, high, angular brows with a gray pencil.",
-        products: ["red brown eyeshadow", "gray brow pencil"],
+          "Shade the edges of the face and under the cheekbones with a soft taupe so the white base looks sculpted.",
+        products: ["taupe eyeshadow"],
+        render: makeup(shading("Bronzer3", "#B39E95", 78)),
+      },
+      {
+        title: "Red-rimmed eyes",
+        howTo:
+          "Blend a red-brown eyeshadow over the lids up to the brows and a bright red under the eyes, then line the lashes in dark red-brown.",
+        products: ["red brown eyeshadow", "red eyeshadow", "brown eyeliner"],
         render: makeup(
-          shadow("2colors83", matte("#8B3A2E", 65), matte("#2A1A18", 55)),
-          brows("#8D8D8D", 50, {
-            name: "Arrow13",
+          shadow("2colors25", matte("#8A3A2E", 85), matte("#B03A2E", 85)),
+          liner("FullRim7", matte("#5A1A14", 80))
+        ),
+      },
+      {
+        title: "Thin high brows",
+        howTo:
+          "Cover your brows with the base, then draw thin, high arches with a red-brown pencil.",
+        products: ["red brown brow pencil"],
+        render: makeup(
+          brows("#8A3A22", 80, {
+            name: "Thin1",
             curvature: 40,
             thickness: -40,
+            definition: 70,
           })
         ),
       },
       {
-        title: "Red lips",
-        howTo: "Wear a bright red lipstick.",
-        products: ["bright red lipstick"],
-        render: makeup(lips(matte("#B3141B", 85), "smile")),
+        title: "Red heart mouth",
+        howTo:
+          "Paint the lips bright red and overline the top lip into a heart.",
+        products: ["bright red lipstick", "red lip liner"],
+        render: makeup(
+          lips(matte("#C21E1E", 92), "heart-shaped"),
+          lipLine("Large&Full1", "#A0141A", 90, 60, 50)
+        ),
       },
       {
         title: "Orange hair",
-        howTo: "Finish with orange-red hair pushed back off the forehead.",
+        howTo: "Finish with orange hair, teased out at the sides.",
         products: ["orange clown wig"],
-        render: hair("#C8501E", 85, 25),
+        render: hair("#C8501E", 90, 25),
       },
     ],
     finish:
       "With a red lip liner, draw a thin line from each corner of the mouth up toward the eyes.",
   },
   "aunt-gladys": {
-    look: "An Aunt Gladys face: pale, worn-in makeup, odd thin brows, cyan-blue lids, smudged red lips and a red bob.",
+    look: "An Aunt Gladys face: pale, cakey makeup, worn shadows, bright cyan lids, odd thin brows, smudged red lips and a red bob.",
     steps: [
       {
-        title: "Pale base",
+        title: "Pale powdered base",
         howTo:
-          "Pat on a foundation three shades lighter than your skin and leave it a little uneven, as if it has been on for days.",
-        products: ["light foundation"],
-        render: makeup(paler(3)),
+          "Pat on a foundation three shades lighter than your skin and press a lot of powder over it, a little cakey.",
+        products: ["light foundation", "setting powder"],
+        render: makeup(paler(3, 90)),
       },
       {
-        title: "Cyan lids, odd brows",
+        title: "Worn shadows",
         howTo:
-          "Sweep a bright cyan-blue eyeshadow over the lids up to the crease, and draw thin, oddly arched brows with a brown pencil.",
-        products: ["cyan blue eyeshadow", "brown brow pencil"],
+          "Shade under the eyes and at the temples with a soft taupe so the face looks tired.",
+        products: ["taupe eyeshadow"],
+        render: makeup(shading("Bronzer2", "#7A6A64", 75)),
+      },
+      {
+        title: "Cyan lids",
+        howTo:
+          "Sweep a bright cyan-blue eyeshadow from the lashes up to the brows, and smudge a dark liner around the eyes.",
+        products: ["cyan eyeshadow", "dark gray eyeliner"],
         render: makeup(
-          shadow("1color22", matte("#1FA3D6", 75)),
-          brows("#5A3A2A", 60, {
-            name: "Arrow13",
+          shadow("1color67", matte("#29A3C8", 88)),
+          liner("FullRim7", matte("#2A2A2A", 72))
+        ),
+      },
+      {
+        title: "Odd thin brows",
+        howTo:
+          "Cover your brows with concealer and draw thin, high, slightly uneven arches.",
+        products: ["brow pencil", "concealer"],
+        render: makeup(
+          brows("#5A3A2A", 80, {
+            name: "Thin1",
             curvature: 50,
-            thickness: -40,
+            thickness: -50,
+            definition: 80,
           })
         ),
       },
       {
         title: "Smudged red lips",
         howTo:
-          "Wear a blue-red matte lipstick (MAC Ruby Woo is the film's), a little past the lip line, and smudge the edges.",
-        products: ["blue red matte lipstick"],
+          "Wear a bright red lipstick drawn past the lip line and smudged at the edges.",
+        products: ["red lipstick", "red lip liner"],
         render: makeup(
-          lips(matte("#A3172B", 85)),
-          lipLine("Large&Full1", "#A3172B", 80, 40, 30)
+          lips(matte("#C0141E", 90), "plump"),
+          lipLine("Large&Full1", "#A01018", 85, 60, 25)
         ),
       },
       {
         title: "Red bob",
-        howTo: "Finish with a bright red bob with blunt bangs.",
-        products: ["red bob wig with bangs"],
-        render: hair("#C8161D", 90, 35),
+        howTo: "Finish with a bright red chin-length bob.",
+        products: ["red bob wig"],
+        render: hair("#C8161D", 90, 30),
       },
     ],
     finish: "Big tinted glasses and dangly earrings.",
   },
   chucky: {
-    look: "A Chucky face: a pale doll finish, round red cheeks and bright orange-red hair.",
+    look: "A Chucky face: a smooth doll finish, round red cheeks, wide lashed eyes, orange brows, rosy lips and bright orange-red hair.",
     steps: [
       {
         title: "Doll base",
         howTo:
-          "Use a foundation a shade lighter than your skin, then contour the cheeks, temples and jaw with a cool brown to round the face.",
-        products: ["light foundation", "cool brown contour"],
-        render: makeup(paler(1), contour("#8A6E62", 40)),
+          "Pat on a foundation two shades lighter than your skin and powder it for a smooth, plastic doll finish.",
+        products: ["light foundation", "translucent setting powder"],
+        render: makeup(smooth(50), paler(2, 90)),
       },
       {
-        title: "Cheeks and brows",
+        title: "Round red cheeks",
+        howTo: "Blend a round red-pink blush on the apples of the cheeks.",
+        products: ["red cream blush"],
+        render: makeup(blush("Circle2", "#D9443A", 80)),
+      },
+      {
+        title: "Wide doll eyes",
         howTo:
-          "Blend red blush in circles on the apples of your cheeks, and tint the brows a light orange-brown.",
-        products: ["red cream blush", "auburn brow gel"],
-        render: makeup(blush("Circle2", "#D2343A", 55), brows("#B5652F", 55)),
+          "Wash a light brown over the lids, line the upper lashes in brown, and add lashes top and bottom.",
+        products: ["light brown eyeshadow", "brown eyeliner", "false lashes"],
+        render: makeup(
+          shadow("1color8", matte("#B98A6E", 72)),
+          liner("Lower11", matte("#5A3A2A", 78)),
+          lashes("Upper&Lower1", "#4A2A1A", 85)
+        ),
+      },
+      {
+        title: "Orange brows",
+        howTo: "Fill your brows with an orange-brown pencil.",
+        products: ["auburn brow pencil"],
+        render: makeup(
+          brows("#C2602A", 82, { name: "SoftArch1", thickness: 10 })
+        ),
+      },
+      {
+        title: "Rosy lips",
+        howTo: "Wear a rosy coral lipstick.",
+        products: ["coral lipstick"],
+        render: makeup(lips(satin("#C2584E", 82))),
       },
       {
         title: "Orange-red hair",
-        howTo: "Finish with short, messy orange-red hair.",
-        products: ["chucky wig"],
-        render: hair("#D2561C", 85, 25),
+        howTo: "Finish with bright orange-red hair, a little messy.",
+        products: ["orange red wig"],
+        render: hair("#D2561C", 90, 30),
       },
     ],
     finish:
       "Dot a few freckles with a brown pencil, and draw a couple of thin scars with a red lip liner.",
   },
   "freddy-krueger": {
-    look: "A Freddy Krueger face: a patchy red-brown burned flush, purple shadows and dull red lips.",
+    look: "A Freddy Krueger face: a patchy burned red, purple-red blotches, raw cheeks, sore red eyes and dry brick-red lips.",
     steps: [
       {
         title: "Burned flush",
         howTo:
-          "Blend a red-brown cream blush over the cheeks and around the edges of the face, patchy on purpose.",
-        products: ["red brown cream blush"],
-        render: makeup(
-          blush("Round2", "#A34A3A", 60),
-          shading("Bronzer3", "#7A3A3A", 45)
-        ),
+          "Mix a little red cream color into your foundation and pat it on unevenly, heavier on the cheeks and forehead, and over the brows.",
+        products: ["foundation", "red cream color"],
+        render: makeup(tint("#B4574A", 52), brows("#B4574A", 60)),
       },
       {
-        title: "Burn shadows",
+        title: "Burn blotches",
         howTo:
-          "Press a purple-brown eyeshadow under the cheekbones and all around the eyes.",
-        products: ["purple brown eyeshadow"],
+          "Press a deep purple-red eyeshadow into the temples, cheek hollows and jaw, uneven and blotchy.",
+        products: ["plum eyeshadow", "burgundy eyeshadow"],
         render: makeup(
-          contour("#5E2F45", 45),
-          shadow("1color23", matte("#4B1F2E", 55))
+          shading("Bronzer5", "#6E2E3A", 88),
+          contour("#5A2A2E", 85, "TriangleFace5")
         ),
       },
       {
-        title: "Dull red lips",
-        howTo: "Stain the lips a dull red-purple.",
-        products: ["dark red lip stain"],
-        render: makeup(lips(matte("#6A2D35", 60))),
+        title: "Raw cheeks",
+        howTo:
+          "Dab a red blush in patches over the cheeks so the skin looks raw.",
+        products: ["red blush"],
+        render: makeup(blush("Round2", "#B8322E", 85)),
+      },
+      {
+        title: "Sore eyes",
+        howTo:
+          "Smudge a red-purple eyeshadow close around the eyes and line the waterlines in dark red.",
+        products: ["red purple eyeshadow", "burgundy eyeliner"],
+        render: makeup(
+          shadow("1color23", matte("#7A2A3A", 85)),
+          liner("FullRim7", matte("#4A1A22", 80))
+        ),
+      },
+      {
+        title: "Dry brick-red lips",
+        howTo:
+          "Blot a dull brick-red lipstick and powder over it so the lips look dry.",
+        products: ["brick red lipstick"],
+        render: makeup(lips(matte("#8A3A3A", 85))),
       },
     ],
     finish: "The striped sweater, a brown fedora and the bladed glove.",
   },
   "jason-voorhees": {
-    look: "A Jason face for under the mask: cold gray-blue skin, deep-set dark eyes and bluish lips.",
+    look: "A Jason face for under the mask: cold gray-blue skin, swollen shadows, deep-set dark eyes, faded brows and bluish lips.",
     steps: [
       {
-        title: "Cold skin",
+        title: "Cold gray skin",
         howTo:
-          "Mix a little blue color corrector into a light foundation and pat it on thinly.",
-        products: ["light foundation", "blue color corrector"],
-        render: makeup(tint("#A7B0AE")),
+          "Mix a little gray-blue cream color into a light foundation and pat it all over the face and lips.",
+        products: ["light foundation", "gray blue cream color"],
+        render: makeup(tint("#9AA3A8", 52)),
       },
       {
-        title: "Sunken eyes",
+        title: "Swollen shadows",
         howTo:
-          "Shade around the eyes with a deep gray-purple eyeshadow, and hollow the cheeks with a gray contour.",
-        products: ["dark purple eyeshadow", "gray contour powder"],
+          "Shade the temples, cheek hollows and jaw with a dark blue-gray eyeshadow.",
+        products: ["blue gray eyeshadow"],
+        render: makeup(shading("Bronzer5", "#55606A", 85)),
+      },
+      {
+        title: "Deep-set eyes",
+        howTo:
+          "Pack a charcoal eyeshadow all around each eye so they sink, and smudge black liner into the lashes.",
+        products: ["charcoal eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          shadow("1color57", matte("#3E3442", 60)),
-          contour("#6F7472", 45)
+          shadow("1color30", matte("#2E3236", 90)),
+          liner("PandaSmudge1", matte(BLACK, 80))
         ),
       },
       {
+        title: "Faded brows",
+        howTo: "Brush gray powder through your brows so they fade.",
+        products: ["gray brow powder"],
+        render: makeup(brows("#8E949A", 60)),
+      },
+      {
         title: "Bluish lips",
-        howTo: "Dab a dull blue-gray lipstick onto the lips.",
+        howTo: "Blot a gray-blue lipstick over the lips.",
         products: ["blue gray lipstick"],
-        render: makeup(lips(matte("#6C7380", 60))),
+        render: makeup(lips(matte("#7C8696", 85))),
       },
     ],
     finish:
       "Wear the hockey mask pushed up on your head, or draw its red chevrons on your cheeks with a red lip liner.",
   },
   beetlejuice: {
-    look: "A Beetlejuice face: pale skin, lavender and purple tired eyes, mossy green shadows and green-tinged hair.",
+    look: "A Beetlejuice face: corpse-pale skin, moldy green hollows, bruised purple eyes, grubby brows, gray-green lips and green-tinged white hair.",
     steps: [
       {
-        title: "Pale base",
+        title: "Corpse-pale base",
         howTo:
-          "Use a foundation two shades lighter than your skin, and set it with a translucent powder.",
-        products: ["light foundation", "translucent setting powder"],
-        render: makeup(paler(2)),
+          "Pat on a foundation four shades lighter than your skin all over the face and lips, then press white powder over it until the skin looks drained.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 92)),
       },
       {
-        title: "Purple eyes",
+        title: "Moldy hollows",
         howTo:
-          "Blend lavender over the lids up to the brows and dark purple under the eyes, then smudge black liner along the lashes.",
-        products: [
-          "lavender eyeshadow",
-          "dark purple eyeshadow",
-          "black eyeliner",
-        ],
+          "Shade under the eyes and at the temples with a gray-brown eyeshadow, then press mossy green into the cheek hollows, temples and jaw.",
+        products: ["gray brown eyeshadow", "moss green eyeshadow"],
         render: makeup(
-          shadow("2colors25", matte("#B79AD3", 65), matte("#3D1F47", 70)),
-          liner("PandaSmudge1", matte(BLACK, 60))
+          shading("Bronzer2", "#4E4A3C", 85),
+          contour("#55702F", 90)
         ),
       },
       {
-        title: "Mossy shadows",
+        title: "Bruised purple eyes",
         howTo:
-          "Dust a green eyeshadow along the temples, jaw and hairline like moss.",
-        products: ["green eyeshadow"],
-        render: makeup(contour("#5E7A35", 40)),
+          "Sweep lavender over the lids up to the brows, pack dark purple all around and under the eyes, and smudge black kohl into the lashes.",
+        products: [
+          "lavender eyeshadow",
+          "dark purple eyeshadow",
+          "black kohl eyeliner",
+        ],
+        render: makeup(
+          shadow("2colors25", matte("#9A78B8", 90), matte("#3A1C45", 90)),
+          liner("PandaSmudge1", matte(BLACK, 85))
+        ),
+      },
+      {
+        title: "Grubby brows",
+        howTo:
+          "Brush a dark brown-gray brow pencil through your brows, thick and a little messy.",
+        products: ["dark brow pencil"],
+        render: makeup(
+          brows("#3A352C", 78, { name: "Original5", thickness: 25 })
+        ),
+      },
+      {
+        title: "Gray-green lips",
+        howTo:
+          "Cover your lips with the foundation, then dab on a gray-green lipstick and blot it so it looks dry.",
+        products: ["gray green lipstick"],
+        render: makeup(lips(matte("#8A8F72", 82))),
       },
       {
         title: "Green-tinged hair",
         howTo: "Finish with wild white hair tinted green.",
         products: ["beetlejuice wig"],
-        render: hair("#C8D4A0", 80, 20),
+        render: hair("#C8D4A0", 85, 20),
       },
     ],
     finish: "The black-and-white striped suit.",
   },
   dracula: {
-    look: "A Dracula face: pale skin, high dark brows, black-lined eyes, deep red lips and slick black hair.",
+    look: "A Dracula face: pale skin, sharp cheekbones, hypnotic black-lined eyes, high dark brows, deep red lips and slick black hair.",
     steps: [
       {
         title: "Pale base",
         howTo:
-          "Use a foundation two shades lighter than your skin, and shade lightly under the cheekbones.",
-        products: ["light foundation", "gray contour powder"],
-        render: makeup(paler(2), contour("#9A968A", 35)),
+          "Pat on a foundation three shades lighter than your skin and set it with a translucent powder.",
+        products: ["light foundation", "translucent setting powder"],
+        render: makeup(paler(3, 90)),
+      },
+      {
+        title: "Sharp cheekbones",
+        howTo:
+          "Shade under the cheekbones, at the temples and along the jaw with a cool taupe, sharp and high.",
+        products: ["cool taupe contour powder"],
+        render: makeup(contour("#8E7A72", 85)),
       },
       {
         title: "Hypnotic eyes",
         howTo:
-          "Line the eyes in black, smudge a little dark eyeshadow on the lids, and arch the brows dark and high.",
-        products: ["black kohl eyeliner", "black brow pencil"],
+          "Shade the lids up to the brow bones with a dark mauve-brown and line the upper lashes in black, flicked out a little.",
+        products: ["mauve brown eyeshadow", "black liquid eyeliner"],
         render: makeup(
-          liner("FullRim7", matte(BLACK, 70)),
-          shadow("1color8", matte("#4A3F45", 45)),
-          brows("#1A1A1A", 75, { name: "HighArch4", curvature: 40 })
+          shadow("1color57", matte("#4A3A40", 82)),
+          liner("OpenWings3", matte(BLACK, 90))
+        ),
+      },
+      {
+        title: "High dark brows",
+        howTo: "Draw your brows high and arched with a black pencil.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows("#151515", 88, {
+            name: "HighArch4",
+            curvature: 40,
+            thickness: 10,
+            definition: 80,
+          })
         ),
       },
       {
         title: "Deep red lips",
-        howTo: "Wear a deep blood-red lipstick.",
+        howTo: "Wear a deep blood-red lipstick with a satin finish.",
         products: ["deep red lipstick"],
-        render: makeup(lips(matte("#6A0F1A", 85))),
+        render: makeup(lips(satin("#7A1220", 90))),
       },
       {
         title: "Slick black hair",
-        howTo: "Comb black hair straight back with gel.",
+        howTo: "Finish with black hair slicked straight back.",
         products: ["black hair color spray", "hair gel"],
-        render: hair("#121212", 85, 60),
+        render: hair("#121212", 92, 45),
       },
     ],
     finish:
       "Draw a small widow's peak with a brow pencil, and add plastic fangs and a cape.",
   },
   "frankensteins-monster": {
-    look: "A Frankenstein's Monster face: a green-gray tint, hollow cheeks, heavy dark brows, dark lips and black hair.",
+    look: "A Frankenstein's Monster face: green-gray skin, gaunt hollows, heavy shadowed eyes, thick flat brows, dark gray lips and black hair.",
     steps: [
       {
         title: "Green-gray skin",
         howTo:
-          "Mix a little green color corrector into a light foundation, pat it on thinly, and shade the cheeks and temples with a gray-green eyeshadow.",
-        products: [
-          "light foundation",
-          "green color corrector",
-          "gray eyeshadow",
-        ],
-        render: makeup(tint("#9EAA92"), contour("#5C6656", 50)),
+          "Mix green color corrector into a light foundation and pat it all over the face and lips.",
+        products: ["light foundation", "green color corrector"],
+        render: makeup(tint("#9EAA92", 55)),
+      },
+      {
+        title: "Gaunt hollows",
+        howTo:
+          "Shade from the cheekbones down to the jaw and at the temples with a gray-green eyeshadow, deep and long.",
+        products: ["gray green eyeshadow"],
+        render: makeup(contour("#4F5C48", 90, "TriangleFace5")),
       },
       {
         title: "Heavy eyes",
         howTo:
-          "Shade the lids and under the eyes gray, and thicken the brows straight and dark with a pencil.",
-        products: ["gray eyeshadow", "black brow pencil"],
+          "Shade all around the eyes with a dark gray-green, heaviest on the lids, and smudge black kohl along the lashes.",
+        products: ["dark gray eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          shadow("1color23", matte("#4A5245", 60)),
-          brows("#1E1E1E", 80, { name: "Straight2", thickness: 30 })
+          shadow("1color30", matte("#3E463A", 88)),
+          liner("FullRim7", matte(BLACK, 78))
         ),
       },
       {
-        title: "Dark lips",
-        howTo: "Wear a black or very dark gray lipstick.",
+        title: "Thick flat brows",
+        howTo: "Thicken the brows straight and dark with a black pencil.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows("#1E1E1E", 85, { name: "Straight2", thickness: 35 })
+        ),
+      },
+      {
+        title: "Dark gray lips",
+        howTo: "Wear a dark gray lipstick, blotted matte.",
         products: ["dark gray lipstick"],
-        render: makeup(lips(matte("#2A2A2A", 75))),
+        render: makeup(lips(matte("#4A4A48", 85))),
       },
       {
         title: "Black hair",
         howTo: "Finish with short black hair combed flat on top.",
         products: ["black hair color spray"],
-        render: hair("#151515", 85, 20),
+        render: hair("#151515", 88, 20),
       },
     ],
     finish:
       "Draw a stitched scar on your forehead with black eyeliner, and wear a jacket a size too small.",
   },
   "bride-of-frankenstein": {
-    look: "A Bride of Frankenstein face: pale skin, thin arched brows, smudged dark eyes, dark lips and tall black hair.",
+    look: "A Bride of Frankenstein face: porcelain pallor, sculpted cheekbones, smoky dark eyes with lashes, thin arched brows, dark lips and tall black hair.",
     steps: [
       {
-        title: "Pale base",
+        title: "Porcelain pallor",
         howTo:
-          "Pat on a foundation two or three shades lighter than your skin, down your neck too, and set it with a white powder.",
-        products: ["light foundation", "white setting powder"],
-        render: makeup(paler(3)),
+          "Pat on a foundation three shades lighter than your skin and set it with translucent powder for a flawless 1930s finish.",
+        products: ["light foundation", "translucent setting powder"],
+        render: makeup(paler(3, 90)),
       },
       {
-        title: "Arched brows, dark eyes",
+        title: "Sculpted cheekbones",
         howTo:
-          "Brush concealer through your brows, draw thin high arches in black, smudge black eyeliner around the eyes and add false lashes.",
-        products: ["black brow pencil", "black eyeliner", "false eyelashes"],
+          "Shade under the cheekbones and at the temples with a cool gray-brown for a sharp, statuesque face.",
+        products: ["cool brown contour powder"],
+        render: makeup(contour("#8A7670", 85)),
+      },
+      {
+        title: "Smoky dark eyes",
+        howTo:
+          "Shade the lids up to the creases with dark gray, line the upper lashes in black, and add full upper lashes.",
+        products: ["dark gray eyeshadow", "black eyeliner", "false lashes"],
         render: makeup(
-          brows(BLACK, 75, { name: "Thin1", curvature: 50, thickness: -30 }),
-          liner("PandaSmudge1", matte(BLACK, 70)),
+          shadow("1color57", matte("#3A3638", 85)),
+          liner("Lower11", matte(BLACK, 88)),
           lashes("UpperDense1")
         ),
       },
       {
-        title: "Dark lips",
-        howTo: "Wear a dark plum-red lipstick with a crisp lip liner.",
-        products: ["dark plum lipstick", "dark lip liner"],
+        title: "Thin arched brows",
+        howTo:
+          "Cover your brows with concealer and draw thin, sharply arched brows in black.",
+        products: ["black brow pencil", "concealer"],
         render: makeup(
-          lips(matte("#4A1020", 85)),
-          lipLine("Natural1", "#2E0A14", 80, 40, 90)
+          brows("#151515", 88, {
+            name: "Thin1",
+            curvature: 60,
+            thickness: -40,
+            definition: 85,
+          })
         ),
       },
       {
-        title: "Black hair",
-        howTo: "Finish with black hair teased tall.",
-        products: ["bride of frankenstein wig"],
-        render: hair("#141414", 85, 25),
+        title: "Dark lips",
+        howTo: "Wear a dark plum-red lipstick with a crisp cupid's bow.",
+        products: ["dark plum lipstick", "lip liner"],
+        render: makeup(
+          lips(matte("#5A1E28", 88)),
+          lipLine("Rosebud1", "#3E1218", 85, 45, 70)
+        ),
+      },
+      {
+        title: "Tall black hair",
+        howTo: "Finish with black hair teased tall and high.",
+        products: ["black hair color spray", "teasing comb"],
+        render: hair("#141414", 90, 30),
       },
     ],
     finish:
       "Spray two white streaks into the hair with white hair color spray.",
   },
   sam: {
-    look: "A Sam face: burlap-brown shading, round black eyes and a small dark mouth.",
+    look: "A Sam face in the sack mask's colors: a burlap-brown tint, stitched shadows, round black button eyes and a small dark mouth.",
     steps: [
       {
-        title: "Burlap shading",
+        title: "Burlap tint",
         howTo:
-          "Brush a warm brown bronzer around the edges of your face, into the cheek hollows and down the nose.",
-        products: ["warm brown bronzer"],
-        render: makeup(shading("Bronzer3", "#8A6B48", 50)),
+          "Mix a little tan cream color into your foundation and pat it all over the face and lips.",
+        products: ["foundation", "tan cream color"],
+        render: makeup(tint("#B08A5E", 52), brows("#9A7A55", 55)),
+      },
+      {
+        title: "Sack shadows",
+        howTo:
+          "Shade the edges of the face, the cheek hollows and the sides of the nose with a dark brown eyeshadow, like the folds of a sack.",
+        products: ["dark brown eyeshadow"],
+        render: makeup(shading("Bronzer3", "#5A4028", 88)),
       },
       {
         title: "Button eyes",
-        howTo: "Sweep black eyeshadow in a round shape all around each eye.",
-        products: ["black eyeshadow"],
-        render: makeup(shadow("1color57", matte(BLACK, 65))),
+        howTo:
+          "Pack black eyeshadow in a round shape all around each eye and smudge black kohl along the lashes.",
+        products: ["black eyeshadow", "black kohl eyeliner"],
+        render: makeup(
+          shadow("1color30", matte(BLACK, 92)),
+          liner("FullRim7", matte(BLACK, 88))
+        ),
       },
       {
         title: "Small dark mouth",
-        howTo: "Wear a dark-brown lipstick and keep the line small and neat.",
+        howTo:
+          "Cover the lips with the base and draw a small dark-brown mouth in the middle.",
         products: ["dark brown lipstick", "brown lip liner"],
         render: makeup(
-          lips(matte("#4A3020", 75)),
-          lipLine("Small1", "#3A2416", 70, 40, 70)
+          lips(matte("#4A3020", 85), "pouty"),
+          lipLine("Small1", "#2E1E14", 85, 40, 50)
         ),
       },
     ],
@@ -536,2186 +785,3281 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       "Draw little stitches across your lips with a brown eyeliner, and wear the orange hood.",
   },
   leatherface: {
-    look: "Leatherface's 'Pretty Woman' mask: brown-shadowed hollows, smeared blue lids, pink cheeks and smudged pink-red lips.",
+    look: "Leatherface's 'Pretty Woman' mask: a sallow leathery base, brown-shadowed hollows, smeared blue lids, pink cheeks, smudged pink-red lips and dark hair.",
     steps: [
+      {
+        title: "Leathery base",
+        howTo:
+          "Mix a little yellow-tan cream color into your foundation and pat it on unevenly, like old skin.",
+        products: ["foundation", "tan cream color"],
+        render: makeup(tint("#C9A27A", 48)),
+      },
       {
         title: "Shadowed hollows",
         howTo:
-          "Brush a dull brown contour into the hollows of the cheeks, the temples and along the jaw.",
-        products: ["brown contour powder"],
-        render: makeup(contour("#7A5A3E", 45)),
+          "Shade under the eyes, the temples and the cheek hollows with a brown eyeshadow.",
+        products: ["brown eyeshadow"],
+        render: makeup(shading("Bronzer2", "#6A4A34", 88)),
       },
       {
         title: "Smeared blue lids",
         howTo:
-          "Smear a bright blue eyeshadow over the lids and a little past the edges, as if a clumsy hand put it on.",
-        products: ["bright blue eyeshadow"],
-        render: makeup(shadow("1color22", matte("#2F6FD1", 70))),
+          "Smear a powder-blue eyeshadow over the lids up to the brows, unevenly, and smudge a dark liner around the eyes.",
+        products: ["powder blue eyeshadow", "dark brown eyeliner"],
+        render: makeup(
+          shadow("1color67", matte("#6E9CC8", 85)),
+          liner("PandaSmudge1", matte("#3A2A20", 72))
+        ),
+      },
+      {
+        title: "Heavy brows",
+        howTo: "Darken your brows with a brown pencil, thick and shapeless.",
+        products: ["brown brow pencil"],
+        render: makeup(
+          brows("#3A2A1E", 80, { name: "Original5", thickness: 30 })
+        ),
       },
       {
         title: "Pink cheeks and lips",
         howTo:
-          "Rub a dark pink blush into the cheeks and wear a pink-red lipstick a little past the lips.",
-        products: ["pink cream blush", "pink red lipstick"],
+          "Dab a hot-pink blush on the cheeks and a pink-red lipstick smudged past the lips.",
+        products: ["pink blush", "pink red lipstick"],
         render: makeup(
-          blush("Round2", "#C2456E", 50),
-          lips(matte("#C2456E", 75)),
-          lipLine("Large&Full1", "#B83A5E", 70, 40, 30)
+          blush("Round2", "#D8507A", 80),
+          lips(matte("#C83A5A", 88), "plump")
         ),
       },
       {
         title: "Dark hair",
-        howTo: "Finish with dark-brown hair, set but messy.",
+        howTo: "Finish with dark, messy hair.",
         products: ["dark brown wig"],
-        render: hair("#3A2A1E", 80, 20),
+        render: hair("#3A2A1E", 85, 15),
       },
     ],
     finish: "A butcher's apron with a little fake blood on it.",
   },
   pinhead: {
-    look: "A Pinhead face: pale skin, blue-gray shadows, dark-lined eyes and black lips.",
+    look: "A Pinhead face: bloodless white skin, blue-gray hollows, black-ringed eyes, no brows and black lips.",
     steps: [
       {
-        title: "Pale base",
+        title: "Bloodless base",
         howTo:
-          "Pat on a foundation two or three shades lighter than your skin, then shade the hollows with a gray-blue eyeshadow.",
-        products: ["light foundation", "gray eyeshadow"],
-        render: makeup(paler(3), contour("#7E8796", 45)),
+          "Pat on a foundation four shades lighter than your skin over the face, brows and lips, then press white powder over it.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 92), brows("#D6D0CC", 70)),
       },
       {
-        title: "Dark eyes",
+        title: "Blue-gray hollows",
         howTo:
-          "Shade the lids blue-gray and under the eyes dark, then line all around in black.",
-        products: ["blue gray eyeshadow", "black eyeshadow", "black eyeliner"],
+          "Shade the temples, under the eyes and the cheek hollows with a cold blue-gray eyeshadow.",
+        products: ["blue gray eyeshadow"],
         render: makeup(
-          shadow("2colors25", matte("#4F6280", 60), matte(BLACK, 65)),
-          liner("FullRim7", matte(BLACK, 60))
+          shading("Bronzer2", "#5E6672", 85),
+          contour("#6E7480", 82, "TriangleFace5")
+        ),
+      },
+      {
+        title: "Black-ringed eyes",
+        howTo:
+          "Shade all around the eyes with charcoal and line them all around in black.",
+        products: ["charcoal eyeshadow", "black kohl eyeliner"],
+        render: makeup(
+          shadow("1color23", matte("#2A2A30", 88)),
+          liner("FullRim7", matte(BLACK, 90))
         ),
       },
       {
         title: "Black lips",
-        howTo: "Wear a black lipstick.",
+        howTo: "Paint the lips matte black.",
         products: ["black lipstick"],
-        render: makeup(lips(matte(BLACK, 80))),
+        render: makeup(lips(matte("#1A1A1C", 92))),
       },
     ],
     finish:
       "Draw a fine grid of lines across your forehead with a black eyeliner, and wear a long black coat.",
   },
   "jigsaw-and-billy-the-puppet": {
-    look: "A Billy the Puppet face: pale skin, black-ringed eyes and brows, round red cheeks, red lips and wild black hair.",
+    look: "A Billy the Puppet face: white skin, black-ringed eyes, round red cheeks, heavy black brows, red lips and wild black hair.",
     steps: [
       {
-        title: "Pale base",
+        title: "White puppet base",
         howTo:
-          "Pat on a foundation two or three shades lighter than your skin and set it with a white powder.",
-        products: ["light foundation", "white setting powder"],
-        render: makeup(paler(3)),
+          "Pat on a foundation four shades lighter than your skin, then press white powder over it for a hard, painted finish.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(smooth(50), paler(4, 95)),
       },
       {
-        title: "Puppet eyes",
+        title: "Red cheek circles",
+        howTo: "Blend a bright red, round blush high on the cheeks.",
+        products: ["red cream blush"],
+        render: makeup(blush("Circle2", "#D0201E", 88)),
+      },
+      {
+        title: "Black-ringed eyes",
         howTo:
-          "Fill in the brows black, ring the eyes with a black pencil, and soften it with black eyeshadow.",
-        products: ["black eyeliner pencil", "black eyeshadow"],
+          "Pack black eyeshadow all around each eye and line the eyes all around in black.",
+        products: ["black eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          brows(BLACK, 80, { name: "Straight2", thickness: 20 }),
-          liner("PandaSmudge1", matte(BLACK, 75)),
-          shadow("1color23", matte(BLACK, 60))
+          shadow("1color30", matte(BLACK, 90)),
+          liner("FullRim7", matte(BLACK, 90))
         ),
       },
       {
-        title: "Red cheeks and lips",
-        howTo:
-          "Blend round red circles of blush on the cheeks, and wear a red lipstick.",
-        products: ["red cream blush", "red lipstick"],
+        title: "Heavy black brows",
+        howTo: "Draw thick, angled black brows.",
+        products: ["black brow pencil"],
         render: makeup(
-          blush("Circle2", "#C8102E", 70),
-          lips(matte("#C8102E", 85), "smile")
+          brows(BLACK, 92, { name: "Arrow13", thickness: 35, definition: 85 })
         ),
+      },
+      {
+        title: "Red lips",
+        howTo: "Paint the lips bright red.",
+        products: ["bright red lipstick"],
+        render: makeup(lips(matte("#C8141A", 92))),
       },
       {
         title: "Wild black hair",
-        howTo: "Finish with a mop of wild black hair.",
-        products: ["black curly wig"],
-        render: hair("#141414", 85, 20),
+        howTo: "Finish with wild black hair sticking out at the sides.",
+        products: ["black wig"],
+        render: hair("#141414", 90, 20),
       },
     ],
     finish:
       "Turn the red circles into spirals with a red lip liner, and draw short black lines down from the corners of the mouth.",
   },
   m3gan: {
-    look: "An M3GAN face: flawless porcelain skin, neat brows, lined doll eyes with lashes top and bottom, a cherry-red lip and brown hair.",
+    look: "An M3GAN face: flawless porcelain skin, soft sculpting, lined doll eyes with lashes top and bottom, neat brows, a cherry lip and brown hair.",
     steps: [
       {
         title: "Porcelain skin",
         howTo:
-          "Use a full-coverage foundation two shades lighter than your skin, blend it until it looks poreless, and add a soft glow on the high points.",
-        products: ["full coverage foundation", "liquid highlighter"],
-        render: makeup(paler(2, 70, 30), glow("#FFF6EE", 45)),
+          "Pat on a foundation two shades lighter than your skin, buff it until poreless, and add a touch of highlighter.",
+        products: ["light foundation", "liquid highlighter"],
+        render: makeup(smooth(75), paler(2, 90, 20)),
+      },
+      {
+        title: "Soft sculpting",
+        howTo:
+          "Shade under the cheekbones with a soft taupe and dab a pink blush on the apples of the cheeks.",
+        products: ["taupe contour powder", "pink blush"],
+        render: makeup(contour("#A8887C", 75), blush("Round2", "#E89A9A", 65)),
       },
       {
         title: "Doll eyes",
         howTo:
-          "Line the upper lashes in black, add false lashes on top and plenty of mascara on the bottom, and keep the brows neat.",
-        products: ["black liquid eyeliner", "false eyelashes", "black mascara"],
+          "Wash a soft peach over the lids, line the upper and lower lashes in brown, and add lashes top and bottom.",
+        products: ["peach eyeshadow", "brown eyeliner", "false lashes"],
         render: makeup(
-          liner("Lower11", matte(BLACK, 75)),
-          lashes("Upper&Lower1"),
-          brows("#4A3528", 55, { name: "SoftArch1" })
+          shadow("1color8", matte("#D8A08A", 70)),
+          liner("FullRim7", matte("#4A3020", 80)),
+          lashes("Upper&Lower1", "#2A1A14", 90)
+        ),
+      },
+      {
+        title: "Neat brows",
+        howTo: "Fill your brows neatly with a soft brown pencil.",
+        products: ["brown brow pencil"],
+        render: makeup(
+          brows("#5A3A26", 75, { name: "SoftArch1", definition: 80 })
         ),
       },
       {
         title: "Cherry lips",
-        howTo:
-          "Wear a cherry-red satin lipstick, and blush the cheeks the faintest pink.",
-        products: ["cherry red lipstick", "pink blush"],
-        render: makeup(
-          lips(satin("#B0101E", 80)),
-          blush("Circle2", "#E39A9A", 30)
-        ),
+        howTo: "Wear a glossy cherry-red lipstick.",
+        products: ["cherry red lip gloss"],
+        render: makeup(lips(gloss("#B0202E", 85))),
       },
       {
         title: "Brown hair",
-        howTo: "Finish with smooth brown doll hair and curtain bangs.",
-        products: ["m3gan wig"],
-        render: hair("#5A3A26", 85, 45),
+        howTo: "Finish with smooth brown hair, perfectly straight.",
+        products: ["brown wig"],
+        render: hair("#5A3A26", 88, 40),
       },
     ],
     finish: "A plaid dress, a bow and mary janes; move slowly.",
   },
   "samara-morgan": {
-    look: "A Samara face: pale skin, gray hollows, dark-ringed eyes, colorless lips and long wet black hair.",
+    look: "A Samara face: drowned-pale skin, gray hollows, dark bruised rings around the eyes, colorless lips and long wet black hair.",
     steps: [
       {
-        title: "Pale base",
+        title: "Drowned pallor",
         howTo:
-          "Use a foundation two shades lighter than your skin, and shade the hollows of the cheeks with a gray contour.",
-        products: ["light foundation", "gray contour powder"],
-        render: makeup(paler(2), contour("#8B8E8C", 40)),
+          "Pat on a foundation four shades lighter than your skin with a touch of gray, over the face and lips.",
+        products: ["very light foundation", "gray cream color"],
+        render: makeup(paler(4, 90)),
       },
       {
-        title: "Dark eyes",
+        title: "Gray hollows",
         howTo:
-          "Smudge gray and black eyeshadow around the eyes and line them all around in black.",
-        products: ["black eyeshadow", "black kohl eyeliner"],
+          "Shade under the eyes, the temples and the cheek hollows with a cold gray eyeshadow.",
+        products: ["cool gray eyeshadow"],
         render: makeup(
-          shadow("1color57", matte("#2E2C30", 60)),
-          liner("FullRim7", matte(BLACK, 65))
+          shading("Bronzer2", "#5C6066", 88),
+          contour("#787C80", 80, "TriangleFace5")
         ),
       },
       {
-        title: "Pale lips",
-        howTo: "Cover the lips with a pale gray-nude lipstick so they fade.",
-        products: ["pale nude lipstick"],
-        render: makeup(lips(matte("#9C9796", 55))),
+        title: "Bruised dark eyes",
+        howTo:
+          "Smudge a dark gray-purple eyeshadow all around the eyes and line them all around in black.",
+        products: ["dark purple eyeshadow", "black kohl eyeliner"],
+        render: makeup(
+          shadow("1color30", matte("#3A3240", 88)),
+          liner("FullRim7", matte(BLACK, 85))
+        ),
       },
       {
-        title: "Black hair",
-        howTo: "Finish with long black hair, wet with gel.",
+        title: "Faded brows",
+        howTo: "Brush the foundation through your brows so they fade.",
+        products: ["brow concealer"],
+        render: makeup(brows("#8A8580", 60)),
+      },
+      {
+        title: "Colorless lips",
+        howTo: "Cover the lips with a pale gray-mauve lipstick and blot it.",
+        products: ["pale mauve lipstick"],
+        render: makeup(lips(matte("#A89AA0", 85))),
+      },
+      {
+        title: "Wet black hair",
+        howTo: "Finish with long black hair, wet and hanging forward.",
         products: ["long black wig", "hair gel"],
-        render: hair("#101010", 90, 70),
+        render: hair("#101010", 92, 55),
       },
     ],
     finish: "Let the wet hair hang over your face, and wear a white nightgown.",
   },
   "the-nun-valak": {
-    look: "A Valak face: pale skin, faded brows, hollow cheeks, dark smoky eyes and dark lips.",
+    look: "A Valak face: corpse-white skin, hollow cheeks, black sunken eyes, faded brows and dark lips, under a black veil.",
     steps: [
       {
-        title: "Pale base",
+        title: "Corpse-white base",
         howTo:
-          "Use a foundation three shades lighter than your skin, set it with white powder, and brush it through your brows to fade them.",
-        products: ["light foundation", "white setting powder"],
-        render: makeup(paler(3), brows("#E8DCCD", 45)),
+          "Pat on a foundation four shades lighter than your skin over the face and brows, set with white powder.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 95), brows("#D8D2CC", 72)),
       },
       {
-        title: "Hollow cheeks, dark eyes",
+        title: "Hollow cheeks",
         howTo:
-          "Shade under the cheekbones with a gray contour, and sweep black eyeshadow all around the eyes.",
-        products: ["gray contour powder", "black eyeshadow"],
+          "Shade deep hollows from the cheekbones to the jaw and at the temples with a gray-brown eyeshadow.",
+        products: ["gray brown eyeshadow"],
         render: makeup(
-          contour("#5E5E5E", 50),
-          shadow("1color57", matte(BLACK, 70))
+          contour("#5E5652", 90, "TriangleFace5"),
+          shading("Bronzer2", "#4A4442", 85)
+        ),
+      },
+      {
+        title: "Black sunken eyes",
+        howTo:
+          "Pack black eyeshadow all around the eyes, wide and smudged, and line them all around in black.",
+        products: ["black eyeshadow", "black kohl eyeliner"],
+        render: makeup(
+          shadow("1color30", matte(BLACK, 92)),
+          liner("PandaSmudge11", matte(BLACK, 90))
         ),
       },
       {
         title: "Dark lips",
-        howTo: "Wear a dark gray-black lipstick.",
-        products: ["black lipstick"],
-        render: makeup(lips(matte("#2A2426", 80))),
+        howTo: "Wear a near-black plum lipstick with a sharp edge.",
+        products: ["black plum lipstick"],
+        render: makeup(lips(matte("#2E1A22", 90))),
       },
     ],
     finish: "A black veil or hood over your hair for the habit.",
   },
   annabelle: {
-    look: "An Annabelle face: porcelain skin, round red cheeks, a small red cupid's-bow mouth and auburn braids.",
+    look: "An Annabelle face: porcelain skin, sallow doll shading, round red cheeks, painted lashes, thin brows, a small red cupid's-bow mouth and auburn braids.",
     steps: [
       {
         title: "Porcelain base",
         howTo:
-          "Use a full-coverage foundation two shades lighter than your skin.",
-        products: ["full coverage foundation"],
-        render: makeup(paler(2, 70)),
+          "Pat on a foundation three shades lighter than your skin and powder it for a hard, porcelain finish.",
+        products: ["light foundation", "translucent setting powder"],
+        render: makeup(smooth(50), paler(3, 90)),
       },
       {
-        title: "Doll cheeks and lashes",
+        title: "Doll shading",
         howTo:
-          "Blend red blush in circles on the apples of your cheeks, and add lashes top and bottom.",
-        products: ["red cream blush", "false eyelashes"],
-        render: makeup(blush("Circle2", "#C8323C", 60), lashes("Upper&Lower1")),
+          "Shade the temples, under the eyes and the cheek hollows with a sallow gray-brown, so the doll looks old.",
+        products: ["gray brown eyeshadow"],
+        render: makeup(shading("Bronzer2", "#7A6858", 78)),
+      },
+      {
+        title: "Painted doll eyes",
+        howTo:
+          "Line the eyes in dark brown, top and bottom, and add lashes top and bottom.",
+        products: ["dark brown eyeliner", "false lashes"],
+        render: makeup(
+          liner("FullRim7", matte("#3A2418", 82)),
+          lashes("Upper&Lower1", "#2A1A14", 90)
+        ),
+      },
+      {
+        title: "Thin brows, red cheeks",
+        howTo:
+          "Draw thin, rounded brows in auburn, and blend a round red blush high on the cheeks.",
+        products: ["auburn brow pencil", "red cream blush"],
+        render: makeup(
+          brows("#7A3420", 82, {
+            name: "Thin1",
+            curvature: 30,
+            thickness: -30,
+          }),
+          blush("Circle2", "#C83A34", 85)
+        ),
       },
       {
         title: "Small red mouth",
         howTo:
-          "Fill a small red heart shape in the center of the lips, not out to the corners.",
+          "Cover the edges of the lips with foundation and paint a small red cupid's bow in the middle.",
         products: ["red lipstick", "red lip liner"],
         render: makeup(
-          lips(matte("#B3122A", 85), "heart-shaped"),
-          lipLine("Rosebud1", "#9C0F22", 80, 40, 80)
+          lips(matte("#B01E22", 90), "heart-shaped"),
+          lipLine("Rosebud1", "#8A1418", 85, 45, 70)
         ),
       },
       {
         title: "Auburn braids",
-        howTo: "Finish with auburn hair in two braided pigtails.",
+        howTo: "Finish with auburn hair in two braids.",
         products: ["auburn braided wig"],
-        render: hair("#7A2E1F", 85, 25),
+        render: hair("#7A2E1F", 90, 30),
       },
     ],
     finish:
       "Draw a few thin cracks on one cheek and the forehead with a black eyeliner.",
   },
   "regan-macneil": {
-    look: "A possessed Regan face: pale, sickly skin with green-gray shadows, bruised purple eyes, chapped lips and messy brown hair.",
+    look: "A possessed Regan face: sickly pale-green skin, green-gray hollows, bruised purple eyes, ragged brows, chapped red-brown lips and messy brown hair.",
     steps: [
       {
         title: "Sickly base",
         howTo:
-          "Use a foundation two shades lighter than your skin, and shade under the cheekbones with a green-gray eyeshadow.",
-        products: ["light foundation", "green gray eyeshadow"],
-        render: makeup(paler(2), contour("#7E8A6E", 45)),
+          "Mix green color corrector into a light foundation and pat it over the face and lips.",
+        products: ["light foundation", "green color corrector"],
+        render: makeup(tint("#C4C8A8", 52)),
+      },
+      {
+        title: "Green-gray hollows",
+        howTo:
+          "Shade the temples, under the eyes and the cheek hollows with a green-gray eyeshadow.",
+        products: ["green gray eyeshadow"],
+        render: makeup(
+          shading("Bronzer2", "#5E6448", 88),
+          contour("#6E7058", 80, "TriangleFace5")
+        ),
       },
       {
         title: "Bruised eyes",
         howTo:
-          "Blend purple and dark plum around the eyes, darkest right under them, and rim them softly in red-brown.",
-        products: ["purple eyeshadow", "red brown eyeliner"],
+          "Smudge a dark purple-red eyeshadow all around the eyes and line them in dark red.",
+        products: ["dark purple eyeshadow", "red brown eyeliner"],
         render: makeup(
-          shadow("2colors25", matte("#5B4A6E", 60), matte("#3B2C46", 70)),
-          liner("FullRim7", matte("#5E2A2E", 50))
+          shadow("1color30", matte("#4A2238", 88)),
+          liner("FullRim7", matte("#5A1A1E", 82))
+        ),
+      },
+      {
+        title: "Ragged brows",
+        howTo: "Fill the brows unevenly with a gray-brown pencil.",
+        products: ["gray brown brow pencil"],
+        render: makeup(
+          brows("#5A4A3E", 72, { name: "Original5", definition: 30 })
         ),
       },
       {
         title: "Chapped lips",
-        howTo: "Dab a dull red-brown on the lips and leave them dry.",
-        products: ["red brown lip stain"],
-        render: makeup(lips(matte("#6B3A36", 60))),
+        howTo:
+          "Dab a dark red-brown lipstick in the middle of the lips and blot it so it looks cracked.",
+        products: ["red brown lipstick"],
+        render: makeup(lips(matte("#7A3A34", 85))),
       },
       {
         title: "Messy hair",
-        howTo: "Finish with light-brown hair, matted and messy.",
-        products: ["light brown wig"],
-        render: hair("#6B4E36", 80, 15),
+        howTo: "Finish with messy brown hair, matted and tangled.",
+        products: ["messy brown wig"],
+        render: hair("#6B4E36", 85, 10),
       },
     ],
     finish:
       "Draw a few thin scratches on the cheeks with a red-brown lip liner, and wear a white nightgown.",
   },
   "carrie-white": {
-    look: "Carrie at the prom: soft pink 70s makeup and strawberry-blonde waves, before the blood.",
+    look: "Carrie at the prom: a soft fair base, pink-washed eyes, rosy cheeks, soft brows, pink lips and strawberry-blonde waves, before the blood.",
     steps: [
       {
-        title: "Soft pink eyes",
-        howTo: "Sweep a soft pink eyeshadow over the lids and add mascara.",
-        products: ["soft pink eyeshadow", "mascara"],
+        title: "Soft fair base",
+        howTo:
+          "Pat on a foundation a shade lighter than your skin for a soft, fresh finish.",
+        products: ["light foundation"],
+        render: makeup(paler(1, 80)),
+      },
+      {
+        title: "Pink eyes",
+        howTo:
+          "Wash a shimmery pink over the lids, line the upper lashes in brown, and add mascara.",
+        products: ["pink eyeshadow", "brown eyeliner", "mascara"],
         render: makeup(
-          shadow("1color8", matte("#E2A2B0", 55)),
-          lashes("Natural1")
+          shadow("1color67", shimmer("#E0A0B0", 75)),
+          liner("Lower11", matte("#4A3020", 70)),
+          lashes("Natural1", "#2A1A14", 85)
         ),
       },
       {
-        title: "Pink cheeks and lips",
+        title: "Rosy cheeks",
+        howTo: "Sweep a pink blush along the cheekbones.",
+        products: ["pink blush"],
+        render: makeup(blush("Oblique2", "#E07A8A", 75)),
+      },
+      {
+        title: "Soft brows, pink lips",
         howTo:
-          "Warm the cheeks with a little pink blush and gloss the lips pink.",
-        products: ["pink blush", "pink lip gloss"],
-        render: makeup(
-          blush("Round2", "#E59AA6", 40),
-          lips(gloss("#E07D93", 70))
-        ),
+          "Brush your brows up with a light brown gel and wear a soft pink lipstick.",
+        products: ["light brown brow gel", "soft pink lipstick"],
+        render: makeup(brows("#9A6A4A", 70), lips(satin("#D27A8A", 82))),
       },
       {
         title: "Strawberry-blonde waves",
-        howTo: "Finish with long strawberry-blonde hair curled into waves.",
+        howTo: "Finish with long strawberry-blonde waves.",
         products: ["strawberry blonde wig"],
-        render: hair("#D69A6A", 80, 35),
+        render: hair("#D69A6A", 88, 35),
       },
     ],
     finish: "Then the prom ends: fake blood over your hair, face and dress.",
   },
   "count-orlok": {
-    look: "A Count Orlok face: pale skin, gray hollows, deep-shadowed eyes, bushy dark brows and thin dark lips.",
+    look: "A Count Orlok face: bloodless pale skin, a skull's gray hollows, deep-shadowed eyes, bushy dark brows and thin dark lips.",
     steps: [
       {
-        title: "Pale base",
+        title: "Bloodless base",
         howTo:
-          "Pat on a foundation three shades lighter than your skin, and sink the cheeks with a gray contour.",
-        products: ["light foundation", "gray contour powder"],
-        render: makeup(paler(3), contour("#77746C", 50)),
+          "Pat on a foundation four shades lighter than your skin with a touch of gray, then set it with white powder.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 92)),
+      },
+      {
+        title: "Skull hollows",
+        howTo:
+          "Shade the temples, the cheek hollows and the jaw with a cool gray-brown, deep, like a skull showing through.",
+        products: ["gray brown eyeshadow"],
+        render: makeup(
+          shading("Bronzer5", "#5A5250", 90),
+          contour("#6E6662", 85, "TriangleFace5")
+        ),
       },
       {
         title: "Deep-set eyes",
         howTo:
-          "Shade all around the eyes with a gray-black eyeshadow, and thicken the brows bushy and dark with a pencil.",
-        products: ["dark gray eyeshadow", "dark brow pencil"],
+          "Pack a dark gray-brown all around the eyes, deepest at the inner corners, and line them all around in black.",
+        products: ["dark gray eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          shadow("1color57", matte("#2B2724", 65)),
-          brows("#1E1A18", 80, { name: "Original5", thickness: 40 })
+          shadow("1color30", matte("#2E2826", 90)),
+          liner("FullRim7", matte(BLACK, 85))
+        ),
+      },
+      {
+        title: "Bushy dark brows",
+        howTo: "Thicken the brows into bushy, slanted black brows.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows("#1A1818", 88, {
+            name: "Arrow13",
+            thickness: 40,
+            definition: 50,
+          })
         ),
       },
       {
         title: "Thin dark lips",
-        howTo: "Wear a dark gray-brown lipstick, kept thin.",
-        products: ["dark brown lipstick", "lip liner"],
+        howTo:
+          "Cover the lips with the base and draw a thin, dark gray-brown mouth.",
+        products: ["dark gray lipstick", "lip liner"],
         render: makeup(
-          lips(matte("#4A3A3A", 70)),
-          lipLine("Small1", "#3A2A2A", 70, 30, 60)
+          lips(matte("#4A3E3C", 88)),
+          lipLine("Small1", "#2E2624", 85, 40, 60)
         ),
       },
     ],
     finish: "Plastic rat fangs and a long black coat.",
   },
   pearl: {
-    look: "A Pearl face: a sweet farm girl with rosy cheeks, bright red lips and blonde braids, smiling a little too wide.",
+    look: "A Pearl face: sweet farm-girl skin, rosy cheeks, soft wide eyes, fair brows, bright red lips and blonde braids, smiling a little too wide.",
     steps: [
       {
-        title: "Rosy cheeks",
+        title: "Fresh farm skin",
         howTo:
-          "Keep the skin fresh and blend a pink-red blush high on the cheeks.",
-        products: ["pink cream blush"],
-        render: makeup(blush("Round2", "#D9576A", 55)),
+          "Pat on a foundation your own shade or a little lighter, for a fresh, even finish.",
+        products: ["light foundation"],
+        render: makeup(paler(1, 80)),
       },
       {
-        title: "Red lips, fair brows",
+        title: "Rosy cheeks",
+        howTo: "Blend a pink-red cream blush high on the cheeks.",
+        products: ["pink cream blush"],
+        render: makeup(blush("Round2", "#E0525A", 82)),
+      },
+      {
+        title: "Wide sweet eyes",
         howTo:
-          "Wear a bright red lipstick for the audition, and tint the brows fair.",
-        products: ["bright red lipstick", "blonde brow gel"],
-        render: makeup(lips(matte("#C21E2C", 80)), brows("#C9A46A", 50)),
+          "Wash a soft peach over the lids, line the lashes in light brown, and curl the lashes.",
+        products: ["peach eyeshadow", "brown eyeliner", "mascara"],
+        render: makeup(
+          shadow("1color8", matte("#E0A88A", 70)),
+          liner("Lower11", matte("#6A4A30", 70)),
+          lashes("Natural1", "#3A2A1E", 85)
+        ),
+      },
+      {
+        title: "Fair brows, red lips",
+        howTo:
+          "Tint the brows light blonde, and wear a bright red lipstick, lined a little past the corners for the too-wide smile.",
+        products: ["blonde brow gel", "bright red lipstick"],
+        render: makeup(
+          brows("#C8A070", 75),
+          lips(matte("#C81E2A", 90), "smile")
+        ),
       },
       {
         title: "Blonde braids",
-        howTo: "Finish with blonde hair in braided pin curls.",
+        howTo: "Finish with blonde hair in two braids.",
         products: ["blonde braided wig"],
-        render: hair("#D9B77A", 80, 30),
+        render: hair("#D9B77A", 90, 35),
       },
     ],
     finish:
       "A few spatters of fake blood on your face and dress for the farmhouse finale.",
   },
   "freddy-fazbear": {
-    look: "A Freddy Fazbear face: warm brown fur shading, bold black brows, dark-rimmed eyes and brown hair under the top hat.",
+    look: "A Freddy Fazbear face in the animatronic's colors: a warm brown tint, fur-dark edges, dark-rimmed eyes, bold black brows, a brown muzzle mouth and brown hair.",
     steps: [
+      {
+        title: "Bear-brown tint",
+        howTo:
+          "Mix a little warm brown cream color into your foundation and pat it all over the face.",
+        products: ["foundation", "brown cream color"],
+        render: makeup(tint("#A87A50", 52)),
+      },
       {
         title: "Fur shading",
         howTo:
-          "Brush a warm brown bronzer around the edges of your face, into the cheek hollows and down the nose, like fur.",
-        products: ["warm brown bronzer"],
-        render: makeup(shading("Bronzer3", "#6A4228", 50)),
+          "Shade the edges of the face, the cheek hollows and the nose with a dark brown eyeshadow, like the bear's fur.",
+        products: ["dark brown eyeshadow"],
+        render: makeup(shading("Bronzer3", "#5A3A1E", 88)),
       },
       {
-        title: "Bold brows and eyes",
+        title: "Dark-rimmed eyes",
         howTo:
-          "Draw thick black brows with a pencil and darken around the eyes with black eyeshadow.",
-        products: ["black brow pencil", "black eyeshadow"],
+          "Shade all around the eyes with a dark brown and line them all around in black.",
+        products: ["dark brown eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          brows(BLACK, 80, {
-            name: "Straight2",
-            thickness: 40,
-            definition: 80,
-          }),
-          shadow("1color23", matte("#2A1A12", 60))
+          shadow("1color23", matte("#3A2414", 88)),
+          liner("FullRim7", matte(BLACK, 88))
         ),
       },
       {
+        title: "Bold black brows",
+        howTo: "Draw thick, slanted black brows.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows(BLACK, 92, { name: "Arrow13", thickness: 40, definition: 90 })
+        ),
+      },
+      {
+        title: "Muzzle mouth",
+        howTo: "Wear a dark brown lipstick for the bear's muzzle.",
+        products: ["dark brown lipstick"],
+        render: makeup(lips(matte("#5A3A24", 88))),
+      },
+      {
         title: "Brown hair",
-        howTo: "Finish with brown hair under a little top hat.",
-        products: ["brown hair color spray"],
-        render: hair("#5A3820", 80, 20),
+        howTo: "Finish with brown hair under the top hat.",
+        products: ["brown wig"],
+        render: hair("#5A3820", 85, 20),
       },
     ],
     finish:
       "Draw a small black nose tip with eyeliner, and add the top hat and bow tie.",
   },
   "the-grady-twins": {
-    look: "A Grady twins face: pale porcelain skin, softly shadowed eyes, a hint of pink on the cheeks, berry lips and light-brown hair.",
+    look: "A Grady twins face: pale porcelain skin, a soft gray shadow under the eyes, lashed doll eyes, soft brows, pink cheeks, berry lips and light-brown hair.",
     steps: [
       {
         title: "Pale porcelain",
         howTo:
-          "Use a foundation two shades lighter than your skin, set with translucent powder.",
+          "Pat on a foundation three shades lighter than your skin and powder it smooth.",
         products: ["light foundation", "translucent setting powder"],
-        render: makeup(paler(2, 65)),
+        render: makeup(smooth(50), paler(3, 88)),
       },
       {
-        title: "Shadowed eyes",
+        title: "Hollow stare",
         howTo:
-          "Shade softly around the eyes with a gray-brown eyeshadow, and add mascara top and bottom.",
-        products: ["gray brown eyeshadow", "mascara"],
+          "Shade softly under the eyes and at the temples with a cool gray, for a sleepless stare.",
+        products: ["cool gray eyeshadow"],
+        render: makeup(shading("Bronzer2", "#7A7478", 75)),
+      },
+      {
+        title: "Lashed doll eyes",
+        howTo:
+          "Shade the lids with a soft gray-brown, line the lashes in brown, and add lashes top and bottom.",
+        products: ["gray brown eyeshadow", "brown eyeliner", "false lashes"],
         render: makeup(
-          shadow("1color23", matte("#4A4446", 50)),
-          lashes("Upper&Lower1", BLACK, 60)
+          shadow("1color57", matte("#8A7470", 72)),
+          liner("FullRim7", matte("#4A3428", 72)),
+          lashes("Upper&Lower1", "#2A1A14", 85)
         ),
       },
       {
-        title: "Cheeks and lips",
-        howTo: "Add a hint of pink blush and a berry lipstick.",
-        products: ["pink blush", "berry lipstick"],
-        render: makeup(
-          blush("Circle2", "#E8A0A8", 35),
-          lips(matte("#8A3A4E", 65))
-        ),
+        title: "Soft brows, pink cheeks",
+        howTo:
+          "Brush the brows soft and light brown, and dab a pink blush on the apples of the cheeks.",
+        products: ["light brown brow gel", "pink blush"],
+        render: makeup(brows("#8A6A50", 70), blush("Circle2", "#E08A92", 72)),
+      },
+      {
+        title: "Berry lips",
+        howTo: "Wear a soft berry lipstick.",
+        products: ["berry lipstick"],
+        render: makeup(lips(satin("#A8405A", 85), "petal")),
       },
       {
         title: "Light-brown hair",
-        howTo:
-          "Finish with long, straight light-brown hair parted in the middle.",
+        howTo: "Finish with light-brown hair, straight with a side part.",
         products: ["light brown wig"],
-        render: hair("#9A7A58", 80, 25),
+        render: hair("#9A7A58", 85, 30),
       },
     ],
     finish: "Matching pale-blue dresses: it works best with your twin.",
   },
   "jack-torrance": {
-    look: "A frozen Jack Torrance face: pale skin with icy-blue hollows, frosted brows, pale lips and frosted hair.",
+    look: "A frozen Jack Torrance face: frost-pale skin, icy-blue hollows, frozen red-rimmed eyes, frosted brows, bluish lips and frosted hair.",
     steps: [
       {
         title: "Frozen skin",
         howTo:
-          "Use a foundation two shades lighter than your skin and dust white powder over it.",
-        products: ["light foundation", "white setting powder"],
-        render: makeup(paler(2)),
+          "Pat on a foundation four shades lighter than your skin with a touch of blue, over the face and lips.",
+        products: ["very light foundation", "blue color corrector"],
+        render: makeup(paler(4, 90)),
       },
       {
         title: "Icy hollows",
         howTo:
-          "Dust an icy-blue shimmer eyeshadow into the cheek hollows, beside the nose and around the eyes.",
-        products: ["icy blue shimmer eyeshadow"],
+          "Shade the temples, under the eyes and the cheek hollows with an icy blue-gray eyeshadow.",
+        products: ["icy blue eyeshadow"],
         render: makeup(
-          contour("#9FB3C4", 45),
-          shadow("1color23", shimmer("#9DB6CC", 55))
+          shading("Bronzer2", "#6A7E92", 88),
+          contour("#7E8C9A", 80, "TriangleFace5")
         ),
       },
       {
-        title: "Frosted brows and lips",
+        title: "Frozen eyes",
         howTo:
-          "Brush white eyeshadow through the brows, and wear a pale gray-blue lipstick.",
-        products: ["white eyeshadow", "pale blue lipstick"],
-        render: makeup(brows("#F3F6F8", 55), lips(matte("#9AA6B2", 55))),
+          "Smudge a blue-gray eyeshadow around the eyes and line the waterlines in a dull red, as if frozen open.",
+        products: ["blue gray eyeshadow", "red eyeliner"],
+        render: makeup(
+          shadow("1color23", matte("#5A6A7A", 85)),
+          liner("FullRim7", matte("#8A3A3A", 72))
+        ),
+      },
+      {
+        title: "Frosted brows",
+        howTo: "Brush white powder through the brows until they look frosted.",
+        products: ["white brow gel"],
+        render: makeup(brows("#D8DDE2", 70)),
+      },
+      {
+        title: "Bluish lips",
+        howTo: "Blot a pale blue-gray lipstick over the lips.",
+        products: ["pale blue lipstick"],
+        render: makeup(lips(matte("#8A9AAE", 85))),
       },
       {
         title: "Frosted hair",
-        howTo: "Finish with hair frosted gray-white.",
+        howTo: "Finish with hair dusted icy white.",
         products: ["white hair color spray"],
-        render: hair("#B9BEC2", 75, 20),
+        render: hair("#B9BEC2", 85, 25),
       },
     ],
     finish:
       "A plaid shirt, and a little white powder on your shoulders like frost.",
   },
   "hannibal-lecter": {
-    look: "A Hannibal Lecter face: prison-pale skin, cold shadowed eyes, pale lips and slicked-back dark hair.",
+    look: "A Hannibal Lecter face: prison-pale skin, sharp hollow cheeks, a cold unblinking stare, groomed brows, pale lips and slicked-back dark hair.",
     steps: [
       {
         title: "Prison pallor",
         howTo:
-          "Even out your skin with a foundation a shade or two lighter than yours.",
-        products: ["light foundation"],
-        render: makeup(paler(1, 55)),
+          "Pat on a foundation two shades lighter than your skin and powder it matte.",
+        products: ["light matte foundation"],
+        render: makeup(paler(2, 88)),
+      },
+      {
+        title: "Sharp cheeks",
+        howTo:
+          "Shade under the cheekbones and at the temples with a cool taupe, sharp and lean.",
+        products: ["cool taupe contour powder"],
+        render: makeup(contour("#8A786E", 82)),
       },
       {
         title: "Cold stare",
         howTo:
-          "Shade just around the eyes with a cool gray-brown eyeshadow, and keep the lips pale.",
-        products: ["cool brown eyeshadow", "nude lip balm"],
+          "Shade softly around the eyes with a cool taupe and line the upper lashes thinly in dark brown.",
+        products: ["taupe eyeshadow", "dark brown eyeliner"],
         render: makeup(
-          shadow("1color23", matte("#7A6C66", 45)),
-          lips(matte("#B89A90", 50))
+          shadow("1color23", matte("#6A5A54", 78)),
+          liner("Lower11", matte("#2E2420", 80))
+        ),
+      },
+      {
+        title: "Groomed brows, pale lips",
+        howTo:
+          "Comb the brows neat with a clear gel, and blot a pale nude lipstick over the lips.",
+        products: ["clear brow gel", "pale nude lipstick"],
+        render: makeup(
+          brows("#5A4A40", 68, { name: "Straight2", definition: 80 }),
+          lips(matte("#B89A90", 82))
         ),
       },
       {
         title: "Slicked-back hair",
-        howTo: "Comb dark hair straight back with gel.",
+        howTo: "Finish with dark hair slicked straight back.",
         products: ["hair gel"],
-        render: hair("#3A2C24", 75, 70),
+        render: hair("#3A2C24", 85, 45),
       },
     ],
     finish: "An orange jumpsuit, or a sharp suit.",
   },
   "norman-bates": {
-    look: "A 'Mother' face: pale skin, shadowed eyes and cheeks for age, under a gray bun.",
+    look: "A 'Mother' face: powdery pale skin, the shadows of age, sunken eyes, thin gray brows, faded rose lips under a gray bun.",
     steps: [
       {
-        title: "Pale base",
-        howTo: "Use a foundation a shade or two lighter than your skin.",
-        products: ["light foundation"],
-        render: makeup(paler(1, 55)),
+        title: "Powdery pale base",
+        howTo:
+          "Pat on a foundation three shades lighter than your skin and press a lot of powder over it.",
+        products: ["light foundation", "setting powder"],
+        render: makeup(paler(3, 88)),
       },
       {
         title: "Shadows of age",
         howTo:
-          "Shade under the eyes and under the cheekbones with a gray-brown eyeshadow.",
+          "Shade under the eyes, at the temples and in the cheek hollows with a soft gray-brown.",
         products: ["gray brown eyeshadow"],
         render: makeup(
-          contour("#8A7A6E", 45),
-          shadow("1color23", matte("#6E5E58", 50))
+          shading("Bronzer2", "#7A6A62", 85),
+          contour("#8A7A70", 78, "TriangleFace5")
+        ),
+      },
+      {
+        title: "Sunken eyes",
+        howTo:
+          "Shade all around the eyes with a muted brown and line them softly in dark brown.",
+        products: ["muted brown eyeshadow", "dark brown eyeliner"],
+        render: makeup(
+          shadow("1color30", matte("#5A4A42", 82)),
+          liner("PandaSmudge1", matte("#3A2A22", 70))
+        ),
+      },
+      {
+        title: "Thin brows, faded lips",
+        howTo:
+          "Thin the brows with gray pencil, and dab a faded rose lipstick on the lips.",
+        products: ["gray brow pencil", "faded rose lipstick"],
+        render: makeup(
+          brows("#8A8580", 72, { name: "Thin1", thickness: -30 }),
+          lips(matte("#A8787A", 82))
         ),
       },
       {
         title: "Gray hair",
-        howTo: "Finish with gray hair.",
+        howTo: "Finish with gray hair pinned into a bun.",
         products: ["gray bun wig"],
-        render: hair("#A3A19B", 85, 15),
+        render: hair("#A3A19B", 88, 20),
       },
     ],
     finish:
       "Pin the hair into a bun and wrap a shawl around your shoulders. For Norman himself, skip the gray and wear a cardigan.",
   },
   "captain-spaulding": {
-    look: "A Captain Spaulding face: pale skin, bright blue lids up to the brows, a big red mouth and wild gray-white hair.",
+    look: "A Captain Spaulding face: clown-white skin, gray creases, bright blue lids up to the brows, arched black brows, a big red mouth and wild gray-white hair.",
     steps: [
       {
-        title: "Pale base",
+        title: "Clown-white base",
         howTo:
-          "Pat on a foundation two or three shades lighter than your skin and set it with a white powder.",
-        products: ["light foundation", "white setting powder"],
-        render: makeup(paler(3)),
+          "Pat on a foundation four shades lighter than your skin, then press white powder over it, a little uneven.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 92)),
+      },
+      {
+        title: "Gray creases",
+        howTo:
+          "Shade the temples, under the eyes and the cheek hollows with a gray eyeshadow, so the white base looks worn.",
+        products: ["gray eyeshadow"],
+        render: makeup(shading("Bronzer2", "#7A7672", 80)),
       },
       {
         title: "Blue lids",
-        howTo: "Sweep a bright blue eyeshadow from the lashes up to the brows.",
-        products: ["bright blue eyeshadow"],
-        render: makeup(shadow("1color67", matte("#2D5BD3", 70))),
+        howTo:
+          "Sweep a bright blue eyeshadow from the lashes up to the brows, and line the eyes in black.",
+        products: ["bright blue eyeshadow", "black eyeliner"],
+        render: makeup(
+          shadow("1color67", matte("#2E6ED0", 90)),
+          liner("FullRim7", matte(BLACK, 80))
+        ),
+      },
+      {
+        title: "Arched black brows",
+        howTo: "Draw high, arched black brows over your own.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows(BLACK, 88, { name: "HighArch4", curvature: 45, thickness: 15 })
+        ),
       },
       {
         title: "Big red mouth",
         howTo:
-          "Wear a red lipstick and take it a little past the corners with a red lip liner.",
-        products: ["red lipstick", "red lip liner"],
+          "Paint a big red mouth, drawn well past the lips at the corners.",
+        products: ["bright red lipstick", "red lip liner"],
         render: makeup(
-          lips(matte("#C8102E", 85), "smile"),
-          lipLine("Wider1", "#C8102E", 75, 40, 40)
+          lips(matte("#C8141E", 92), "smile"),
+          lipLine("Wider1", "#A01018", 90, 65, 40)
         ),
       },
       {
         title: "Wild gray hair",
-        howTo: "Finish with wild, curly gray-white hair.",
-        products: ["gray curly clown wig"],
-        render: hair("#D8D6CE", 85, 15),
+        howTo: "Finish with wild gray-white hair.",
+        products: ["gray clown wig"],
+        render: hair("#D8D6CE", 88, 20),
       },
     ],
     finish:
       "A dab of red lipstick on the tip of your nose, and a Hawaiian shirt.",
   },
   "the-headless-horseman": {
-    look: "A Headless Horseman face, from before he lost it: pale skin, black brows, dark-ringed eyes, pale lips and wild black hair.",
+    look: "A Headless Horseman face, from before he lost it: deathly pale skin, gaunt shadows, dark-ringed eyes, black brows, pale lips and wild black hair.",
     steps: [
       {
-        title: "Pale base",
+        title: "Deathly pale base",
         howTo:
-          "Use a matte foundation two shades lighter than your skin, and shade the cheeks lightly gray.",
-        products: ["light foundation", "gray contour powder"],
-        render: makeup(paler(2), contour("#8E8A82", 40)),
+          "Pat on a foundation four shades lighter than your skin over the face and lips.",
+        products: ["very light foundation"],
+        render: makeup(paler(4, 90)),
       },
       {
-        title: "Black brows and eyes",
+        title: "Gaunt shadows",
         howTo:
-          "Darken the brows into sharp shapes with a black pencil, and smudge black eyeliner all around the eyes.",
-        products: ["black brow pencil", "black kohl eyeliner"],
+          "Shade from the cheekbones to the jaw and at the temples with a gray-brown eyeshadow.",
+        products: ["gray brown eyeshadow"],
+        render: makeup(contour("#6A5E58", 88, "TriangleFace5")),
+      },
+      {
+        title: "Dark-ringed eyes",
+        howTo:
+          "Shade all around the eyes with charcoal and line them all around in black.",
+        products: ["charcoal eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          brows(BLACK, 80, { name: "Arrow13", thickness: 10 }),
-          liner("PandaSmudge11", matte(BLACK, 70))
+          shadow("1color30", matte("#2A2626", 88)),
+          liner("FullRim7", matte(BLACK, 85))
+        ),
+      },
+      {
+        title: "Black brows",
+        howTo: "Darken the brows into fierce, angled black brows.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows(BLACK, 88, { name: "Arrow13", thickness: 25, definition: 80 })
         ),
       },
       {
         title: "Pale lips",
-        howTo: "Wear a pale nude lipstick.",
-        products: ["pale nude lipstick"],
-        render: makeup(lips(matte("#B5ADA6", 55))),
+        howTo: "Cover the lips with the base and a pale gray lipstick.",
+        products: ["pale gray lipstick"],
+        render: makeup(lips(matte("#A89C98", 82))),
       },
       {
         title: "Wild black hair",
-        howTo: "Finish with black hair, spiked up with gel.",
-        products: ["black hair color spray", "hair gel"],
-        render: hair("#111111", 85, 20),
+        howTo: "Finish with wild, matted black hair.",
+        products: ["black wig"],
+        render: hair("#111111", 90, 15),
       },
     ],
     finish: "A black cape and a jack-o'-lantern under your arm.",
   },
   candyman: {
-    look: "A Candyman face: a honey-gold glow, gold and deep-brown eyes and dark lips.",
+    look: "A Candyman face: a honey-gold glow, sculpted bronze shadows, gold and deep-brown eyes, strong brows and deep plum-brown lips.",
     steps: [
       {
         title: "Honey glow",
         howTo:
-          "Warm the high points of the face with a gold highlighter, and sculpt under the cheekbones with a deep-brown contour.",
-        products: ["gold highlighter", "deep brown contour"],
-        render: makeup(glow("#D9A441", 60), contour("#4A3020", 40)),
+          "Pat on a foundation your own shade with a golden glow, then a touch of gold highlighter on the high points.",
+        products: ["golden foundation", "gold highlighter"],
+        render: makeup(paler(0, 75, 40), glow("#D8A84A", 60)),
+      },
+      {
+        title: "Bronze shadows",
+        howTo:
+          "Shade under the cheekbones, at the temples and along the jaw with a deep bronze.",
+        products: ["bronze contour powder"],
+        render: makeup(contour("#5A3A20", 85)),
       },
       {
         title: "Gold eyes",
         howTo:
-          "Press a metallic gold eyeshadow on the lids and smoke the outer corners in a deep brown.",
-        products: ["metallic gold eyeshadow", "deep brown eyeshadow"],
+          "Sweep a metallic gold over the lids, a deep brown in the outer corners, and line the eyes in dark brown.",
+        products: ["gold eyeshadow", "deep brown eyeshadow", "brown eyeliner"],
         render: makeup(
-          shadow("2colors83", metallic("#C9A13B", 65), matte("#3A2414", 70))
+          shadow("2colors83", metallic("#C89A3A", 85), matte("#3A2414", 85)),
+          liner("FullRim7", matte("#2A1A10", 82))
+        ),
+      },
+      {
+        title: "Strong brows",
+        howTo: "Fill the brows dark and full.",
+        products: ["dark brown brow pencil"],
+        render: makeup(
+          brows("#1E140E", 85, { name: "Straight2", thickness: 25 })
         ),
       },
       {
         title: "Dark lips",
-        howTo: "Wear a dark-brown lipstick.",
-        products: ["dark brown lipstick"],
-        render: makeup(lips(matte("#4A2A22", 65))),
+        howTo: "Wear a deep plum-brown lipstick.",
+        products: ["plum brown lipstick"],
+        render: makeup(lips(matte("#4A2228", 88))),
       },
     ],
     finish:
       "A long coat with a fur collar, a toy hook, and a couple of fake bees on the collar.",
   },
   "the-babadook": {
-    look: "A Babadook face: pale skin, a dark shape around the eyes, black lips and black hair.",
+    look: "A Babadook face: chalk-white skin, sunken gray hollows, wide black sockets, no brows, black lips and black hair.",
     steps: [
       {
-        title: "Pale base",
-        howTo: "Use a foundation two shades lighter than your skin.",
-        products: ["light foundation"],
-        render: makeup(paler(2)),
+        title: "Chalk-white base",
+        howTo:
+          "Pat on a foundation four shades lighter than your skin over the face and brows, then press white powder over it.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 95), brows("#DAD4CE", 72)),
       },
       {
-        title: "Dark eyes",
+        title: "Sunken hollows",
         howTo:
-          "Smudge black eyeshadow in a wide shape around both eyes, and line them with black eyeliner.",
-        products: ["black eyeshadow", "black eyeliner"],
+          "Shade deep hollows from the cheekbones to the jaw and at the temples with a dark gray.",
+        products: ["dark gray eyeshadow"],
         render: makeup(
-          shadow("1color57", matte(BLACK, 70)),
-          liner("PandaSmudge11", matte(BLACK, 70))
+          contour("#4E4C4C", 90, "TriangleFace5"),
+          shading("Bronzer5", "#5A5858", 85)
+        ),
+      },
+      {
+        title: "Black sockets",
+        howTo:
+          "Pack black eyeshadow wide around each eye and smudge black kohl all around.",
+        products: ["black eyeshadow", "black kohl eyeliner"],
+        render: makeup(
+          shadow("1color30", matte(BLACK, 92)),
+          liner("PandaSmudge11", matte(BLACK, 90))
         ),
       },
       {
         title: "Black lips",
-        howTo:
-          "Wear a black lipstick and take it a little past the corners with a black lip liner.",
+        howTo: "Paint the lips matte black, a little wider than your own.",
         products: ["black lipstick", "black lip liner"],
         render: makeup(
-          lips(matte(BLACK, 85), "smile"),
-          lipLine("Wider1", BLACK, 75, 40, 40)
+          lips(matte("#1A1A1A", 92)),
+          lipLine("Wider1", BLACK, 90, 55, 50)
         ),
       },
       {
         title: "Black hair",
-        howTo: "Finish with black hair under the top hat.",
-        products: ["black hair color spray"],
-        render: hair("#121212", 85, 20),
+        howTo: "Finish with black hair, flat under the top hat.",
+        products: ["black wig"],
+        render: hair("#121212", 92, 20),
       },
     ],
     finish:
       "A top hat and a long black coat; draw a few jagged teeth into the black lips with a white eyeliner.",
   },
   "pirate-clark": {
-    look: "A Pirate Clark face in his mascot colors: pale, gaunt skin, teal and yellow eyes and a pink grin stretched a little too wide.",
+    look: "A Pirate Clark face in his mascot colors: pale, gaunt skin, hollow cheeks, teal and yellow eyes, painted brows and a pink grin stretched a little too wide.",
     steps: [
       {
-        title: "Gaunt skin",
+        title: "Gaunt pale skin",
         howTo:
-          "Use a foundation a shade lighter than your skin, and shade under the cheekbones and at the temples to stretch the face.",
-        products: ["light foundation", "gray brown contour"],
-        render: makeup(paler(1, 55), contour("#8C7E70", 45)),
+          "Pat on a foundation three shades lighter than your skin over the face and lips.",
+        products: ["light foundation"],
+        render: makeup(paler(3, 90)),
+      },
+      {
+        title: "Hollow cheeks",
+        howTo:
+          "Shade from the cheekbones to the jaw and at the temples with a cool gray-brown.",
+        products: ["gray brown eyeshadow"],
+        render: makeup(contour("#7A6A64", 85, "TriangleFace5")),
       },
       {
         title: "Mascot eyes",
         howTo:
-          "Blend a teal eyeshadow over the lids and a yellow one under the eyes, the colors of his shirt and vest.",
-        products: ["teal eyeshadow", "yellow eyeshadow"],
+          "Sweep teal over the lids up to the brows and bright yellow under the eyes, and line the lashes in black.",
+        products: ["teal eyeshadow", "yellow eyeshadow", "black eyeliner"],
         render: makeup(
-          shadow("2colors25", matte("#1E8A8A", 70), matte("#E3C21B", 65))
+          shadow("2colors25", matte("#1E9A9A", 88), matte("#E8C82A", 85)),
+          liner("FullRim7", matte(BLACK, 80))
+        ),
+      },
+      {
+        title: "Painted brows",
+        howTo: "Draw high, arched black brows.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows(BLACK, 85, { name: "HighArch4", curvature: 40, thickness: 10 })
         ),
       },
       {
         title: "Stretched grin",
         howTo:
-          "Wear a faded pink lipstick and take the liner a little past the corners.",
-        products: ["pink lipstick", "pink lip liner"],
+          "Wear a hot-pink lipstick, lined past the corners of the mouth into a grin.",
+        products: ["hot pink lipstick", "pink lip liner"],
         render: makeup(
-          lips(matte("#C8607A", 70)),
-          lipLine("Wider1", "#B04A66", 70, 40, 40)
+          lips(matte("#E0408A", 90), "smile"),
+          lipLine("Wider1", "#C02070", 88, 60, 40)
         ),
       },
     ],
     finish: "A tricorn hat with a white feather, an eyepatch and a pink sash.",
   },
   "ash-williams": {
-    look: "An Ash Williams face after a long night: grimy, tired and shadowed, with messy dark-brown hair.",
+    look: "An Ash Williams face after a long night: grimy skin, dirty shadows, tired red-rimmed eyes, messy brows, dry lips and messy dark-brown hair.",
     steps: [
       {
-        title: "Grime",
+        title: "Grimy base",
         howTo:
-          "Brush a brown-gray eyeshadow along the edges of the face, into the cheek hollows and down the nose.",
+          "Pat on a foundation your own shade, then a little tan cream color in patches so the skin looks dirty.",
+        products: ["foundation", "tan cream color"],
+        render: makeup(tint("#A88A6A", 42)),
+      },
+      {
+        title: "Dirt and shadows",
+        howTo:
+          "Smudge a brown-gray eyeshadow at the temples, under the cheekbones and along the jaw, like dirt and stubble.",
         products: ["brown gray eyeshadow"],
-        render: makeup(shading("Bronzer3", "#6E5A4A", 45)),
+        render: makeup(shading("Bronzer5", "#5A4A3A", 85)),
       },
       {
         title: "Tired eyes",
-        howTo: "Smudge a dark brown eyeshadow under and around the eyes.",
-        products: ["dark brown eyeshadow"],
-        render: makeup(shadow("1color23", matte("#4A3A32", 50))),
+        howTo:
+          "Smudge a gray-brown under and around the eyes and a little red along the lower lashes.",
+        products: ["gray brown eyeshadow", "red eyeliner"],
+        render: makeup(
+          shadow("1color23", matte("#5A4A42", 82)),
+          liner("FullRim7", matte("#8A3A34", 65))
+        ),
+      },
+      {
+        title: "Messy brows, dry lips",
+        howTo:
+          "Brush the brows up messy with a brown pencil, and blot a dry nude-brown lipstick.",
+        products: ["brown brow pencil", "nude brown lipstick"],
+        render: makeup(
+          brows("#3A2A20", 75, { name: "Original5", definition: 30 }),
+          lips(matte("#9A7468", 82))
+        ),
       },
       {
         title: "Messy hair",
-        howTo: "Finish with dark-brown hair, messed up.",
-        products: ["dark brown hair color spray"],
-        render: hair("#3A2A1E", 80, 25),
+        howTo: "Finish with messy dark-brown hair.",
+        products: ["dark brown wig"],
+        render: hair("#3A2A1E", 85, 15),
       },
     ],
     finish:
       "A smear of fake blood across one cheekbone, and a blue shirt with the sleeves rolled up.",
   },
   "dani-the-may-queen": {
-    look: "Dani crowned and crying: flushed red cheeks, red-rimmed teary eyes, bare lips and blonde hair.",
+    look: "Dani crowned and crying: a fair flushed base, burning red cheeks, red-rimmed teary eyes, soft blonde brows, bare pink lips and blonde hair.",
     steps: [
       {
+        title: "Fair base",
+        howTo: "Pat on a foundation a shade lighter than your skin, sheer.",
+        products: ["light foundation"],
+        render: makeup(paler(1, 80)),
+      },
+      {
         title: "Flushed cheeks",
-        howTo: "Blend a red-pink cream blush wide across the cheeks.",
+        howTo:
+          "Blend a red-pink cream blush across the cheeks and nose, as if from crying in the sun.",
         products: ["red pink cream blush"],
-        render: makeup(blush("Round2", "#D9505E", 55)),
+        render: makeup(blush("Round2", "#D84A50", 85)),
       },
       {
         title: "Crying eyes",
         howTo:
-          "Line the rims with a soft red pencil and smudge a pink-red eyeshadow around the eyes; keep the lips bare.",
-        products: ["red eyeliner pencil", "pink eyeshadow"],
+          "Smudge a pink-red eyeshadow close around the eyes and along the waterlines, swollen and teary.",
+        products: ["pink red eyeshadow", "red eyeliner"],
         render: makeup(
-          liner("FullRim7", matte("#B8404A", 50)),
-          shadow("1color23", matte("#C46A70", 45)),
-          lips(matte("#C99088", 40))
+          shadow("1color23", matte("#C85A60", 82)),
+          liner("FullRim7", matte("#B03A40", 70))
         ),
       },
       {
+        title: "Blonde brows, bare lips",
+        howTo:
+          "Brush the brows with a blonde gel and leave the lips a bare, flushed pink.",
+        products: ["blonde brow gel", "pink lip balm"],
+        render: makeup(brows("#B89A70", 70), lips(satin("#C87A7A", 78))),
+      },
+      {
         title: "Blonde hair",
-        howTo: "Finish with short blonde hair pulled back from the face.",
+        howTo: "Finish with long blonde hair, loose under the crown.",
         products: ["blonde wig"],
-        render: hair("#D6BC86", 80, 30),
+        render: hair("#D6BC86", 88, 35),
       },
     ],
     finish:
       "A tall flower crown and a white dress; a dab of lip oil on the cheeks reads as tears.",
   },
   "red-and-the-tethered": {
-    look: "A Red face: worn shadows, bleached brows, gold lids for the golden glove and a deep red lip for the jumpsuit.",
+    look: "A Red face: a sallow base, worn hollow shadows, gold lids for the golden glove, bleached brows and a deep red lip for the jumpsuit.",
     steps: [
+      {
+        title: "Sallow base",
+        howTo:
+          "Pat on a foundation your own shade with a little yellow corrector, flat and matte.",
+        products: ["matte foundation", "yellow color corrector"],
+        render: makeup(paler(0, 80)),
+      },
       {
         title: "Worn shadows",
         howTo:
-          "Shade around the eyes, the cheeks and the temples with a deep-brown eyeshadow, so the face looks worn.",
+          "Shade under the eyes, the temples and the cheek hollows with a deep brown.",
         products: ["deep brown eyeshadow"],
-        render: makeup(shading("Bronzer2", "#5A4030", 45)),
+        render: makeup(
+          shading("Bronzer2", "#3A2A24", 85),
+          contour("#4A3428", 80, "TriangleFace5")
+        ),
+      },
+      {
+        title: "Gold lids",
+        howTo:
+          "Press a metallic gold over the lids up to the creases, and line the eyes in black.",
+        products: ["gold eyeshadow", "black eyeliner"],
+        render: makeup(
+          shadow("1color57", metallic("#C8A040", 88)),
+          liner("FullRim7", matte(BLACK, 80))
+        ),
       },
       {
         title: "Bleached brows",
-        howTo: "Lighten the brows to a pale blonde with a tinted brow gel.",
-        products: ["blonde brow gel"],
-        render: makeup(brows("#E3D2A8", 70)),
+        howTo:
+          "Brush a light concealer through the brows so they look bleached.",
+        products: ["brow concealer"],
+        render: makeup(brows("#C8B8A0", 72)),
       },
       {
-        title: "Gold and red",
-        howTo:
-          "Press a metallic gold eyeshadow on the lids, and wear a deep red lipstick.",
-        products: ["metallic gold eyeshadow", "deep red lipstick"],
-        render: makeup(
-          shadow("1color8", metallic("#C9A13B", 70)),
-          lips(matte("#8E1420", 80))
-        ),
+        title: "Deep red lip",
+        howTo: "Wear a deep red lipstick.",
+        products: ["deep red lipstick"],
+        render: makeup(lips(matte("#8A1420", 90))),
       },
     ],
     finish: "A red jumpsuit, one golden glove and toy gold scissors.",
   },
   "grace-the-bride": {
-    look: "A Grace face on her wedding night: soft bridal glam with warm brown eyes, pink lips and blonde hair, until the blood.",
+    look: "A Grace face on her wedding night: a dewy bridal base, soft sculpting, warm brown eyes with lashes, groomed brows, pink lips and blonde hair, until the blood.",
     steps: [
       {
         title: "Bridal glow",
         howTo:
-          "Add a soft glow on the high points and a peachy-pink blush on the cheeks.",
-        products: ["liquid highlighter", "peach blush"],
-        render: makeup(glow("#FFF1E0", 50), blush("Round2", "#E09A90", 35)),
+          "Pat on a dewy foundation your own shade and add a little highlighter on the cheekbones.",
+        products: ["dewy foundation", "liquid highlighter"],
+        render: makeup(paler(0, 75, 40), glow("#F2D8C8", 55)),
       },
       {
-        title: "Eyes and lips",
+        title: "Soft sculpting",
         howTo:
-          "Blend a warm brown eyeshadow on the lids, deeper at the outer corners, add lashes, and wear a pink satin lipstick.",
-        products: ["warm brown eyeshadow", "false eyelashes", "pink lipstick"],
+          "Shade softly under the cheekbones and sweep a peachy-pink blush above it.",
+        products: ["soft contour powder", "peach blush"],
         render: makeup(
-          shadow("2colors83", matte("#C79A7E", 55), matte("#6E4A3A", 55)),
-          lashes("Natural1"),
-          lips(satin("#D48A8E", 70))
+          contour("#A88070", 72),
+          blush("Oblique2", "#E8908A", 70)
+        ),
+      },
+      {
+        title: "Warm brown eyes",
+        howTo:
+          "Blend warm brown into the creases and a lighter shimmer on the lids, line the lashes in brown, and add lashes.",
+        products: ["warm brown eyeshadow", "brown eyeliner", "false lashes"],
+        render: makeup(
+          shadow("2colors83", shimmer("#D8B090", 72), matte("#7A5038", 80)),
+          liner("Lower11", matte("#3A2418", 80)),
+          lashes("UpperDense1", "#1A1210", 88)
+        ),
+      },
+      {
+        title: "Brows and pink lips",
+        howTo:
+          "Fill the brows softly, and wear a soft pink lipstick with a little gloss.",
+        products: ["brow pencil", "pink lipstick"],
+        render: makeup(
+          brows("#7A5A3E", 72, { name: "SoftArch1" }),
+          lips(gloss("#D07888", 82))
         ),
       },
       {
         title: "Blonde hair",
-        howTo: "Finish with blonde hair in a braided updo.",
+        howTo: "Finish with long blonde hair in loose waves.",
         products: ["blonde wig"],
-        render: hair("#D9BE8A", 80, 35),
+        render: hair("#D9BE8A", 88, 40),
       },
     ],
     finish:
       "A torn wedding dress and sneakers, with dirt and fake blood on your face, arms and gown.",
   },
   "lydia-deetz": {
-    look: "A Lydia Deetz face: pale skin, peach-washed eyes with dark smudges underneath, dark lips and jet-black hair.",
+    look: "A Lydia Deetz face: goth-pale skin, soft gray hollows, peach-washed eyes with dark smudges beneath, strong dark brows, dark plum lips and jet-black hair.",
     steps: [
       {
-        title: "Pale base",
-        howTo: "Use a foundation two shades lighter than your skin.",
-        products: ["light foundation"],
-        render: makeup(paler(2)),
+        title: "Goth-pale base",
+        howTo:
+          "Pat on a foundation three shades lighter than your skin and set it with translucent powder.",
+        products: ["light foundation", "translucent setting powder"],
+        render: makeup(paler(3, 90)),
+      },
+      {
+        title: "Soft hollows",
+        howTo:
+          "Shade under the eyes and at the temples with a soft gray-mauve, for a sleepless look.",
+        products: ["gray mauve eyeshadow"],
+        render: makeup(shading("Bronzer2", "#7A6670", 80)),
       },
       {
         title: "Peach and dark eyes",
         howTo:
-          "Sweep a peach eyeshadow over the lids up under the brows, smudge a dark one under the eyes, and line all around in black.",
-        products: ["peach eyeshadow", "dark eyeshadow", "black kohl eyeliner"],
+          "Wash a peach eyeshadow over the lids up to the brows and smudge a dark gray-brown under the eyes, with black liner on the lashes.",
+        products: ["peach eyeshadow", "dark gray eyeshadow", "black eyeliner"],
         render: makeup(
-          shadow("2colors25", matte("#E8A882", 60), matte("#3A2A2E", 60)),
-          liner("FullRim7", matte(BLACK, 60))
+          shadow("2colors25", matte("#E0A07A", 82), matte("#3A3034", 85)),
+          liner("FullRim7", matte(BLACK, 80))
         ),
       },
       {
-        title: "Dark lips",
-        howTo: "Wear a dark wine lipstick.",
-        products: ["dark wine lipstick"],
-        render: makeup(lips(matte("#4A1C26", 75))),
+        title: "Strong dark brows",
+        howTo: "Fill the brows dark and straight with a black pencil.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows("#141212", 85, { name: "Straight2", thickness: 20 })
+        ),
+      },
+      {
+        title: "Dark plum lips",
+        howTo: "Wear a dark plum lipstick.",
+        products: ["dark plum lipstick"],
+        render: makeup(lips(matte("#4A1E30", 88))),
       },
       {
         title: "Jet-black hair",
-        howTo: "Finish with jet-black hair and long bangs.",
+        howTo: "Finish with jet-black hair and short spiky bangs.",
         products: ["black wig with bangs"],
-        render: hair("#0F0F0F", 90, 30),
+        render: hair("#0F0F0F", 92, 30),
       },
     ],
     finish: "Pin the bangs into short spiky points, and wear a black dress.",
   },
   "tiffany-valentine": {
-    look: "A Tiffany Valentine face: a plum smoky eye with a sharp black wing, big lashes, red lips and platinum hair.",
+    look: "A Tiffany Valentine face: a matte doll base, sculpted cheeks, a plum smoky eye with a sharp black wing and big lashes, thin brows, red lips and platinum hair.",
     steps: [
+      {
+        title: "Doll base",
+        howTo:
+          "Pat on a matte foundation a shade lighter than your skin and powder it smooth.",
+        products: ["matte foundation", "setting powder"],
+        render: makeup(smooth(50), paler(1, 88)),
+      },
+      {
+        title: "Sculpted cheeks",
+        howTo:
+          "Shade under the cheekbones with a cool brown and sweep a rosy blush above it.",
+        products: ["contour powder", "rose blush"],
+        render: makeup(
+          contour("#8A6A60", 80),
+          blush("Oblique2", "#D06A7A", 75)
+        ),
+      },
       {
         title: "Plum smoky eye",
         howTo:
-          "Lay a light purple on the lids, deepen the outer corner with plum, draw a sharp black wing and add big lashes.",
-        products: [
-          "purple eyeshadow palette",
-          "black liquid eyeliner",
-          "false eyelashes",
-        ],
+          "Smoke a plum eyeshadow over the lids into the outer corners, draw a sharp black wing, and add big lashes.",
+        products: ["plum eyeshadow", "black liquid eyeliner", "false lashes"],
         render: makeup(
-          shadow("2colors164", matte("#B48AC4", 65), matte("#4A1E4E", 75)),
-          liner("OpenWings3", matte(BLACK, 75)),
-          lashes("Winged1")
+          shadow("2colors83", matte("#7A3A6A", 85), matte("#3A1A34", 90)),
+          liner("OpenWings3", matte(BLACK, 92)),
+          lashes("Winged1", BLACK, 92)
+        ),
+      },
+      {
+        title: "Thin brows",
+        howTo: "Draw thin, arched brows a shade darker than the hair.",
+        products: ["brow pencil"],
+        render: makeup(
+          brows("#8A7258", 78, { name: "Thin1", curvature: 40, thickness: -30 })
         ),
       },
       {
         title: "Red lips",
-        howTo:
-          "Line the lips with a darker red, then fill them with a bright classic red.",
-        products: ["bright red lipstick", "dark red lip liner"],
+        howTo: "Wear a bright red lipstick, lined full.",
+        products: ["red lipstick", "red lip liner"],
         render: makeup(
-          lips(matte("#C21A2C", 85)),
-          lipLine("Natural1", "#6E1A1E", 80, 40, 80)
+          lips(matte("#B0141E", 92), "plump"),
+          lipLine("Large&Full1", "#8A0E16", 88, 55, 70)
         ),
       },
       {
         title: "Platinum hair",
-        howTo: "Finish with big platinum-blonde hair.",
+        howTo: "Finish with platinum-blonde hair, big and curled.",
         products: ["platinum blonde wig"],
-        render: hair("#ECE3CF", 85, 35),
+        render: hair("#ECE3CF", 90, 40),
       },
     ],
     finish:
       "Dot a beauty mark above the lip with eyeliner, and wear a black leather jacket.",
   },
   "the-craft-coven": {
-    look: "A Nancy face from The Craft: pale skin, black kohl smudged around plum-brown eyes and a vampy dark berry lip.",
+    look: "A Nancy face from The Craft: pale skin, gaunt 90s contour, black kohl smudged around plum-brown eyes, thin dark brows, a vampy dark berry lip and dark hair.",
     steps: [
       {
         title: "Pale skin",
         howTo:
-          "Use a foundation a shade lighter than your skin for a slightly sickly, ethereal look.",
-        products: ["light foundation"],
-        render: makeup(paler(1, 55)),
+          "Pat on a foundation two shades lighter than your skin and powder it matte.",
+        products: ["light matte foundation"],
+        render: makeup(paler(2, 90)),
+      },
+      {
+        title: "Gaunt contour",
+        howTo:
+          "Shade under the cheekbones and at the temples with a cool brown, sharp and 90s.",
+        products: ["cool brown contour powder"],
+        render: makeup(contour("#6E5650", 85)),
       },
       {
         title: "Smudged kohl",
         howTo:
-          "Blend a plum-brown eyeshadow over the lids and outer corners, then smudge black kohl all around the eye.",
-        products: ["plum eyeshadow", "black kohl pencil"],
+          "Smudge plum-brown eyeshadow all around the eyes and black kohl all around the lash lines.",
+        products: ["plum brown eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          shadow("2colors83", matte("#7A3A4E", 60), matte("#2E1626", 70)),
-          liner("FullRim7", matte(BLACK, 75))
+          shadow("1color30", matte("#4A2A34", 85)),
+          liner("PandaSmudge11", matte(BLACK, 90))
+        ),
+      },
+      {
+        title: "Thin dark brows",
+        howTo: "Thin the brows and darken them with a dark pencil.",
+        products: ["dark brow pencil"],
+        render: makeup(
+          brows("#1E1616", 85, { name: "Thin1", curvature: 30, thickness: -20 })
         ),
       },
       {
         title: "Vampy lips",
-        howTo: "Line the lips in purple and fill them with a deep matte berry.",
-        products: ["dark berry lipstick", "purple lip liner"],
+        howTo:
+          "Line the lips in near-black and fill them with a dark berry lipstick.",
+        products: ["dark berry lipstick", "black lip liner"],
         render: makeup(
-          lips(matte("#4B1630", 85)),
-          lipLine("Natural1", "#3A1030", 80, 40, 80)
+          lips(matte("#4A1428", 90)),
+          lipLine("Natural1", "#1E0A12", 88, 50, 60)
         ),
       },
       {
         title: "Dark hair",
-        howTo: "Finish with dark-brown hair, a little messy.",
+        howTo: "Finish with dark hair, messy and teased.",
         products: ["dark brown wig"],
-        render: hair("#2A1E1A", 85, 25),
+        render: hair("#2A1E1A", 88, 20),
       },
     ],
     finish: "A plaid skirt, a black choker and a candle.",
   },
   "jennifer-check": {
-    look: "A Jennifer Check face: luminous skin, grungy smoky eyes, a glossy berry-pink pout and long dark hair.",
+    look: "A Jennifer Check face: luminous skin, sculpted cheeks, grungy smoky eyes with lashes, groomed dark brows, a glossy berry-pink pout and long dark hair.",
     steps: [
       {
         title: "Luminous skin",
         howTo:
-          "Add a glow on the high points and sculpt softly under the cheekbones.",
-        products: ["liquid highlighter", "contour stick"],
-        render: makeup(glow("#FFF0E6", 55), contour("#9A7A6A", 35)),
+          "Pat on a glowy foundation your own shade and add highlighter on the cheekbones.",
+        products: ["glowy foundation", "liquid highlighter"],
+        render: makeup(paler(0, 78, 45), glow("#F0D0C0", 60)),
       },
       {
-        title: "Smoky eyes",
+        title: "Sculpted cheeks",
         howTo:
-          "Smoke a gray-mauve eyeshadow around the eyes, deeper at the corners, smudge black liner into the lashes and add lashes.",
-        products: ["smoky eyeshadow palette", "black kohl eyeliner"],
+          "Shade under the cheekbones with a soft brown and sweep a berry-pink blush above it.",
+        products: ["contour powder", "berry blush"],
         render: makeup(
-          shadow("2colors83", matte("#6E5A62", 55), matte("#2A2228", 65)),
-          liner("PandaSmudge1", matte(BLACK, 65)),
-          lashes("UpperDense1")
+          contour("#8A6458", 80),
+          blush("Oblique2", "#C8507A", 72)
+        ),
+      },
+      {
+        title: "Grungy smoky eyes",
+        howTo:
+          "Smoke a charcoal-brown eyeshadow over the lids and under the eyes, smudge black liner into the lashes, and add lashes.",
+        products: ["charcoal eyeshadow", "black kohl eyeliner", "false lashes"],
+        render: makeup(
+          shadow("2colors25", matte("#4A3A36", 85), matte("#2A2020", 82)),
+          liner("PandaSmudge1", matte(BLACK, 85)),
+          lashes("UpperDense1", BLACK, 90)
+        ),
+      },
+      {
+        title: "Groomed brows",
+        howTo: "Fill the brows dark and groomed.",
+        products: ["dark brow pencil"],
+        render: makeup(
+          brows("#2A1C16", 80, { name: "SoftArch1", definition: 80 })
         ),
       },
       {
         title: "Berry gloss",
-        howTo: "Finish the lips with a berry-pink gloss.",
+        howTo: "Wear a glossy berry-pink lip, full and pouty.",
         products: ["berry pink lip gloss"],
-        render: makeup(lips(gloss("#B04A6E", 70))),
+        render: makeup(lips(gloss("#B0386A", 88), "pouty")),
       },
       {
         title: "Dark hair",
-        howTo: "Finish with long dark-brown hair.",
+        howTo: "Finish with long dark hair.",
         products: ["long dark brown wig"],
-        render: hair("#2A1C16", 85, 40),
+        render: hair("#2A1C16", 88, 40),
       },
     ],
     finish:
       "A cheerleader uniform; for the demon, a little fake blood at the corners of the mouth.",
   },
   "frank-the-rabbit": {
-    look: "A Frank the Rabbit face: cool gray shading, dark hollow eyes ringed in silver, and pale gray lips.",
+    look: "A Frank the Rabbit face in the mask's colors: a cool gray tint, dark gray hollows, sunken eyes ringed in silver, faded brows and pale gray lips.",
     steps: [
       {
-        title: "Gray shading",
+        title: "Gray tint",
         howTo:
-          "Brush a cool gray eyeshadow around the edges of your face, into the cheek hollows and down the nose.",
-        products: ["cool gray eyeshadow"],
+          "Mix a little gray cream color into a light foundation and pat it over the face, brows and lips.",
+        products: ["light foundation", "gray cream color"],
+        render: makeup(tint("#9C9A9C", 55), brows("#A8A4A4", 70)),
+      },
+      {
+        title: "Gray hollows",
+        howTo:
+          "Shade deep hollows from the cheekbones to the jaw and at the temples with a dark gray.",
+        products: ["dark gray eyeshadow"],
         render: makeup(
-          shading("Bronzer3", "#8E8E8C", 45),
-          contour("#5A5A58", 40)
+          contour("#4E4C50", 90, "TriangleFace5"),
+          shading("Bronzer2", "#3E3C40", 85)
         ),
       },
       {
-        title: "Hollow eyes",
+        title: "Silver-ringed eyes",
         howTo:
-          "Sweep black eyeshadow all around the eyes and ring them with a silver eyeliner.",
-        products: ["black eyeshadow", "metallic silver eyeliner"],
+          "Pack a dark charcoal all around the eyes and line the lashes with a metallic silver.",
+        products: ["charcoal eyeshadow", "silver eyeliner"],
         render: makeup(
-          shadow("1color57", matte(BLACK, 70)),
-          liner("FullRim7", metallic("#C8CCD0", 70))
+          shadow("1color30", matte("#2A2A2E", 90)),
+          liner("FullRim7", metallic("#C8C8D0", 80))
         ),
       },
       {
         title: "Pale gray lips",
-        howTo: "Wear a pale gray lipstick.",
-        products: ["gray lipstick"],
-        render: makeup(lips(matte("#C9C8C4", 55))),
+        howTo: "Cover the lips with a pale gray lipstick.",
+        products: ["pale gray lipstick"],
+        render: makeup(lips(matte("#A8A6AA", 85))),
       },
     ],
     finish:
       "Gray bunny ears on a headband; draw square teeth over the lips with a white eyeliner.",
   },
   "the-gill-man": {
-    look: "A Gill-man face: a green tint, darker green hollows, metallic teal-green eyes and green lips.",
+    look: "A Gill-man face: a green tint, deep swamp-green hollows, metallic teal-green eyes, dark green brows and green lips.",
     steps: [
       {
         title: "Green skin",
         howTo:
-          "Mix a little green color corrector into your foundation and pat it on thinly, then shade the hollows with a dark green eyeshadow.",
-        products: ["green color corrector", "dark green eyeshadow"],
-        render: makeup(tint("#5F8A5A"), contour("#2E4A2E", 45)),
+          "Mix green cream color into a light foundation and pat it over the face and lips.",
+        products: ["light foundation", "green cream color"],
+        render: makeup(tint("#7EA07A", 58)),
+      },
+      {
+        title: "Swamp hollows",
+        howTo:
+          "Shade the temples, the cheek hollows and the jaw with a deep swamp-green eyeshadow.",
+        products: ["dark green eyeshadow"],
+        render: makeup(
+          shading("Bronzer5", "#2E4A30", 90),
+          contour("#3A5A3A", 85, "TriangleFace5")
+        ),
       },
       {
         title: "Swamp eyes",
         howTo:
-          "Press a metallic teal-green eyeshadow on the lids, darken the corners with deep green, and line all around.",
-        products: ["metallic green eyeshadow", "dark green eyeliner"],
+          "Press a metallic teal-green all around the eyes and line them in dark green.",
+        products: ["teal green eyeshadow", "dark green eyeliner"],
         render: makeup(
-          shadow("2colors83", metallic("#3FA08A", 70), matte("#1E3A28", 65)),
-          liner("FullRim7", matte("#14261A", 65))
+          shadow("1color30", metallic("#2A8A78", 88)),
+          liner("FullRim7", matte("#1A3A28", 85))
         ),
       },
       {
+        title: "Green brows",
+        howTo: "Brush a dark green eyeshadow through the brows.",
+        products: ["dark green eyeshadow"],
+        render: makeup(brows("#2A4A30", 80)),
+      },
+      {
         title: "Green lips",
-        howTo: "Wear a green lipstick.",
-        products: ["green lipstick"],
-        render: makeup(lips(matte("#3E5E3C", 70))),
+        howTo: "Wear a dark green lipstick, glossed so it looks wet.",
+        products: ["dark green lipstick", "clear lip gloss"],
+        render: makeup(lips(gloss("#3A6A44", 88))),
       },
     ],
     finish:
       "Dab a darker green eyeshadow through a piece of fishnet on your cheeks for scales.",
   },
   "the-phantom-of-the-opera": {
-    look: "A Phantom of the Opera face: pale skin, sunken cheeks, dark skull-like eyes, dark lips and slick black hair.",
+    look: "A Phantom of the Opera face: deathly pale skin, a skull's sunken cheeks, dark skull-like sockets, thin brows, dark lips and slick black hair.",
     steps: [
       {
-        title: "Pale base",
+        title: "Deathly pale base",
         howTo:
-          "Use a foundation two shades lighter than your skin, and sink the cheeks with a gray-brown contour.",
-        products: ["light foundation", "gray brown contour"],
-        render: makeup(paler(2), contour("#4E4A44", 50)),
+          "Pat on a foundation four shades lighter than your skin and set it with white powder.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 92)),
       },
       {
-        title: "Dark eyes",
-        howTo: "Sweep black eyeshadow all around the eyes.",
-        products: ["black eyeshadow"],
-        render: makeup(shadow("1color57", matte(BLACK, 70))),
+        title: "Sunken cheeks",
+        howTo:
+          "Shade deep hollows from the cheekbones to the jaw, the temples and the sides of the nose with a gray-brown.",
+        products: ["gray brown eyeshadow"],
+        render: makeup(
+          contour("#5A504C", 90, "TriangleFace5"),
+          shading("Bronzer5", "#4A4240", 88)
+        ),
+      },
+      {
+        title: "Skull sockets",
+        howTo:
+          "Pack a near-black eyeshadow wide around each eye and line them all around in black.",
+        products: ["black eyeshadow", "black kohl eyeliner"],
+        render: makeup(
+          shadow("1color30", matte("#1A1616", 92)),
+          liner("FullRim7", matte(BLACK, 90))
+        ),
+      },
+      {
+        title: "Thin brows",
+        howTo: "Thin the brows and darken them sharply.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows("#1A1616", 82, { name: "Thin1", curvature: 30, thickness: -30 })
+        ),
       },
       {
         title: "Dark lips",
-        howTo: "Wear a dark gray-brown lipstick.",
-        products: ["dark brown lipstick"],
-        render: makeup(lips(matte("#3A2E2C", 75))),
+        howTo: "Wear a near-black brown lipstick.",
+        products: ["black brown lipstick"],
+        render: makeup(lips(matte("#2E2020", 90))),
       },
       {
         title: "Slick black hair",
         howTo: "Finish with black hair slicked back.",
         products: ["black hair color spray", "hair gel"],
-        render: hair("#121212", 85, 60),
+        render: hair("#121212", 92, 45),
       },
     ],
     finish: "A white half mask over one side of your face, and a cape.",
   },
   krampus: {
-    look: "A Krampus face: dark, sculpted shadows in brown and blood red, black eyes and brows, dark red lips and black hair.",
+    look: "A Krampus face: a dark ashen base, brown and blood-red demon shadows, black eyes, heavy black brows, dark red lips and black hair.",
     steps: [
+      {
+        title: "Ashen base",
+        howTo:
+          "Mix a little gray-brown cream color into your foundation and pat it over the face.",
+        products: ["foundation", "gray brown cream color"],
+        render: makeup(tint("#7A6A62", 50)),
+      },
       {
         title: "Demon shadows",
         howTo:
-          "Contour the cheeks, temples and jaw with a deep brown, and sweep a dark red eyeshadow around the eyes and cheeks.",
-        products: ["deep brown contour", "dark red eyeshadow"],
+          "Shade the temples, the cheek hollows and the jaw with a deep brown, then press a blood-red eyeshadow into the hollows.",
+        products: ["deep brown eyeshadow", "blood red eyeshadow"],
         render: makeup(
-          contour("#2A1A14", 55),
-          shading("Bronzer2", "#4A1A14", 45)
+          shading("Bronzer5", "#3A2420", 90),
+          contour("#7A1A1E", 85, "TriangleFace5")
         ),
       },
       {
         title: "Black eyes",
         howTo:
-          "Blend dark red into black around the eyes, smudge black liner up and out, and draw sharp black brows.",
-        products: ["black eyeshadow", "black eyeliner", "black brow pencil"],
+          "Pack black eyeshadow all around the eyes, with red in the inner corners, and line them in black.",
+        products: ["black eyeshadow", "red eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          shadow("2colors83", matte("#6A1414", 60), matte(BLACK, 70)),
-          liner("PandaSmudge11", matte(BLACK, 70)),
-          brows(BLACK, 80, { name: "Arrow13" })
+          shadow("2colors25", matte(BLACK, 92), matte("#8A1A1E", 85)),
+          liner("PandaSmudge11", matte(BLACK, 90))
+        ),
+      },
+      {
+        title: "Heavy black brows",
+        howTo: "Draw heavy, angled black brows.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows(BLACK, 92, { name: "Arrow13", thickness: 40, definition: 85 })
         ),
       },
       {
         title: "Dark red lips",
-        howTo: "Wear a red lipstick so dark it's almost black.",
+        howTo: "Wear a near-black red lipstick.",
         products: ["dark red lipstick"],
-        render: makeup(lips(matte("#5A0A10", 85))),
+        render: makeup(lips(matte("#4A0E14", 90))),
       },
       {
         title: "Black hair",
-        howTo: "Finish with shaggy black hair.",
-        products: ["black hair color spray"],
-        render: hair("#121212", 85, 20),
+        howTo: "Finish with wild black hair.",
+        products: ["black wig"],
+        render: hair("#121212", 92, 20),
       },
     ],
     finish: "Horns on a headband, a fur stole and a little bell.",
   },
   "damien-thorn": {
-    look: "A Damien face: pale and solemn, with faintly shadowed eyes and dark hair.",
+    look: "A Damien face: pale and solemn, faintly hollow, with a cold shadowed stare, dark brows, colorless lips and dark hair.",
     steps: [
       {
         title: "Solemn pallor",
         howTo:
-          "Use a sheer foundation a shade lighter than your skin, and shade softly under the eyes.",
-        products: ["light foundation", "taupe eyeshadow"],
-        render: makeup(paler(1, 50), shadow("1color23", matte("#6E5E5A", 40))),
+          "Pat on a foundation two shades lighter than your skin and powder it matte.",
+        products: ["light matte foundation"],
+        render: makeup(paler(2, 88)),
+      },
+      {
+        title: "Faint hollows",
+        howTo:
+          "Shade softly under the eyes and at the temples with a cool gray-brown.",
+        products: ["cool gray eyeshadow"],
+        render: makeup(shading("Bronzer2", "#7A6E6A", 76)),
+      },
+      {
+        title: "Cold stare",
+        howTo:
+          "Shade close around the eyes with a gray-brown and line the upper lashes thinly in dark brown.",
+        products: ["gray brown eyeshadow", "dark brown eyeliner"],
+        render: makeup(
+          shadow("1color23", matte("#5E524E", 80)),
+          liner("Lower11", matte("#2A2220", 80))
+        ),
+      },
+      {
+        title: "Dark brows, pale lips",
+        howTo:
+          "Darken the brows a little, straight, and blot a pale nude lipstick over the lips.",
+        products: ["dark brow pencil", "pale nude lipstick"],
+        render: makeup(
+          brows("#2A2018", 78, { name: "Straight2" }),
+          lips(matte("#B8988E", 82))
+        ),
       },
       {
         title: "Dark hair",
-        howTo: "Finish with dark, slightly curly hair.",
-        products: ["black hair color spray"],
-        render: hair("#151210", 85, 25),
+        howTo: "Finish with neat dark hair.",
+        products: ["dark brown hair color spray"],
+        render: hair("#151210", 88, 30),
       },
     ],
     finish:
       "A school uniform, and 666 written small behind your ear with eyeliner.",
   },
   "kayako-saeki": {
-    look: "A Kayako face: pale skin, dark hollow-looking eyes, gray lips and long black hair.",
+    look: "A Kayako face: ghost-white skin, gray-blue hollows, dark hollow eyes, no brows, gray lips and long black hair.",
     steps: [
       {
-        title: "Pale base",
+        title: "Ghost-white base",
         howTo:
-          "Pat on a foundation three shades lighter than your skin and set it with a white powder.",
-        products: ["light foundation", "white setting powder"],
-        render: makeup(paler(3)),
+          "Pat on a foundation four shades lighter than your skin over the face and brows, then press white powder over it.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 95), brows("#D8D4D2", 72)),
+      },
+      {
+        title: "Gray-blue hollows",
+        howTo:
+          "Shade under the eyes, the temples and the cheek hollows with a cold gray-blue.",
+        products: ["gray blue eyeshadow"],
+        render: makeup(
+          shading("Bronzer2", "#5A6270", 88),
+          contour("#6E7480", 80, "TriangleFace5")
+        ),
       },
       {
         title: "Hollow eyes",
         howTo:
-          "Smudge a dark eyeshadow all around the eyes and line them in black.",
+          "Pack a dark gray all around the eyes and line them all around in black.",
         products: ["dark gray eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          shadow("1color57", matte("#24202A", 65)),
-          liner("FullRim7", matte(BLACK, 65))
+          shadow("1color30", matte("#2A2C32", 90)),
+          liner("FullRim7", matte(BLACK, 88))
         ),
       },
       {
         title: "Gray lips",
-        howTo: "Wear a gray lipstick.",
+        howTo: "Cover the lips with a gray lipstick.",
         products: ["gray lipstick"],
-        render: makeup(lips(matte("#8E8A8A", 60))),
+        render: makeup(lips(matte("#8A8890", 85))),
       },
       {
         title: "Long black hair",
-        howTo: "Finish with long black hair.",
+        howTo: "Finish with long black hair hanging forward.",
         products: ["long black wig"],
-        render: hair("#101010", 90, 40),
+        render: hair("#101010", 92, 35),
       },
     ],
     finish: "Let the hair fall over your face, and wear a long white dress.",
   },
   "victor-crowley": {
-    look: "A Victor Crowley face: blotchy red-purple skin, sunken shadows, dark hollow eyes and long black hair.",
+    look: "A Victor Crowley face: blotchy red-purple skin, deep sunken shadows, dark hollow eyes, ragged brows, dark lips and long black hair.",
     steps: [
       {
         title: "Blotchy skin",
         howTo:
-          "Dab a red-purple cream blush onto the cheekbones and a dark-brown contour into the hollows, blotchy on purpose.",
-        products: ["red purple cream blush", "dark brown contour"],
+          "Mix a little red-purple cream color into your foundation and pat it on unevenly.",
+        products: ["foundation", "red purple cream color"],
+        render: makeup(tint("#A0606A", 52)),
+      },
+      {
+        title: "Sunken shadows",
+        howTo:
+          "Shade the temples, under the eyes, the cheek hollows and the jaw with a deep purple-brown.",
+        products: ["purple brown eyeshadow"],
         render: makeup(
-          blush("Oblique2", "#8A3A4A", 55),
-          contour("#5A4A40", 50)
+          shading("Bronzer5", "#4A2A34", 90),
+          contour("#5A3038", 85, "TriangleFace5")
         ),
       },
       {
-        title: "Sunken eyes",
-        howTo: "Shade all around the eyes with a dark red-brown eyeshadow.",
-        products: ["dark red brown eyeshadow"],
-        render: makeup(shadow("1color57", matte("#3A2228", 65))),
+        title: "Hollow eyes",
+        howTo:
+          "Pack a dark purple-black all around the eyes and line them in black.",
+        products: ["dark purple eyeshadow", "black kohl eyeliner"],
+        render: makeup(
+          shadow("1color30", matte("#2A1A22", 90)),
+          liner("FullRim7", matte(BLACK, 85))
+        ),
+      },
+      {
+        title: "Ragged brows, dark lips",
+        howTo:
+          "Darken the brows unevenly, and wear a dark red-brown lipstick blotted dry.",
+        products: ["dark brow pencil", "dark red brown lipstick"],
+        render: makeup(
+          brows("#2A1E1E", 75, { name: "Original5", definition: 25 }),
+          lips(matte("#5A2A2A", 88))
+        ),
       },
       {
         title: "Long black hair",
         howTo: "Finish with long, stringy black hair.",
         products: ["long black wig"],
-        render: hair("#141414", 85, 20),
+        render: hair("#141414", 90, 15),
       },
     ],
     finish: "Denim overalls and a toy hatchet.",
   },
   "laurie-strode": {
-    look: "A Laurie Strode face from '78: natural 70s makeup with soft lids, mascara, rosy lips and short light waves.",
+    look: "A Laurie Strode face from '78: an even, natural base, soft lids, mascara, brushed brows, rosy cheeks and lips, and short light waves.",
     steps: [
       {
+        title: "Natural base",
+        howTo: "Pat on a light foundation your own shade.",
+        products: ["light foundation"],
+        render: makeup(paler(0, 72)),
+      },
+      {
         title: "Soft 70s eyes",
-        howTo: "Wash a soft taupe eyeshadow over the lids and add mascara.",
-        products: ["taupe eyeshadow", "mascara"],
+        howTo: "Wash a soft brown over the lids and add brown mascara.",
+        products: ["soft brown eyeshadow", "brown mascara"],
         render: makeup(
-          shadow("1color8", matte("#B89A88", 45)),
-          lashes("Natural1", BLACK, 70)
+          shadow("1color8", matte("#A88068", 70)),
+          liner("Lower11", matte("#5A3E2E", 65)),
+          lashes("Natural1", "#3A2A1E", 85)
         ),
       },
       {
-        title: "Rosy cheeks and lips",
-        howTo: "Add a little rose blush and a rosy satin lipstick.",
-        products: ["rose blush", "rosy lipstick"],
-        render: makeup(
-          blush("Round2", "#D9909A", 30),
-          lips(satin("#C77A80", 60))
-        ),
+        title: "Rosy cheeks",
+        howTo: "Sweep a rosy blush on the apples of the cheeks.",
+        products: ["rose blush"],
+        render: makeup(blush("Round2", "#D88080", 70)),
+      },
+      {
+        title: "Brows and rosy lips",
+        howTo:
+          "Brush the brows with a light brown gel, and wear a rosy lipstick.",
+        products: ["light brown brow gel", "rose lipstick"],
+        render: makeup(brows("#9A7A58", 68), lips(satin("#C07070", 80))),
       },
       {
         title: "Light waves",
-        howTo: "Finish with short, light honey-blonde waves.",
-        products: ["short honey blonde wig"],
-        render: hair("#C9A570", 80, 30),
+        howTo: "Finish with short, light-brown waves.",
+        products: ["short light brown wig"],
+        render: hair("#C9A570", 85, 35),
       },
     ],
     finish:
       "A light-blue shirt and jeans, with a little fake blood for the closet scene.",
   },
   dollface: {
-    look: "A Dollface face: porcelain skin, round pink cheeks, thin painted brows, a small red mouth and blonde hair.",
+    look: "A Dollface face: a porcelain doll mask, cracked gray shading, round pink cheeks, wide painted lashes, thin painted brows, a small red mouth and blonde hair.",
     steps: [
       {
         title: "Porcelain base",
         howTo:
-          "Use a foundation two shades lighter than your skin, blended smooth.",
-        products: ["light foundation"],
-        render: makeup(paler(2, 65)),
+          "Pat on a foundation three shades lighter than your skin and powder it to a hard, porcelain finish.",
+        products: ["light foundation", "translucent setting powder"],
+        render: makeup(smooth(55), paler(3, 92)),
       },
       {
-        title: "Doll features",
+        title: "Aged shading",
         howTo:
-          "Blend round pink cheeks, draw thin arched brows with a brown pencil, and add doll lashes top and bottom.",
-        products: ["pink cream blush", "brown brow pencil", "false eyelashes"],
+          "Shade the edges of the face and the cheek hollows with a soft gray, like an old doll's mask.",
+        products: ["soft gray eyeshadow"],
+        render: makeup(shading("Bronzer3", "#8A8480", 78)),
+      },
+      {
+        title: "Painted doll eyes",
+        howTo:
+          "Line the eyes thinly in black, top and bottom, and add wide lashes top and bottom.",
+        products: ["black eyeliner", "false lashes"],
         render: makeup(
-          blush("Circle2", "#E58A9A", 55),
-          brows("#6A4A3A", 70, { name: "Thin1", curvature: 50 }),
-          lashes("Upper&Lower1")
+          liner("FullRim7", matte(BLACK, 82)),
+          lashes("Upper&Lower1", BLACK, 90)
+        ),
+      },
+      {
+        title: "Painted brows, pink cheeks",
+        howTo:
+          "Draw thin, high painted brows, and blend a round pink blush on the cheeks.",
+        products: ["brow pencil", "pink cream blush"],
+        render: makeup(
+          brows("#6A4A30", 82, {
+            name: "Thin1",
+            curvature: 50,
+            thickness: -40,
+          }),
+          blush("Circle2", "#E07A8A", 82)
         ),
       },
       {
         title: "Small red mouth",
-        howTo: "Fill a small red heart shape in the center of the lips.",
+        howTo: "Paint a small red mouth in the middle of the lips.",
         products: ["red lipstick", "red lip liner"],
         render: makeup(
-          lips(matte("#B3122A", 85), "heart-shaped"),
-          lipLine("Small1", "#9C0F22", 80, 40, 80)
+          lips(matte("#B8202A", 90), "heart-shaped"),
+          lipLine("Small1", "#8A1820", 85, 40, 70)
         ),
       },
       {
         title: "Blonde hair",
-        howTo: "Finish with blonde hair.",
+        howTo: "Finish with blonde hair, curled and parted in the middle.",
         products: ["blonde wig"],
-        render: hair("#D8BE8E", 80, 30),
+        render: hair("#D8BE8E", 88, 30),
       },
     ],
     finish:
       "Dark clothes, and keep your face still and blank: the stare does the rest.",
   },
   "the-purge-anarchists": {
-    look: "A Lady Liberty face from The Purge: a teal tint, dark eyes and a pale teal smile.",
+    look: "A Lady Liberty face from The Purge: a teal tint, dark teal shadows, black-ringed eyes, teal brows and a pale teal smile.",
     steps: [
       {
         title: "Teal tint",
         howTo:
-          "Mix a little teal face paint into your foundation, pat it on thinly, and shade the hollows with a dark teal eyeshadow.",
-        products: ["teal face paint", "dark teal eyeshadow"],
-        render: makeup(tint("#3E8E86", 25), contour("#2A5E58", 45)),
+          "Mix a little teal cream color into a light foundation and pat it over the face, brows and lips.",
+        products: ["light foundation", "teal cream color"],
+        render: makeup(tint("#7AB0A8", 55), brows("#4A7A72", 72)),
+      },
+      {
+        title: "Teal shadows",
+        howTo:
+          "Shade the edges of the face, the cheek hollows and the nose with a deep teal.",
+        products: ["deep teal eyeshadow"],
+        render: makeup(shading("Bronzer3", "#2A5A54", 88)),
       },
       {
         title: "Dark eyes",
-        howTo: "Sweep a dark eyeshadow all around each eye.",
-        products: ["dark eyeshadow"],
-        render: makeup(shadow("1color57", matte("#1A2E2C", 65))),
+        howTo:
+          "Pack black eyeshadow all around the eyes, like the mask's eyeholes, and line them in black.",
+        products: ["black eyeshadow", "black kohl eyeliner"],
+        render: makeup(
+          shadow("1color30", matte(BLACK, 90)),
+          liner("FullRim7", matte(BLACK, 88))
+        ),
       },
       {
         title: "Pale teal smile",
-        howTo:
-          "Wear a pale teal lipstick and take the liner a little past the corners.",
-        products: ["teal lipstick", "lip liner"],
+        howTo: "Wear a pale teal lipstick, lined into a small fixed smile.",
+        products: ["pale teal lipstick", "teal lip liner"],
         render: makeup(
-          lips(matte("#9ED6CC", 75), "smile"),
-          lipLine("Wider1", "#7CC0B6", 70, 40, 50)
+          lips(matte("#8AC0B8", 85), "smile"),
+          lipLine("Natural1", "#4A8078", 80, 45, 60)
         ),
       },
     ],
     finish: "Draw small X marks over the eyelids with a dark eyeliner.",
   },
   "killer-klowns": {
-    look: "A Killer Klowns face: a candy-pink tint, bright blue and pink eyes, a big red mouth and bright green hair.",
+    look: "A Killer Klowns face: a candy-pink tint, hot-pink shading, bright blue and pink eyes, high painted brows, a big red mouth and bright green hair.",
     steps: [
       {
         title: "Candy-pink tint",
         howTo:
-          "Mix a little pink face paint into your foundation, pat it on thinly, and blend a bright pink blush over the cheeks.",
-        products: ["pink face paint", "bright pink blush"],
-        render: makeup(tint("#F2C6CF"), blush("Round2", "#E58FB0", 50)),
+          "Mix a little pink cream color into a light foundation and pat it all over.",
+        products: ["light foundation", "pink cream color"],
+        render: makeup(tint("#F0A8C0", 55)),
+      },
+      {
+        title: "Hot-pink shading",
+        howTo:
+          "Shade the edges of the face and the cheek hollows with a hot pink, and dab round pink cheeks.",
+        products: ["hot pink eyeshadow", "pink blush"],
+        render: makeup(
+          shading("Bronzer3", "#D04A8A", 82),
+          blush("Circle2", "#E0408A", 85)
+        ),
       },
       {
         title: "Clown eyes",
         howTo:
-          "Sweep bright blue under and inside the eyes and hot pink up into a wing, and arch the brows high and dark.",
+          "Sweep bright blue over the lids up to the brows and hot pink under the eyes, and line them in black.",
         products: [
           "bright blue eyeshadow",
           "hot pink eyeshadow",
-          "brow pencil",
+          "black eyeliner",
         ],
         render: makeup(
-          shadow("2colors164", matte("#2DB3E0", 75), matte("#E0218A", 75)),
-          brows("#2A1A3A", 80, { name: "HighArch4" })
+          shadow("2colors25", matte("#2A70E0", 90), matte("#E0408A", 88)),
+          liner("FullRim7", matte(BLACK, 85))
+        ),
+      },
+      {
+        title: "High painted brows",
+        howTo: "Draw high, arched black brows.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows(BLACK, 88, { name: "HighArch4", curvature: 50, thickness: 10 })
         ),
       },
       {
         title: "Big red mouth",
-        howTo:
-          "Wear a red lipstick, lined a little past the edges for a fuller mouth.",
-        products: ["red lipstick", "red lip liner"],
+        howTo: "Paint a big red mouth, drawn past the lips.",
+        products: ["bright red lipstick", "red lip liner"],
         render: makeup(
-          lips(matte("#D0102C", 85), "plump"),
-          lipLine("Large&Full1", "#D0102C", 75, 45, 40)
+          lips(matte("#D0141E", 92), "smile"),
+          lipLine("Large&Full1", "#A01018", 90, 65, 50)
         ),
       },
       {
         title: "Green hair",
-        howTo: "Finish with bright green hair.",
+        howTo: "Finish with bright green clown hair.",
         products: ["green clown wig"],
-        render: hair("#3FB83F", 90, 30),
+        render: hair("#3FB83F", 90, 25),
       },
     ],
     finish: "Plastic fangs and a pointed party hat.",
   },
   remmick: {
-    look: "A Remmick face: pale 1930s skin, hungry shadowed eyes, bloodless lips and light-brown hair.",
+    look: "A Remmick face: pale 1930s skin, hungry hollow shadows, red-rimmed eyes, brushed brows, bloodless lips and light-brown hair.",
     steps: [
       {
         title: "Pale skin",
         howTo:
-          "Use a foundation a shade or two lighter than your skin, and shade under the cheekbones.",
-        products: ["light foundation", "contour powder"],
-        render: makeup(paler(1, 55), contour("#8A7A6E", 40)),
+          "Pat on a foundation three shades lighter than your skin and powder it.",
+        products: ["light foundation"],
+        render: makeup(paler(3, 90)),
       },
       {
-        title: "Hungry eyes",
+        title: "Hungry hollows",
         howTo:
-          "Shade softly around the eyes with a red-brown eyeshadow, and keep the lips pale.",
-        products: ["red brown eyeshadow", "nude lip balm"],
+          "Shade under the eyes, the temples and the cheek hollows with a cool gray-brown.",
+        products: ["gray brown eyeshadow"],
         render: makeup(
-          shadow("1color23", matte("#6A4A48", 50)),
-          lips(matte("#A06A68", 50))
+          shading("Bronzer2", "#6A5A56", 85),
+          contour("#7A6A64", 80, "TriangleFace5")
         ),
+      },
+      {
+        title: "Red-rimmed eyes",
+        howTo:
+          "Smudge a red-brown eyeshadow close around the eyes and line the waterlines in red.",
+        products: ["red brown eyeshadow", "red eyeliner"],
+        render: makeup(
+          shadow("1color23", matte("#7A3A36", 85)),
+          liner("FullRim7", matte("#A0282E", 78))
+        ),
+      },
+      {
+        title: "Brows, bloodless lips",
+        howTo:
+          "Brush the brows with a light brown gel, and blot a pale mauve lipstick over the lips.",
+        products: ["light brown brow gel", "pale mauve lipstick"],
+        render: makeup(brows("#7A5A40", 70), lips(matte("#B0989A", 85))),
       },
       {
         title: "Light-brown hair",
         howTo: "Finish with light-brown hair, combed back.",
-        products: ["light brown hair color spray"],
-        render: hair("#8A6A4A", 80, 35),
+        products: ["light brown wig"],
+        render: hair("#8A6A4A", 85, 35),
       },
     ],
     finish:
       "A little fake blood at the corners of the mouth, plastic fangs, and suspenders.",
   },
   longlegs: {
-    look: "A Longlegs face: pale cold-cream skin, red lips and long, stringy white-blond hair.",
+    look: "A Longlegs face: cold-cream pale, puffy waxen shading, pink-rimmed eyes, colorless brows, smeared red lips and long stringy white-blond hair.",
     steps: [
       {
         title: "Cold-cream pale",
         howTo:
-          "Pat on a foundation three shades lighter than your skin and set it with a white powder.",
-        products: ["light foundation", "white setting powder"],
-        render: makeup(paler(3)),
+          "Pat on a foundation four shades lighter than your skin over the face and brows, thick and shiny like cold cream.",
+        products: ["very light foundation", "cold cream"],
+        render: makeup(paler(4, 92, 35), brows("#E0D8CC", 72)),
       },
       {
-        title: "Red lips",
-        howTo: "Wear a red lipstick, a little past the lip line.",
-        products: ["red lipstick", "red lip liner"],
+        title: "Waxen shading",
+        howTo:
+          "Shade the edges of the face, the cheek hollows and the nose with a soft pink-beige, so it looks puffy and waxen.",
+        products: ["pink beige eyeshadow"],
+        render: makeup(shading("Bronzer3", "#C8A098", 78)),
+      },
+      {
+        title: "Pink-rimmed eyes",
+        howTo:
+          "Smudge a pink eyeshadow close around the eyes and line the waterlines in red.",
+        products: ["pink eyeshadow", "red eyeliner"],
         render: makeup(
-          lips(matte("#C2343C", 75)),
-          lipLine("Large&Full1", "#B02A32", 70, 40, 40)
+          shadow("1color23", matte("#D88A90", 82)),
+          liner("FullRim7", matte("#B0383E", 72))
+        ),
+      },
+      {
+        title: "Smeared red lips",
+        howTo: "Wear a bright red lipstick, smeared past the lip line.",
+        products: ["red lipstick"],
+        render: makeup(
+          lips(matte("#C8202A", 88), "plump"),
+          lipLine("Large&Full1", "#A81820", 82, 55, 20)
         ),
       },
       {
         title: "White-blond hair",
         howTo: "Finish with long, stringy white-blond hair.",
         products: ["long white blonde wig"],
-        render: hair("#E7DFC8", 85, 20),
+        render: hair("#E7DFC8", 90, 20),
       },
     ],
     finish: "Round glasses and a pale suit.",
   },
   david: {
-    look: "A David face from The Lost Boys: pale skin, smudged 80s punk eyes and a platinum mullet.",
+    look: "A David face from The Lost Boys: pale skin, sharp hollow cheeks, smudged 80s punk eyes, light brows, pale lips and a platinum mullet.",
     steps: [
       {
         title: "Pale skin",
         howTo:
-          "Use a foundation a shade lighter than your skin, and shade under the cheekbones.",
-        products: ["light foundation", "contour powder"],
-        render: makeup(paler(1, 55), contour("#8C7A6E", 40)),
+          "Pat on a foundation three shades lighter than your skin and powder it matte.",
+        products: ["light matte foundation"],
+        render: makeup(paler(3, 90)),
+      },
+      {
+        title: "Sharp cheeks",
+        howTo:
+          "Shade under the cheekbones and at the temples with a cool gray-brown, sharp and gaunt.",
+        products: ["gray brown contour powder"],
+        render: makeup(contour("#6E625E", 85, "TriangleFace5")),
       },
       {
         title: "Punk eyes",
         howTo:
-          "Smudge black eyeliner all around the eyes and a dark eyeshadow under them.",
-        products: ["black kohl eyeliner", "dark eyeshadow"],
+          "Smudge a charcoal eyeshadow all around the eyes and black kohl along the lash lines, messy.",
+        products: ["charcoal eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          liner("PandaSmudge1", matte(BLACK, 70)),
-          shadow("1color23", matte("#3A2E34", 50))
+          shadow("1color30", matte("#2E2A2A", 85)),
+          liner("PandaSmudge1", matte(BLACK, 88))
         ),
+      },
+      {
+        title: "Light brows, pale lips",
+        howTo:
+          "Lighten the brows with a blonde gel, and blot a pale nude lipstick over the lips.",
+        products: ["blonde brow gel", "pale nude lipstick"],
+        render: makeup(brows("#C8B898", 72), lips(matte("#B8A098", 82))),
       },
       {
         title: "Platinum mullet",
         howTo: "Finish with a spiky platinum-blonde mullet.",
-        products: ["platinum blonde mullet wig"],
-        render: hair("#ECE4CF", 85, 30),
+        products: ["platinum mullet wig"],
+        render: hair("#ECE4CF", 90, 30),
       },
     ],
     finish: "Plastic fangs, an earring and a long black coat.",
   },
   "the-creeper": {
-    look: "A Creeper face: dark olive shadows, a heavy brow, sunken black eyes and muted lips.",
+    look: "A Creeper face: dark olive skin, leathery olive-black shadows, sunken black eyes, a heavy brow and muted dark lips.",
     steps: [
+      {
+        title: "Olive skin",
+        howTo:
+          "Mix a little olive-green cream color into a dark foundation and pat it over the face.",
+        products: ["dark foundation", "olive cream color"],
+        render: makeup(tint("#6E6A4A", 55)),
+      },
       {
         title: "Leathery shadows",
         howTo:
-          "Shade the edges of the face, the cheek hollows and the nose with an olive-brown eyeshadow, deepest in the hollows.",
-        products: ["olive brown eyeshadow", "dark brown contour"],
+          "Shade the temples, the cheek hollows and the jaw with an olive-black eyeshadow, deep and creased.",
+        products: ["olive black eyeshadow"],
         render: makeup(
-          shading("Bronzer3", "#4E5A3A", 45),
-          contour("#2E2A20", 50)
+          shading("Bronzer5", "#2E2E1E", 90),
+          contour("#3A3824", 85, "TriangleFace5")
         ),
       },
       {
-        title: "Sunken eyes",
+        title: "Sunken black eyes",
         howTo:
-          "Sweep black eyeshadow all around the eyes, and thicken the brows into a heavy, low line.",
-        products: ["black eyeshadow", "black brow pencil"],
+          "Pack black eyeshadow all around the eyes and smudge black kohl all around.",
+        products: ["black eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          shadow("1color57", matte(BLACK, 70)),
-          brows("#1E1C14", 80, { name: "Straight2", thickness: 40 })
+          shadow("1color30", matte(BLACK, 92)),
+          liner("PandaSmudge11", matte(BLACK, 88))
         ),
       },
       {
-        title: "Muted lips",
-        howTo: "Cover the lips with a muted olive-brown so they fade.",
-        products: ["brown lipstick"],
-        render: makeup(lips(matte("#6E6650", 55))),
+        title: "Heavy brow, muted lips",
+        howTo:
+          "Darken the brows heavy and low, and wear a muted olive-brown lipstick.",
+        products: ["black brow pencil", "olive brown lipstick"],
+        render: makeup(
+          brows("#1A1A12", 88, { name: "Straight2", thickness: 40 }),
+          lips(matte("#4A4232", 88))
+        ),
       },
     ],
     finish: "A wide-brim hat and a long coat.",
   },
   "stripe-and-gizmo": {
-    look: "A Stripe face: a green tint, dark green hollows, dark eyes rimmed in red, and white hair.",
+    look: "A Stripe face: a green tint, dark green hollows, dark eyes rimmed in red, dark brows, a dark green mouth and white hair.",
     steps: [
       {
         title: "Gremlin tint",
         howTo:
-          "Mix a little green color corrector into your foundation, pat it on thinly, and shade the hollows with a dark green eyeshadow.",
-        products: ["green color corrector", "dark green eyeshadow"],
-        render: makeup(tint("#6E8F4A"), contour("#3A5228", 45)),
+          "Mix green cream color into a light foundation and pat it over the face and lips.",
+        products: ["light foundation", "green cream color"],
+        render: makeup(tint("#8AA870", 58)),
+      },
+      {
+        title: "Gremlin hollows",
+        howTo:
+          "Shade the temples, the cheek hollows and the jaw with a dark green eyeshadow.",
+        products: ["dark green eyeshadow"],
+        render: makeup(
+          shading("Bronzer5", "#2E4A24", 90),
+          contour("#3A5A2E", 85, "TriangleFace5")
+        ),
       },
       {
         title: "Gremlin eyes",
         howTo:
-          "Shade around the eyes with a dark brown eyeshadow and rim them with a red pencil.",
-        products: ["dark brown eyeshadow", "red eyeliner pencil"],
+          "Pack a dark green-black all around the eyes and line the waterlines in red.",
+        products: ["dark green eyeshadow", "red eyeliner"],
         render: makeup(
-          shadow("1color57", matte("#2A1A10", 60)),
-          liner("FullRim7", matte("#8A1A1A", 55))
+          shadow("1color30", matte("#1E2A18", 90)),
+          liner("FullRim7", matte("#B0202A", 82))
+        ),
+      },
+      {
+        title: "Brows and mouth",
+        howTo:
+          "Darken the brows with dark green, and wear a dark green lipstick.",
+        products: ["dark green eyeshadow", "dark green lipstick"],
+        render: makeup(
+          brows("#1E2E18", 82, { name: "Arrow13", thickness: 20 }),
+          lips(matte("#2E4A28", 88))
         ),
       },
       {
         title: "White hair",
-        howTo: "Finish with white hair.",
+        howTo: "Finish with spiky white hair.",
         products: ["white hair color spray"],
-        render: hair("#F2F2EE", 85, 20),
+        render: hair("#F2F2EE", 90, 20),
       },
     ],
     finish: "Spike the white hair into a mohawk with gel.",
   },
   "dr-frank-n-furter": {
-    look: "A Frank-N-Furter face: dramatic dark brows, a black-and-purple cat eye, big lashes, deep red lips and black curls.",
+    look: "A Frank-N-Furter face: a pale matte base, sharp cheekbones and blush, a black-and-purple cat eye with big lashes, dramatic brows, deep red lips and black curls.",
     steps: [
       {
-        title: "Base and brows",
+        title: "Pale matte base",
         howTo:
-          "Use a foundation a shade lighter than your skin, and draw the brows very dark, long and arched.",
-        products: ["light foundation", "black brow pencil"],
+          "Pat on a matte foundation two shades lighter than your skin and powder it.",
+        products: ["light matte foundation", "setting powder"],
+        render: makeup(paler(2, 90)),
+      },
+      {
+        title: "Sharp cheekbones",
+        howTo:
+          "Shade under the cheekbones with a cool brown and sweep a rosy-red blush high above it.",
+        products: ["contour powder", "rose red blush"],
         render: makeup(
-          paler(1, 55),
-          brows(BLACK, 80, { name: "Arrow13", curvature: 50, thickness: 20 })
+          contour("#7A5A58", 85),
+          blush("Oblique2", "#C8405A", 80)
         ),
       },
       {
         title: "Cat eye",
         howTo:
-          "Blend purple under and inside the eye, sweep black eyeshadow up into a cat eye, line it sharp and add big lashes.",
-        products: ["purple eyeshadow", "black eyeshadow", "false eyelashes"],
+          "Sweep purple over the lids up to the brows, black in the outer corners, draw a long black wing, and add big lashes.",
+        products: ["purple eyeshadow", "black liquid eyeliner", "false lashes"],
         render: makeup(
-          shadow("2colors164", matte("#5A2A6A", 70), matte(BLACK, 75)),
-          liner("OpenWings3", matte(BLACK, 75)),
-          lashes("Winged1")
+          shadow("2colors164", matte("#3A1A3A", 88), matte("#7A3A9A", 90)),
+          liner("OpenWings3", matte(BLACK, 92)),
+          lashes("Winged1", BLACK, 92)
+        ),
+      },
+      {
+        title: "Dramatic brows",
+        howTo: "Draw high, sharply arched black brows.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows(BLACK, 90, {
+            name: "HighArch4",
+            curvature: 50,
+            thickness: 10,
+            definition: 90,
+          })
         ),
       },
       {
         title: "Deep red lips",
-        howTo: "Line the lips dark and fill them with a deep red.",
-        products: ["deep red lipstick", "dark lip liner"],
+        howTo: "Wear a deep red lipstick, lined into a full cupid's bow.",
+        products: ["deep red lipstick", "red lip liner"],
         render: makeup(
-          lips(matte("#6E0E1E", 85)),
-          lipLine("Natural1", "#3E0A12", 80, 40, 80)
+          lips(satin("#8A0E1E", 92), "m-shaped"),
+          lipLine("Large&Full1", "#5A0A14", 88, 55, 70)
         ),
       },
       {
         title: "Black curls",
-        howTo: "Finish with short black curls.",
+        howTo: "Finish with short, glossy black curls.",
         products: ["black curly wig"],
-        render: hair("#121212", 85, 40),
+        render: hair("#121212", 92, 45),
       },
     ],
     finish: "Pearls, a corset and a lot of attitude.",
   },
   "annie-wilkes": {
-    look: "An Annie Wilkes face: plain and no-nonsense, a touch of warmth on the cheeks, muted rose lips and a brown bob.",
+    look: "An Annie Wilkes face: plain and no-nonsense, a matte base, a hint of shadow, small tired eyes, plain brows, muted rose lips and a brown bob.",
     steps: [
       {
-        title: "Plain face",
+        title: "Plain base",
+        howTo: "Pat on a matte foundation your own shade.",
+        products: ["matte foundation"],
+        render: makeup(paler(0, 75)),
+      },
+      {
+        title: "A hint of shadow",
         howTo:
-          "Skip the glamour: warm the cheeks with a neutral blush and wear a muted rose lipstick, never glossy.",
-        products: ["neutral blush", "muted rose lipstick"],
+          "Shade softly under the eyes and at the temples with a soft brown, and a little warmth on the cheeks.",
+        products: ["soft brown eyeshadow", "rose blush"],
         render: makeup(
-          blush("Round2", "#CF8E86", 30),
-          lips(matte("#A46A6C", 55))
+          shading("Bronzer2", "#8A6E62", 72),
+          blush("Round2", "#C88078", 60)
         ),
       },
       {
+        title: "Small tired eyes",
+        howTo:
+          "Shade close around the eyes with a soft taupe and line the lashes thinly in brown.",
+        products: ["taupe eyeshadow", "brown eyeliner"],
+        render: makeup(
+          shadow("1color23", matte("#8A7068", 72)),
+          liner("Lower11", matte("#4A3428", 65))
+        ),
+      },
+      {
+        title: "Plain brows, rose lips",
+        howTo: "Brush the brows into place, and wear a muted rose lipstick.",
+        products: ["clear brow gel", "muted rose lipstick"],
+        render: makeup(brows("#5A4030", 68), lips(satin("#A86E6E", 80))),
+      },
+      {
         title: "Brown bob",
-        howTo: "Finish with a brown bob, curled under at the ends.",
+        howTo: "Finish with a plain brown bob with bangs.",
         products: ["brown bob wig"],
-        render: hair("#5A4030", 80, 25),
+        render: hair("#5A4030", 85, 25),
       },
     ],
     finish: "A cardigan and a small silver cross.",
   },
   "patrick-bateman": {
-    look: "A Patrick Bateman face after the morning routine: poreless, glowing skin and slicked-back dark hair.",
+    look: "A Patrick Bateman face after the morning routine: poreless glowing skin, a chiseled jaw, a cold stare, groomed brows, nude lips and slicked-back hair.",
     steps: [
       {
         title: "Poreless skin",
         howTo:
-          "Cleanse, scrub, mask and moisturize, then add a little glow on the cheekbones and the bridge of the nose.",
-        products: [
-          "herb mint facial mask",
-          "moisturizer",
-          "liquid highlighter",
-        ],
-        render: makeup(smooth(80), glow("#FFF4E8", 50)),
+          "Smooth on a primer and a light foundation your own shade, then a dab of highlighter on the cheekbones.",
+        products: ["face primer", "light foundation", "highlighter"],
+        render: makeup(smooth(80), paler(0, 75, 40), glow("#F0D8C8", 55)),
+      },
+      {
+        title: "Chiseled contour",
+        howTo:
+          "Shade under the cheekbones and along the jaw with a cool brown, sharp and clean.",
+        products: ["contour powder"],
+        render: makeup(contour("#8A6A5E", 80, "OvalFace6")),
+      },
+      {
+        title: "Cold stare",
+        howTo:
+          "Shade the lids lightly with a taupe and line the upper lashes thinly in dark brown.",
+        products: ["taupe eyeshadow", "dark brown eyeliner"],
+        render: makeup(
+          shadow("1color8", matte("#8A7068", 70)),
+          liner("Lower11", matte("#2E2420", 72))
+        ),
+      },
+      {
+        title: "Groomed brows, nude lips",
+        howTo:
+          "Comb the brows neat with a clear gel, and wear a nude lip balm.",
+        products: ["clear brow gel", "nude lip balm"],
+        render: makeup(
+          brows("#3A2A20", 70, { name: "Straight2", definition: 90 }),
+          lips(satin("#B88A80", 78))
+        ),
       },
       {
         title: "Slicked-back hair",
-        howTo: "Comb dark hair straight back with gel.",
+        howTo: "Finish with dark hair slicked straight back.",
         products: ["hair gel"],
-        render: hair("#2E2018", 75, 80),
+        render: hair("#2E2018", 88, 50),
       },
     ],
     finish: "A sharp suit, and a business card in your breast pocket.",
   },
   tarman: {
-    look: "A Tarman face: tar-dark shadows creeping in from the edges, black eyes and lips, and ochre on the cheekbones.",
+    look: "A Tarman face: a tar-gray base, black tar creeping in from the edges, ochre on the cheekbones, sunken black eyes and black lips.",
     steps: [
+      {
+        title: "Tar-gray base",
+        howTo:
+          "Mix a little gray-brown cream color into your foundation and pat it over the face and brows.",
+        products: ["foundation", "gray brown cream color"],
+        render: makeup(tint("#7A6E5E", 55), brows("#5A5244", 70)),
+      },
       {
         title: "Creeping tar",
         howTo:
-          "Brush a black-brown eyeshadow in from the edges of the face, into the hollows and down the nose, as if tar is creeping in.",
-        products: ["black brown eyeshadow", "dark contour"],
+          "Press black eyeshadow in from the edges of the face, the temples and the jaw, then dab ochre on the cheekbones.",
+        products: ["black eyeshadow", "ochre eyeshadow"],
         render: makeup(
-          shading("Bronzer3", "#1A140E", 55),
-          contour("#0E0A08", 50)
+          shading("Bronzer3", "#1A1612", 92),
+          contour("#A87A2A", 80, "OvalFace6")
         ),
       },
       {
-        title: "Ochre and black eyes",
+        title: "Sunken black eyes",
         howTo:
-          "Dust a golden ochre eyeshadow over the cheekbones, and sweep black eyeshadow all around the eyes.",
-        products: ["ochre eyeshadow", "black eyeshadow"],
+          "Pack black eyeshadow all around the eyes and smudge black kohl all around.",
+        products: ["black eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          blush("Oblique2", "#B5862E", 45),
-          shadow("1color57", matte(BLACK, 70))
+          shadow("1color30", matte(BLACK, 92)),
+          liner("PandaSmudge11", matte(BLACK, 90))
         ),
       },
       {
         title: "Black lips",
-        howTo: "Wear a black lipstick.",
-        products: ["black lipstick"],
-        render: makeup(lips(matte("#14100C", 80))),
+        howTo: "Paint the lips black, glossed so they look wet.",
+        products: ["black lipstick", "clear lip gloss"],
+        render: makeup(lips(gloss("#1A1612", 92))),
       },
     ],
     finish:
       "Dab clear lip gloss over the dark patches so they look wet and sticky.",
   },
   "the-zombie": {
-    look: "A 1968 zombie face: an ashen gray-green tint, sunken cheeks, bruised eyes and gray lips.",
+    look: "A 1968 zombie face: an ashen gray-green tint, sunken gray hollows, bruised dead eyes, faded brows and gray lips.",
     steps: [
       {
         title: "Ashen skin",
         howTo:
-          "Mix a little green color corrector into a light foundation, pat it on thinly, and sink the cheeks with a gray eyeshadow.",
-        products: [
-          "light foundation",
-          "green color corrector",
-          "gray eyeshadow",
-        ],
-        render: makeup(tint("#B9BCAE"), contour("#6E7264", 50)),
+          "Mix gray and a little green cream color into a light foundation and pat it over the face, brows and lips.",
+        products: ["light foundation", "gray cream color"],
+        render: makeup(tint("#A0A496", 56), brows("#8A8A80", 68)),
+      },
+      {
+        title: "Sunken hollows",
+        howTo:
+          "Shade under the eyes, the temples, the cheek hollows and the jaw with a dark gray.",
+        products: ["dark gray eyeshadow"],
+        render: makeup(
+          shading("Bronzer2", "#4A4C46", 90),
+          contour("#5A5C54", 88, "TriangleFace5")
+        ),
       },
       {
         title: "Dead eyes",
         howTo:
-          "Layer a green eyeshadow over the lids and a black-purple one under the eyes, then line all around in black.",
-        products: [
-          "green eyeshadow",
-          "dark purple eyeshadow",
-          "black eyeliner",
-        ],
+          "Smudge a dark gray-purple all around the eyes and line them in dark gray.",
+        products: ["gray purple eyeshadow", "dark gray eyeliner"],
         render: makeup(
-          shadow("2colors25", matte("#5E7A4E", 55), matte("#2A1E2E", 70)),
-          liner("FullRim7", matte(BLACK, 60))
+          shadow("1color30", matte("#3A3440", 88)),
+          liner("FullRim7", matte("#2A2A2A", 80))
         ),
       },
       {
         title: "Gray lips",
-        howTo: "Wear a gray lipstick.",
+        howTo: "Cover the lips with a gray lipstick and blot it.",
         products: ["gray lipstick"],
-        render: makeup(lips(matte("#7E7A7A", 60))),
+        render: makeup(lips(matte("#7A7A76", 85))),
       },
     ],
     finish:
       "A trickle of fake blood from the corner of the mouth, and some dirt on torn clothes.",
   },
   "the-lipstick-face-demon": {
-    look: "A Lipstick-Face Demon face: a red tint and red cheeks, black around the eyes, black lips and black hair.",
+    look: "A Lipstick-Face Demon face: a blood-red tint, black-red shadows, black around the eyes, heavy black brows, black lips and black hair.",
     steps: [
       {
         title: "Red face",
         howTo:
-          "Mix a little red face paint into your foundation, pat it on thinly, and blend a strong red blush over the cheeks.",
-        products: ["red face paint", "red cream blush"],
-        render: makeup(tint("#B3121B"), blush("Round2", "#B3121B", 55)),
+          "Mix red cream color into your foundation and pat it all over the face.",
+        products: ["foundation", "red cream color"],
+        render: makeup(tint("#B0262A", 56)),
+      },
+      {
+        title: "Demon shadows",
+        howTo:
+          "Shade the temples, the cheek hollows and the jaw with a black-red eyeshadow, and press red blush high on the cheeks.",
+        products: ["black red eyeshadow", "red blush"],
+        render: makeup(
+          shading("Bronzer5", "#3A0A0E", 90),
+          blush("Oblique2", "#C81E24", 85)
+        ),
       },
       {
         title: "Black eyes",
         howTo:
-          "Sweep black eyeshadow all around the eyes and smudge it up and out.",
-        products: ["black eyeshadow"],
+          "Pack black eyeshadow all around the eyes and smudge black kohl all around.",
+        products: ["black eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          shadow("1color57", matte(BLACK, 70)),
-          liner("PandaSmudge11", matte(BLACK, 70))
+          shadow("1color30", matte(BLACK, 92)),
+          liner("PandaSmudge11", matte(BLACK, 90))
+        ),
+      },
+      {
+        title: "Heavy black brows",
+        howTo: "Draw heavy, angled black brows.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows(BLACK, 92, { name: "Arrow13", thickness: 40, definition: 85 })
         ),
       },
       {
         title: "Black lips",
-        howTo:
-          "Wear a black lipstick and take it a little past the corners with a black lip liner.",
-        products: ["black lipstick", "black lip liner"],
-        render: makeup(
-          lips(matte(BLACK, 85)),
-          lipLine("Wider1", BLACK, 75, 40, 40)
-        ),
+        howTo: "Paint the lips matte black.",
+        products: ["black lipstick"],
+        render: makeup(lips(matte("#141010", 92))),
       },
       {
         title: "Black hair",
         howTo: "Finish with long black hair.",
         products: ["long black wig"],
-        render: hair("#111111", 90, 25),
+        render: hair("#111111", 92, 25),
       },
     ],
     finish:
       "Draw a few black flame shapes up from the jaw with a black eyeliner, and wear black clothes.",
   },
   "eric-draven": {
-    look: "An Eric Draven face from The Crow: pale skin, black smudged eyes, black lips and black hair.",
+    look: "An Eric Draven face from The Crow: white skin, gray hollows, black smudged eyes, black brows, black lips and black hair.",
     steps: [
       {
-        title: "Pale base",
+        title: "White base",
         howTo:
-          "Pat on a foundation two or three shades lighter than your skin, a little uneven, and set it with a white powder.",
-        products: ["light foundation", "white setting powder"],
-        render: makeup(paler(3)),
+          "Pat on a foundation four shades lighter than your skin, then press white powder over it.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 95)),
+      },
+      {
+        title: "Gray hollows",
+        howTo: "Shade the temples and the cheek hollows with a gray eyeshadow.",
+        products: ["gray eyeshadow"],
+        render: makeup(contour("#6A6866", 82, "TriangleFace5")),
       },
       {
         title: "Black eyes",
         howTo:
-          "Pack a matte black eyeshadow on the lids and under the eyes, past their natural shape, and smudge it.",
-        products: ["matte black eyeshadow", "black kohl eyeliner"],
+          "Pack black eyeshadow all around the eyes and smudge black kohl all around.",
+        products: ["black eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          shadow("1color57", matte(BLACK, 70)),
-          liner("PandaSmudge11", matte(BLACK, 75))
+          shadow("1color30", matte(BLACK, 92)),
+          liner("PandaSmudge11", matte(BLACK, 90))
         ),
       },
       {
+        title: "Black brows",
+        howTo: "Darken the brows with black.",
+        products: ["black brow pencil"],
+        render: makeup(brows(BLACK, 85, { name: "Straight2", thickness: 15 })),
+      },
+      {
         title: "Black lips",
-        howTo: "Wear a black lipstick.",
+        howTo: "Paint the lips black, kept to the lip line.",
         products: ["black lipstick"],
-        render: makeup(lips(matte(BLACK, 85))),
+        render: makeup(lips(matte("#141414", 92))),
       },
       {
         title: "Black hair",
-        howTo: "Finish with long black hair.",
+        howTo: "Finish with long, wet-look black hair.",
         products: ["long black wig"],
-        render: hair("#0F0F0F", 90, 35),
+        render: hair("#0F0F0F", 92, 45),
       },
     ],
     finish:
       "With a liquid eyeliner, draw a thin line down through each eye and one from each corner of the mouth.",
   },
   "pamela-voorhees": {
-    look: "A Pamela Voorhees face: plain 1980 makeup with soft blue lids, coral lips and short light-brown hair.",
+    look: "A Pamela Voorhees face: plain 1980 makeup, a soft natural base, soft blue lids, light brows, coral cheeks and lips, and short light-brown hair.",
     steps: [
       {
+        title: "Natural base",
+        howTo: "Pat on a light foundation your own shade.",
+        products: ["light foundation"],
+        render: makeup(paler(0, 72)),
+      },
+      {
         title: "Soft blue lids",
-        howTo:
-          "Wash a soft powder-blue eyeshadow over the lids and add a little mascara.",
+        howTo: "Sweep a soft powder blue over the lids and add mascara.",
         products: ["powder blue eyeshadow", "mascara"],
         render: makeup(
-          shadow("1color8", matte("#8EA6C8", 45)),
-          lashes("Natural1", BLACK, 60)
+          shadow("1color67", matte("#8AAAD0", 75)),
+          liner("Lower11", matte("#4A3A30", 60)),
+          lashes("Natural1", "#2A1E18", 85)
         ),
       },
       {
-        title: "Coral lips",
-        howTo: "Add a touch of coral to the cheeks and lips.",
-        products: ["coral blush", "coral lipstick"],
-        render: makeup(
-          blush("Round2", "#C88070", 25),
-          lips(matte("#C86E62", 60))
-        ),
+        title: "Coral cheeks",
+        howTo: "Sweep a coral blush along the cheekbones.",
+        products: ["coral blush"],
+        render: makeup(blush("Oblique2", "#E08A6A", 72)),
+      },
+      {
+        title: "Brows and coral lips",
+        howTo: "Brush the brows into place, and wear a coral lipstick.",
+        products: ["clear brow gel", "coral lipstick"],
+        render: makeup(brows("#8A6A48", 66), lips(satin("#D8705A", 82))),
       },
       {
         title: "Short hair",
-        howTo: "Finish with short light-brown hair.",
+        howTo: "Finish with short light-brown hair, pulled back.",
         products: ["short light brown wig"],
-        render: hair("#8A6A48", 80, 25),
+        render: hair("#8A6A48", 85, 30),
       },
     ],
     finish: "Pull the hair back and wear a cardigan.",
   },
   "the-invisible-man": {
-    look: "An Invisible Man face, fading out: pale skin, dark goggle-like eyes and colorless lips, before the bandages.",
+    look: "An Invisible Man face, fading out: washed-out white skin, gray edges, dark goggle-like eyes, faded brows and colorless lips, before the bandages.",
     steps: [
       {
         title: "Fading skin",
         howTo:
-          "Pat on a foundation three shades lighter than your skin, and shade it lightly gray at the edges.",
-        products: ["light foundation", "gray contour powder"],
-        render: makeup(paler(3), contour("#A8A8A4", 35)),
+          "Pat on a foundation four shades lighter than your skin over the face, brows and lips, and powder it white.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 95), brows("#DAD6D2", 72)),
+      },
+      {
+        title: "Gray edges",
+        howTo:
+          "Shade the edges of the face and the sides of the nose with a soft gray, as if the face fades into the air.",
+        products: ["soft gray eyeshadow"],
+        render: makeup(shading("Bronzer3", "#8A8A8C", 82)),
       },
       {
         title: "Goggle eyes",
-        howTo: "Sweep black eyeshadow in a round shape all around each eye.",
-        products: ["black eyeshadow"],
-        render: makeup(shadow("1color57", matte(BLACK, 70))),
+        howTo:
+          "Pack a dark gray in round shapes all around the eyes and line them all around in black.",
+        products: ["dark gray eyeshadow", "black kohl eyeliner"],
+        render: makeup(
+          shadow("1color30", matte("#2A2A2E", 92)),
+          liner("FullRim7", matte(BLACK, 88))
+        ),
       },
       {
         title: "Colorless lips",
-        howTo: "Dab a little of your foundation over the lips.",
-        products: ["light foundation"],
-        render: makeup(lips(matte("#D8CEC6", 45))),
+        howTo: "Cover the lips with the base and a pale gray-nude lipstick.",
+        products: ["pale nude lipstick"],
+        render: makeup(lips(matte("#C8BCB8", 85))),
       },
     ],
     finish:
       "Wrap white gauze loosely around your head, and add round dark sunglasses and a hat.",
   },
   "sweeney-todd": {
-    look: "A Sweeney Todd face: pale skin, heavy red-rimmed dark circles, dark lips and black hair.",
+    look: "A Sweeney Todd face: ghostly pale skin, gaunt gray hollows, heavy red-rimmed dark circles, dark brows, dark lips and black hair with a white streak.",
     steps: [
       {
-        title: "Pale base",
+        title: "Ghostly pale base",
         howTo:
-          "Use a matte foundation two shades lighter than your skin, and shade under the cheekbones.",
-        products: ["light matte foundation", "gray contour powder"],
-        render: makeup(paler(2), contour("#7E746C", 45)),
+          "Pat on a foundation four shades lighter than your skin and set it with white powder.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 92)),
+      },
+      {
+        title: "Gaunt hollows",
+        howTo:
+          "Shade from the cheekbones to the jaw and at the temples with a gray-brown.",
+        products: ["gray brown eyeshadow"],
+        render: makeup(contour("#5E5452", 88, "TriangleFace5")),
       },
       {
         title: "Haunted eyes",
         howTo:
-          "Shade the lids dark, put a red eyeshadow under the eyes, and rim them in a dark red.",
-        products: ["dark eyeshadow", "red eyeshadow", "dark red eyeliner"],
+          "Smudge a dark purple-brown all around the eyes, deepest underneath, and line the waterlines in dark red.",
+        products: ["dark purple eyeshadow", "dark red eyeliner"],
         render: makeup(
-          shadow("2colors25", matte("#3A2E36", 70), matte("#7A2A2E", 65)),
-          liner("FullRim7", matte("#5A1A1E", 55))
+          shadow("1color30", matte("#3A2228", 90)),
+          liner("FullRim7", matte("#6A1A22", 82))
+        ),
+      },
+      {
+        title: "Dark brows",
+        howTo: "Darken the brows heavy and low.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows("#141212", 88, { name: "Straight2", thickness: 30 })
         ),
       },
       {
         title: "Dark lips",
-        howTo: "Wear a dark mauve-gray lipstick.",
-        products: ["dark mauve lipstick"],
-        render: makeup(lips(matte("#5A4048", 70))),
+        howTo: "Wear a dark gray-brown lipstick.",
+        products: ["dark brown lipstick"],
+        render: makeup(lips(matte("#4A3836", 88))),
       },
       {
         title: "Black hair",
-        howTo: "Finish with frizzy black hair.",
-        products: ["sweeney todd wig"],
-        render: hair("#151515", 85, 20),
+        howTo: "Finish with wild black hair.",
+        products: ["black wig"],
+        render: hair("#151515", 92, 25),
       },
     ],
     finish:
       "Spray a white streak into the front of your hair with white hair color spray.",
   },
   "lestat-de-lioncourt": {
-    look: "A Lestat face: luminous pale skin, blond brows, pale mauve lips and golden-blond hair.",
+    look: "A Lestat face: luminous pale skin, sculpted cheekbones, soft shadowed eyes, blond brows, pale mauve lips and golden-blond hair.",
     steps: [
       {
         title: "Luminous skin",
         howTo:
-          "Use a glowy foundation two shades lighter than your skin, and add a soft highlight on the cheekbones and nose.",
-        products: ["luminous foundation", "liquid highlighter"],
-        render: makeup(paler(2, 65, 40), glow("#FFFFFF", 50)),
+          "Pat on a foundation three shades lighter than your skin and add a pearly highlighter on the cheekbones.",
+        products: ["light foundation", "pearl highlighter"],
+        render: makeup(paler(3, 88, 40), glow("#F4EEF0", 65)),
       },
       {
-        title: "Blond brows, pale lips",
-        howTo: "Tint the brows blond, and wear a pale mauve satin lipstick.",
+        title: "Sculpted cheekbones",
+        howTo:
+          "Shade under the cheekbones and at the temples with a soft cool taupe.",
+        products: ["cool taupe contour powder"],
+        render: makeup(contour("#9A8682", 78)),
+      },
+      {
+        title: "Shadowed eyes",
+        howTo:
+          "Shade the lids and under the eyes with a soft mauve-gray and line the lashes thinly in brown.",
+        products: ["mauve gray eyeshadow", "brown eyeliner"],
+        render: makeup(
+          shadow("2colors25", matte("#9A8290", 78), matte("#7A6670", 75)),
+          liner("Lower11", matte("#5A4438", 70))
+        ),
+      },
+      {
+        title: "Blond brows, mauve lips",
+        howTo:
+          "Lighten the brows with a blond gel, and wear a pale mauve lipstick.",
         products: ["blonde brow gel", "pale mauve lipstick"],
-        render: makeup(brows("#D3B676", 70), lips(satin("#C79A9E", 55))),
+        render: makeup(brows("#C8A870", 75), lips(satin("#B8909A", 82))),
       },
       {
         title: "Golden hair",
-        howTo: "Finish with long golden-blond hair.",
+        howTo: "Finish with long, wavy golden-blond hair.",
         products: ["long golden blonde wig"],
-        render: hair("#D8B66E", 85, 40),
+        render: hair("#D8B66E", 90, 40),
       },
     ],
     finish:
       "Draw faint blue veins at the temples with a blue eyeliner, and add plastic fangs.",
   },
   "georgie-denbrough": {
-    look: "A Georgie face after the storm drain: a cold blue-gray tint, bruised yellow and purple eyes and bluish lips.",
+    look: "A Georgie face after the storm drain: a cold blue-gray tint, drowned shadows, bruised yellow and purple eyes, faded brows and bluish lips.",
     steps: [
       {
         title: "Cold skin",
         howTo:
-          "Mix a little blue color corrector into a light foundation, pat it on thinly, and shade the cheeks with a gray eyeshadow.",
-        products: [
-          "light foundation",
-          "blue color corrector",
-          "gray eyeshadow",
-        ],
-        render: makeup(tint("#C4CDD0"), contour("#7E8A90", 40)),
+          "Mix a little blue-gray cream color into a light foundation and pat it over the face, brows and lips.",
+        products: ["light foundation", "blue gray cream color"],
+        render: makeup(tint("#A8B0BA", 54), brows("#8A8E94", 66)),
+      },
+      {
+        title: "Drowned shadows",
+        howTo:
+          "Shade under the eyes, the temples and the cheek hollows with a dark blue-gray.",
+        products: ["blue gray eyeshadow"],
+        render: makeup(
+          shading("Bronzer2", "#4E5A6A", 88),
+          contour("#5E6A78", 82, "TriangleFace5")
+        ),
       },
       {
         title: "Bruised eyes",
         howTo:
-          "Blend a sickly yellow-green eyeshadow over the lids and a purple one under the eyes.",
-        products: ["yellow green eyeshadow", "purple eyeshadow"],
+          "Smudge purple over the lids and a sickly yellow under the eyes, and line them in dark purple.",
+        products: ["purple eyeshadow", "yellow eyeshadow", "purple eyeliner"],
         render: makeup(
-          shadow("2colors25", matte("#A6A85E", 55), matte("#4A3E52", 65))
+          shadow("2colors25", matte("#5A3A6A", 88), matte("#B0A040", 80)),
+          liner("FullRim7", matte("#3A2240", 80))
         ),
       },
       {
         title: "Bluish lips",
-        howTo: "Dab a cold blue lipstick onto the lips.",
-        products: ["blue lipstick"],
-        render: makeup(lips(matte("#6E7A94", 60))),
+        howTo: "Blot a blue-gray lipstick over the lips.",
+        products: ["blue gray lipstick"],
+        render: makeup(lips(matte("#6A7A90", 85))),
       },
     ],
     finish: "Wet your hair, wear a yellow raincoat and carry a paper boat.",
   },
   "the-leprechaun": {
-    look: "A Leprechaun face: ruddy cheeks, thick ginger brows, green lids and ginger hair.",
+    look: "A Leprechaun face: a ruddy weathered base, deep wrinkle shadows, green lids, thick ginger brows, red cheeks, a muddy red mouth and ginger hair.",
     steps: [
       {
-        title: "Ruddy cheeks",
+        title: "Ruddy base",
         howTo:
-          "Rub a red blush wide over the cheeks, and shade under the cheekbones with a warm brown.",
-        products: ["red cream blush", "warm brown contour"],
-        render: makeup(blush("Round2", "#C2443A", 55), contour("#7A5240", 40)),
+          "Mix a little red cream color into your foundation and pat it over the face, heavier on the nose and cheeks.",
+        products: ["foundation", "red cream color"],
+        render: makeup(tint("#C88068", 48)),
       },
       {
-        title: "Brows and lids",
+        title: "Weathered shadows",
         howTo:
-          "Thicken the brows with a ginger pencil, and wash a green eyeshadow over the lids.",
-        products: ["ginger brow pencil", "green eyeshadow"],
+          "Shade the temples, under the eyes and the cheek hollows with a brown eyeshadow, and dab red blush on the cheeks.",
+        products: ["brown eyeshadow", "red blush"],
         render: makeup(
-          brows("#A4421C", 80, { name: "Original5", thickness: 40 }),
-          shadow("1color8", matte("#3E7A3A", 55))
+          shading("Bronzer2", "#5A3A28", 86),
+          blush("Round2", "#C83A30", 82)
         ),
       },
       {
+        title: "Green lids",
+        howTo:
+          "Sweep a moss-green eyeshadow over the lids and line the eyes in dark brown.",
+        products: ["moss green eyeshadow", "dark brown eyeliner"],
+        render: makeup(
+          shadow("1color57", matte("#4A7A3A", 85)),
+          liner("FullRim7", matte("#3A2418", 80))
+        ),
+      },
+      {
+        title: "Thick ginger brows",
+        howTo: "Thicken the brows with a ginger pencil, bushy and wild.",
+        products: ["ginger brow pencil"],
+        render: makeup(
+          brows("#B5541C", 88, {
+            name: "Original5",
+            thickness: 40,
+            definition: 30,
+          })
+        ),
+      },
+      {
+        title: "Muddy red mouth",
+        howTo: "Wear a muddy brick-red lipstick.",
+        products: ["brick red lipstick"],
+        render: makeup(lips(matte("#8A3A30", 85))),
+      },
+      {
         title: "Ginger hair",
-        howTo: "Finish with curly ginger hair.",
-        products: ["curly ginger wig"],
-        render: hair("#B5541C", 85, 25),
+        howTo: "Finish with wild ginger hair.",
+        products: ["ginger wig"],
+        render: hair("#B5541C", 90, 20),
       },
     ],
     finish: "A fake red beard, the green hat and a few chocolate gold coins.",
   },
   "mr-boogie-bughuul": {
-    look: "A Bughuul face: pale skin, darkened eyes, black lips and long black hair.",
+    look: "A Bughuul face: bone-white skin, smeared black hollows, dark eyes, no brows, black lips and long black hair.",
     steps: [
       {
-        title: "Pale base",
+        title: "Bone-white base",
         howTo:
-          "Pat on a foundation three shades lighter than your skin, down your neck too, and shade the hollows lightly gray.",
-        products: ["light foundation", "gray contour powder"],
-        render: makeup(paler(3), contour("#8E8E8A", 40)),
+          "Pat on a foundation four shades lighter than your skin over the face and brows, then press white powder over it.",
+        products: ["very light foundation", "white setting powder"],
+        render: makeup(paler(4, 95), brows("#D8D2CC", 72)),
+      },
+      {
+        title: "Smeared hollows",
+        howTo:
+          "Smear black-gray eyeshadow into the temples, the cheek hollows and the jaw, so the face looks melted.",
+        products: ["black gray eyeshadow"],
+        render: makeup(
+          shading("Bronzer5", "#2E2C2C", 90),
+          contour("#3E3C3C", 88, "TriangleFace5")
+        ),
       },
       {
         title: "Dark eyes",
-        howTo: "Darken the lids and under the eyes with a black eyeshadow.",
-        products: ["black eyeshadow"],
-        render: makeup(shadow("1color23", matte("#1E1E1E", 70))),
+        howTo:
+          "Pack black eyeshadow all around the eyes, wide and smeared, and smudge black kohl all around.",
+        products: ["black eyeshadow", "black kohl eyeliner"],
+        render: makeup(
+          shadow("1color30", matte(BLACK, 92)),
+          liner("PandaSmudge11", matte(BLACK, 90))
+        ),
       },
       {
         title: "Black lips",
-        howTo:
-          "Wear a black lipstick, lined a little past the edges and blurred.",
-        products: ["black lipstick", "black lip liner"],
+        howTo: "Paint the lips black, smudged a little past the edges.",
+        products: ["black lipstick"],
         render: makeup(
-          lips(matte(BLACK, 85)),
-          lipLine("Large&Full1", BLACK, 75, 40, 40)
+          lips(matte("#141414", 92), "plump"),
+          lipLine("Wider1", BLACK, 85, 55, 25)
         ),
       },
       {
         title: "Long black hair",
         howTo: "Finish with long black hair.",
         products: ["long black wig"],
-        render: hair("#111111", 90, 25),
+        render: hair("#111111", 92, 25),
       },
     ],
     finish: "A long black coat.",
   },
   "ellen-ripley": {
-    look: "A Ripley face on the Nostromo: clean and tired, with shadowed eyes and dark curly hair.",
+    look: "A Ripley face on the Nostromo: clean, tired skin, long-shift shadows, unfussy eyes, natural brows, bare lips and dark curly hair.",
     steps: [
+      {
+        title: "Clean base",
+        howTo: "Pat on a light foundation your own shade, sheer.",
+        products: ["light foundation"],
+        render: makeup(paler(0, 68)),
+      },
       {
         title: "Long-shift shadows",
         howTo:
-          "Skip the makeup; just shade a little brown-gray under the eyes and at the edges of the face.",
-        products: ["taupe eyeshadow"],
+          "Shade softly under the eyes and in the cheek hollows with a cool brown, as after a long shift.",
+        products: ["cool brown eyeshadow"],
+        render: makeup(shading("Bronzer2", "#7A6458", 74)),
+      },
+      {
+        title: "Unfussy eyes",
+        howTo:
+          "Smudge a brown pencil along the upper lashes and add a little mascara.",
+        products: ["brown eyeliner", "mascara"],
         render: makeup(
-          shadow("1color23", matte("#6A5A54", 40)),
-          shading("Bronzer3", "#7A6A5E", 30)
+          liner("Lower11", matte("#3A2A20", 70)),
+          lashes("Natural1", "#2A1E18", 80)
+        ),
+      },
+      {
+        title: "Brows and bare lips",
+        howTo: "Brush the brows up, and wear a bare nude lip balm.",
+        products: ["clear brow gel", "nude lip balm"],
+        render: makeup(
+          brows("#3A281C", 70, { name: "Original5" }),
+          lips(satin("#B88A82", 78))
         ),
       },
       {
         title: "Curly hair",
-        howTo: "Finish with dark-brown curly hair.",
-        products: ["curly dark brown wig"],
-        render: hair("#3A281C", 80, 25),
+        howTo: "Finish with dark, curly shoulder-length hair.",
+        products: ["dark curly wig"],
+        render: hair("#3A281C", 85, 25),
       },
     ],
     finish: "An olive flight suit and a cat carrier.",
   },
   slappy: {
-    look: "A Slappy face: a pale dummy finish, shaded lids, thick arched black brows, rosy cheeks, a red grin and slick black hair.",
+    look: "A Slappy face: a glossy dummy finish, painted wood shading, shaded lids with lashes, thick arched black brows, rosy cheeks, a red grin and slick black hair.",
     steps: [
       {
         title: "Dummy base",
         howTo:
-          "Use a foundation a shade lighter than your skin, and shade the lids up under the brows with a brown eyeshadow.",
-        products: ["light foundation", "brown eyeshadow"],
-        render: makeup(paler(1), shadow("1color67", matte("#9A7A6A", 50))),
+          "Pat on a foundation a shade lighter than your skin and buff it to a smooth, painted finish.",
+        products: ["light foundation"],
+        render: makeup(smooth(65), paler(1, 92, 30)),
       },
       {
-        title: "Brows and cheeks",
+        title: "Painted shading",
         howTo:
-          "Draw thick, high-arched black brows and blend round rosy cheeks.",
-        products: ["black brow pencil", "rose cream blush"],
+          "Shade the edges of the face and the nose with a warm brown, like painted wood, and dab rosy cheeks.",
+        products: ["warm brown eyeshadow", "rose blush"],
         render: makeup(
-          brows(BLACK, 80, { name: "HighArch4", curvature: 40, thickness: 40 }),
-          blush("Circle2", "#D8505A", 60)
+          shading("Bronzer3", "#8A5A3A", 82),
+          blush("Circle2", "#D8605A", 82)
+        ),
+      },
+      {
+        title: "Dummy eyes",
+        howTo:
+          "Shade the lids with a soft brown, line the upper lashes in black, and add lashes.",
+        products: ["soft brown eyeshadow", "black eyeliner", "false lashes"],
+        render: makeup(
+          shadow("1color67", matte("#8A6450", 80)),
+          liner("Lower11", matte(BLACK, 85)),
+          lashes("UpperDense1", BLACK, 90)
+        ),
+      },
+      {
+        title: "Thick arched brows",
+        howTo: "Draw thick, high-arched black brows.",
+        products: ["black brow pencil"],
+        render: makeup(
+          brows(BLACK, 92, {
+            name: "HighArch4",
+            curvature: 50,
+            thickness: 35,
+            definition: 90,
+          })
         ),
       },
       {
         title: "Red grin",
-        howTo: "Wear a bright red lipstick, a little wider than your lips.",
-        products: ["bright red lipstick", "red lip liner"],
+        howTo: "Paint a red mouth, lined into a wide grin.",
+        products: ["red lipstick", "red lip liner"],
         render: makeup(
-          lips(matte("#C21E2C", 85), "smile"),
-          lipLine("Wider1", "#A01824", 75, 40, 50)
+          lips(matte("#B82028", 90), "smile"),
+          lipLine("Wider1", "#8A141C", 88, 55, 60)
         ),
       },
       {
         title: "Slick black hair",
-        howTo: "Finish with black hair slicked back.",
+        howTo: "Finish with black hair slicked flat with a side part.",
         products: ["black hair color spray", "hair gel"],
-        render: hair("#121212", 85, 70),
+        render: hair("#121212", 92, 55),
       },
     ],
     finish:
       "Draw a black line from each corner of the mouth down to the chin with eyeliner.",
   },
   "john-carver": {
-    look: "A John Carver face in the pilgrim mask's colors: a warm orange tint, dark eyes, flat brows and small pursed lips.",
+    look: "A John Carver face in the pilgrim mask's colors: a warm orange tint, carved brown shadows, dark eyes, flat dark brows and small pursed lips.",
     steps: [
       {
         title: "Orange tint",
         howTo:
-          "Mix a little orange face paint into your foundation and pat it on thinly.",
-        products: ["orange face paint"],
-        render: makeup(tint("#E08A4E", 25)),
+          "Mix a little orange cream color into your foundation and pat it over the face.",
+        products: ["foundation", "orange cream color"],
+        render: makeup(tint("#D89A60", 52)),
+      },
+      {
+        title: "Carved shadows",
+        howTo:
+          "Shade the edges of the face, the cheek hollows and the nose with a deep brown, like a carved mask.",
+        products: ["deep brown eyeshadow"],
+        render: makeup(shading("Bronzer3", "#5A3418", 88)),
       },
       {
         title: "Dark eyes",
         howTo:
-          "Sweep black eyeshadow all around the eyes, and draw flat, straight brows with a brown pencil.",
-        products: ["black eyeshadow", "brown brow pencil"],
+          "Pack a dark brown-black all around the eyes, like the mask's eyeholes, and line them in black.",
+        products: ["dark brown eyeshadow", "black kohl eyeliner"],
         render: makeup(
-          shadow("1color57", matte(BLACK, 70)),
-          brows("#6A3A20", 70, { name: "Straight2" })
+          shadow("1color30", matte("#2A1A10", 90)),
+          liner("FullRim7", matte(BLACK, 88))
+        ),
+      },
+      {
+        title: "Flat brows",
+        howTo: "Draw flat, straight dark-brown brows.",
+        products: ["dark brown brow pencil"],
+        render: makeup(
+          brows("#3A2414", 85, { name: "Straight2", thickness: 25 })
         ),
       },
       {
         title: "Pursed lips",
-        howTo: "Wear a muted orange-brown lipstick, kept small.",
-        products: ["orange brown lipstick", "lip liner"],
+        howTo:
+          "Cover the edges of the lips with the base and paint a small, pursed brown-red mouth.",
+        products: ["brown red lipstick", "lip liner"],
         render: makeup(
-          lips(matte("#B06A52", 70), "pouty"),
-          lipLine("Small1", "#8A4A36", 70, 40, 70)
+          lips(matte("#7A3A28", 88), "pouty"),
+          lipLine("Small1", "#5A2818", 85, 40, 60)
         ),
       },
     ],
     finish: "A pilgrim hat and a black jumpsuit.",
   },
   blade: {
-    look: "A Blade face: matte, sharply sculpted skin and clean, defined brows behind the shades.",
+    look: "A Blade face: a matte even base, sharply sculpted cheekbones and jaw, a hard stare, clean defined brows and dark nude lips behind the shades.",
     steps: [
+      {
+        title: "Matte base",
+        howTo: "Pat on a matte foundation your own shade and powder it.",
+        products: ["matte foundation", "setting powder"],
+        render: makeup(paler(0, 78)),
+      },
       {
         title: "Sculpted skin",
         howTo:
-          "Mattify the skin, and sculpt under the cheekbones, the temples and the jaw with a deep-brown contour.",
-        products: ["mattifying powder", "deep brown contour"],
+          "Shade under the cheekbones, the jaw and the sides of the nose with a deep contour, sharp and clean.",
+        products: ["deep contour powder"],
+        render: makeup(contour("#3A2418", 82, "OvalFace6")),
+      },
+      {
+        title: "Hard stare",
+        howTo:
+          "Shade close around the eyes with a deep brown and line the upper lashes in black.",
+        products: ["deep brown eyeshadow", "black eyeliner"],
         render: makeup(
-          contour("#3A2418", 45),
-          shading("Bronzer3", "#5A3A24", 35)
+          shadow("1color23", matte("#2E1E14", 78)),
+          liner("Lower11", matte(BLACK, 80))
         ),
       },
       {
         title: "Sharp brows",
-        howTo: "Define the brows clean and straight.",
-        products: ["brow pencil"],
+        howTo: "Groom the brows into clean, sharp lines.",
+        products: ["dark brow pencil", "clear brow gel"],
         render: makeup(
-          brows(BLACK, 65, { name: "Straight2", thickness: 10, definition: 80 })
+          brows("#140E0A", 82, { name: "Arrow13", definition: 90 })
         ),
+      },
+      {
+        title: "Dark nude lips",
+        howTo: "Wear a matte dark nude lip balm.",
+        products: ["dark nude lip balm"],
+        render: makeup(lips(matte("#6A4434", 78))),
       },
     ],
     finish: "Narrow black sunglasses and a long black coat.",
   },
   "danny-torrance": {
-    look: "A Danny Torrance face: pale, scared and sleepless, with dark circles and a brown 70s shag.",
+    look: "A Danny Torrance face: pale, scared and sleepless, gray hollows, dark circles, wide eyes, soft brows, pale lips and a brown 70s shag.",
     steps: [
       {
-        title: "Sleepless face",
+        title: "Scared pallor",
         howTo:
-          "Use a sheer foundation a shade lighter than your skin, and shade dark circles under the eyes.",
-        products: ["light foundation", "gray purple eyeshadow"],
-        render: makeup(paler(1, 50), shadow("1color23", matte("#5E4E58", 50))),
+          "Pat on a foundation two shades lighter than your skin over the face and lips.",
+        products: ["light foundation"],
+        render: makeup(paler(2, 88)),
+      },
+      {
+        title: "Sleepless hollows",
+        howTo:
+          "Shade under the eyes and at the temples with a cool gray-purple.",
+        products: ["gray purple eyeshadow"],
+        render: makeup(shading("Bronzer2", "#6A5E6A", 85)),
+      },
+      {
+        title: "Wide eyes",
+        howTo:
+          "Smudge a gray-brown close around the eyes and add a little mascara top and bottom.",
+        products: ["gray brown eyeshadow", "mascara"],
+        render: makeup(
+          shadow("1color23", matte("#6A5A58", 80)),
+          lashes("Upper&Lower1", "#3A2A20", 75)
+        ),
+      },
+      {
+        title: "Soft brows, pale lips",
+        howTo:
+          "Brush the brows with a light brown gel, and blot a pale nude lip balm.",
+        products: ["light brown brow gel", "pale nude lip balm"],
+        render: makeup(brows("#7A5A40", 68), lips(matte("#B89C94", 80))),
       },
       {
         title: "Brown shag",
-        howTo: "Finish with a brown 70s shag.",
+        howTo: "Finish with a brown 70s shag haircut.",
         products: ["brown shag wig"],
-        render: hair("#6A4A2E", 80, 25),
+        render: hair("#6A4A2E", 85, 25),
       },
     ],
     finish: "A red rocket sweater, and a raised finger: 'Redrum.'",
   },
   "sidney-prescott": {
-    look: "A Sidney Prescott face from '96: minimal 90s makeup with mascara, a peachy-brown lip and dark-brown hair.",
+    look: "A Sidney Prescott face from '96: a fresh 90s base, a soft brown contour, brown-lined eyes with mascara, groomed brows, a peachy-brown lip and dark-brown hair.",
     steps: [
       {
-        title: "90s minimal",
+        title: "90s base",
+        howTo: "Pat on a matte foundation your own shade.",
+        products: ["matte foundation"],
+        render: makeup(paler(0, 72)),
+      },
+      {
+        title: "Soft contour",
         howTo:
-          "Wash a soft brown over the lids, coat the lashes in black mascara, and wear a sheer peachy-brown lipstick.",
-        products: [
-          "soft brown eyeshadow",
-          "black mascara",
-          "peachy brown lipstick",
-        ],
+          "Shade softly under the cheekbones with a brown powder, the 90s way.",
+        products: ["brown contour powder"],
+        render: makeup(contour("#8A6050", 75)),
+      },
+      {
+        title: "Brown-lined eyes",
+        howTo:
+          "Wash a soft brown over the lids, line the eyes in brown pencil, and add mascara.",
+        products: ["soft brown eyeshadow", "brown eyeliner", "mascara"],
         render: makeup(
-          shadow("1color8", matte("#A88270", 35)),
-          lashes("Natural1", BLACK, 80),
-          lips(satin("#A8645A", 60))
+          shadow("1color57", matte("#8A6858", 72)),
+          liner("FullRim7", matte("#4A3020", 72)),
+          lashes("Natural1", "#1E1410", 85)
+        ),
+      },
+      {
+        title: "Brows and lips",
+        howTo:
+          "Groom the brows thin, and wear a peachy-brown lipstick with a brown liner.",
+        products: ["brow pencil", "peach brown lipstick", "brown lip liner"],
+        render: makeup(
+          brows("#3A2418", 72, { name: "SoftArch1", thickness: -10 }),
+          lips(satin("#A8685A", 82)),
+          lipLine("Natural1", "#7A4436", 75, 40, 70)
         ),
       },
       {
         title: "Dark-brown hair",
-        howTo: "Finish with straight dark-brown hair.",
+        howTo: "Finish with dark-brown hair, straight with a middle part.",
         products: ["dark brown wig"],
-        render: hair("#2E2018", 80, 30),
+        render: hair("#2E2018", 88, 35),
       },
     ],
     finish: "A denim jacket and a cordless phone.",
   },
   "ellen-hutter": {
-    look: "An Ellen Hutter face: luminous pallor, hollow taupe-brown eyes, gray-shaded cheeks, muted brown lips and no blush.",
+    look: "An Ellen Hutter face: feverish pallor, gray-shaded cheeks, hollow taupe-brown eyes rimmed in red, faint brows, muted brown lips and brown hair.",
     steps: [
       {
-        title: "Pallor",
+        title: "Feverish pallor",
         howTo:
-          "Use a sheer, luminous foundation a shade lighter than your skin, and shade under the cheekbones with a gray-ish contour.",
-        products: ["luminous foundation", "cool gray contour"],
-        render: makeup(paler(1, 55, 35), contour("#8E8378", 45)),
+          "Pat on a foundation three shades lighter than your skin, with a little sheen.",
+        products: ["light foundation"],
+        render: makeup(paler(3, 88, 30)),
+      },
+      {
+        title: "Gray-shaded cheeks",
+        howTo:
+          "Shade the cheek hollows, the temples and under the eyes with a cool gray.",
+        products: ["cool gray eyeshadow"],
+        render: makeup(
+          shading("Bronzer2", "#6E6866", 84),
+          contour("#7E7674", 78, "TriangleFace5")
+        ),
       },
       {
         title: "Hollow eyes",
         howTo:
-          "Wash a taupe-brown eyeshadow over the lids and take it deep under the eyes, darker there.",
-        products: ["taupe eyeshadow", "cool brown eyeshadow"],
+          "Smudge a taupe-brown all around the eyes and line the waterlines in a dull red.",
+        products: ["taupe brown eyeshadow", "red eyeliner"],
         render: makeup(
-          shadow("2colors25", matte("#8B7B6B", 60), matte("#5A4840", 65))
+          shadow("1color30", matte("#6A5450", 85)),
+          liner("FullRim7", matte("#8A3A3A", 70))
         ),
       },
       {
-        title: "Muted lips",
+        title: "Faint brows, muted lips",
         howTo:
-          "Line and fill the lips with a muted cool brown, and skip the blush.",
-        products: ["cool brown lip liner"],
-        render: makeup(lips(matte("#8E6A62", 60))),
+          "Soften the brows with a light concealer, and blot a muted brown lipstick.",
+        products: ["brow concealer", "muted brown lipstick"],
+        render: makeup(brows("#9A8270", 68), lips(matte("#8A6A62", 82))),
       },
       {
         title: "Brown hair",
-        howTo: "Finish with brown hair.",
-        products: ["brown wig"],
-        render: hair("#5A4030", 80, 25),
+        howTo: "Finish with long brown hair, braided up.",
+        products: ["long brown wig"],
+        render: hair("#5A4030", 85, 25),
       },
     ],
     finish:
       "Braid the hair into a rope updo and wear a white nightgown; a dab of lip oil on the skin reads as fever.",
   },
   "billy-chapman-killer-santa": {
-    look: "A Killer Santa face: pale and cold, rosy red cheeks, red-rimmed eyes and snow-white hair.",
+    look: "A Killer Santa face: pale and cold, gray hollows, red-rimmed eyes, rosy red cheeks, white brows, cold red lips and snow-white hair.",
     steps: [
       {
-        title: "Rosy cheeks",
+        title: "Cold pale base",
         howTo:
-          "Use a sheer foundation a shade lighter than your skin, and blend round, rosy red cheeks.",
-        products: ["light foundation", "red cream blush"],
-        render: makeup(paler(1, 50), blush("Circle2", "#C8323C", 60)),
+          "Pat on a foundation three shades lighter than your skin and powder it.",
+        products: ["light foundation"],
+        render: makeup(paler(3, 90)),
+      },
+      {
+        title: "Cold hollows, red cheeks",
+        howTo:
+          "Shade under the eyes and at the temples with a cool gray, then blend a bright red blush on the cheeks.",
+        products: ["cool gray eyeshadow", "red blush"],
+        render: makeup(
+          shading("Bronzer2", "#6A6A70", 80),
+          blush("Round2", "#D0303A", 85)
+        ),
       },
       {
         title: "Red-rimmed eyes",
         howTo:
-          "Rim the eyes with a red pencil and shade dark circles under them.",
-        products: ["red eyeliner pencil", "dark eyeshadow"],
+          "Smudge a red-brown close around the eyes and line the waterlines in red.",
+        products: ["red brown eyeshadow", "red eyeliner"],
         render: makeup(
-          liner("FullRim7", matte("#B8323A", 55)),
-          shadow("1color23", matte("#4A3036", 50))
+          shadow("1color23", matte("#8A3A3A", 85)),
+          liner("FullRim7", matte("#B0202A", 80))
         ),
+      },
+      {
+        title: "White brows, red lips",
+        howTo:
+          "Brush white mascara through the brows, and wear a cold red lipstick.",
+        products: ["white mascara", "red lipstick"],
+        render: makeup(brows("#F0EEE8", 78), lips(matte("#A82030", 86))),
       },
       {
         title: "White hair",
         howTo: "Finish with snow-white hair.",
-        products: ["white santa wig"],
-        render: hair("#F0EEE8", 85, 20),
+        products: ["white hair color spray"],
+        render: hair("#F0EEE8", 90, 25),
       },
     ],
     finish:
       "A Santa suit and beard, with a little fake blood on the white fur trim.",
   },
   alice: {
-    look: "An Alice face from Resident Evil: natural skin, soft brown eyes, a peachy-nude lip and choppy blonde hair.",
+    look: "An Alice face from Resident Evil: a natural even base, a soft contour, soft brown eyes, natural brows, a peachy-nude lip and choppy blonde hair.",
     steps: [
       {
-        title: "Natural face",
+        title: "Natural base",
+        howTo: "Pat on a light foundation your own shade.",
+        products: ["light foundation"],
+        render: makeup(paler(0, 70)),
+      },
+      {
+        title: "Soft contour",
+        howTo: "Shade softly under the cheekbones with a soft brown.",
+        products: ["soft contour powder"],
+        render: makeup(contour("#9A7462", 72)),
+      },
+      {
+        title: "Soft brown eyes",
         howTo:
-          "Wash a soft brown over the lids, add mascara, and wear a peachy-nude satin lipstick.",
-        products: ["soft brown eyeshadow", "mascara", "peach nude lipstick"],
+          "Wash a soft brown over the lids, smudge brown pencil along the lashes, and add mascara.",
+        products: ["soft brown eyeshadow", "brown eyeliner", "mascara"],
         render: makeup(
-          shadow("1color8", matte("#A07E6A", 40)),
-          lashes("Natural1", BLACK, 75),
-          lips(satin("#C88070", 60))
+          shadow("1color57", matte("#9A7462", 72)),
+          liner("Lower11", matte("#4A3020", 70)),
+          lashes("Natural1", "#2A1E18", 85)
         ),
       },
       {
+        title: "Brows and lips",
+        howTo: "Brush the brows into place, and wear a peachy-nude lipstick.",
+        products: ["clear brow gel", "peach nude lipstick"],
+        render: makeup(brows("#8A6A48", 68), lips(satin("#C88A78", 80))),
+      },
+      {
         title: "Blonde hair",
-        howTo: "Finish with choppy, shoulder-length dirty-blonde hair.",
-        products: ["shoulder length blonde wig"],
-        render: hair("#C2A06A", 80, 30),
+        howTo: "Finish with choppy, shoulder-length blonde hair.",
+        products: ["blonde wig"],
+        render: hair("#C2A06A", 88, 30),
       },
     ],
     finish: "A red dress and boots, scuffed with a little dirt.",

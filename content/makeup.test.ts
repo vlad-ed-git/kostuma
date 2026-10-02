@@ -74,7 +74,7 @@ function problemsOf(effect: MakeupEffect): string[] {
 
   for (const palette of palettes) {
     // A foundation may take its color from the visitor's skin (the renderer
-    // fills in the hex): 0–3 shades lighter.
+    // fills in the hex): 0–4 shades lighter.
     const fromSkin =
       category === "foundation" && typeof palette.color === "object"
     if (fromSkin) {
@@ -82,7 +82,7 @@ function problemsOf(effect: MakeupEffect): string[] {
       if (
         !Number.isInteger(lighterThanSkin) ||
         (lighterThanSkin as number) < 0 ||
-        (lighterThanSkin as number) > 3
+        (lighterThanSkin as number) > 4
       )
         problems.push(`lighterThanSkin is ${String(lighterThanSkin)}`)
     }
@@ -177,15 +177,33 @@ describe("the makeup guides", () => {
     }
   })
 
-  it.each(guides)("%s takes 2 to 4 renders, hair last", (_, guide) => {
+  it.each(guides)("%s takes 3 to 6 renders, hair last", (_, guide) => {
     // One render per step, one unit each.
-    expect(guide.steps.length).toBeGreaterThanOrEqual(2)
-    expect(guide.steps.length).toBeLessThanOrEqual(4)
+    expect(guide.steps.length).toBeGreaterThanOrEqual(3)
+    expect(guide.steps.length).toBeLessThanOrEqual(6)
     const tools = guide.steps.map((step) => step.render.tool)
     expect(tools.filter((tool) => tool === "hair").length).toBeLessThanOrEqual(
       1
     )
     if (tools.includes("hair")) expect(tools.at(-1)).toBe("hair")
+  })
+
+  it.each(guides)("%s makes a whole face: base, eyes and lips", (_, guide) => {
+    // The owner (2026-10-03): guides that left a feature alone stopped at
+    // about 70 % of the character (the visitor's own lipstick showed
+    // through). Every guide sets the skin, the eyes and the mouth.
+    const categories = new Set(
+      guide.steps.flatMap((step) =>
+        step.render.tool === "makeup"
+          ? step.render.effects.map((effect) => effect.category)
+          : []
+      )
+    )
+    expect(categories).toContain("foundation")
+    expect(categories).toContain("lip_color")
+    expect(categories.has("eye_shadow") || categories.has("eye_liner")).toBe(
+      true
+    )
   })
 
   it.each(guides)("%s adds each kind of makeup once", (_, guide) => {
@@ -200,9 +218,10 @@ describe("the makeup guides", () => {
   })
 
   it.each(guides)("%s keeps the face the visitor's own", (_, guide) => {
-    // Everyday makeup close to the character, not a film's face paint
-    // (owner): the base is a paler foundation or a sheer tint, the shadows
-    // and lines stay moderate, and nothing needs a makeup department.
+    // Makeup close to the character, not a film's face paint (owner): the
+    // base is a foundation (from the skin, or a tint mixed into it, never an
+    // opaque color), and nothing needs a makeup department. Strong enough to
+    // read at a glance: YouCam shows shading only from about 70.
     for (const step of guide.steps) {
       if (step.render.tool === "hair") continue
       for (const effect of step.render.effects) {
@@ -211,18 +230,19 @@ describe("the makeup guides", () => {
           const [palette] = effect.palettes
           const fromSkin = typeof palette.color === "object"
           expect(palette.coverageIntensity, where).toBeLessThanOrEqual(
-            fromSkin ? 70 : 35
+            fromSkin ? 95 : 60
           )
         }
         if (effect.category === "eye_shadow" || effect.category === "eye_liner")
           for (const palette of effect.palettes)
-            expect(palette.colorIntensity, where).toBeLessThanOrEqual(75)
-        if (effect.category === "contour" || effect.category === "bronzer")
-          expect(effect.palettes[0].colorIntensity, where).toBeLessThanOrEqual(
-            55
-          )
+            expect(palette.colorIntensity, where).toBeLessThanOrEqual(95)
+        if (effect.category === "contour" || effect.category === "bronzer") {
+          const strength = effect.palettes[0].colorIntensity
+          expect(strength, where).toBeGreaterThanOrEqual(70)
+          expect(strength, where).toBeLessThanOrEqual(95)
+        }
         if (effect.category === "lip_liner")
-          expect(effect.palettes[0].thickness, where).toBeLessThanOrEqual(50)
+          expect(effect.palettes[0].thickness, where).toBeLessThanOrEqual(70)
       }
     }
     const texts = [
@@ -293,7 +313,7 @@ describe("the effect check", () => {
     ).toEqual(["colorIntensity is 120", "color is #fff"])
   })
 
-  it("takes a foundation color from the skin, at most 3 shades lighter", () => {
+  it("takes a foundation color from the skin, at most 4 shades lighter", () => {
     const fromSkin = (lighterThanSkin: number): MakeupEffect => ({
       category: "foundation",
       palettes: [
@@ -305,8 +325,8 @@ describe("the effect check", () => {
         },
       ],
     })
-    expect(problemsOf(fromSkin(2))).toEqual([])
-    expect(problemsOf(fromSkin(4))).toEqual(["lighterThanSkin is 4"])
+    expect(problemsOf(fromSkin(4))).toEqual([])
+    expect(problemsOf(fromSkin(5))).toEqual(["lighterThanSkin is 5"])
   })
 
   it("asks a shimmer or gloss texture for its extra values", () => {

@@ -124,10 +124,11 @@ function resolve(effect: MakeupEffect, skin: Hex): SentEffect {
   }
 }
 
-// One foundation shade, in OKLab: a little lighter and a little less
-// colorful, as a shade range steps from medium to fair.
-const SHADE_LIGHTNESS = 0.04
-const SHADE_CHROMA = 0.88
+// One foundation shade, in OKLab: lighter and less colorful, as a shade
+// range steps from medium to fair. Four shades take a medium skin to a
+// pale, almost colorless one.
+const SHADE_LIGHTNESS = 0.05
+const SHADE_CHROMA = 0.85
 const LIGHTEST = 0.95
 
 /** A skin color `shades` foundation shades lighter (0: the same color). */
