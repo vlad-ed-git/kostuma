@@ -32,6 +32,7 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // The e2e build and test reports.
     ".next-e2e/**",
+    ".next-emulators/**",
     "test-results/**",
     "playwright-report/**",
   ]),

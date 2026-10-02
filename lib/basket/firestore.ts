@@ -64,18 +64,31 @@ export function firestoreBasket(db: Firestore, uid: string): RemoteBasket {
 }
 
 /**
- * The basket of the account this tab is signed in to. The browser must be
- * signed in to Firebase as that account (feat/auth signs it in): the rules
- * let each account reach only its own basket.
+ * The basket of the account this tab's session belongs to. Firestore's rules
+ * know only Firebase's sign-in, so the browser signs in to Firebase as that
+ * account first, with a token from the session (it keeps the sign-in in
+ * memory only: the session cookie stays the one source of truth).
  */
 export async function openAccountBasket(uid: string): Promise<RemoteBasket> {
-  const { clientAuth, clientDb } = await import("@/lib/firebase/client")
+  const [
+    { clientAuth, clientDb },
+    { signInWithCustomToken },
+    { firebaseToken },
+  ] = await Promise.all([
+    import("@/lib/firebase/client"),
+    import("firebase/auth"),
+    import("@/lib/auth/actions"),
+  ])
   const auth = clientAuth()
   await auth.authStateReady()
   if (auth.currentUser?.uid !== uid) {
-    throw new Error(
-      "This browser is not signed in to Firebase as the session's account."
-    )
+    const token = await firebaseToken()
+    // For developers: the store reports it, the visitor reads a message.
+    if (!token) throw new Error("No session to open the account's basket.")
+    await signInWithCustomToken(auth, token)
+  }
+  if (auth.currentUser?.uid !== uid) {
+    throw new Error("Firebase signed in as another account than the session's.")
   }
   return firestoreBasket(clientDb(), uid)
 }

@@ -66,7 +66,33 @@ describe("messagesFor", () => {
 // Messages waiting for their Spanish and Chinese (owner, 2026-10-02: English
 // first, the other languages later). Until then those pages show them in
 // English, never a raw key (withFallback). Translate, then empty this list.
-const untranslated = ["Basket.", "FittingRoom.", "Badge.premium", "Error."]
+const untranslated = [
+  "Basket.",
+  "FittingRoom.",
+  "Badge.premium",
+  "Error.",
+  "Auth.",
+  "Account.",
+  ...[
+    "popup_closed",
+    "popup_blocked",
+    "account_exists_with_different_credential",
+    "user_disabled",
+    "sign_in_again",
+    "robot_check_failed",
+    "account_ready",
+    "name_required",
+    "name_too_long",
+    "email_required",
+    "password_required",
+    "password_too_short",
+    "password_too_long",
+    "confirm_required",
+    "passwords_differ",
+    "terms_required",
+    "robot_check_required",
+  ].map((code) => `AuthErrors.${code}`),
+]
 const waiting = (key: string) =>
   untranslated.some((prefix) => key === prefix || key.startsWith(prefix))
 

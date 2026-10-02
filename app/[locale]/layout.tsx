@@ -12,6 +12,7 @@ import { Footer } from "@/components/layout/footer"
 import { Header } from "@/components/layout/header"
 import { SkipLink } from "@/components/layout/skip-link"
 import { languageTags, routing } from "@/i18n/routing"
+import { getUser } from "@/lib/auth/session"
 import { getCostumes } from "@/lib/catalog"
 import { themeColor } from "@/lib/design/theme"
 
@@ -50,17 +51,18 @@ export default async function RootLayout({
   await connection()
   const { locale } = await params
   if (!hasLocale(routing.locales, locale)) notFound()
+  const user = await getUser()
 
   return (
     <html lang={languageTags[locale]} className={documentClassName}>
       <body className="flex min-h-svh flex-col">
         {/* Gives Client Components the locale and messages of this request. */}
         <NextIntlClientProvider>
-          {/* My Pumpkin Basket on every page. Signed out for now: feat/auth
-              passes the session's uid, and the basket follows the account. */}
+          {/* My Pumpkin Basket on every page. Signed in, it follows the
+              session's account live. */}
           <BasketProvider
             costumes={getCostumes().map(({ slug }) => slug)}
-            account={null}
+            account={user?.uid ?? null}
           >
             <SkipLink />
             <Header />

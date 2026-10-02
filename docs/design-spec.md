@@ -423,8 +423,9 @@ Client components are marked (C). Everything else renders on the server.
     the link is named with the count ("My Pumpkin Basket, 3 costumes"), the badge itself is
     hidden from screen readers. Adding a costume anywhere on the page ignites it and rolls the
     count up; taking one out rolls it down (7.2). Places only, never actions.
-  - Then the language menu and the account: "Sign in" (ghost) or a square avatar with initials → menu (Account,
-    Sign out).
+  - Then the language menu and the account: "Sign in" (outline) or, signed in, a 44 px square
+    with the visitor's initials (bone on `--card`, a red glow on hover) named "Your account",
+    opening a menu like the language menu: their name and email, Account, Sign out.
   - Transparent over a title card (any page with `[data-title-card]`: the home hero, the 404);
     after 24 px of scroll (and on every other page) it becomes `--background` at 80 % +
     `backdrop-blur-md` + bottom hairline. A scroll-driven animation; browsers without one keep
@@ -585,27 +586,39 @@ title, toolbar or empty state for one.
 
 ### 11.5 Sign in `/sign-in`, Register `/register`, Reset password `/reset-password`
 
-- Desktop split: left 5 columns atmospheric panel (fog, grain, `display` line "Who will you
-  become?" in outline text), right 7 columns with the form column (max 400 px). Mobile: form only,
-  small wordmark above.
-- **Sign in:** "Continue with Google" button (Google's dark variant: fill `#131314`, 1 px border
-  `#8E918F`, text `#E3E3E3`, the multicolor G logo, "Continue with Google"), divider "or", email,
-  password (show/hide), "Forgot your password?" link, submit "Sign in". Footer link "New here?
-  Create an account".
-- **Register:** Google button, divider, name, email, password (hint: at least 8 characters),
-  confirm password, checkbox "I am 17 or older", reCAPTCHA (dark, 304 × 78 reserved), submit
-  "Create account". Footer link "Already have an account? Sign in".
-- **Reset:** email + submit "Send reset link"; always answers "If an account uses that email, a
-  reset link is on its way." (never reveals whether an account exists).
-- Errors: field errors under fields; form errors in a FormAlert; all from translated codes.
+All `noindex`. A signed-in visitor is sent on to `next` (sign in, register).
+
+- Desktop split: left 5 columns, the night: a blood-red light rising under fog that fades out on
+  every side, and "Are you ready for the dark?" (owner) in hollow gothic letters edged in bone,
+  lit red. Right 7 columns: the title (`display`), the form (max 400 px), the way to the other
+  page under it. Mobile: the form only (the header carries the wordmark).
+- **Sign in:** "Continue with Google" (Google's dark style: fill `#131314`, 1 px border
+  `#8E918F`, text `#E3E3E3` in Roboto/Arial, the multicolor G), "or" on a hairline, email,
+  password (show/hide), "Forgot your password?", submit "Sign in". Under it: "New here? Create
+  an account" (keeps `next`).
+- **Register:** Google, "or", name, email, password (hint "At least 8 characters."), confirm
+  password, the checkbox "I agree to the Terms of service and Privacy policy" (owner: no age
+  checkbox), each a link to `/terms` and `/privacy` opening in a new tab so nothing typed is
+  lost, reCAPTCHA (dark, in the page's language; its 78 px kept so the form doesn't jump;
+  Google's compact box where 304 px doesn't fit; if Google fails or stays silent 10 s, a line
+  says so in words), submit "Create account". Under it: "Already have an account? Sign in".
+- **A first sign-in** (Google, or an account made elsewhere): before the account's profile
+  exists, `h2` "One more thing" (focused) and the same terms checkbox, then "Continue".
+- **Reset:** a line on what happens, email, "Send reset link"; always answers "If an account
+  uses that email, a reset link is on its way." (never reveals whether an account exists).
+- Errors: field errors under fields; form errors in a FormAlert; after a failed submit focus
+  goes to the first field in error, else the alert; all from translated codes (zod's and
+  Firebase's alike). Signing in never says which of the email or password was wrong. Closing
+  Google's window is the visitor's choice: nothing is said.
 - Pending: fieldset disabled, button spinner + "Signing in…" / "Creating account…" /
-  "Sending…".
+  "Sending…" / "Continuing…".
 
 ### 11.6 Account `/account`
 
-- H1 "Your account". Profile block: name, email, member since.
-- "The Fitting Room" block: "2 free try-ons waiting" + `soon` + price line.
-- Sign out (outline button). Signed-out visitors are redirected to sign in (with `next`).
+- H1 "Your account". Profile: name, email, member since (the locale's long date).
+- The Fitting Room panel (11.4) with the account's line: "2 free try-ons waiting".
+- Sign out (outline button, a form: works before scripts load). Signed-out visitors are
+  redirected to sign in (with `next`). `noindex`.
 
 ### 11.7 Feedback `/feedback` (`?type=bug|feedback|costume`)
 

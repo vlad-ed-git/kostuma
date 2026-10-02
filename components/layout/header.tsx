@@ -1,9 +1,11 @@
-import { useTranslations } from "next-intl"
+import { getTranslations } from "next-intl/server"
 
+import { UserMenu } from "@/components/auth/user-menu"
 import { BasketLink } from "@/components/basket/basket-link"
 import { LanguageMenu } from "@/components/language/language-menu"
 import { buttonVariants } from "@/components/ui/button"
 import { Link } from "@/i18n/navigation"
+import { getUser } from "@/lib/auth/session"
 
 import { MobileMenu } from "./mobile-menu"
 import { costumesHref } from "./nav"
@@ -14,8 +16,9 @@ import { Wordmark } from "./wordmark"
  * home hero) it starts transparent and solidifies after 24 px of scroll,
  * in CSS (app/film.css). It stays put while pages change reels.
  */
-export function Header() {
-  const t = useTranslations("Nav")
+export async function Header() {
+  const t = await getTranslations("Nav")
+  const user = await getUser()
 
   return (
     <header className="site-header sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-md [view-transition-name:site-header]">
@@ -37,17 +40,25 @@ export function Header() {
 
         <div className="flex items-center gap-1 lg:gap-3">
           <LanguageMenu className="hidden lg:inline-flex" />
-          <Link
-            href="/sign-in"
-            className={buttonVariants({
-              variant: "outline",
-              size: "lg",
-              className: "hidden lg:inline-flex",
-            })}
-          >
-            {t("signIn")}
-          </Link>
-          <MobileMenu className="lg:hidden" />
+          {user ? (
+            <UserMenu
+              name={user.name}
+              email={user.email}
+              className="hidden lg:inline-flex"
+            />
+          ) : (
+            <Link
+              href="/sign-in"
+              className={buttonVariants({
+                variant: "outline",
+                size: "lg",
+                className: "hidden lg:inline-flex",
+              })}
+            >
+              {t("signIn")}
+            </Link>
+          )}
+          <MobileMenu signedIn={Boolean(user)} className="lg:hidden" />
         </div>
       </div>
     </header>

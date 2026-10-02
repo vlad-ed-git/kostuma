@@ -41,7 +41,12 @@ export default defineConfig({
   webServer: {
     command: `npm run build && npm run start -- --port ${port}`,
     url: `http://localhost:${port}`,
-    env: { E2E: "1", SITE_URL: `http://localhost:${port}` },
+    env: {
+      E2E: "1",
+      SITE_URL: `http://localhost:${port}`,
+      // Google's public test key: its box always passes, on any domain.
+      RECAPTCHA_SITE_KEY: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
+    },
     reuseExistingServer: !ci,
     timeout: 180_000,
   },

@@ -317,6 +317,43 @@
   inset: 0;
 }
 
+/* ── The account pages' night (components/auth/auth-shell.tsx) ─────────── */
+
+/* A blood-red light rising from below the fog, fading out before every
+   edge (no line where it ends). */
+.auth-night {
+  background: radial-gradient(
+    ellipse 70% 55% at 40% 100%,
+    color-mix(in oklch, var(--blood) 30%, transparent),
+    transparent 70%
+  );
+  background-repeat: no-repeat;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 20%,
+    #000 80%,
+    transparent
+  );
+  mask-repeat: no-repeat;
+}
+.auth-fog {
+  mask-image: radial-gradient(
+    ellipse 50% 50% at 50% 60%,
+    #000 35%,
+    transparent 100%
+  );
+  mask-repeat: no-repeat;
+}
+/* "Are you ready for the dark?": hollow gothic letters, edged in bone, lit
+   red. */
+.auth-line {
+  color: transparent;
+  -webkit-text-stroke: 1.5px
+    color-mix(in oklch, var(--foreground) 85%, transparent);
+  text-shadow: 0 0 40px color-mix(in oklch, var(--blood) 55%, transparent);
+}
+
 /* ── My Pumpkin Basket (components/basket) ─────────────────────────────── */
 
 /* The count on the header's pumpkin: the old number leaves only while the

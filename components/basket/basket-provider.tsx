@@ -11,6 +11,7 @@ import {
   type ReactNode,
 } from "react"
 
+import { signOutOfFirebase } from "@/lib/firebase/signed-in"
 import {
   createBasketStore,
   type BasketEvent,
@@ -61,7 +62,14 @@ export function BasketProvider({
   const announce = (text: string) =>
     setMessage(({ id }) => ({ id: id + 1, text }))
 
-  useEffect(() => store.connect(account), [store, account])
+  useEffect(() => {
+    const disconnect = store.connect(account)
+    // Signed out: this page lets go of Firebase too, now that the basket
+    // no longer listens to the account (earlier, its listener would be
+    // refused mid-way).
+    if (account === null) void signOutOfFirebase()
+    return disconnect
+  }, [store, account])
 
   // The account refused a change, which is undone: the visitor hears why.
   const onRefused = useEffectEvent(() => announce(t("refused")))

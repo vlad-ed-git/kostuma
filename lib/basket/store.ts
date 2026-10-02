@@ -422,7 +422,8 @@ function browserStorage() {
 
 /** Loaded only for a signed-in visitor: guests never download Firebase. */
 async function openAccountBasket(uid: string) {
-  const { openAccountBasket } = await import("./firestore")
+  // By its alias: the e2e build swaps in a stand-in (firestore.e2e.ts).
+  const { openAccountBasket } = await import("@/lib/basket/firestore")
   return openAccountBasket(uid)
 }
 

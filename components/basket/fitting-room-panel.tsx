@@ -9,10 +9,19 @@ import { cn } from "@/lib/utils"
 
 /**
  * The Fitting Room, at the top of My Pumpkin Basket, which it is part of
- * (spec §11.4): what it will do, that it is coming soon, and its price.
+ * (spec §11.4): what it will do, that it is coming soon, and its price. On
+ * the account page (spec §11.6), the try-ons waiting there too.
  */
-export function FittingRoomPanel({ className }: { className?: string }) {
+export function FittingRoomPanel({
+  credits,
+  className,
+}: {
+  /** The account's free try-ons left, when known. */
+  credits?: number
+  className?: string
+}) {
   const t = useTranslations("FittingRoom")
+  const account = useTranslations("Account")
   const badge = useTranslations("Badge")
   const format = useFormatter()
   const price = format.number(fittingRoomPrice.perCostume, {
@@ -38,6 +47,11 @@ export function FittingRoomPanel({ className }: { className?: string }) {
         <Badge variant="premium">{badge("premium")}</Badge>
       </div>
       <p className="max-w-[60ch] text-body-lg">{t("line")}</p>
+      {credits !== undefined && (
+        <p className="text-lead">
+          {account("tryOnsWaiting", { count: credits })}
+        </p>
+      )}
       <p className="text-lead font-semibold">
         {t("price", { free: fittingRoomPrice.freeTryOns, price })}
       </p>

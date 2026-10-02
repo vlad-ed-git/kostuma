@@ -10,7 +10,9 @@ export default defineConfig({
       "node_modules/**",
       ".next/**",
       ".next-e2e/**",
+      ".next-emulators/**",
       "e2e/**",
+      "e2e-emulators/**",
       // Need the Firestore emulator: `npm run test:firestore`.
       "**/*.emulator.test.ts",
     ],

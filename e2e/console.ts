@@ -9,10 +9,19 @@ const pageNotBuiltYet = /Failed to load resource: .* 404 \(Not Found\)/
  * Collects console errors and uncaught exceptions (CSP violations included)
  * while a test runs. Read the returned array at the end.
  */
+// Google's reCAPTCHA box is Google's page in a frame; what it logs there
+// (such as "requestStorageAccess: Permission denied.") is not Kostuma's.
+const fromRecaptcha = (url: string) =>
+  url.startsWith("https://www.google.com/recaptcha/")
+
 export function collectErrors(page: Page) {
   const errors: string[] = []
   page.on("console", (message) => {
-    if (message.type() === "error" && !pageNotBuiltYet.test(message.text())) {
+    if (
+      message.type() === "error" &&
+      !pageNotBuiltYet.test(message.text()) &&
+      !fromRecaptcha(message.location().url)
+    ) {
       errors.push(message.text())
     }
   })

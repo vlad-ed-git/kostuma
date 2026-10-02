@@ -1,7 +1,9 @@
 /**
- * Firebase Auth failures as stable codes. Each value is also the key of its
- * message under `AuthErrors` in `messages/*.json`, so the UI shows
- * `t(\`AuthErrors.${code}\`)`.
+ * Every problem an account form can meet, as stable codes: Firebase Auth's
+ * failures, the server's, and each form field's rule. Each value is also the
+ * key of its message under `AuthErrors` in `messages/*.json`, so the UI
+ * shows `t(\`AuthErrors.${code}\`)`: a visitor never reads an error's own
+ * text, in any language.
  */
 export enum AuthErrorCodes {
   INVALID_LOGIN_CREDENTIALS = "invalid_login_credentials",
@@ -13,6 +15,26 @@ export enum AuthErrorCodes {
   WEAK_PASSWORD = "weak_password",
   UNKNOWN_AUTH_ERROR = "unknown_auth_error",
   NETWORK_ERROR = "network_error",
+  // Google's window.
+  POPUP_CLOSED = "popup_closed",
+  POPUP_BLOCKED = "popup_blocked",
+  ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL = "account_exists_with_different_credential",
+  USER_DISABLED = "user_disabled",
+  // The server's.
+  SIGN_IN_AGAIN = "sign_in_again",
+  ROBOT_CHECK_FAILED = "robot_check_failed",
+  ACCOUNT_READY = "account_ready",
+  // The forms' rules.
+  NAME_REQUIRED = "name_required",
+  NAME_TOO_LONG = "name_too_long",
+  EMAIL_REQUIRED = "email_required",
+  PASSWORD_REQUIRED = "password_required",
+  PASSWORD_TOO_SHORT = "password_too_short",
+  PASSWORD_TOO_LONG = "password_too_long",
+  CONFIRM_REQUIRED = "confirm_required",
+  PASSWORDS_DIFFER = "passwords_differ",
+  TERMS_REQUIRED = "terms_required",
+  ROBOT_CHECK_REQUIRED = "robot_check_required",
 }
 
 // Firebase's `auth/…` codes. The browser SDK and the Admin SDK name some
@@ -23,7 +45,9 @@ const byFirebaseCode: Record<string, AuthErrorCodes> = {
   "auth/email-already-in-use": AuthErrorCodes.EMAIL_EXISTS,
   "auth/email-already-exists": AuthErrorCodes.EMAIL_EXISTS,
   "auth/invalid-email": AuthErrorCodes.INVALID_EMAIL,
-  "auth/wrong-password": AuthErrorCodes.INVALID_PASSWORD,
+  // Signing in never says which of the email or the password was wrong:
+  // that would tell anyone whether an account uses an email.
+  "auth/wrong-password": AuthErrorCodes.INVALID_LOGIN_CREDENTIALS,
   "auth/too-many-requests": AuthErrorCodes.TOO_MANY_ATTEMPTS_TRY_LATER,
   "auth/weak-password": AuthErrorCodes.WEAK_PASSWORD,
   "auth/password-does-not-meet-requirements": AuthErrorCodes.WEAK_PASSWORD,
@@ -33,6 +57,13 @@ const byFirebaseCode: Record<string, AuthErrorCodes> = {
   "auth/invalid-login-credentials": AuthErrorCodes.INVALID_LOGIN_CREDENTIALS,
   "auth/user-not-found": AuthErrorCodes.INVALID_LOGIN_CREDENTIALS,
   "auth/network-request-failed": AuthErrorCodes.NETWORK_ERROR,
+  "auth/popup-closed-by-user": AuthErrorCodes.POPUP_CLOSED,
+  "auth/cancelled-popup-request": AuthErrorCodes.POPUP_CLOSED,
+  "auth/user-cancelled": AuthErrorCodes.POPUP_CLOSED,
+  "auth/popup-blocked": AuthErrorCodes.POPUP_BLOCKED,
+  "auth/account-exists-with-different-credential":
+    AuthErrorCodes.ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL,
+  "auth/user-disabled": AuthErrorCodes.USER_DISABLED,
 }
 
 /**
