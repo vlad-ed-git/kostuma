@@ -17,9 +17,11 @@ type AuthShellProps = {
 
 /**
  * The account pages' frame (spec §11.5): on desktop, the night on the left
- * (fog, and "Are you ready for the dark?" in outlined gothic letters lit
- * red from below); the form on the right, at most 400 px wide (560 px when
- * `wide`), all of it on one screen. Phones: the form.
+ * (fog, "Are you ready for the dark?" in outlined gothic letters lit red
+ * from below, and the 404's VHS tracking band rolling through it); the
+ * form on the right, at most 400 px wide (560 px when `wide`), all of it
+ * on one screen. Phones: the form. The title splits into the 404's red and
+ * bone ghosts.
  */
 export async function AuthShell({
   title,
@@ -44,6 +46,9 @@ export async function AuthShell({
         <p className="auth-line font-heading text-display font-semibold text-balance">
           {t("panel")}
         </p>
+        {/* The tape rolls up through the night, as on the 404; never over
+            the form. */}
+        <div className="vhs-tracking auth-tape" />
       </div>
       <div className="flex py-12 lg:col-span-7 lg:items-center lg:py-4">
         <div
@@ -53,7 +58,7 @@ export async function AuthShell({
           )}
         >
           <header className="flex flex-col gap-3">
-            <h1 className="font-heading text-display-fit font-semibold text-balance">
+            <h1 className="vhs-ghost-title font-heading text-display-fit font-semibold text-balance">
               {title}
             </h1>
             {lead && <p className="text-lead text-muted-foreground">{lead}</p>}

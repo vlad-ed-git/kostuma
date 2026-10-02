@@ -1,7 +1,8 @@
 /*
  * The night's motion and atmosphere (docs/design-spec.md §7–8): grain, fog,
- * the night scene, the flickering title, the lit costume rows, the costume
- * photos' reveal, reel changes and the cue mark. CSS only; transforms and opacity (plus the heartbeat's
+ * the night scene, the flickering title, the VHS tracking band and ghosts,
+ * the lit costume rows, the costume photos' reveal, reel changes and the
+ * cue mark. CSS only; transforms and opacity (plus the heartbeat's
  * glow), no mix-blend-mode. Every loop lives inside `prefers-reduced-motion:
  * no-preference`, so reduced motion gets a still frame by default.
  */
@@ -100,8 +101,12 @@
   animation: cue-appear 1ms linear 150ms forwards;
 }
 
-/* ── VHS tracking: the 404 only, the one place video appears (§8.9) ───── */
+/* ── VHS tracking (§8.9): the 404, the home title and the account pages'
+   night (owner: "I love the effect that the text 404 has and that vhs
+   static band") ───────────────────────────────────────────────────────── */
 
+/* A band of scan lines rolls up through the box now and then, over what is
+   in it (put it last). Reduced motion: it waits below, out of sight. */
 .vhs-tracking {
   position: absolute;
   inset: 0;
@@ -123,10 +128,33 @@
     transparent 4px 7px
   );
 }
+/* Where the box meets the next section (the home title), the band fades in
+   and out before the edges: it never draws the line where the box ends. */
+.vhs-tracking-fade {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 15%,
+    #000 85%,
+    transparent
+  );
+  mask-repeat: no-repeat;
+}
+/* "404" splits into a red and a bone ghost. */
 .vhs-ghost {
   text-shadow:
     -2px 0 color-mix(in oklch, var(--blood) 80%, transparent),
     2px 0 color-mix(in oklch, var(--foreground) 35%, transparent);
+}
+/* The same split on a title, in proportion to its letters (never under
+   2 px). `--title-glow` adds the title's own shadow, such as the home
+   title's dark halo over the night scene. */
+.vhs-ghost-title {
+  --ghost: max(2px, 0.035em);
+  text-shadow:
+    calc(var(--ghost) * -1) 0 color-mix(in oklch, var(--blood) 80%, transparent),
+    var(--ghost) 0 color-mix(in oklch, var(--foreground) 35%, transparent),
+    var(--title-glow, 0 0 transparent);
 }
 
 /* ── Fog (components/horror/fog.tsx, and the ground fog in atmosphere) ── */
@@ -352,6 +380,17 @@
   -webkit-text-stroke: 1.5px
     color-mix(in oklch, var(--foreground) 85%, transparent);
   text-shadow: 0 0 40px color-mix(in oklch, var(--blood) 55%, transparent);
+}
+/* The tape in the night (a `.vhs-tracking`): from the screen's left edge
+   to the night's right edge, where it fades out, well before the form
+   (spec §1.4.3). Nothing scrolls: a page never scrolls to its left. */
+.auth-tape {
+  left: -100vw;
+  mask-image:
+    linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent),
+    linear-gradient(to left, transparent, #000 8rem);
+  mask-composite: intersect;
+  mask-repeat: no-repeat;
 }
 
 /* ── My Pumpkin Basket (components/basket) ─────────────────────────────── */

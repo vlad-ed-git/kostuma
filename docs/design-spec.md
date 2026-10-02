@@ -27,8 +27,9 @@ light of a window, the contrast of classic horror lighting. Gothic titles like t
 80s slashers, a bookish serif for everything read, like the lore of an old horror novel.
 
 **Horror you can see.** Effects must be visible at a glance (fog you notice, a flickering title, eyes in the dark), while pages stay
-simple (8, 12). Ruled out: neon/VHS/synthwave, futuristic chrome, and the generic dark site
-(condensed capitals, typewriter labels, a grid of identical cards).
+simple (8, 12). Ruled out: neon and synthwave (VHS appears only as a damaged tape on the title
+cards, 8.9), futuristic chrome, and the generic dark site (condensed capitals, typewriter labels,
+a grid of identical cards).
 
 ### 1.2 Vocabulary
 
@@ -320,7 +321,14 @@ test measures brightness across the title's bottom edge and fails on a step of 1
    (70 s and 44 s, opposite directions) over the bottom three quarters, fading out top and
    bottom.
 8. **Scratches (page changes only).** Two 1 px bone lines jumping during the 450 ms reel change.
-9. **VHS tracking (404 only).** Unchanged (a rolling band of noise, a split `404`).
+9. **VHS tracking (the 404, the home title, the account pages; owner, 2026-10-02: "I love the
+   effect that the text 404 has and that vhs static band").** A band of bone scan lines (14 % of
+   its box, 15 % opacity) rolls up through the box in 1.2 s every 7 s, over what is in it.
+   Titles split into a red ghost (left) and a bone ghost (right): `404` by 2 px, the home title
+   and the account pages' titles by 0.035 em (at least 2 px). On the home title the band fades
+   in and out before the section's edges (no seam); on the account pages it runs from the
+   screen's left edge through the night and fades out before the form (never over a form, 1.4).
+   The 404 is unchanged. Reduced motion: the band never rolls; the ghosts stay.
 
 Reduced motion: everything above is still (the flashlight stays put, the fog and grain freeze,
 nothing flickers or beats).
@@ -501,7 +509,8 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
    (owner). Desktop: the tagline on the left, the countdown on the right with "Choose your
    costume" under it (owner), bottoms aligned; the figure in the window stands between them.
    Phones: the figure as a small tableau on top, then one column.
-   - H1 `display-xl`, flickering (7.2): "The darkest day is coming." (`App.taglineLead`).
+   - H1 `display-xl`, flickering (7.2) and split into the red and bone ghosts (8.9): "The
+     darkest day is coming." (`App.taglineLead`). The VHS band rolls over the whole title (8.9).
    - Under it, in `--blood-text` with a red glow: "Transform into a monster." (`App.taglineTail`).
    - **Countdown** (`components/countdown`, logic in `lib/countdown`): a small-capital line
      "Until Halloween · **Saturday, October 31**" (the date in bone, formatted per locale), then
@@ -590,12 +599,13 @@ title, toolbar or empty state for one.
 All `noindex`. A signed-in visitor is sent on to `next` (sign in, register).
 
 - Desktop split: left 5 columns, the night: a blood-red light rising under fog that fades out on
-  every side, and "Are you ready for the dark?" (owner) in hollow gothic letters edged in bone,
-  lit red. Right 7 columns: the title (`display-fit`: `display`, held to the screen's height),
-  the form (max 400 px; register 560 px), the way to the other page under it, all on one
-  screen without scrolling (owner) from 1024 × 656 up: tighter gaps from `lg`, and register
-  sets name | email and password | confirm side by side, then the robot check and "Create
-  account" side by side (a form error under both). Mobile: the form only, one column (the
+  every side, "Are you ready for the dark?" (owner) in hollow gothic letters edged in bone, lit
+  red, and the VHS band rolling through it (8.9). Right 7 columns: the title (`display-fit`:
+  `display`, held to the screen's height; split into the red and bone ghosts, 8.9, at every
+  size), the form (max 400 px; register 560 px), the way to the other page under it, all on
+  one screen without scrolling (owner) from 1024 × 656 up: tighter gaps from `lg`, and
+  register sets name | email and password | confirm side by side, then the robot check and
+  "Create account" side by side (a form error under both). Mobile: the form only, one column (the
   header carries the wordmark).
 - Typed text: 20 px on phones, 18 px from `md` (owner: 4 px larger than the preset's); labels
   and hints keep their sizes.

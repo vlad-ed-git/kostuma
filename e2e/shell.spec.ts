@@ -188,6 +188,24 @@ test.describe("film atmosphere", () => {
         getComputedStyle(document.querySelector(".film-grain")!, "::before")
           .animationName
     )
+  // The 404's VHS look (owner): the tape rolls through the home title and
+  // the account pages' night, and their titles split into red and bone.
+  const tapeAnimation = (page: Page, selector: string) =>
+    page.evaluate(
+      (selector) =>
+        getComputedStyle(document.querySelector(selector)!, "::before")
+          .animationName,
+      selector
+    )
+  const splitTitle = (page: Page) =>
+    page.evaluate(() => {
+      const shadow = getComputedStyle(document.querySelector("h1")!).textShadow
+      const offsets = [...shadow.matchAll(/(-?[\d.]+)px -?[\d.]+px/g)].map(
+        ([, x]) => Number(x)
+      )
+      // A ghost on each side.
+      return offsets.some((x) => x < 0) && offsets.some((x) => x > 0)
+    })
 
   test("the grain dances", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "no-preference" })
@@ -203,6 +221,29 @@ test.describe("film atmosphere", () => {
       () => getComputedStyle(document.querySelector(".flicker")!).animationName
     )
     expect(flicker).toBe("none")
+    expect(await tapeAnimation(page, "[data-title-card] .vhs-tracking")).toBe(
+      "none"
+    )
+  })
+
+  test("the tape rolls through the title cards, and their titles split", async ({
+    page,
+    isMobile,
+  }) => {
+    await page.emulateMedia({ reducedMotion: "no-preference" })
+    await page.goto("/")
+    expect(await tapeAnimation(page, "[data-title-card] .vhs-tracking")).toBe(
+      "vhs-roll"
+    )
+    expect(await splitTitle(page)).toBe(true)
+
+    await page.goto("/sign-in")
+    expect(await splitTitle(page)).toBe(true)
+    // Phones show the form alone, without the night.
+    if (!isMobile) {
+      await expect(page.locator(".auth-tape")).toBeVisible()
+      expect(await tapeAnimation(page, ".auth-tape")).toBe("vhs-roll")
+    }
   })
 
   test("the header is clear over the title card, solid once scrolled", async ({

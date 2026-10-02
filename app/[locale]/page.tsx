@@ -38,7 +38,7 @@ export default async function HomePage() {
             "Choose your costume" under it. Small screens: one column. */}
         <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end lg:gap-16 lg:px-8">
           <div>
-            <h1 className="flicker max-w-[11ch] font-heading text-display-xl font-semibold text-balance [text-shadow:0_0_40px_rgb(0_0_0/0.8)]">
+            <h1 className="flicker vhs-ghost-title max-w-[11ch] font-heading text-display-xl font-semibold text-balance [--title-glow:0_0_40px_rgb(0_0_0/0.8)]">
               {t("taglineLead")}
             </h1>
             <p className="mt-5 font-heading text-[clamp(1.6rem,3vw,2.6rem)] leading-none font-medium text-blood-text [text-shadow:0_0_24px_color-mix(in_oklch,var(--blood)_45%,transparent)]">
@@ -59,6 +59,8 @@ export default async function HomePage() {
             </Link>
           </div>
         </div>
+        {/* The tape rolls up over the whole title, as on the 404. */}
+        <div aria-hidden="true" className="vhs-tracking vhs-tracking-fade" />
       </section>
 
       {/* No heading on screen: "Choose your costume" leads here. */}
