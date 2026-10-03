@@ -1,24 +1,25 @@
 import type { Hex, MakeupEffect, MakeupGuide, StepRender } from "@/lib/makeup"
 
+import type { FacePhoto } from "./try-on"
+
 /**
  * What the Fitting Room sends YouCam for one costume (owner, 2026-10-03):
  * first the outfit on the visitor's body photo (AI Clothes, cloth-v4, the
- * costume's own photo as the garment), then their face through the costume's
- * makeup guide (lib/makeup.ts), one render per step. Each makeup step renders
- * every effect so far at once, on the visitor's own face photo: every picture
- * is one render away from their real face (nothing stacks up render after
- * render, and the steps can run at the same time). Hair, always the guide's
- * last step, is colored on the last makeup picture. One unit per makeup or
- * hair step, two for the outfit.
+ * costume's own photo as the garment), unless the character is all makeup;
+ * then their face through the costume's makeup guide (lib/makeup.ts), one
+ * render per step, each on the picture the step before left, as makeup goes
+ * on a face: a coat on top of the last one, the hair color after the face.
+ * The face's steps wait for the outfit: a body photo YouCam can't read stops
+ * the try-on before any makeup is paid for.
  */
 
 /**
  * Bumped whenever the same photos and costume would render differently: a
  * try-on is kept per photos, costume and version (never rendered twice).
  */
-export const PIPELINE_VERSION = 1
+export const PIPELINE_VERSION = 2
 
-/** The outfit's step: always the first. */
+/** The outfit's step, when the costume has one: always the first. */
 export const OUTFIT = 0
 
 type Foundation = Extract<MakeupEffect, { category: "foundation" }>
@@ -35,10 +36,21 @@ export type SentEffect =
 type HairRender = Extract<StepRender, { tool: "hair" }>
 
 /**
- * One step's render: what YouCam does, on which picture (`from`: the
- * visitor's body or face photo, or an earlier step's picture), and which
- * step must be done before it starts (`after`).
+ * Where a face step starts: the visitor's face photo, or the picture of the
+ * step at that index.
  */
+export type Source = "face" | number
+
+/** What every face step has: its source, what it waits for, its size. */
+type FaceStep = {
+  from: Source
+  /** The outfit's step, when there is one: nothing is painted before it. */
+  after: number | null
+  /** The face photo's width and height: every picture comes out this size. */
+  size: [number, number]
+}
+
+/** One step's render: what YouCam does, on which picture, after what. */
 export type Render =
   | {
       tool: "clothes"
@@ -48,14 +60,12 @@ export type Render =
       from: "body"
       after: null
     }
-  | { tool: "makeup"; effects: SentEffect[]; from: "face"; after: number }
-  | {
+  | ({ tool: "makeup"; effects: SentEffect[] } & FaceStep)
+  | ({
       tool: "hair"
       pattern: HairRender["pattern"]
       palettes: HairRender["palettes"]
-      from: "face" | number
-      after: number
-    }
+    } & FaceStep)
 
 /** YouCam smooths the skin at 50 unless told otherwise: the face stays theirs. */
 const unsmoothed: SentEffect = {
@@ -65,49 +75,57 @@ const unsmoothed: SentEffect = {
 }
 
 /**
- * A costume's renders: its outfit on the body photo, then its makeup guide
- * on a face whose skin is `skin`, once the outfit is done.
+ * A costume's renders: its outfit on the body photo (unless it is all
+ * makeup), then its makeup guide's steps on the face photo, one after the
+ * other.
  */
 export function renderPlan(
   slug: string,
   guide: MakeupGuide,
-  skin: Hex
+  face: FacePhoto
 ): Render[] {
-  const plan: Render[] = [
-    {
+  const plan: Render[] = []
+  if (!guide.allMakeup) {
+    plan.push({
       tool: "clothes",
       garment: slug,
       category: "full_body",
       from: "body",
       after: null,
-    },
-  ]
-  const sofar: SentEffect[] = []
-  let lastMakeup: number | null = null
+    })
+  }
+  const after = guide.allMakeup ? null : OUTFIT
+  const size: [number, number] = [face.width, face.height]
+  let from: Source = "face"
+  for (const { render } of guide.steps) {
+    const step: FaceStep = { from, after, size }
+    from = plan.length
+    plan.push(faceRender(render, step, face.skin))
+  }
+  return plan
+}
 
-  for (const step of guide.steps) {
-    const render = step.render
-    if (render.tool === "hair") {
-      plan.push({
+function faceRender(render: StepRender, step: FaceStep, skin: Hex): Render {
+  switch (render.tool) {
+    case "makeup": {
+      const effects = render.effects.map((effect) => resolve(effect, skin))
+      const smoothed = effects.some(
+        (effect) => effect.category === "skin_smooth"
+      )
+      return {
+        tool: "makeup",
+        effects: smoothed ? effects : [unsmoothed, ...effects],
+        ...step,
+      }
+    }
+    case "hair":
+      return {
         tool: "hair",
         pattern: render.pattern,
         palettes: render.palettes,
-        from: lastMakeup ?? "face",
-        after: OUTFIT,
-      })
-      continue
-    }
-    sofar.push(...render.effects.map((effect) => resolve(effect, skin)))
-    lastMakeup = plan.length
-    const smoothed = sofar.some((effect) => effect.category === "skin_smooth")
-    plan.push({
-      tool: "makeup",
-      effects: smoothed ? [...sofar] : [unsmoothed, ...sofar],
-      from: "face",
-      after: OUTFIT,
-    })
+        ...step,
+      }
   }
-  return plan
 }
 
 /** The effect with a skin-based foundation turned into its hex. */

@@ -53,17 +53,19 @@ const guide: MakeupGuide = {
     {
       title: "Hair",
       howTo: "Hair.",
-      products: ["wig"],
+      products: ["black hair color spray"],
       render: hair("#151515"),
     },
   ],
 }
 
+const BODY_PHOTO = { id: "b".repeat(32), width: 960, height: 1440 }
+
 const fitting: Fitting = {
   slug: "ghostface",
   guide,
   face: { id: "f".repeat(32), width: 768, height: 1024, skin: "#C7998A" },
-  body: { id: "b".repeat(32), width: 960, height: 1440 },
+  body: BODY_PHOTO,
 }
 
 /**
@@ -133,7 +135,7 @@ beforeEach(async () => {
   }
   await store.savePhotos(UID, {
     face: [fitting.face, FACE],
-    body: [fitting.body, BODY],
+    body: [BODY_PHOTO, BODY],
   })
   vi.spyOn(console, "error").mockImplementation(() => {})
 })
@@ -151,7 +153,7 @@ describe("begin", () => {
     const result = await begin(deps, UID, fitting)
     expect(result.outcome).toBe("started")
     expect(result.tryOn.id).toBe(
-      tryOnId(fitting.face.id, fitting.body.id, "ghostface")
+      tryOnId(fitting.face.id, BODY_PHOTO.id, "ghostface")
     )
     expect(result.tryOn.steps.map((step) => step.render.tool)).toEqual([
       "clothes",
@@ -183,6 +185,7 @@ describe("begin", () => {
     expect(tryOnId("c".repeat(32), "b".repeat(32), "ghostface")).not.toBe(one)
     expect(tryOnId("a".repeat(32), "c".repeat(32), "ghostface")).not.toBe(one)
     expect(tryOnId("a".repeat(32), "b".repeat(32), "pennywise")).not.toBe(one)
+    expect(tryOnId("a".repeat(32), null, "ghostface")).not.toBe(one)
   })
 })
 
@@ -201,33 +204,58 @@ describe("advance", () => {
     ])
   })
 
-  it("starts the makeup once the outfit is done, then the hair on the last makeup", async () => {
+  it("paints each step on the picture the step before left, once the outfit is done", async () => {
     const id = await started()
     await advance(deps, UID, id)
     render.finish("task-0", picture(0))
 
-    // The ask that keeps the outfit sends the makeup too.
+    // The ask that keeps the outfit sends the first makeup step, on the face.
     let tryOn = await advance(deps, UID, id)
     expect(tryOn?.steps[0].status).toBe("done")
     expect(await store.stepImage(UID, id, 0)).toEqual(new Uint8Array([100]))
     expect(render.discarded).toContain("task-0")
-    const makeups = render.started.filter(
-      (each) => each.render.tool === "makeup"
-    )
-    expect(makeups).toHaveLength(2)
-    for (const each of makeups) expect(each.images).toEqual({ source: FACE })
-    expect(tryOn?.steps[3].status).toBe("waiting")
+    expect(render.started).toHaveLength(2)
+    expect(render.started[1].render.tool).toBe("makeup")
+    expect(render.started[1].images).toEqual({ source: FACE })
+    // The next one waits for it.
+    expect(tryOn?.steps.slice(2).map((step) => step.status)).toEqual([
+      "waiting",
+      "waiting",
+    ])
 
     render.finish("task-1", picture(1))
+    tryOn = await advance(deps, UID, id)
+    expect(render.started[2].render.tool).toBe("makeup")
+    expect(render.started[2].images).toEqual({ source: new Uint8Array([101]) })
+
     render.finish("task-2", picture(2))
     tryOn = await advance(deps, UID, id)
-    const hairStart = render.started.find((each) => each.render.tool === "hair")
-    expect(hairStart?.images).toEqual({ source: new Uint8Array([102]) })
+    expect(render.started[3].render.tool).toBe("hair")
+    expect(render.started[3].images).toEqual({ source: new Uint8Array([102]) })
 
     render.finish("task-3", picture(3))
     tryOn = await advance(deps, UID, id)
     expect(tryOn?.status).toBe("done")
     expect(tryOn?.steps.every((step) => step.status === "done")).toBe(true)
+  })
+
+  it("starts a costume that is all makeup on the face photo at once, with no body photo", async () => {
+    const allMakeup: Fitting = {
+      ...fitting,
+      guide: { ...guide, allMakeup: true },
+      body: null,
+    }
+    const { tryOn } = await begin(deps, UID, allMakeup)
+    expect(tryOn.id).toBe(tryOnId(fitting.face.id, null, "ghostface"))
+    expect(tryOn.body).toBeNull()
+    expect(tryOn.steps.map((step) => step.render.tool)).toEqual([
+      "makeup",
+      "makeup",
+      "hair",
+    ])
+    await advance(deps, UID, tryOn.id)
+    expect(render.started).toHaveLength(1)
+    expect(render.started[0].images).toEqual({ source: FACE })
   })
 
   it("sends each render once, however many tabs ask at the same time", async () => {
@@ -257,11 +285,10 @@ describe("advance", () => {
     expect(render.discarded).toContain("task-0")
   })
 
-  it("stops the renders still running when another step fails", async () => {
+  it("fails the try-on when the face can't be read, and paints nothing after it", async () => {
     const id = await started()
     await advance(deps, UID, id)
     render.finish("task-0", picture(0))
-    await advance(deps, UID, id)
     await advance(deps, UID, id)
     render.finish("task-1", {
       status: "error",
@@ -271,7 +298,8 @@ describe("advance", () => {
     })
     const tryOn = await advance(deps, UID, id)
     expect(tryOn).toMatchObject({ status: "failed", failure: "face_photo" })
-    expect(render.discarded).toContain("task-2")
+    await advance(deps, UID, id)
+    expect(render.started).toHaveLength(2)
   })
 
   it("tries a hiccup again, and gives up after MAX_ATTEMPTS", async () => {

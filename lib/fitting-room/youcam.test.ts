@@ -33,6 +33,7 @@ const makeup: Render = {
   tool: "makeup",
   from: "face",
   after: 0,
+  size: [8, 8],
   effects: [
     {
       category: "skin_smooth",
@@ -45,6 +46,7 @@ const hair: Render = {
   tool: "hair",
   from: 1,
   after: 0,
+  size: [8, 8],
   pattern: { name: "full" },
   palettes: [{ color: "#151515", color_intensity: 85, shine_intensity: 20 }],
 }
@@ -242,9 +244,7 @@ describe("youcamProvider.check", () => {
       [`${API}/s2s/v2.0/task/makeup-vto/task-1`]: () =>
         json({ status: 200, data: { task_status: "running" } }),
     })
-    expect(
-      await youcamProvider(KEY, fetcher).check("task-1", "makeup")
-    ).toEqual({
+    expect(await youcamProvider(KEY, fetcher).check("task-1", makeup)).toEqual({
       status: "running",
     })
     expect(calls[0].init?.method ?? "GET").toBe("GET")
@@ -262,7 +262,7 @@ describe("youcamProvider.check", () => {
         }),
       "https://results.example/r.jpg": () => new Response(RESULT),
     })
-    const state = await youcamProvider(KEY, fetcher).check("task-2", "hair")
+    const state = await youcamProvider(KEY, fetcher).check("task-2", hair)
     if (state.status !== "done") throw new Error("done expected")
     // Kept as a JPEG on white, whatever YouCam sent.
     const kept = await sharp(state.image).metadata()
@@ -282,7 +282,7 @@ describe("youcamProvider.check", () => {
       "https://results.example/x": () => new Response("<html>"),
     })
     await expect(
-      youcamProvider(KEY, fetcher).check("t", "makeup")
+      youcamProvider(KEY, fetcher).check("t", makeup)
     ).rejects.toMatchObject({ reason: "failed", retry: true })
   })
 
@@ -297,10 +297,32 @@ describe("youcamProvider.check", () => {
         }),
       "https://results.example/r.jpg": () => new Response(RESULT),
     })
-    expect(
-      await youcamProvider(KEY, fetcher).check("t", "makeup")
-    ).toMatchObject({
-      status: "done",
+    expect(await youcamProvider(KEY, fetcher).check("t", makeup)).toMatchObject(
+      {
+        status: "done",
+      }
+    )
+  })
+
+  it("finds a result listed deeper, and brings it to the face photo's size", async () => {
+    const { fetcher } = youcam({
+      [`${API}/s2s/v2.0/task/makeup-vto/t`]: () =>
+        json({
+          data: {
+            task_status: "success",
+            results: { images: [{ url: "https://results.example/r.jpg" }] },
+          },
+        }),
+      "https://results.example/r.jpg": () => new Response(RESULT),
+    })
+    const state = await youcamProvider(KEY, fetcher).check("t", {
+      ...makeup,
+      size: [4, 6],
+    } as Render)
+    if (state.status !== "done") throw new Error("done expected")
+    expect(await sharp(state.image).metadata()).toMatchObject({
+      width: 4,
+      height: 6,
     })
   })
 
@@ -330,11 +352,14 @@ describe("youcamProvider.check", () => {
           data: { task_status: "error", error: code, error_message: "x" },
         }),
     })
-    expect(await youcamProvider(KEY, fetcher).check("t", tool)).toMatchObject({
-      status: "error",
-      reason,
-      retry,
-    })
+    const render = { clothes: outfit, makeup, hair }[tool]
+    expect(await youcamProvider(KEY, fetcher).check("t", render)).toMatchObject(
+      {
+        status: "error",
+        reason,
+        retry,
+      }
+    )
   })
 })
 

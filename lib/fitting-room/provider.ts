@@ -31,19 +31,22 @@ export type TaskState =
       detail: string
     }
 
-/** The pictures a render works on: JPEGs. */
+/** The pictures a render works on. */
 export type RenderImages = {
-  /** The visitor's photo, or an earlier step's picture. */
+  /** The visitor's photo, or an earlier step's picture: a JPEG. */
   source: Uint8Array
-  /** The garment (an outfit's render only). */
+  /** The garment (an outfit's render only): a JPEG. */
   garment?: Uint8Array
 }
 
 export interface RenderProvider {
   /** Starts a render; the task's id. Throws a ProviderError. */
   start(render: Render, images: RenderImages): Promise<string>
-  /** Where a task is. Throws a ProviderError when it can't be asked. */
-  check(task: string, tool: Render["tool"]): Promise<TaskState>
+  /**
+   * Where a task is; its picture, once done, comes out at the render's size.
+   * Throws a ProviderError when it can't be asked.
+   */
+  check(task: string, render: Render): Promise<TaskState>
   /** Deletes a task and its files from the service (best effort). */
   discard(task: string): Promise<void>
 }

@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest"
 import { makeupGuides } from "@/content/makeup"
 import {
   brows,
+  facePaint,
   hair,
   lips,
   makeup,
@@ -11,13 +12,21 @@ import {
   matte,
   paler,
   smooth,
-  tint,
 } from "@/lib/makeup"
 
 import { fromHex, lighter, OUTFIT, renderPlan, toHex } from "./render-plan"
+import type { FacePhoto } from "./try-on"
 
 const LIGHT_SKIN = "#E8C4A8"
 const DEEP_SKIN = "#5A3A28"
+
+/** A face photo of this skin, 768 × 1024. */
+const face = (skin: FacePhoto["skin"]): FacePhoto => ({
+  id: "f".repeat(32),
+  width: 768,
+  height: 1024,
+  skin,
+})
 
 const guide: MakeupGuide = {
   look: "A test face.",
@@ -32,13 +41,13 @@ const guide: MakeupGuide = {
       title: "Lips",
       howTo: "Lipstick.",
       products: ["lipstick"],
-      render: makeup(lips(matte("#2A2A2A", 75)), brows("#1E1E1E", 80)),
+      render: makeup(lips(matte("#2A2A2A")), brows("#1E1E1E", 100)),
     },
     {
       title: "Hair",
       howTo: "Hair.",
-      products: ["wig"],
-      render: hair("#151515", 85, 20),
+      products: ["black hair color spray"],
+      render: hair("#151515", 100, 20),
     },
   ],
 }
@@ -56,7 +65,11 @@ function makeupAt(plan: ReturnType<typeof renderPlan>, index: number) {
 
 describe("renderPlan", () => {
   it("tries the outfit on first, on the body photo", () => {
-    const [outfit] = renderPlan("frankensteins-monster", guide, LIGHT_SKIN)
+    const [outfit] = renderPlan(
+      "frankensteins-monster",
+      guide,
+      face(LIGHT_SKIN)
+    )
     expect(outfit).toEqual({
       tool: "clothes",
       garment: "frankensteins-monster",
@@ -66,50 +79,67 @@ describe("renderPlan", () => {
     })
   })
 
-  it("renders each makeup step with every effect so far, on the face, after the outfit", () => {
-    const plan = renderPlan("ghostface", guide, LIGHT_SKIN)
-    expect(plan).toHaveLength(4)
-    const first = makeupAt(plan, 1)
-    const second = makeupAt(plan, 2)
-    for (const step of [first, second]) {
-      expect(step.from).toBe("face")
-      expect(step.after).toBe(OUTFIT)
-    }
-    expect(first.effects.map((effect) => effect.category)).toEqual([
-      "skin_smooth",
-      "foundation",
+  it("paints each step on the picture of the one before, after the outfit, at the photo's size", () => {
+    const plan = renderPlan("ghostface", guide, face(LIGHT_SKIN))
+    expect(plan.map((render) => render.tool)).toEqual([
+      "clothes",
+      "makeup",
+      "makeup",
+      "hair",
     ])
-    expect(second.effects.map((effect) => effect.category)).toEqual([
+    expect(plan.slice(1).map((render) => render.from)).toEqual(["face", 1, 2])
+    for (const render of plan.slice(1)) {
+      expect(render.after).toBe(OUTFIT)
+      if (render.tool !== "clothes") expect(render.size).toEqual([768, 1024])
+    }
+    // Each makeup step sends only its own effects: the ones before are
+    // already on the picture it paints on.
+    expect(makeupAt(plan, 2).effects.map((effect) => effect.category)).toEqual([
       "skin_smooth",
-      "foundation",
       "lip_color",
       "eyebrows",
     ])
-  })
-
-  it("colors the hair on the last makeup picture", () => {
-    const plan = renderPlan("ghostface", guide, LIGHT_SKIN)
-    expect(plan[3]).toEqual({
+    expect(plan[3]).toMatchObject({
       tool: "hair",
       pattern: { name: "full" },
       palettes: [
-        { color: "#151515", color_intensity: 85, shine_intensity: 20 },
+        { color: "#151515", color_intensity: 100, shine_intensity: 20 },
       ],
-      from: 2,
-      after: OUTFIT,
     })
   })
 
-  it("colors the hair on the face photo when no makeup comes before it", () => {
-    const hairOnly: MakeupGuide = { ...guide, steps: [guide.steps[2]] }
-    expect(renderPlan("ghostface", hairOnly, LIGHT_SKIN)[1]).toMatchObject({
-      tool: "hair",
-      from: "face",
-    })
+  it("starts a costume that is all makeup on the face photo, with no outfit to wait for", () => {
+    const plan = renderPlan(
+      "nikki-freaky-nikki-freeman",
+      { ...guide, allMakeup: true },
+      face(LIGHT_SKIN)
+    )
+    expect(plan.map((render) => render.tool)).toEqual([
+      "makeup",
+      "makeup",
+      "hair",
+    ])
+    expect(plan.map((render) => render.from)).toEqual(["face", 0, 1])
+    for (const render of plan) expect(render.after).toBeNull()
   })
 
-  it("turns off YouCam's own smoothing, unless the guide smooths", () => {
-    const first = makeupAt(renderPlan("ghostface", guide, LIGHT_SKIN), 1)
+  it("lets a later step put the same makeup on again, as a second coat", () => {
+    const coats: MakeupGuide = {
+      ...guide,
+      steps: [0, 1].map(() => ({
+        title: "Coat",
+        howTo: "White.",
+        products: ["white cream face paint"],
+        render: makeup(...facePaint("#FFFFFF")),
+      })),
+    }
+    const plan = renderPlan("pennywise", coats, face(LIGHT_SKIN))
+    expect(makeupAt(plan, 2).effects).toEqual(makeupAt(plan, 1).effects)
+    expect(plan[2].from).toBe(1)
+  })
+
+  it("turns off YouCam's own smoothing, unless the step smooths", () => {
+    const first = makeupAt(renderPlan("ghostface", guide, face(LIGHT_SKIN)), 1)
     expect(first.effects[0]).toEqual({
       category: "skin_smooth",
       skinSmoothStrength: 0,
@@ -120,7 +150,10 @@ describe("renderPlan", () => {
       ...guide,
       steps: [{ ...guide.steps[0], render: makeup(smooth(40), paler(1)) }],
     }
-    const only = makeupAt(renderPlan("ghostface", smoothed, LIGHT_SKIN), 1)
+    const only = makeupAt(
+      renderPlan("ghostface", smoothed, face(LIGHT_SKIN)),
+      1
+    )
     const smoothing = only.effects.filter(
       (effect) => effect.category === "skin_smooth"
     )
@@ -129,7 +162,7 @@ describe("renderPlan", () => {
 
   it("makes a pale foundation from the visitor's own skin", () => {
     for (const skin of [LIGHT_SKIN, DEEP_SKIN] as const) {
-      const first = makeupAt(renderPlan("ghostface", guide, skin), 1)
+      const first = makeupAt(renderPlan("ghostface", guide, face(skin)), 1)
       const foundation = first.effects[1]
       if (foundation.category !== "foundation")
         throw new Error("foundation expected")
@@ -138,20 +171,20 @@ describe("renderPlan", () => {
     }
   })
 
-  it("keeps a fixed tint as it is, on every skin", () => {
-    const tinted: MakeupGuide = {
+  it("keeps face paint's color as it is, on every skin", () => {
+    const painted: MakeupGuide = {
       ...guide,
-      steps: [{ ...guide.steps[0], render: makeup(tint("#9EAA92")) }],
+      steps: [{ ...guide.steps[0], render: makeup(...facePaint("#9EAA92")) }],
     }
     for (const skin of [LIGHT_SKIN, DEEP_SKIN] as const) {
-      const first = makeupAt(renderPlan("ghostface", tinted, skin), 1)
-      expect(first.effects[1]).toEqual(tint("#9EAA92"))
+      const first = makeupAt(renderPlan("ghostface", painted, face(skin)), 1)
+      expect(first.effects.slice(1)).toEqual(facePaint("#9EAA92"))
     }
   })
 
   it("never changes the guide it plans", () => {
     const before = JSON.stringify(guide)
-    renderPlan("ghostface", guide, DEEP_SKIN)
+    renderPlan("ghostface", guide, face(DEEP_SKIN))
     expect(JSON.stringify(guide)).toBe(before)
   })
 
@@ -159,17 +192,13 @@ describe("renderPlan", () => {
     "plans %s with every color a hex",
     (slug, costumeGuide) => {
       for (const skin of [LIGHT_SKIN, DEEP_SKIN] as const) {
-        const plan = renderPlan(slug, costumeGuide, skin)
-        expect(plan).toHaveLength(costumeGuide.steps.length + 1)
-        expect(plan[OUTFIT].tool).toBe("clothes")
+        const plan = renderPlan(slug, costumeGuide, face(skin))
+        const outfit = costumeGuide.allMakeup ? 0 : 1
+        expect(plan).toHaveLength(costumeGuide.steps.length + outfit)
+        if (outfit) expect(plan[OUTFIT].tool).toBe("clothes")
         const colors = JSON.stringify(plan).match(/"color":"[^"]*"/g) ?? []
         for (const color of colors)
           expect(color).toMatch(/^"color":"#[0-9A-F]{6}"$/)
-        const lastMakeup = plan.findLastIndex(
-          (render) => render.tool === "makeup"
-        )
-        for (const render of plan)
-          if (render.tool === "hair") expect(render.from).toBe(lastMakeup)
       }
     }
   )

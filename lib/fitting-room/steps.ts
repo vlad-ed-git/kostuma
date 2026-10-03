@@ -5,6 +5,7 @@ import type { MakeupGuide } from "@/lib/makeup"
 import {
   ProviderError,
   type RenderFailure,
+  type RenderImages,
   type RenderProvider,
 } from "./provider"
 import { PIPELINE_VERSION, renderPlan, type Render } from "./render-plan"
@@ -42,18 +43,18 @@ export type Deps = {
   now?: () => number
 }
 
-/** What a try-on is made of. */
+/** What a try-on is made of: no body photo for a costume that is all makeup. */
 export type Fitting = {
   slug: string
   guide: MakeupGuide
   face: FacePhoto
-  body: Photo
+  body: Photo | null
 }
 
 /** A try-on's id: its photos, costume and pipeline version. */
-export function tryOnId(face: string, body: string, slug: string) {
+export function tryOnId(face: string, body: string | null, slug: string) {
   return createHash("sha256")
-    .update(`${face}\n${body}\n${slug}\n${PIPELINE_VERSION}`)
+    .update(`${face}\n${body ?? "-"}\n${slug}\n${PIPELINE_VERSION}`)
     .digest("hex")
     .slice(0, 32)
 }
@@ -64,13 +65,13 @@ export function newTryOn(
   now: number
 ): TryOn {
   return {
-    id: tryOnId(face.id, body.id, slug),
+    id: tryOnId(face.id, body?.id ?? null, slug),
     slug,
     face: face.id,
-    body: body.id,
+    body: body?.id ?? null,
     version: PIPELINE_VERSION,
     status: "running",
-    steps: renderPlan(slug, guide, face.skin).map((render) => ({
+    steps: renderPlan(slug, guide, face).map((render) => ({
       render,
       status: "waiting",
       task: null,
@@ -196,11 +197,10 @@ async function send(deps: Deps, uid: string, tryOn: TryOn, index: number) {
 
   let task: string
   try {
-    const garment =
-      step.render.tool === "clothes"
-        ? await deps.garment(step.render.garment)
-        : undefined
-    task = await provider.start(step.render, { source, garment })
+    task = await provider.start(step.render, {
+      source,
+      ...(await inputsOf(deps, step.render)),
+    })
   } catch (error) {
     const { reason, retry } = failureOf(error)
     console.error(`Try-on ${tryOn.id}: step ${index} could not start.`, error)
@@ -250,7 +250,7 @@ async function collect(
 
   let state
   try {
-    state = await provider.check(task, step.render.tool)
+    state = await provider.check(task, step.render)
   } catch (error) {
     const { reason, retry } = failureOf(error)
     // A hiccup asking: the next ask tries again, unless it has gone on too long.
@@ -288,6 +288,16 @@ async function collect(
   })
   await provider.discard(task)
   return kept
+}
+
+/** What a render needs besides its source picture: an outfit, its garment. */
+async function inputsOf(
+  deps: Deps,
+  render: Render
+): Promise<Omit<RenderImages, "source">> {
+  if (render.tool === "clothes")
+    return { garment: await deps.garment(render.garment) }
+  return {}
 }
 
 /** A step that didn't work: tried again, or failed for good. */
@@ -333,7 +343,8 @@ async function sourceOf(
 ): Promise<Uint8Array | null | "not yet"> {
   const done = (index: number) => tryOn.steps[index]?.status === "done"
   if (render.after !== null && !done(render.after)) return "not yet"
-  if (render.from === "body") return store.photo(uid, "body", tryOn.body)
+  if (render.from === "body")
+    return tryOn.body ? store.photo(uid, "body", tryOn.body) : null
   if (render.from === "face") return store.photo(uid, "face", tryOn.face)
   if (!done(render.from)) return "not yet"
   return store.stepImage(uid, tryOn.id, render.from)

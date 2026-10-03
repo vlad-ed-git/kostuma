@@ -63,7 +63,7 @@ export const fakeProvider: RenderProvider = {
     const image =
       render.tool === "clothes"
         ? await dress(images.source, images.garment)
-        : await paint(render, images.source)
+        : await wash(render, images.source)
     return { status: "done", image }
   },
 
@@ -104,29 +104,27 @@ async function dress(body: Uint8Array, garment?: Uint8Array) {
   )
 }
 
-type Painted = Extract<Render, { tool: "makeup" | "hair" }>
+type Painted = Exclude<Render, { tool: "clothes" }>
 
-/** The step's colors: every palette color of its effects, or its hair. */
+/** The step's colors: every palette color of its effects, or its hair's. */
 function colorsOf(render: Painted): string[] {
-  const palettes =
-    render.tool === "hair"
-      ? render.palettes
-      : render.effects.flatMap((effect) =>
-          "palettes" in effect ? effect.palettes : []
-        )
-  return palettes.map((palette) => palette.color)
+  if (render.tool === "hair")
+    return render.palettes.map((palette) => palette.color)
+  return render.effects
+    .flatMap((effect) => ("palettes" in effect ? effect.palettes : []))
+    .map((palette) => palette.color)
 }
 
-async function paint(render: Painted, image: Uint8Array) {
+async function wash(render: Painted, image: Uint8Array) {
   const picture = sharp(image)
   const { width = 1, height = 1 } = await picture.metadata()
   const colors = colorsOf(render)
   const [red, green, blue] = average(colors)
 
-  // Hair: the top third. Makeup: the whole face, more with each step.
-  const band = render.tool === "hair" ? Math.round(height / 3) : height
-  const alpha =
-    render.tool === "hair" ? 0.55 : Math.min(0.45, 0.08 * colors.length)
+  // Hair: the top third. Makeup: the whole face, more with each color.
+  const hair = render.tool === "hair"
+  const band = hair ? Math.round(height / 3) : height
+  const alpha = hair ? 0.55 : Math.min(0.45, 0.08 * Math.max(2, colors.length))
   const wash = await sharp({
     create: {
       width,

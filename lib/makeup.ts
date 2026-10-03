@@ -1,17 +1,18 @@
 /**
- * Makeup guides (content/makeup.ts): the everyday makeup that brings a face
- * close to a character, as the Fitting Room shows it. Not a film's makeup
- * department: what its artists do with paint and prosthetics becomes the
- * closest makeup a visitor can do at home, which YouCam can render, and the
- * face stays theirs (no face painted over). Each step is one YouCam render
- * on the previous step's picture (1 unit), so the visitor sees their face
- * after every step:
- * - Makeup VTO: `POST /s2s/v2.0/task/makeup-vto` with `version: "1.0"` and
- *   the step's `effects`.
- * - Hair Color: `POST /s2s/v2.0/task/hair-color` with the step's `pattern`
- *   and `palettes`.
- * The effects mirror YouCam's schema, so a step is sent as it is, with two
- * exceptions the renderer fills in:
+ * Makeup guides (content/makeup.ts): the makeup that turns a visitor's own
+ * face into a character, step by step, as the Fitting Room shows it (owner,
+ * 2026-10-03). The visitor sits at a vanity and follows the steps: every
+ * step is makeup they put on their face at full strength ("no light
+ * touches... LOTS"), and at most one colors their hair, last. Up to ten
+ * steps, each one YouCam render on the picture the step before left, so
+ * they see their face after every step, and only YouCam's makeup and hair
+ * color renderers make the pictures (owner: never an image editor):
+ * - `makeup`: Makeup VTO (`/s2s/v2.0/task/makeup-vto`, 1 unit), the step's
+ *   `effects` as YouCam's schema has them;
+ * - `hair`: Hair Color (`/s2s/v2.0/task/hair-color`, 1 unit).
+ * Steps may repeat a kind of makeup: each renders on the last picture, so a
+ * second coat goes on top of the first, as it would on a face. Two things
+ * the renderer fills in (lib/fitting-room/render-plan.ts):
  * - A foundation `{ lighterThanSkin }` color: a pale or porcelain look is
  *   paler than the visitor's own skin, never one fixed beige on every face;
  *   the renderer measures the skin on their photo and sends that shade.
@@ -47,6 +48,14 @@ export const patterns = {
     "2colors164": 2, // a cat eye: 1 under and inside, 2 the lid and the wing
   },
   eye_liner: {
+    Drama8: 1, // bold wings above and below: a pointed, graphic eye
+    Drama51: 1, // a thick black almond all around the eye
+    Drama42: 1, // a solid black lid up to the crease, winged
+    Drama47: 1, // bat wings at the outer corner
+    Drama40: 1, // spiky drawn lashes all around: a doll's
+    Drama34: 1, // drawn lashes, dashes above and below the eye
+    Drama12: 1, // a big smoked, feathered wing
+    Drama13: 1, // smoke under the eye and a long wing
     PandaSmudge11: 1, // heavy and smudged all around, swept up at the corner
     PandaSmudge1: 1, // softly smudged all around
     FullRim7: 1, // smudged kohl around the whole eye
@@ -54,6 +63,9 @@ export const patterns = {
     Lower11: 1, // a thin line along the upper lashes
   },
   eyebrows: {
+    Drama4: 1, // thin and long, sweeping up: a painted brow
+    Drama7: 1, // thick, bushy, swept up
+    Drama14: 1, // thick and wavy
     Thin1: 1,
     HighArch4: 1,
     Arrow13: 1, // long, sharp, high
@@ -71,19 +83,26 @@ export const patterns = {
     Circle2: 1, // round circles on the apples: doll cheeks
     Round2: 1, // a wide flush across the cheeks
     Oblique2: 1, // swept along the cheekbones
+    Rectangle7: 1, // a wide block over the cheeks
+    Triangle3: 1, // a triangle on each cheekbone, its point toward the nose
+    "3colors8": 3, // three patches on the cheekbone: 1 inside, 2 out, 3 up
   },
   contour: {
+    OvalFace13: 1, // a dot on the tip of the nose
+    HeartFace2: 1, // the temples, under the cheekbones and the jaw, wide
     HeartFace3: 1, // under the cheekbones, the temples and the jaw
     TriangleFace5: 1, // deep hollows from the cheekbones down to the jaw: gaunt
     OvalFace6: 1, // the hairline, the sides of the nose and under the jaw
   },
   bronzer: {
+    Bronzer1: 1, // the middle of the forehead, the temples and the cheek hollows
     Bronzer2: 1, // half-moons under the eyes, the temples and the brow: hollow, tired eyes
     Bronzer3: 1, // the edges of the face, the cheek hollows and the nose
     Bronzer5: 1, // the temples, the cheek hollows and the jaw: a skull's shadows
   },
   highlighter: {
     OvalFace5: 1, // under the eyes, down the nose and the chin
+    OvalFace62: 1, // the forehead, the cheeks and the chin, wide
   },
   lip_liner: {
     Natural1: 1,
@@ -171,6 +190,12 @@ export type MakeupEffect =
       ]
     }
   | {
+      category: "concealer"
+      palettes: [
+        Pigment & { colorUnderEyeIntensity: number; coverageLevel: number },
+      ]
+    }
+  | {
       category: "contour"
       pattern: { name: PatternName<"contour"> }
       palettes: [Pigment]
@@ -255,12 +280,14 @@ export type MakeupStep = {
 export type MakeupGuide = {
   /** The finished face, in one sentence. */
   look: string
-  /** 2–4 steps, in the order the visitor does them; hair comes last. */
-  steps: MakeupStep[]
   /**
-   * What completes the look but no picture shows (blood, stitches, lenses,
-   * teeth), said once after the steps.
+   * There is no outfit to try on: the character is all makeup (owner,
+   * 2026-10-03), and the Fitting Room needs only the face photo.
    */
+  allMakeup?: true
+  /** 3–10 steps, in the order the visitor does them; a hair color last. */
+  steps: MakeupStep[]
+  /** What completes the costume but no step shows, said after the steps. */
   finish?: string
 }
 
@@ -284,19 +311,6 @@ export const matte = (color: Hex, intensity = 100): Matte => ({
   color,
   texture: "matte",
   colorIntensity: intensity,
-})
-
-/** An eye color with white (or `sparkle`) shimmer in it. */
-export const shimmer = (
-  color: Hex,
-  intensity = 100,
-  sparkle: Hex = "#FFFFFF"
-): EyePalette => ({
-  color,
-  texture: "shimmer",
-  colorIntensity: intensity,
-  shimmerColor: sparkle,
-  shimmerIntensity: 60,
 })
 
 /** An eye color with a metal sheen of the same color. */
@@ -347,28 +361,45 @@ const foundation = (
 })
 
 /**
- * A paler foundation: `shades` lighter than the visitor's own skin, whatever
- * its tone. Four shades at full coverage, set with white powder, is how the
- * guides "paint the face white" (YouCam's foundation shows about half of the
- * change it is given, so the base needs this much to read as pale).
+ * A foundation in the visitor's own tone, `shades` lighter (0: their own
+ * shade, for an even base; 4: as pale as skin goes), with an optional glow
+ * (dewy, sweaty). Skin, not paint: a painted face is `facePaint`.
  */
 export const paler = (shades: number, coverage = 100, glow = 0) =>
   foundation({ lighterThanSkin: shades }, coverage, glow)
 
-/**
- * A color over the skin: color corrector or face paint mixed into
- * foundation (green for a monster, gray for a corpse).
- */
-export const tint = (color: Hex, coverage = 100) =>
-  foundation(color, coverage, 0)
+/** Concealer at full coverage, under the eyes too: a second layer of base. */
+export const concealer = (color: Hex, intensity = 100): MakeupEffect => ({
+  category: "concealer",
+  palettes: [
+    {
+      color,
+      colorIntensity: intensity,
+      colorUnderEyeIntensity: intensity,
+      coverageLevel: intensity,
+    },
+  ],
+})
 
 /**
- * Face paint: an opaque color over the whole face (a clown's white, a
- * monster's green). YouCam's foundation at full coverage reads as paint
- * (pure white at 100 % turns any skin white, measured 2026-10-03).
+ * One coat of face paint, as YouCam's makeup engine can lay it: the color as
+ * foundation, concealer, highlighter, contour and bronzer at once, each
+ * covering its own part of the face (foundation alone takes skin about a
+ * third of the way to white; these together, two coats, all of it: measured
+ * 2026-10-03). A step that paints a coat uses up those five kinds of makeup:
+ * shadows and highlights go on in the next step, on top of it.
  */
-export const facePaint = (color: Hex, coverage = 100) =>
-  foundation(color, coverage, 0)
+export const facePaint = (color: Hex): MakeupEffect[] => [
+  foundation(color, 100, 0),
+  concealer(color),
+  highlight(color, "OvalFace62"),
+  contour(color, 100, "OvalFace6"),
+  shading("Bronzer3", color),
+]
+
+/** Paint on the tip of the nose: a round dot (a clown's nose). */
+export const noseTip = (color: Hex): MakeupEffect =>
+  contour(color, 100, "OvalFace13")
 
 /**
  * Shadows sculpting the face (see `patterns.contour`; under the cheekbones,
@@ -408,6 +439,28 @@ export const blush = (
   category: "blush",
   pattern: { name },
   palettes: [matte(color, intensity)],
+})
+
+/**
+ * A matte light color on the high points of the face (see
+ * `patterns.highlighter`): a lighter muzzle, a pale forehead.
+ */
+export const highlight = (
+  color: Hex,
+  name: PatternName<"highlighter"> = "OvalFace5"
+): MakeupEffect => ({
+  category: "highlighter",
+  pattern: { name },
+  palettes: [
+    {
+      color,
+      colorIntensity: 100,
+      glowIntensity: 0,
+      shimmerIntensity: 0,
+      shimmerDensity: 0,
+      shimmerSize: 0,
+    },
+  ],
 })
 
 /** A glow on the high points of the face. */

@@ -30,13 +30,13 @@ export type StartResult =
   | { ok: false; error: StartError; photo?: PhotoKind }
 
 /**
- * Starts a costume's try-on, once the visitor has confirmed their two
- * photos (owner, 2026-10-03): checks each photo (an image, big enough, a
- * photo's shape: no AI), prepares it (upright, shrunk, JPEG), keeps both,
- * and starts the renders, which the page then follows (app/api/fitting-room).
- * A photo is a new file, or the one the account used last (`keepFace`,
- * `keepBody`: its id). The same photos and costume again give the try-on
- * already made.
+ * Starts a costume's try-on, once the visitor has confirmed their photos
+ * (owner, 2026-10-03): the face, and head to toe unless the costume is all
+ * makeup. Checks each photo (an image, big enough, a photo's shape: no AI),
+ * prepares it (upright, shrunk, JPEG), keeps it, and starts the renders,
+ * which the page then follows (app/api/fitting-room). A photo is a new
+ * file, or the one the account used last (`keepFace`, `keepBody`: its id).
+ * The same photos and costume again give the try-on already made.
  */
 export async function startTryOn(form: FormData): Promise<StartResult> {
   try {
@@ -76,9 +76,11 @@ export async function startTryOn(form: FormData): Promise<StartResult> {
       return last && id === last.id ? last : null
     }
     const face = fresh.face?.photo ?? (keep("face") as FacePhoto | null)
-    const body = fresh.body?.photo ?? keep("body")
+    // A costume that is all makeup needs no body photo, and uses none.
+    const body = guide.allMakeup ? null : (fresh.body?.photo ?? keep("body"))
     if (!face) return { ok: false, error: "missing_photo", photo: "face" }
-    if (!body) return { ok: false, error: "missing_photo", photo: "body" }
+    if (!body && !guide.allMakeup)
+      return { ok: false, error: "missing_photo", photo: "body" }
 
     if (fresh.face || fresh.body) {
       await deps.store.savePhotos(user.uid, {

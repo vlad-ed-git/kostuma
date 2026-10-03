@@ -11,13 +11,14 @@ import {
 import type { Render } from "./render-plan"
 
 /**
- * YouCam's AI Clothes (cloth-v4), Makeup VTO and Hair Color
- * (docs.perfectcorp.com, API v2.0; the facts in checkpoint §5.4). A render:
- * the pictures go up through the File API (no units), the task starts on
- * them (2 units for an outfit, 1 for makeup or hair), the task is polled
- * until it has a result (a URL that lives 2 hours, fetched at once, and
- * kept as a JPEG on white: makeup and hair come back as PNGs with an alpha
- * channel), then deleted with its files. A failed task costs no units.
+ * YouCam's AI APIs the Fitting Room uses (docs.perfectcorp.com, API v2.0;
+ * the facts in checkpoint §5.4): AI Clothes (cloth-v4) for the outfit, and
+ * for the face Makeup VTO and Hair Color. A render: the pictures go
+ * up through the File API (no units), the task starts on them, the task is
+ * polled until it has a result (a URL that lives 2 hours, fetched at once
+ * and kept as a JPEG on white, at the face photo's size: makeup comes back
+ * as a PNG with an alpha channel), then deleted with its files. A failed
+ * task costs no units.
  */
 
 const BASE = "https://yce-api-01.makeupar.com"
@@ -33,16 +34,22 @@ const endpoints: Record<Render["tool"], string> = {
 
 type Failure = { reason: RenderFailure; retry: boolean }
 
+type Tool = Render["tool"]
+
 /** The visitor's own photo could not be read: theirs to retake. */
-const unreadable = (tool: Render["tool"]): Failure => ({
+const unreadable = (tool: Tool): Failure => ({
   reason: tool === "clothes" ? "body_photo" : "face_photo",
   retry: false,
 })
 
-// The engine's errors (a finished task whose `task_status` is "error"),
-// in the visitor's terms. Anything not listed is "failed", worth retrying.
-const engineErrors: Record<string, (tool: Render["tool"]) => Failure> = {
+/** A photo that can't be used at all. */
+const rejected = (): Failure => ({ reason: "photo_rejected", retry: false })
+
+// The engine's errors (a finished task whose `task_status` is "error"), in
+// the visitor's terms. Anything not listed is "failed", worth retrying.
+const engineErrors: Record<string, (tool: Tool) => Failure> = {
   error_no_face: unreadable,
+  error_src_no_face: unreadable,
   error_face_position_invalid: unreadable,
   error_face_position_too_small: unreadable,
   error_face_position_out_of_boundary: unreadable,
@@ -52,25 +59,22 @@ const engineErrors: Record<string, (tool: Render["tool"]) => Failure> = {
   error_invalid_src: unreadable,
   error_apply_region_mismatch: unreadable,
   error_multi_person: unreadable,
-  error_below_min_image_size: () => ({
-    reason: "photo_rejected",
-    retry: false,
-  }),
-  error_exceed_max_image_size: () => ({
-    reason: "photo_rejected",
-    retry: false,
-  }),
-  exceed_max_filesize: () => ({ reason: "photo_rejected", retry: false }),
-  error_decode_image: () => ({ reason: "photo_rejected", retry: false }),
-  error_nsfw_content_detected: () => ({
-    reason: "photo_rejected",
-    retry: false,
-  }),
+  error_below_min_image_size: rejected,
+  error_exceed_max_image_size: rejected,
+  exceed_max_filesize: rejected,
+  error_decode_image: rejected,
+  error_nsfw_content_detected: rejected,
   // The garment (the costume's photo) or the request: Kostuma's to fix.
   error_invalid_ref: () => ({ reason: "failed", retry: false }),
   invalid_parameter: () => ({ reason: "failed", retry: false }),
   // The outfit came out the same as the photo: no point paying again.
   error_editing_failed: () => ({ reason: "failed", retry: false }),
+}
+
+function engineFailure(code: string, tool: Tool): Failure {
+  const known = engineErrors[code]
+  if (known) return known(tool)
+  return { reason: "failed", retry: true }
 }
 
 type Fetch = typeof fetch
@@ -104,38 +108,39 @@ export function youcamProvider(
     return dataOf(body)
   }
 
-  return {
-    async start(render, { source, garment }) {
-      /** Puts a JPEG on YouCam; its file id. */
-      async function upload(image: Uint8Array, name: string) {
-        const answer = await call("/s2s/v2.0/file", {
-          method: "POST",
-          body: JSON.stringify({
-            files: [
-              {
-                content_type: "image/jpeg",
-                file_name: name,
-                file_size: image.byteLength,
-              },
-            ],
-          }),
-        })
-        const file = (
-          answer.files as Record<string, unknown>[] | undefined
-        )?.[0]
-        const request = (
-          file?.requests as Record<string, unknown>[] | undefined
-        )?.[0]
-        const fileId = file?.file_id
-        if (typeof fileId !== "string" || typeof request?.url !== "string") {
-          throw new ProviderError("YouCam gave no upload URL.", "failed", true)
-        }
-        await put(fetcher, request, image)
-        return fileId
-      }
+  /** Puts a picture on YouCam; its file id. */
+  async function upload(image: Uint8Array, name: string) {
+    const answer = await call("/s2s/v2.0/file", {
+      method: "POST",
+      body: JSON.stringify({
+        files: [
+          {
+            content_type: "image/jpeg",
+            file_name: name,
+            file_size: image.byteLength,
+          },
+        ],
+      }),
+    })
+    const file = (answer.files as Record<string, unknown>[] | undefined)?.[0]
+    const request = (
+      file?.requests as Record<string, unknown>[] | undefined
+    )?.[0]
+    const fileId = file?.file_id
+    if (typeof fileId !== "string" || typeof request?.url !== "string") {
+      throw new ProviderError("YouCam gave no upload URL.", "failed", true)
+    }
+    await put(fetcher, request, image)
+    return fileId
+  }
 
-      let params: Record<string, unknown>
-      if (render.tool === "clothes") {
+  async function paramsOf(
+    render: Render,
+    { source, garment }: Parameters<RenderProvider["start"]>[1]
+  ): Promise<Record<string, unknown>> {
+    switch (render.tool) {
+      case "clothes": {
+        // Checked before anything is uploaded.
         if (!garment) {
           throw new ProviderError(
             "An outfit needs its garment.",
@@ -143,7 +148,7 @@ export function youcamProvider(
             false
           )
         }
-        params = {
+        return {
           src_file_id: await upload(source, "body.jpg"),
           ref_file_id: await upload(garment, "garment.jpg"),
           garment_category: render.category,
@@ -151,18 +156,25 @@ export function youcamProvider(
           // The largest person is the visitor; a busy background is fine.
           filter_multi_person: "off",
         }
-      } else {
-        const src_file_id = await upload(source, "face.jpg")
-        params =
-          render.tool === "makeup"
-            ? { src_file_id, version: "1.0", effects: render.effects }
-            : {
-                src_file_id,
-                pattern: render.pattern,
-                palettes: render.palettes,
-              }
       }
+      case "makeup":
+        return {
+          src_file_id: await upload(source, "face.jpg"),
+          version: "1.0",
+          effects: render.effects,
+        }
+      case "hair":
+        return {
+          src_file_id: await upload(source, "face.jpg"),
+          pattern: render.pattern,
+          palettes: render.palettes,
+        }
+    }
+  }
 
+  return {
+    async start(render, images) {
+      const params = await paramsOf(render, images)
       const started = await call(endpoints[render.tool], {
         method: "POST",
         body: JSON.stringify(params),
@@ -173,8 +185,10 @@ export function youcamProvider(
       return started.task_id
     },
 
-    async check(task, tool): Promise<TaskState> {
-      const data = await call(`${endpoints[tool]}/${encodeURIComponent(task)}`)
+    async check(task, render): Promise<TaskState> {
+      const data = await call(
+        `${endpoints[render.tool]}/${encodeURIComponent(task)}`
+      )
       if (data.task_status === "success") {
         const url = resultUrl(data.results)
         if (!url) {
@@ -185,20 +199,17 @@ export function youcamProvider(
             detail: "YouCam: a success without a result URL",
           }
         }
+        const size = render.tool === "clothes" ? null : render.size
         return {
           status: "done",
-          image: await asJpeg(await download(fetcher, url)),
+          image: await asJpeg(await download(fetcher, url), size),
         }
       }
       if (data.task_status === "error") {
         const code = typeof data.error === "string" ? data.error : "unknown"
-        const known = engineErrors[code]?.(tool) ?? {
-          reason: "failed",
-          retry: true,
-        }
         return {
           status: "error",
-          ...known,
+          ...engineFailure(code, render.tool),
           detail: `YouCam: ${code} ${String(data.error_message ?? "")}`.trim(),
         }
       }
@@ -225,13 +236,27 @@ function dataOf(body: unknown): Record<string, unknown> {
   return {}
 }
 
-/** The result's URL: `results.url` (the schema) or `results[0].download_url`. */
-function resultUrl(results: unknown): string | null {
-  if (Array.isArray(results)) return resultUrl(results[0])
-  if (typeof results !== "object" || results === null) return null
-  const { url, download_url } = results as Record<string, unknown>
-  if (typeof url === "string") return url
-  return typeof download_url === "string" ? download_url : null
+/**
+ * The result's URL, wherever the tool puts it: `results.url` (the schemas),
+ * `results[0].download_url`, or deeper.
+ */
+export function resultUrl(results: unknown, depth = 0): string | null {
+  if (depth > 4 || typeof results !== "object" || results === null) return null
+  if (Array.isArray(results)) {
+    for (const item of results) {
+      const url = resultUrl(item, depth + 1)
+      if (url) return url
+    }
+    return null
+  }
+  const fields = results as Record<string, unknown>
+  for (const name of ["url", "download_url"])
+    if (typeof fields[name] === "string") return fields[name]
+  for (const value of Object.values(fields)) {
+    const url = resultUrl(value, depth + 1)
+    if (url) return url
+  }
+  return null
 }
 
 /** A refused call, in the visitor's terms. */
@@ -288,14 +313,23 @@ async function download(fetcher: Fetch, url: string) {
   }
 }
 
-/** A result as the Fitting Room keeps every picture: a JPEG on white. */
-async function asJpeg(image: Uint8Array) {
+/**
+ * A result as the Fitting Room keeps every picture: a JPEG on white, at the
+ * face photo's size (`size`) should it come back another, so every step's
+ * picture lines up with the one before.
+ */
+async function asJpeg(image: Uint8Array, size: [number, number] | null) {
   try {
+    let picture = sharp(image).flatten({ background: "#FFFFFF" })
+    if (size) {
+      const { width, height } = await sharp(image).metadata()
+      if (width !== size[0] || height !== size[1])
+        picture = picture.resize(size[0], size[1], { fit: "fill" })
+    }
     return new Uint8Array(
-      await sharp(image)
-        .flatten({ background: "#FFFFFF" })
+      await picture
         .toColourspace("srgb")
-        .jpeg({ quality: 90, chromaSubsampling: "4:4:4" })
+        .jpeg({ quality: 92, chromaSubsampling: "4:4:4" })
         .toBuffer()
     )
   } catch (error) {

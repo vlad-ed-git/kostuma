@@ -13,7 +13,8 @@ import { makeupGuides } from "./makeup"
 
 // The guides are written by hand, and each step goes to YouCam as it is:
 // these checks hold every effect to YouCam's schema (docs.perfectcorp.com,
-// makeup_vto and ai_hair_color), so a typo fails here, not in a paid render.
+// makeup_vto and ai_hair_color), so a typo fails here, not in a paid render,
+// and every guide to the owner's rules for them.
 
 type Values = Record<string, unknown>
 
@@ -98,6 +99,11 @@ function problemsOf(effect: MakeupEffect): string[] {
       case "foundation":
         problems.push(...check(palette, ["glowIntensity", "coverageIntensity"]))
         break
+      case "concealer":
+        problems.push(
+          ...check(palette, ["colorUnderEyeIntensity", "coverageLevel"])
+        )
+        break
       case "highlighter":
         problems.push(
           ...check(palette, [
@@ -156,6 +162,13 @@ describe("the makeup guides", () => {
     )
   })
 
+  it("mark the costumes that are all makeup (owner, 2026-10-03)", () => {
+    const allMakeup = guides
+      .filter(([, guide]) => guide.allMakeup)
+      .map(([slug]) => slug)
+    expect(allMakeup).toEqual(["nikki-freaky-nikki-freeman"])
+  })
+
   it.each(guides)("%s reads well", (_, guide) => {
     const sentences = [guide.look, ...(guide.finish ? [guide.finish] : [])]
     for (const text of [
@@ -167,6 +180,9 @@ describe("the makeup guides", () => {
     }
     for (const sentence of sentences) expect(sentence).toMatch(/[.!?'"]$/)
     expect(guide.look.length).toBeLessThanOrEqual(160)
+    expect(new Set(guide.steps.map((step) => step.title)).size).toBe(
+      guide.steps.length
+    )
     for (const step of guide.steps) {
       expect(step.title.length).toBeGreaterThan(0)
       expect(step.title.length).toBeLessThanOrEqual(30)
@@ -182,79 +198,73 @@ describe("the makeup guides", () => {
     }
   })
 
-  it.each(guides)("%s takes 3 to 6 renders, hair last", (_, guide) => {
-    // One YouCam render per step, one unit each.
-    expect(guide.steps.length).toBeGreaterThanOrEqual(3)
-    expect(guide.steps.length).toBeLessThanOrEqual(6)
-    const tools = guide.steps.map((step) => step.render.tool)
-    expect(tools.filter((tool) => tool === "hair").length).toBeLessThanOrEqual(
-      1
-    )
-    if (tools.includes("hair")) expect(tools.at(-1)).toBe("hair")
-  })
+  it.each(guides)(
+    "%s is makeup at a vanity: 3 to 10 steps, one hair color at most, last",
+    (_, guide) => {
+      // The owner (2026-10-03): Makeup VTO and Hair Color only, the hair
+      // once; never an image editor, a wig, lenses or a shaved head.
+      expect(guide.steps.length).toBeGreaterThanOrEqual(3)
+      expect(guide.steps.length).toBeLessThanOrEqual(10)
+      const tools = guide.steps.map((step) => step.render.tool)
+      for (const tool of tools) expect(["makeup", "hair"]).toContain(tool)
+      expect(
+        tools.filter((tool) => tool === "hair").length
+      ).toBeLessThanOrEqual(1)
+      if (tools.includes("hair")) expect(tools.at(-1)).toBe("hair")
+      const texts = [
+        guide.look,
+        ...guide.steps.flatMap((step) => [step.title, step.howTo]),
+        ...(guide.finish ? [guide.finish] : []),
+      ]
+      for (const text of texts)
+        expect(text).not.toMatch(/bald|shav|contact lens|lenses|prosthetic/i)
+      for (const step of guide.steps)
+        expect(step.howTo).not.toMatch(/\bwig\b|latex|spirit gum/i)
+    }
+  )
 
-  it.each(guides)("%s makes a whole face: base, eyes and lips", (_, guide) => {
-    // The owner (2026-10-03): guides that left a feature alone stopped at
-    // about 70 % of the character (the visitor's own lipstick showed
-    // through). Every guide sets the skin, the eyes and the mouth.
+  it.each(guides)("%s paints the eyes and the mouth", (_, guide) => {
+    // The owner (2026-10-03): a guide that left a feature alone stopped at
+    // about 70 % of the character (the visitor's own lipstick showed).
     const categories = new Set(effectsOf(guide.steps).map((e) => e.category))
-    expect(categories).toContain("foundation")
     expect(categories).toContain("lip_color")
     expect(categories.has("eye_shadow") || categories.has("eye_liner")).toBe(
       true
     )
   })
 
-  it.each(guides)("%s adds each kind of makeup once", (_, guide) => {
-    // Each makeup step renders every effect so far: a category twice would
-    // be sent twice.
-    const categories = effectsOf(guide.steps).map((effect) => effect.category)
-    expect(new Set(categories).size).toBe(categories.length)
-  })
-
-  it.each(guides)("%s reads at a glance", (_, guide) => {
-    // The owner (2026-10-03): "the results are still very tame... why are
-    // we holding back?", then "go to 100": every strength YouCam takes
-    // (0-100) at its maximum, every base at full coverage.
-    for (const step of guide.steps) {
-      if (step.render.tool !== "makeup") continue
-      for (const effect of step.render.effects) {
-        const where = `${step.title}: ${effect.category}`
-        const palettes =
-          "palettes" in effect
-            ? (effect.palettes as { colorIntensity: number }[])
-            : []
-        const strength = (min: number) =>
-          palettes.forEach((palette) =>
-            expect(palette.colorIntensity, where).toBeGreaterThanOrEqual(min)
-          )
-        if (effect.category === "contour" || effect.category === "bronzer")
-          strength(100)
-        if (effect.category === "eye_shadow" || effect.category === "eye_liner")
-          strength(100)
-        if (effect.category === "lip_color") strength(100)
-        if (effect.category === "lip_liner") {
-          strength(100)
-          expect(effect.palettes[0].thickness, where).toBe(100)
-        }
-        if (effect.category === "blush") strength(100)
-        if (effect.category === "eyebrows") strength(100)
-        if (effect.category === "foundation")
-          expect(effect.palettes[0].coverageIntensity, where).toBe(100)
+  it.each(guides)(
+    "%s puts each kind of makeup on once per step",
+    (_, guide) => {
+      // A render takes each category once; a second coat is a step of its own.
+      for (const step of guide.steps) {
+        if (step.render.tool !== "makeup") continue
+        const categories = step.render.effects.map((effect) => effect.category)
+        expect(new Set(categories).size, step.title).toBe(categories.length)
       }
     }
-    for (const step of guide.steps)
-      if (step.render.tool === "hair")
+  )
+
+  it.each(guides)("%s is at full strength", (_, guide) => {
+    // The owner (2026-10-03): "no light touches", "go to 100".
+    for (const step of guide.steps) {
+      if (step.render.tool === "hair") {
         expect(step.render.palettes[0].color_intensity).toBe(100)
-    // Face paint, yes; a makeup department's work, no.
-    const texts = [
-      ...guide.steps.map((step) => step.howTo),
-      ...(guide.finish ? [guide.finish] : []),
-    ]
-    for (const text of texts)
-      expect(text).not.toMatch(
-        /latex|prosthetic|bald cap|contact lens|scar wax|spirit gum|glue/i
-      )
+        continue
+      }
+      for (const effect of step.render.effects) {
+        if (effect.category === "skin_smooth") continue
+        const where = `${step.title}: ${effect.category}`
+        for (const palette of effect.palettes as Values[]) {
+          expect(palette.colorIntensity, where).toBe(100)
+          if ("coverageIntensity" in palette)
+            expect(palette.coverageIntensity, where).toBe(100)
+          if ("coverageLevel" in palette)
+            expect(palette.coverageLevel, where).toBe(100)
+          if ("thickness" in palette) expect(palette.thickness, where).toBe(100)
+        }
+      }
+    }
   })
 
   it.each(guides)("%s is renderable as it is", (_, guide) => {
