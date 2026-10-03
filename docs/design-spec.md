@@ -46,7 +46,6 @@ a grid of identical cards).
 | Reel change                      | Moving between pages                             |
 | Wardrobe fitting                 | The Fitting Room: try on what's in your basket   |
 | The fine print                   | Terms of service and Privacy policy              |
-| Admission ticket                 | The premium badge (paid try-ons)                 |
 
 ### 1.3 The flow (owner, 2026-09-30)
 
@@ -57,8 +56,8 @@ a grid of identical cards).
    device).
 3. **Try them on** in the **Fitting Room**, which is part of the basket: it shows exactly the
    outfits in your basket (sign in): the outfit on your photo, then the costume's makeup on
-   your own face, step by step (11.4b). Paid try-ons (2 free, then {price} per costume) come
-   later.
+   your own face, step by step (11.4b). Every account tries one costume on free; for more,
+   Kostuma Pro's waitlist (owner, 2026-10-04: no prices, no payments).
 4. **Buy**: an action on each outfit in the basket, opening its shop in a new tab.
 
 Menus hold places, never actions: the header and the mobile menu offer Costumes and My Pumpkin
@@ -72,7 +71,7 @@ Basket, nothing else. The Fitting Room and Buy live inside the basket; a costume
 2. **Visible, not subtle.** Every effect must be noticeable at a glance on an ordinary screen.
    Minimal structure (no extra titles, labels or
    sections) and a strong atmosphere are not in conflict.
-3. **Clarity beats spookiness where people act.** Forms, errors, buttons and prices are plain and
+3. **Clarity beats spookiness where people act.** Forms, errors and buttons are plain and
    instantly readable. Atmosphere lives around them, never on them.
 4. **Color means something.** Blood red = light, action, danger, the seconds running out.
    Pumpkin orange = My Pumpkin Basket. Black, bone and cold fog = the night.
@@ -411,8 +410,7 @@ Client components are marked (C). Everything else renders on the server.
   link itself.
 - **Badge** (preset: borderless, small capitals, `badge` size). The `soon` variant adds a 1 px
   border (bone at 20 %) and 2 × 6 px padding so it reads as a stamped label, text muted: "Soon".
-  `premium`: the same stamp in `--blood-text` (border at 50 %), "Premium", the admission ticket
-  of paid features. `count`: a 20 px ember square with the number in `--background`, tabular
+  `count`: a 20 px ember square with the number in `--background`, tabular
   figures and a soft ember glow, set on the header's pumpkin (the basket's count). Each feature
   that needs another badge adds it with its tests.
 - **Field** (preset `field.tsx`: Field, FieldLabel, FieldDescription, FieldError with
@@ -509,10 +507,18 @@ Client components are marked (C). Everything else renders on the server.
   ("Buy {name} (opens in a new tab)"), never words glued together, so every language orders
   them its own way.
 - **Empty state**: centered icon (64 px, muted), `h3`, one line of copy, one action.
-- **Premium price line** (owner's words): "2 free try-ons, then {price} per costume."
-  `{price}` is USD 5 (`lib/fitting-room/price.ts`), no cents when whole ("$5"),
-  formatted by the locale's currency formatter (next-intl `format.number(5, {style: "currency",
-currency: "USD"})`), never a hardcoded "$5" string.
+- **Get Kostuma Pro** (owner, 2026-10-04; `components/pro/get-pro.tsx`): a button (outline in
+  the Fitting Room panel, primary elsewhere; pending: spinner + "Joining the waitlist…") that
+  puts the signed-in account on Kostuma Pro's waitlist (`waitlist/{uid}`, once), then opens a
+  pop-up (the alert dialog's card, 11.4b) in the owner's words: "You have been added to the
+  premium feature waitlist." (title) and "We will get back to you in 24 hours with an awesome
+  deal."; under them "Email", filled with the address the waitlist will write to (the
+  account's, until the visitor gives another), "Update" (outline; the same address sends
+  nothing; done: "Email updated.", announced) and "Close" (primary). Pressed again later, the
+  same pop-up with the email on record. Signed out, it is a link to sign in, then back. A
+  failure is an alert under the button ("Your session ended. Sign in again to join the
+  waitlist." or "Something went wrong. Try again."). No price, currency or payment word
+  anywhere (12).
 
 ---
 
@@ -608,9 +614,10 @@ title, toolbar or empty state for one.
   be saved. Reload the page to try again." (the visitor's changes are at risk: that they must
   know).
 - **The Fitting Room** panel (part of the basket, 1.3), at the top: a `--card` panel with a
-  `--blood` hairline at 40 % and a faint red glow; `h2` "The Fitting Room" + `premium`,
-  one line ("Try on the outfits in your basket, special-effects makeup included."), the price
-  line (10.3), link "Step inside" → `/basket/fitting-room` (11.4b).
+  `--blood` hairline at 40 % and a faint red glow; `h2` "The Fitting Room", one line ("Try on
+  the outfits in your basket, special-effects makeup included."), "One costume is free with
+  every account." (`lead`, semibold), then link "Step inside" → `/basket/fitting-room` (11.4b)
+  and "Get Kostuma Pro" (10.3), both outline.
 - Rows, the last added first, separated by space (no lines): thumbnail (4:5, 72 px wide, no
   reveal), name + film (a link to the costume), actions: **Buy** (10.3), "Try on"
   (→ `/basket/fitting-room?costume={slug}`), "Remove" (ghost, ✕ icon). Removing keeps the
@@ -632,7 +639,11 @@ title, toolbar or empty state for one.
 ### 11.4b The Fitting Room `/basket/fitting-room` (`?costume={slug}`)
 
 The core of Kostuma (owner, 2026-10-03). `noindex`; signed in only (signed out: sign in, then
-back here with the costume). Paid try-ons (the price line, 10.3) come later: no gating yet.
+back here with the costume). **One costume free per account** (owner, 2026-10-04;
+`lib/fitting-room/free-costume.ts`): a try-on holds it from its start; once one is done, no
+other starts, not of another costume, not with other photos; seeing a try-on already made is
+always free. A try-on that fails gives it back (try again with other photos), twice at most once
+pictures were made for it. The server decides at the start; the page reflects it.
 
 **A dressing room backstage** (owner, 2026-10-03: "a horror dressing room. immersive. clear.
 responsive"). The costumes hang on a clothes rail; the face photo goes into a vanity mirror ringed
@@ -675,6 +686,10 @@ words beside them; on phones the words come first.
   beside the two mirrors with the photos, "Check your photos first: once the try-on starts, they
   can't be changed until it's finished.", "Start the try-on" (primary; pending: spinner +
   "Checking your photos…") and "Change photos" (ghost). Nothing is sent before this button.
+- **Used** (the free costume gone, no try-on of this costume to show): the vanity dark (every
+  bulb out) beside `h2` "You've used your free costume.", "You tried on {name}. Get Kostuma Pro
+  to try on more costumes." (without a costume to name: "Get Kostuma Pro to try on more
+  costumes.") and "Get Kostuma Pro" (10.3). No photos are asked for.
 - **The try-on** (owner, 2026-10-03: the steps are the main thing): the vanity and, beside it,
   the step card; under them the film strip; at the bottom "Try with other photos". Nothing else:
   no name (the lead says it), no status line, no look line. Locked while it runs (no control to
@@ -712,8 +727,12 @@ words beside them; on phones the words come first.
   photos" (primary). Choosing opens the photos, the account's photos in their mirrors, with "Keep
   current photos" (ghost) beside "Continue" to go back to the try-on as it was. "Continue" with
   the try-on's own photos says "These are the photos of your try-on. Change at least one, or keep
-  your current photos." (nothing new would come of it). Failed: an alert saying what to do ("Your
-  face couldn't be found in the photo…") and "Choose other photos" (primary) heading the card,
+  your current photos." (nothing new would come of it). The free costume used, the pop-up says
+  so instead: "You've used your free costume.", "New photos would make a new try-on of {name}.
+  Get Kostuma Pro for more try-ons.", "Keep current photos" (focused first) and "Get Kostuma
+  Pro", whose pop-up opens over it. Failed: an alert saying what to do ("Your face couldn't be
+  found in the photo…") and "Choose other photos" (primary; the free costume used up by failed
+  tries: "Get Kostuma Pro to try on more costumes." and the button) heading the card,
   which opens the photos with the message under the one at fault, without asking (nothing to
   keep); "Continue" holds until that photo is changed (it would fail again, after the outfit was
   paid for once more). A frame not rendered shows "Not rendered" in the mirror (a ✕ on the
@@ -764,7 +783,8 @@ All `noindex`. A signed-in visitor is sent on to `next` (sign in, register).
 ### 11.6 Account `/account`
 
 - H1 "Your account". Profile: name, email, member since (the locale's long date).
-- The Fitting Room panel (11.4) with the account's line: "2 free try-ons waiting".
+- The Fitting Room panel (11.4) with the account's line instead of the general one: "Your free
+  costume is waiting." or "You've used your free costume." (unknown: the general line).
 - Sign out (outline button, a form: works before scripts load). Signed-out visitors are
   redirected to sign in (with `next`). `noindex`.
 
@@ -836,8 +856,9 @@ The real documents, in plain words and the second person, true to what the site 
   (link text, page title, toggle labels, announcements), like "My List" on a streaming service.
 - **Dropdowns**: never the browser's native popup, which breaks the look (owner's call). Menus
   and selects are Base UI components styled like the language menu (10.1).
-- **Premium**: any paid capability shows the `premium` badge next to its first mention on a
-  screen, and the price line near its call to action. Never hide the price.
+- **No prices** (owner, 2026-10-04): no price, currency or payment word anywhere, and no
+  Premium badge. One costume is free; for more, "Get Kostuma Pro" (10.3), a waitlist.
+  `i18n/messages.test.ts` holds every message to it.
 - **Coming soon**: never a disabled button (unfocusable, unexplained). A thing not ready yet
   carries a `soon` stamp and nothing to press (Buy without a shop, 10.3).
 - **External links**: new tab, `noopener noreferrer`, icon + sr-only "(opens in a new tab)".
@@ -884,7 +905,7 @@ The real documents, in plain words and the second person, true to what the site 
 - The costume data (`content/costumes.ts`: lore, looks, fun facts, credits) is English in every
   language; character names and film titles are never translated. "My Pumpkin Basket" is
   translated as its proper name ("Mi cesta de calabaza", "我的南瓜篮").
-- Dates, numbers, currency via next-intl formatters (countdown date, counts, price).
+- Dates and numbers via next-intl formatters (countdown date, counts).
 - Messages in sentence case; CSS applies the small capitals.
 - Endonyms in the language menu and links: English · Español · 中文, each with its own `lang`
   and `hreflang`.
@@ -986,6 +1007,5 @@ Each feature branch ships unit and end-to-end tests for the cases that apply to 
 
 ## 18. Later
 
-Paid try-ons and Stripe checkout styled as a ticket stub ·
 translations · optional opt-in ambient sound: projector whir (never autoplay) · shared-element
 morphs between cards and costume pages.

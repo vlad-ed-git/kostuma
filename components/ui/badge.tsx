@@ -22,8 +22,6 @@ const badgeVariants = cva(
         link: "text-foreground underline-offset-4 hover:underline",
         /** A feature that isn't open yet. */
         soon: cn(stamp, "border-foreground/20 text-muted-foreground"),
-        /** Paid: an admission ticket (spec §1.2, §12 Premium). */
-        premium: cn(stamp, "border-blood-text/50 text-blood-text"),
         /** How many costumes My Pumpkin Basket holds, on its pumpkin. */
         count:
           "relative h-5 min-w-5 bg-ember px-1 text-background tabular-nums shadow-[0_0_10px_color-mix(in_oklch,var(--ember)_55%,transparent)]",

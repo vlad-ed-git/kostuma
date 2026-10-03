@@ -6,7 +6,8 @@ import { SignOutButton } from "@/components/auth/sign-out-button"
 import { redirect } from "@/i18n/navigation"
 import { withNext } from "@/lib/auth/next-path"
 import { getUser } from "@/lib/auth/session"
-import { getProfile, type Profile } from "@/lib/users"
+import { allowanceFor } from "@/lib/fitting-room/service"
+import { getProfile } from "@/lib/users"
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Account")
@@ -14,8 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /**
- * Your account (spec §11.6): who you are, the try-ons waiting in the
- * Fitting Room, and Sign out. Signed out: sign in first, then back here.
+ * Your account (spec §11.6): who you are, whether your free costume is
+ * still waiting in the Fitting Room, Kostuma Pro, and Sign out. Signed out:
+ * sign in first, then back here.
  */
 export default async function AccountPage() {
   const user = await getUser()
@@ -25,10 +27,13 @@ export default async function AccountPage() {
       locale: await getLocale(),
     })
   }
-  const profile = await getProfile(user.uid).catch((error: unknown) => {
-    console.error("Could not read a profile.", error)
-    return null
-  })
+  const [profile, allowance] = await Promise.all([
+    getProfile(user.uid).catch((error: unknown) => {
+      console.error("Could not read a profile.", error)
+      return null
+    }),
+    allowanceFor(user.uid),
+  ])
   const t = await getTranslations("Account")
   const format = await getFormatter()
 
@@ -61,14 +66,9 @@ export default async function AccountPage() {
               </div>
             ))}
         </dl>
-        <FittingRoomPanel credits={creditsOf(profile)} />
+        <FittingRoomPanel signedIn free={allowance?.free} source="account" />
         <SignOutButton />
       </div>
     </div>
   )
-}
-
-/** Unknown when the profile couldn't be read: the line is left out. */
-function creditsOf(profile: Profile | null) {
-  return profile ? profile.credits : undefined
 }

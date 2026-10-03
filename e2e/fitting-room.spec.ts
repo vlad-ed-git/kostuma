@@ -222,12 +222,18 @@ test.describe("The Fitting Room", () => {
   }) => {
     await enter(page, ["pearl", "beetlejuice"])
     await page.goto("/basket/fitting-room?costume=beetlejuice")
-    await givePhotos(page, await photo(900, 1200), await photo(1000, 1500))
+    // A body photo the outfit can't read: the try-on fails before any
+    // picture is made, so the free costume is still there.
+    await givePhotos(
+      page,
+      await photo(900, 1200),
+      await photo(1000, 1500, { redCorner: true })
+    )
     await page.getByRole("button", { name: "Continue" }).click()
     await page.getByRole("button", { name: "Start the try-on" }).click()
-    await expect(page.getByText("Your try-on is ready.")).toBeAttached({
-      timeout: 30_000,
-    })
+    await expect(
+      page.getByRole("button", { name: "Choose other photos" })
+    ).toBeVisible({ timeout: 30_000 })
 
     await page
       .getByRole("navigation", { name: "Your costumes" })
@@ -375,22 +381,23 @@ test.describe("The Fitting Room", () => {
   }) => {
     await enter(page, ["pearl"])
     await page.goto("/basket/fitting-room?costume=pearl")
-    await givePhotos(page, await photo(900, 1200), await photo(1000, 1500))
+    // A face the makeup can't read: the outfit comes out, then the try-on
+    // stops, and its photos are offered again.
+    await givePhotos(
+      page,
+      await photo(900, 1200, { redCorner: true }),
+      await photo(1000, 1500)
+    )
     await page.getByRole("button", { name: "Continue" }).click()
     await page.getByRole("button", { name: "Start the try-on" }).click()
-    await expect(page.getByText("Your try-on is ready.")).toBeAttached({
-      timeout: 30_000,
-    })
-    await strip(room(page, "Pearl"))
-      .getByRole("button", { name: /^Step 1:/ })
-      .click()
-    const step = await page
-      .getByRole("img", { name: /Your face after step 1/ })
+    const retry = page.getByRole("button", { name: "Choose other photos" })
+    await expect(retry).toBeVisible({ timeout: 30_000 })
+    const step = await room(page, "Pearl")
+      .getByRole("img", { name: "You wearing the Pearl costume" })
       .getAttribute("src")
     // The face photo as the account keeps it, offered again from the server.
     await page.reload()
-    await page.getByRole("button", { name: "Try with other photos" }).click()
-    await page.getByRole("button", { name: "Choose new photos" }).click()
+    await retry.click()
     const face = await facePicker(page).locator("img").getAttribute("src")
     const tryOn = step?.replace(/\/\d+\?v=\d+$/, "")
     expect(face).toMatch(/^\/api\/fitting-room\/photos\/face\/[0-9a-f]{32}$/)
@@ -420,12 +427,12 @@ test.describe("The Fitting Room", () => {
     await stranger.close()
   })
 
-  test.describe("Try with other photos", () => {
-    /** Pearl tried on with these photos, done. */
-    async function tryOnPearl(page: Page, face: Photo, body: Photo) {
-      await enter(page, ["pearl"])
+  test.describe("once the free costume is used", () => {
+    /** Pearl tried on, done: the account's free costume. */
+    async function tryOnPearl(page: Page) {
+      await enter(page, ["pearl", "beetlejuice"])
       await page.goto("/basket/fitting-room?costume=pearl")
-      await givePhotos(page, face, body)
+      await givePhotos(page, await photo(900, 1200), await photo(1000, 1500))
       await page.getByRole("button", { name: "Continue" }).click()
       await page.getByRole("button", { name: "Start the try-on" }).click()
       await expect(page.getByText("Your try-on is ready.")).toBeAttached({
@@ -437,18 +444,25 @@ test.describe("The Fitting Room", () => {
     const mirror = (page: Page) =>
       room(page, "Pearl").getByRole("img", { name: /Your face after step/ })
 
-    test("asks first, and keeps the photos on request", async ({ page }) => {
+    const waitlist = (page: Page) =>
+      page.getByRole("dialog", {
+        name: "You have been added to the premium feature waitlist.",
+      })
+
+    test("Try with other photos asks first, and offers Kostuma Pro", async ({
+      page,
+    }) => {
       const errors = collectErrors(page)
-      await tryOnPearl(page, await photo(900, 1200), await photo(1000, 1500))
+      await tryOnPearl(page)
       const shown = await mirror(page).getAttribute("src")
 
       const again = page.getByRole("button", { name: "Try with other photos" })
       const dialog = page.getByRole("alertdialog", {
-        name: "Replace your photos?",
+        name: "You've used your free costume.",
       })
       await again.click()
       await expect(dialog).toContainText(
-        "New photos make a new try-on of Pearl, in place of this one."
+        "New photos would make a new try-on of Pearl. Get Kostuma Pro for more try-ons."
       )
       // The safe answer is the one Enter would give.
       const keep = dialog.getByRole("button", { name: "Keep current photos" })
@@ -464,67 +478,69 @@ test.describe("The Fitting Room", () => {
       await page.keyboard.press("Escape")
       await expect(dialog).toBeHidden()
 
-      // Choosing new photos opens them, and they can still be kept.
+      // Kostuma Pro, from the pop-up: the waitlist's pop-up over it.
       await again.click()
-      await dialog.getByRole("button", { name: "Choose new photos" }).click()
-      await expect(
-        page.getByRole("heading", { name: "Your photos" })
-      ).toBeFocused()
-      // The same photos would only show the same try-on.
-      await page.getByRole("button", { name: "Continue" }).click()
-      await expect(page.getByRole("main").getByRole("alert")).toHaveText(
-        "These are the photos of your try-on. Change at least one, or keep your current photos."
+      const pro = dialog.getByRole("button", { name: "Get Kostuma Pro" })
+      await pro.click()
+      await expect(waitlist(page)).toContainText(
+        "We will get back to you in 24 hours with an awesome deal."
       )
-      await page
-        .locator('input[name="face"]')
-        .setInputFiles(await photo(960, 1280))
-      await page.getByRole("button", { name: "Keep current photos" }).click()
+      await expect(waitlist(page).getByLabel("Email")).toHaveValue(
+        "wednesday@example.com"
+      )
+      await waitlist(page).getByRole("button", { name: "Close" }).click()
+      await expect(waitlist(page)).toBeHidden()
+      await expect(pro).toBeFocused()
+      await page.keyboard.press("Escape")
+      await expect(dialog).toBeHidden()
       await expect(mirror(page)).toHaveAttribute("src", shown ?? "")
-      // Nothing changed: the photos are the try-on's again.
-      await page.getByRole("button", { name: "Try with other photos" }).click()
-      await page.getByRole("button", { name: "Choose new photos" }).click()
-      await page.getByRole("button", { name: "Continue" }).click()
-      await expect(page.getByRole("main").getByRole("alert")).toHaveText(
-        /These are the photos of your try-on/
-      )
       expect(errors).toEqual([])
     })
 
-    test("makes a new try-on, and goes back to the first with the first photos", async ({
+    test("another costume offers Kostuma Pro, whose waitlist keeps the email given", async ({
       page,
     }) => {
-      const face = await photo(900, 1200)
-      await tryOnPearl(page, face, await photo(1000, 1500))
-      const first = await mirror(page).getAttribute("src")
-
-      // A new face: a new try-on, the one shown from now on.
-      await page.getByRole("button", { name: "Try with other photos" }).click()
-      await page.getByRole("button", { name: "Choose new photos" }).click()
+      const errors = collectErrors(page)
+      await tryOnPearl(page)
       await page
-        .locator('input[name="face"]')
-        .setInputFiles(await photo(960, 1280))
-      await page.getByRole("button", { name: "Continue" }).click()
-      await page.getByRole("button", { name: "Start the try-on" }).click()
-      await expect(page.getByText("Your try-on is ready.")).toBeAttached({
-        timeout: 30_000,
-      })
-      const second = await mirror(page).getAttribute("src")
-      expect(second).not.toBe(first)
-      await page.reload()
-      await expect(mirror(page)).toHaveAttribute("src", second ?? "")
-
-      // The first face again: its try-on, made once, after a reload too.
-      await page.getByRole("button", { name: "Try with other photos" }).click()
-      await page.getByRole("button", { name: "Choose new photos" }).click()
-      await page.locator('input[name="face"]').setInputFiles(face)
+        .getByRole("navigation", { name: "Your costumes" })
+        .getByRole("link", { name: "Beetlejuice" })
+        .click()
       await expect(
-        page.getByRole("button", { name: "Change the photo of your face" })
+        page.getByRole("heading", { name: "You've used your free costume." })
       ).toBeVisible()
-      await page.getByRole("button", { name: "Continue" }).click()
-      await page.getByRole("button", { name: "Start the try-on" }).click()
-      await expect(mirror(page)).toHaveAttribute("src", first ?? "")
+      await expect(
+        page.getByText(
+          "You tried on Pearl. Get Kostuma Pro to try on more costumes."
+        )
+      ).toBeVisible()
+      // No photos to give: nothing could start.
+      await expect(
+        page.getByRole("heading", { name: "Your photos" })
+      ).toHaveCount(0)
       await page.reload()
-      await expect(mirror(page)).toHaveAttribute("src", first ?? "")
+      await expect(
+        page.getByRole("heading", { name: "You've used your free costume." })
+      ).toBeVisible()
+
+      const pro = page.getByRole("button", { name: "Get Kostuma Pro" })
+      await pro.click()
+      const field = waitlist(page).getByLabel("Email")
+      await expect(field).toHaveValue("wednesday@example.com")
+      await field.fill("morticia@example.com")
+      await waitlist(page).getByRole("button", { name: "Update" }).click()
+      await expect(waitlist(page).getByRole("status")).toHaveText(
+        "Email updated."
+      )
+      await waitlist(page).getByRole("button", { name: "Close" }).click()
+      await expect(pro).toBeFocused()
+
+      // Pressed again: the email on record; the same one sends nothing.
+      await pro.click()
+      await expect(field).toHaveValue("morticia@example.com")
+      await waitlist(page).getByRole("button", { name: "Update" }).click()
+      await expect(waitlist(page).getByRole("status")).toHaveText("")
+      expect(errors).toEqual([])
     })
   })
 })

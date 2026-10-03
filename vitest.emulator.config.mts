@@ -1,7 +1,8 @@
 import { defineConfig } from "vitest/config"
 
 // The tests that need the Firestore emulator (`npm run test:firestore` starts
-// it): the rules and the basket's live sync, against the real SDK.
+// it): the rules and the basket's live sync, against the real SDK, and the
+// Fitting Room store's transactions, against the Admin SDK.
 export default defineConfig({
   resolve: { tsconfigPaths: true },
   test: {

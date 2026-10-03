@@ -102,10 +102,15 @@ test.describe("My Pumpkin Basket", () => {
 
     const fittingRoom = page.getByRole("region", { name: "The Fitting Room" })
     await expect(fittingRoom).not.toContainText("Soon")
-    await expect(fittingRoom).toContainText("Premium")
+    // No price and no Premium badge: one costume free, then Kostuma Pro.
+    await expect(fittingRoom).not.toContainText(/Premium|\$/)
     await expect(fittingRoom).toContainText(
-      "2 free try-ons, then $5 per costume."
+      "One costume is free with every account."
     )
+    // Signed out, Kostuma Pro's waitlist asks to sign in first.
+    await expect(
+      fittingRoom.getByRole("link", { name: "Get Kostuma Pro" })
+    ).toHaveAttribute("href", "/sign-in?next=%2Fbasket")
 
     // The last added first.
     await expect(rows(page)).toHaveCount(2)
@@ -235,8 +240,10 @@ test.describe("My Pumpkin Basket", () => {
     await expect(page.locator("html")).toHaveAttribute("lang", "es")
     await expect(rows(page)).toHaveCount(1)
     await expect(
-      page.getByRole("region", { name: "The Fitting Room" })
-    ).toContainText(/5\sUS\$/)
+      page
+        .getByRole("region", { name: "The Fitting Room" })
+        .getByRole("link", { name: "Consigue Kostuma Pro" })
+    ).toHaveAttribute("href", "/es/sign-in?next=%2Fbasket")
   })
 
   test("never scrolls sideways, even at 320 px", async ({ page }) => {

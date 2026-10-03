@@ -109,7 +109,9 @@ test("registering makes the account, its profile and a session", async ({
   expect(profile?.fields.emailVerified.booleanValue).toBe(false)
   expect(isNull(profile?.fields.photoURL)).toBe(true)
   expect(profile?.fields.provider.stringValue).toBe("password")
-  expect(profile?.fields.credits.integerValue).toBe("2")
+  // The free costume is the Fitting Room's to tell (its try-ons), not the
+  // profile's.
+  expect(profile?.fields).not.toHaveProperty("credits")
   expect(profile?.fields.locale.stringValue).toBe("en")
   expect(profile?.fields.termsAcceptedAt.timestampValue).toBeTruthy()
   // Where and on what: Playwright's desktop Chrome; no place off Vercel.
@@ -133,7 +135,71 @@ test("registering makes the account, its profile and a session", async ({
   await expect(page.getByRole("definition").first()).toHaveText("Carrie White")
   await expect(
     page.getByRole("region", { name: "The Fitting Room" })
-  ).toContainText("2 free try-ons waiting")
+  ).toContainText("Your free costume is waiting.")
+  expect(errors).toEqual([])
+})
+
+test("Get Kostuma Pro puts the account on the waitlist, with the email to write to", async ({
+  page,
+}) => {
+  const errors = collectErrors(page)
+  const email = newEmail()
+  await register(page, email)
+  await expect(page).toHaveURL(/\/$/, { timeout: 20_000 })
+  const uid = await uidOf(email)
+
+  await page.goto("/account")
+  const pro = page
+    .getByRole("region", { name: "The Fitting Room" })
+    .getByRole("button", { name: "Get Kostuma Pro" })
+  await pro.click()
+  const popup = page.getByRole("dialog", {
+    name: "You have been added to the premium feature waitlist.",
+  })
+  await expect(popup).toContainText(
+    "We will get back to you in 24 hours with an awesome deal."
+  )
+  const field = popup.getByLabel("Email")
+  await expect(field).toHaveValue(email)
+
+  const joined = (await documentAt(`waitlist/${uid}`))?.fields
+  expect(joined?.uid.stringValue).toBe(uid)
+  expect(joined?.email.stringValue).toBe(email)
+  expect(joined?.accountEmail.stringValue).toBe(email)
+  expect(joined?.locale.stringValue).toBe("en")
+  expect(joined?.source.stringValue).toBe("account")
+  const createdAt = joined?.createdAt.timestampValue
+  expect(createdAt).toBeTruthy()
+  expect(Object.keys(joined ?? {}).sort()).toEqual([
+    "accountEmail",
+    "createdAt",
+    "email",
+    "locale",
+    "source",
+    "uid",
+    "updatedAt",
+  ])
+
+  // Another address to be reached at: kept, the account's own as it was.
+  const other = newEmail()
+  await field.fill(other)
+  await popup.getByRole("button", { name: "Update" }).click()
+  await expect(popup.getByRole("status")).toHaveText("Email updated.")
+  await expect
+    .poll(async () => (await documentAt(`waitlist/${uid}`))?.fields.email)
+    .toEqual({ stringValue: other })
+  const updated = (await documentAt(`waitlist/${uid}`))?.fields
+  expect(updated?.accountEmail.stringValue).toBe(email)
+  expect(updated?.createdAt.timestampValue).toBe(createdAt)
+
+  // Pressed again: the same entry, the email on record.
+  await popup.getByRole("button", { name: "Close" }).click()
+  await expect(popup).toBeHidden()
+  await pro.click()
+  await expect(popup.getByLabel("Email")).toHaveValue(other)
+  expect((await documentAt(`waitlist/${uid}`))?.fields.createdAt).toEqual({
+    timestampValue: createdAt,
+  })
   expect(errors).toEqual([])
 })
 

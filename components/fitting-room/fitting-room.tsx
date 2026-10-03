@@ -2,12 +2,19 @@
 
 import { RiLoader4Line } from "@remixicon/react"
 import { useTranslations } from "next-intl"
-import { useEffect, useRef, useState, useTransition } from "react"
+import {
+  useEffect,
+  useEffectEvent,
+  useRef,
+  useState,
+  useTransition,
+} from "react"
 
 import { AddToBasket } from "@/components/basket/add-to-basket"
 import { useBasket } from "@/components/basket/basket-provider"
 import { CostumeImage } from "@/components/costume/costume-image"
 import { costumesHref } from "@/components/layout/nav"
+import { GetPro } from "@/components/pro/get-pro"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Link, useRouter } from "@/i18n/navigation"
 import {
@@ -79,7 +86,8 @@ function failureProblem(
  * character is all makeup), confirm them, and the try-on runs: the outfit
  * first, then the costume's makeup on the visitor's face, step by step,
  * every picture shown as it comes out. Once started, nothing can be changed
- * until it's done or fails.
+ * until it's done or fails. Every account tries one costume on free: once
+ * it's used, Kostuma Pro instead.
  */
 export function FittingRoom({
   costumes,
@@ -87,6 +95,8 @@ export function FittingRoom({
   room,
   tryOn,
   open,
+  free,
+  usedOn,
 }: {
   /** Every costume that can be tried on. */
   costumes: readonly CostumeSummary[]
@@ -98,6 +108,10 @@ export function FittingRoom({
   tryOn: TryOnView | null
   /** False while renders can't run. */
   open: boolean
+  /** Whether the account's free costume is still there. */
+  free: boolean
+  /** The costume tried on with it, once used. */
+  usedOn: string | null
 }) {
   const t = useTranslations("FittingRoom")
   const { ready, slugs, has } = useBasket()
@@ -137,6 +151,8 @@ export function FittingRoom({
             room={room}
             initial={tryOn}
             open={open}
+            free={free}
+            usedOn={usedOn}
           />
         ) : (
           <div className="flex items-center gap-6 sm:gap-10">
@@ -169,20 +185,33 @@ const stageGrid =
 /** The photos' mirrors: smaller on phones, beside their buttons. */
 const photoHeight = "[--photo-h:10rem] sm:[--photo-h:clamp(15rem,34svh,21rem)]"
 
-/** One costume's try-on: its photos, the confirmation, then the pictures. */
+/**
+ * One costume's try-on: its photos, the confirmation, then the pictures; or,
+ * the free costume used, Kostuma Pro.
+ */
 function Fitting({
   costume,
   room,
   initial,
   open,
+  free: freeHere,
+  usedOn,
 }: {
   costume: FittingCostume
   room: { face: string | null; body: string | null }
   initial: TryOnView | null
   open: boolean
+  free: boolean
+  usedOn: string | null
 }) {
   const t = useTranslations("FittingRoom")
+  const router = useRouter()
   const [tryOn, setTryOn] = useState(initial)
+  // A start the server refused: the free costume went meanwhile.
+  const [refused, setRefused] = useState(false)
+  // A try-on running or done holds the account's free costume; the page's
+  // word (read again once a try-on ends) tells the rest.
+  const free = freeHere && !refused && (!tryOn || tryOn.status === "failed")
   const [stage, setStage] = useState<"photos" | "confirm" | "follow">(
     initial ? "follow" : "photos"
   )
@@ -201,14 +230,15 @@ function Fitting({
   const [pending, startTransition] = useTransition()
   const title = useRef<HTMLHeadingElement>(null)
 
-  useFollow(tryOn, setTryOn)
+  // Ended, a try-on may have given the free costume back, or used it up.
+  useFollow(tryOn, setTryOn, () => router.refresh())
 
   // Each stage starts at its title.
   const moved = useRef(false)
   useEffect(() => {
     if (moved.current) title.current?.focus()
     moved.current = true
-  }, [stage])
+  }, [stage, free])
 
   // Picked photos' previews live in this page's memory until it's left.
   const picked = Object.values(slots).flatMap((slot) =>
@@ -308,7 +338,13 @@ function Fitting({
       } catch {
         result = { ok: false, error: "unknown" }
       }
-      if (result.ok) {
+      if (!result.ok && result.error === "out_of_units") {
+        // Used meanwhile (another tab): back to the try-on, if replacing
+        // its photos, else Kostuma Pro.
+        setRefused(true)
+        if (kept) keepCurrent()
+        else setProblem(null)
+      } else if (result.ok) {
         // The photos are the account's now: kept by id, as a reload has
         // them, so the next change is told from them.
         const made = result.tryOn
@@ -384,17 +420,29 @@ function Fitting({
                 >
                   {t(failed.message)}
                 </p>
-                {open && (
-                  <Button size="lg" onClick={retry}>
-                    {t("retry")}
-                  </Button>
-                )}
+                {open &&
+                  (free ? (
+                    <Button size="lg" onClick={retry}>
+                      {t("retry")}
+                    </Button>
+                  ) : (
+                    <>
+                      <p className="max-w-[60ch] text-lead">{t("used.line")}</p>
+                      <GetPro source="fitting-room" />
+                    </>
+                  ))}
               </>
             )
           }
           after={
             tryOn.status === "done" &&
-            open && <ReplacePhotos name={costume.name} onReplace={replace} />
+            open && (
+              <ReplacePhotos
+                name={costume.name}
+                free={free}
+                onReplace={replace}
+              />
+            )
           }
         />
       </section>
@@ -410,6 +458,25 @@ function Fitting({
           {t("closed")}
         </p>
       </div>
+    )
+  }
+
+  if (!free) {
+    // The free costume used: the vanity dark, and Kostuma Pro.
+    return (
+      <section
+        aria-labelledby="fitting"
+        className="flex flex-col items-start gap-8 sm:flex-row sm:items-center sm:gap-12"
+      >
+        <Mirror bulbs="sm" ratio={3 / 4} height="12rem" off />
+        <div className="flex max-w-[50ch] flex-col items-start gap-4">
+          {heading(t("used.title"))}
+          <p className="text-lead text-muted-foreground">
+            {usedOn ? t("used.named", { name: usedOn }) : t("used.line")}
+          </p>
+          <GetPro source="fitting-room" className="mt-2" />
+        </div>
+      </section>
     )
   }
 
@@ -534,13 +601,18 @@ function Fitting({
   )
 }
 
-/** Asks how a running try-on is doing every POLL_MS, until it ends. */
+/**
+ * Asks how a running try-on is doing every POLL_MS, until it ends (then
+ * `onEnd`).
+ */
 function useFollow(
   tryOn: TryOnView | null,
-  setTryOn: (tryOn: TryOnView) => void
+  setTryOn: (tryOn: TryOnView) => void,
+  onEnd: () => void
 ) {
   const id = tryOn?.id
   const running = tryOn?.status === "running"
+  const ended = useEffectEvent(onEnd)
   useEffect(() => {
     if (!id || !running) return
     let stopped = false
@@ -552,8 +624,11 @@ function useFollow(
         })
         // Signed out meanwhile: stop asking; the page says so on reload.
         if (response.status === 401 || response.status === 404) return
-        if (response.ok && !stopped)
-          setTryOn((await response.json()) as TryOnView)
+        if (response.ok && !stopped) {
+          const next = (await response.json()) as TryOnView
+          setTryOn(next)
+          if (next.status !== "running") ended()
+        }
       } catch {
         // Offline for a moment: the next ask tries again.
       }

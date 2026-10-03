@@ -46,6 +46,7 @@ function tryOn(
 const room = (face: string | null, body: string | null): Room => ({
   face: face ? { id: face, width: 900, height: 1200, skin: "#C68642" } : null,
   body: body ? { id: body, width: 1000, height: 1500 } : null,
+  failedTries: 0,
 })
 
 const pearl = {

@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server"
 
 import { BasketList, BasketSummary } from "@/components/basket/basket-list"
 import { FittingRoomPanel } from "@/components/basket/fitting-room-panel"
+import { getUser } from "@/lib/auth/session"
 import { getCostumes, toSummary } from "@/lib/catalog"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -17,6 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
  */
 export default async function BasketPage() {
   const t = await getTranslations("Basket")
+  const user = await getUser()
   // Only what the rows show: the basket itself is read in the browser.
   const costumes = getCostumes().map((costume) => ({
     ...toSummary(costume),
@@ -30,7 +32,11 @@ export default async function BasketPage() {
           {t("title")}
         </h1>
         <BasketSummary />
-        <FittingRoomPanel className="mt-10" />
+        <FittingRoomPanel
+          signedIn={user !== null}
+          source="basket"
+          className="mt-10"
+        />
         <BasketList costumes={costumes} />
       </div>
     </div>

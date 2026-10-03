@@ -24,7 +24,7 @@ test.describe("the fine print", () => {
         main(page).getByRole("heading", { level: 1, name: title })
       ).toBeVisible()
       await expect(
-        main(page).getByText("Last updated October 3, 2026")
+        main(page).getByText("Last updated October 4, 2026")
       ).toBeVisible()
       expect(errors).toEqual([])
     })

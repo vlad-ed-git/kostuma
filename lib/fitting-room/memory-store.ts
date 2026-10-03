@@ -1,3 +1,4 @@
+import { allowanceOf, madePictures } from "./free-costume"
 import type {
   FacePhoto,
   FittingRoomStore,
@@ -16,6 +17,7 @@ import type {
 type Account = {
   face: FacePhoto | null
   body: Photo | null
+  failedTries: number
   photos: Map<string, Uint8Array>
   tryOns: Map<string, TryOn>
   images: Map<string, Uint8Array>
@@ -30,6 +32,7 @@ export function memoryStore(): FittingRoomStore {
       found = {
         face: null,
         body: null,
+        failedTries: 0,
         photos: new Map(),
         tryOns: new Map(),
         images: new Map(),
@@ -44,8 +47,8 @@ export function memoryStore(): FittingRoomStore {
 
   return {
     async room(uid) {
-      const { face, body } = account(uid)
-      return { face: face && copy(face), body: body && copy(body) }
+      const { face, body, failedTries } = account(uid)
+      return { face: face && copy(face), body: body && copy(body), failedTries }
     },
 
     async savePhotos(uid, { face, body }) {
@@ -80,6 +83,12 @@ export function memoryStore(): FittingRoomStore {
       const existing = found.tryOns.get(fresh.id)
       if (existing && existing.status !== "failed")
         return { outcome: "existing", tryOn: copy(existing) }
+      const allowance = allowanceOf(
+        [...found.tryOns.values()],
+        found.failedTries,
+        fresh.renderer
+      )
+      if (!allowance.free) return { outcome: "out_of_units" }
       found.tryOns.set(fresh.id, copy(fresh))
       return { outcome: "started", tryOn: copy(fresh) }
     },
@@ -94,11 +103,13 @@ export function memoryStore(): FittingRoomStore {
     },
 
     async finish(uid, id, status, failure) {
-      const tryOn = account(uid).tryOns.get(id)
+      const found = account(uid)
+      const tryOn = found.tryOns.get(id)
       if (!tryOn || tryOn.status !== "running") return false
       tryOn.status = status
       tryOn.failure = failure
       tryOn.updatedAt = Date.now()
+      if (status === "failed" && madePictures(tryOn)) found.failedTries += 1
       return true
     },
 

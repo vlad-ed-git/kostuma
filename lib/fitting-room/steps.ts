@@ -10,6 +10,7 @@ import {
 } from "./provider"
 
 type Renderer = RenderProvider["name"]
+import { allowanceOf } from "./free-costume"
 import {
   dressesFace,
   PIPELINE_VERSION,
@@ -112,13 +113,33 @@ export function newTryOn(
   }
 }
 
-/** Starts a try-on, unless the same one exists already (then that one). */
+/**
+ * Starts a try-on, unless the same one exists already (then that one), or
+ * the account's free costume is used (lib/fitting-room/free-costume.ts).
+ */
 export async function begin(
   { store, provider, now = Date.now }: Pick<Deps, "store" | "provider" | "now">,
   uid: string,
   fitting: Fitting
 ): Promise<Begun> {
   return store.begin(uid, newTryOn(fitting, now(), provider.name))
+}
+
+/**
+ * Whether `begin` would give a try-on: the one already made, or a new one
+ * the free costume allows. Asked before the photos are kept, so a try-on
+ * that can't start keeps nothing; `begin` decides for good.
+ */
+export async function mayBegin(
+  { store, provider }: Pick<Deps, "store" | "provider">,
+  uid: string,
+  { slug, face, body, garment }: Fitting
+): Promise<boolean> {
+  const id = tryOnId(face.id, body?.id ?? null, slug, provider.name, garment)
+  const existing = await store.tryOn(uid, id)
+  if (existing && existing.status !== "failed") return true
+  const [room, tryOns] = await Promise.all([store.room(uid), store.tryOns(uid)])
+  return allowanceOf(tryOns, room.failedTries, provider.name).free
 }
 
 /** Moves a try-on along; the try-on as it now stands (null if none). */

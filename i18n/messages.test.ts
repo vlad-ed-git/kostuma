@@ -69,7 +69,6 @@ describe("messagesFor", () => {
 const untranslated = [
   "Basket.",
   "FittingRoom.",
-  "Badge.premium",
   "Error.",
   "Auth.",
   "Account.",
@@ -139,6 +138,36 @@ describe("the translations", () => {
     }
   })
 })
+
+describe("the words", () => {
+  // No prices and no payments anywhere (owner, 2026-10-04): one costume is
+  // free, then Kostuma Pro's waitlist. Only the Terms' word on other shops
+  // speaks of their prices.
+  const priced =
+    /[$€£¥]|\b(usd|eur|prices?|precios?|per costume)\b|por disfraz|价格|每套/i
+  const shops = "Terms.sections.shops."
+
+  it.each([
+    ["en", en],
+    ["es", es],
+    ["zh", zh],
+  ] as const)("%s names no price and no currency", (_, messages) => {
+    for (const key of keysOf(messages)) {
+      if (key.startsWith(shops)) continue
+      expect(messageAt(messages, key), key).not.toMatch(priced)
+    }
+  })
+})
+
+/** The message at a dotted key. */
+function messageAt(messages: object, key: string) {
+  return key
+    .split(".")
+    .reduce<unknown>(
+      (group, part) => (group as Record<string, unknown>)[part],
+      messages
+    ) as string
+}
 
 function keysOf(messages: object, prefix = ""): string[] {
   return Object.entries(messages).flatMap(([key, value]) =>

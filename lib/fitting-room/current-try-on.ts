@@ -27,7 +27,7 @@ export function currentTryOn(
   }: {
     costume: Pick<Costume, "slug" | "garment" | "images">
     renderer: TryOn["renderer"] | undefined
-    room: Room
+    room: Pick<Room, "face" | "body">
     allMakeup: boolean
   }
 ): TryOn | null {

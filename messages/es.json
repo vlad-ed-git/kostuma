@@ -120,16 +120,17 @@
         "title": "Qué ofrece Kostuma",
         "p1": "Cualquiera puede ver los disfraces y guardar los que le gusten en Mi cesta de calabaza, sin cuenta. Con una cuenta, tu cesta te sigue de un dispositivo a otro y puedes usar el Probador.",
         "p2": "Kostuma no vende disfraces ni maquillaje: los enlaces para comprarlos llevan a otras tiendas (consulta “Tiendas y otros sitios”).",
-        "p3": "Hoy Kostuma es gratis. No aceptamos pagos y nada en el sitio puede cobrarte. El Probador muestra cuánto costarán las pruebas cuando se pueda pagar; antes de eso, estos términos explicarán cómo funciona el pago y siempre verás el precio antes de pagar.",
+        "p3": "Kostuma es gratis. No aceptamos pagos y nada en el sitio puede cobrarte. Cada cuenta puede probarse un disfraz en el Probador sin coste. Para más, “Consigue Kostuma Pro” añade tu cuenta a una lista de espera, y te escribiremos sobre Kostuma Pro al correo que nos des. Unirte no cuesta nada ni te compromete a nada.",
         "p4": "Seguimos mejorando Kostuma, así que las funciones pueden cambiar, pausarse o terminar. Intentaremos conservar lo que hayas guardado, como tu cesta y tus pruebas."
       },
       "fittingRoom": {
         "title": "El Probador",
-        "p1": "El Probador pone un disfraz sobre una foto tuya y luego muestra su maquillaje en tu propia cara, paso a paso. Le das una foto de tu cara y, para la mayoría de los disfraces, otra de cuerpo entero. Las imágenes las crea una inteligencia artificial: YouCam, un servicio de Perfect Corp.",
+        "p1": "El Probador pone un disfraz sobre tus fotos y luego muestra su maquillaje en tu propia cara, paso a paso. Le das una foto de tu cara y, para la mayoría de los disfraces, otra de cuerpo entero. Las imágenes las crea una inteligencia artificial: YouCam, un servicio de Perfect Corp.",
         "list1": {
           "a": "<b>Solo fotos tuyas.</b> Sube fotos de ti y de nadie más. Nunca subas fotos de niños ni fotos con desnudos.",
-          "b": "<b>Las imágenes son una vista previa.</b> Muestran más o menos cómo te podrían quedar un disfraz y su maquillaje. La ropa y el maquillaje reales se verán distintos, y la IA puede equivocarse.",
-          "c": "<b>El maquillaje corre por tu cuenta.</b> Las guías de maquillaje son ideas, no consejos profesionales ni médicos. Antes de aplicarte cualquier producto, lee su etiqueta, pruébalo en una zona pequeña de piel, mantenlo lejos de los ojos salvo que esté hecho para ellos y deja de usarlo si tu piel reacciona. Eliges y usas los productos bajo tu propia responsabilidad."
+          "b": "<b>Un disfraz gratis.</b> Cada cuenta puede probarse un disfraz gratis. Cuando su prueba ha terminado, probarse otro disfraz, o el mismo con otras fotos, requiere Kostuma Pro. Una prueba que falla puede repetirse con otras fotos, dentro de unos límites que evitan abusos.",
+          "c": "<b>Las imágenes son una vista previa.</b> Muestran más o menos cómo te podrían quedar un disfraz y su maquillaje. La ropa y el maquillaje reales se verán distintos, y la IA puede equivocarse.",
+          "d": "<b>El maquillaje corre por tu cuenta.</b> Las guías de maquillaje son ideas, no consejos profesionales ni médicos. Antes de aplicarte cualquier producto, lee su etiqueta, pruébalo en una zona pequeña de piel, mantenlo lejos de los ojos salvo que esté hecho para ellos y deja de usarlo si tu piel reacciona. Eliges y usas los productos bajo tu propia responsabilidad."
         }
       },
       "yours": {
@@ -188,7 +189,7 @@
     "sections": {
       "about": {
         "title": "Sobre esta política",
-        "p1": "Esta política cubre Kostuma, el sitio web en kostuma.vercel.app (“Kostuma”, “nosotros”). Explica qué recogemos cuando navegas, creas una cuenta, usas Mi cesta de calabaza y el Probador o nos envías un mensaje, y qué hacemos con ello.",
+        "p1": "Esta política cubre Kostuma, el sitio web en kostuma.vercel.app (“Kostuma”, “nosotros”). Explica qué recogemos cuando navegas, creas una cuenta, usas Mi cesta de calabaza y el Probador, te unes a la lista de espera de Kostuma Pro o nos envías un mensaje, y qué hacemos con ello.",
         "p2": "Para preguntas o solicitudes sobre tu información, escribe a <email>{address}</email>."
       },
       "browsing": {
@@ -208,7 +209,7 @@
           "a": "tu nombre y tu correo (y si está verificado), y tu foto de perfil de Google si inicias sesión con Google;",
           "b": "tu contraseña, que Firebase Authentication (Google) guarda por nosotros cifrada (con hash), así que nadie puede leerla, ni siquiera nosotros;",
           "c": "cómo te registraste (correo o Google), el idioma del sitio en ese momento y cuándo aceptaste los Términos del servicio y esta política;",
-          "d": "cuándo se creó la cuenta, cuándo iniciaste sesión por última vez, cuántas veces lo has hecho y cuántas pruebas gratis le quedan;",
+          "d": "cuándo se creó la cuenta, cuándo iniciaste sesión por última vez y cuántas veces lo has hecho;",
           "e": "desde dónde te registraste, aproximadamente (país, región, ciudad y zona horaria), deducido por nuestro alojamiento a partir de tu dirección IP, que no guardamos;",
           "f": "el tipo de dispositivo, el sistema operativo y el navegador con los que te registraste."
         },
@@ -220,10 +221,15 @@
         "list1": {
           "a": "las fotos que eliges: tu cara y, para la mayoría de los disfraces, tu cuerpo entero. Antes de guardarlas, las reducimos, las enderezamos y las guardamos como imágenes nuevas, lo que elimina los datos ocultos que puede llevar un archivo de foto, como el lugar donde se tomó;",
           "b": "el color de tu piel, medido en tu foto de la cara, para que el maquillaje parta de tu propio tono;",
-          "c": "cada prueba: el disfraz, las imágenes creadas a partir de tus fotos y cuándo."
+          "c": "cada prueba: el disfraz, las imágenes creadas a partir de tus fotos y cuándo; y cuántas de tus pruebas fallaron después de crearse imágenes, lo que limita los reintentos."
         },
         "p2": "Para crear las imágenes, enviamos tus fotos, sin nombre, correo ni datos de la cuenta, a YouCam, un servicio de Perfect Corp. En cuanto vuelve cada imagen, pedimos a YouCam que borre el trabajo y sus archivos; YouCam los borra en un plazo de 30 días en cualquier caso.",
         "p3": "Tus fotos e imágenes son privadas: se guardan cerradas al público y solo se te muestran a ti, con tu sesión iniciada. No creamos ni guardamos una huella facial, no usamos tus fotos para identificarte y no las usamos para entrenar IA ni para nada que no sean tus pruebas."
+      },
+      "waitlist": {
+        "title": "La lista de espera de Kostuma Pro",
+        "p1": "Cuando pulsas “Consigue Kostuma Pro”, añadimos tu cuenta a la lista de espera y guardamos: el correo al que escribirte (el de tu cuenta, salvo que nos des otro), el correo de tu cuenta, el idioma del sitio, dónde lo pulsaste y cuándo te uniste y cambiaste el correo por última vez.",
+        "p2": "Solo los usamos para contarte novedades de Kostuma Pro."
       },
       "feedback": {
         "title": "Los mensajes que nos envías",
@@ -250,7 +256,7 @@
         "p1": "No vendemos tu información personal ni la compartimos para publicidad. Estas empresas la tratan por nosotros, solo para hacer funcionar Kostuma:",
         "list1": {
           "a": "<b>Vercel</b> aloja el sitio (<vercel>política de privacidad de Vercel</vercel>).",
-          "b": "<b>Google</b>, a través de Firebase, gestiona las cuentas y el inicio de sesión, la base de datos (tu perfil, tu cesta, tus pruebas y tus mensajes) y el almacenamiento de archivos (tus fotos e imágenes), y la comprobación anti-robots (<google>Política de privacidad de Google</google>).",
+          "b": "<b>Google</b>, a través de Firebase, gestiona las cuentas y el inicio de sesión, la base de datos (tu perfil, tu cesta, tus pruebas, tu lugar en la lista de espera y tus mensajes) y el almacenamiento de archivos (tus fotos e imágenes), y la comprobación anti-robots (<google>Política de privacidad de Google</google>).",
           "c": "<b>Perfect Corp.</b>, a través de YouCam, crea las imágenes del Probador a partir de tus fotos."
         },
         "p2": "También podemos revelar información cuando la ley lo exija, o para proteger los derechos y la seguridad de Kostuma y de otras personas."
@@ -263,16 +269,17 @@
         "title": "Cuánto tiempo la guardamos",
         "list1": {
           "a": "Tu cuenta, tu cesta, tus fotos y tus pruebas: hasta que nos pidas borrarlas, o borrar tu cuenta.",
-          "b": "Los mensajes del formulario de comentarios: mientras los necesitemos para atenderlos, o hasta que nos pidas borrarlos.",
-          "c": "Los códigos cifrados que limitan los mensajes: se usan durante una hora y después se borran.",
-          "d": "En YouCam: se borran en cuanto se crea cada imagen, y en 30 días como máximo.",
-          "e": "En tu dispositivo: hasta que caduque la cookie o borres el almacenamiento de tu navegador."
+          "b": "Tu lugar en la lista de espera de Kostuma Pro: hasta que nos pidas sacarte de ella, o borrar tu cuenta.",
+          "c": "Los mensajes del formulario de comentarios: mientras los necesitemos para atenderlos, o hasta que nos pidas borrarlos.",
+          "d": "Los códigos cifrados que limitan los mensajes: se usan durante una hora y después se borran.",
+          "e": "En YouCam: se borran en cuanto se crea cada imagen, y en 30 días como máximo.",
+          "f": "En tu dispositivo: hasta que caduque la cookie o borres el almacenamiento de tu navegador."
         }
       },
       "rights": {
         "title": "Tus derechos",
         "p1": "Vivas donde vivas, puedes pedirnos una copia de tu información, corregirla o borrarla junto con tu cuenta. Escribe a <email>{address}</email> desde el correo de tu cuenta, para que sepamos que eres tú. Respondemos en un plazo de 30 días.",
-        "p2": "Si estás en el Espacio Económico Europeo, el Reino Unido o Suiza, también puedes oponerte a cómo usamos tu información o limitarlo, llevártela a otro sitio y presentar una reclamación ante tu autoridad de protección de datos. La usamos para darte lo que pediste (tu cuenta, tu cesta, tus pruebas y nuestras respuestas) y por nuestro interés legítimo en mantener Kostuma seguro, evitar abusos y entender a nuestros visitantes (el lugar de registro y los datos del dispositivo).",
+        "p2": "Si estás en el Espacio Económico Europeo, el Reino Unido o Suiza, también puedes oponerte a cómo usamos tu información o limitarlo, llevártela a otro sitio y presentar una reclamación ante tu autoridad de protección de datos. La usamos para darte lo que pediste (tu cuenta, tu cesta, tus pruebas, la lista de espera y nuestras respuestas) y por nuestro interés legítimo en mantener Kostuma seguro, evitar abusos y entender a nuestros visitantes (el lugar de registro y los datos del dispositivo).",
         "p3": "Si estás en California: no vendemos ni compartimos tu información personal, y no recibirás un trato distinto por ejercer tus derechos."
       },
       "security": {

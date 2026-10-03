@@ -9,9 +9,6 @@ import type { Locale } from "@/i18n/routing"
 /** Profiles, one per account, keyed by the account's uid. */
 const users = "users"
 
-/** Free try-ons in the Fitting Room for every new account (owner). */
-export const FREE_TRY_ONS = 2
-
 export type NewProfile = {
   uid: string
   name: string
@@ -30,8 +27,6 @@ export type NewProfile = {
 export type Profile = {
   name: string
   email: string
-  /** Try-ons left in the Fitting Room. */
-  credits: number
   createdAt: Date | null
 }
 
@@ -50,7 +45,6 @@ export async function createProfile(profile: NewProfile) {
     photoURL: profile.photoURL,
     provider: profile.provider,
     locale: profile.locale,
-    credits: FREE_TRY_ONS,
     createdAt: FieldValue.serverTimestamp(),
     termsAcceptedAt: FieldValue.serverTimestamp(),
     lastSignInAt: null,
@@ -78,7 +72,6 @@ export async function getProfile(uid: string): Promise<Profile | null> {
   return {
     name: typeof data.name === "string" ? data.name : "",
     email: typeof data.email === "string" ? data.email : "",
-    credits: typeof data.credits === "number" ? data.credits : 0,
     createdAt:
       data.createdAt instanceof Timestamp ? data.createdAt.toDate() : null,
   }

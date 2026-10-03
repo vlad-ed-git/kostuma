@@ -11,6 +11,7 @@ import { withNext } from "@/lib/auth/next-path"
 import { getUser } from "@/lib/auth/session"
 import { getCostume, getCostumes, toSummary } from "@/lib/catalog"
 import { currentTryOn } from "@/lib/fitting-room/current-try-on"
+import { allowanceOf } from "@/lib/fitting-room/free-costume"
 import { fittingRoom } from "@/lib/fitting-room/service"
 import { fittingRoomStore } from "@/lib/fitting-room/store"
 import { toView, type TryOnView } from "@/lib/fitting-room/try-on"
@@ -25,7 +26,8 @@ export async function generateMetadata(): Promise<Metadata> {
  * The Fitting Room (owner, 2026-10-03), part of My Pumpkin Basket: a costume
  * from the basket (`?costume=`) tried on the visitor's own photos, the
  * outfit then its makeup, step by step. Signed in only: signed out, sign in
- * first, then back here.
+ * first, then back here. Every account tries one costume on free; then the
+ * page offers Kostuma Pro (lib/fitting-room/free-costume.ts).
  */
 export default async function FittingRoomPage({
   searchParams,
@@ -67,6 +69,9 @@ export default async function FittingRoomPage({
     body: null,
   }
   let tryOn: TryOnView | null = null
+  // Unknown, the page lets the visitor on: starting a try-on decides.
+  let free = true
+  let usedOn: string | null = null
   const renderer = fittingRoom()?.provider.name
   try {
     const store = fittingRoomStore()
@@ -87,6 +92,12 @@ export default async function FittingRoomPage({
         allMakeup: selected.allMakeup,
       })
     tryOn = current ? toView(current) : null
+    if (renderer) {
+      const allowance = allowanceOf(tryOns, kept.failedTries, renderer)
+      free = allowance.free
+      if (!allowance.free && allowance.costume)
+        usedOn = getCostume(allowance.costume)?.name ?? null
+    }
   } catch (error) {
     // The page still offers the photos; starting says if it can't.
     console.error("Could not read the Fitting Room.", error)
@@ -125,6 +136,8 @@ export default async function FittingRoomPage({
           room={room}
           tryOn={tryOn}
           open={renderer !== undefined}
+          free={free}
+          usedOn={usedOn}
         />
       </div>
     </div>

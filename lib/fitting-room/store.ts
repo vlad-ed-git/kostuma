@@ -1,10 +1,12 @@
 import "server-only"
 
-import type { DocumentReference } from "firebase-admin/firestore"
+import { type DocumentReference, FieldValue } from "firebase-admin/firestore"
 
 import { adminBucket, adminDb } from "@/lib/firebase/admin"
 
+import { allowanceOf, madePictures } from "./free-costume"
 import type {
+  Begun,
   FacePhoto,
   FittingRoomStore,
   Photo,
@@ -15,7 +17,8 @@ import type {
 /**
  * The Fitting Room in Firestore and Cloud Storage, through the Admin SDK
  * only (firestore.rules and storage.rules close both to browsers):
- * - `fittingRooms/{uid}`: the photos the account used last, `{ face, body }`;
+ * - `fittingRooms/{uid}`: the photos the account used last, `{ face, body }`,
+ *   and its try-ons that failed after pictures were made, `failedTries`;
  * - `fittingRooms/{uid}/tryOns/{id}`: each try-on (lib/fitting-room/try-on.ts);
  * - Storage `fitting-room/{uid}/photos/{face|body}/{id}.jpg`: the photos, as
  *   prepared (lib/fitting-room/photo.ts);
@@ -69,11 +72,20 @@ function facePhotoOf(value: unknown): FacePhoto | null {
   return { ...photo, skin: skin as FacePhoto["skin"] }
 }
 
+function failedTriesOf(data: Record<string, unknown> | undefined) {
+  const count = data?.failedTries
+  return typeof count === "number" && count > 0 ? count : 0
+}
+
 export function fittingRoomStore(): FittingRoomStore {
   return {
     async room(uid) {
       const data = (await roomRef(uid).get()).data() ?? {}
-      return { face: facePhotoOf(data.face), body: photoOf(data.body) }
+      return {
+        face: facePhotoOf(data.face),
+        body: photoOf(data.body),
+        failedTries: failedTriesOf(data),
+      }
     },
 
     async savePhotos(uid, { face, body }) {
@@ -111,12 +123,30 @@ export function fittingRoomStore(): FittingRoomStore {
 
     begin(uid, fresh) {
       const ref = tryOnRef(uid, fresh.id)
-      return adminDb().runTransaction(async (transaction) => {
+      const room = roomRef(uid)
+      return adminDb().runTransaction<Begun>(async (transaction) => {
         const existing = (await transaction.get(ref)).data()
         if (existing && existing.status !== "failed")
-          return { outcome: "existing" as const, tryOn: existing }
+          return { outcome: "existing", tryOn: existing }
+        // The try-ons holding the free costume: filtered on one field, which
+        // its automatic index serves.
+        const [kept, holding] = await Promise.all([
+          transaction.get(room),
+          transaction.get(
+            room.collection(tryOnsOf).where("status", "in", ["running", "done"])
+          ),
+        ])
+        const allowance = allowanceOf(
+          holding.docs.map((doc) => doc.data() as TryOn),
+          failedTriesOf(kept.data()),
+          fresh.renderer
+        )
+        if (!allowance.free) return { outcome: "out_of_units" }
         transaction.set(ref, fresh)
-        return { outcome: "started" as const, tryOn: fresh }
+        // Every start writes the room: of two at once, one is retried, and
+        // then finds the other holding the free costume.
+        transaction.set(room, { updatedAt: Date.now() }, { merge: true })
+        return { outcome: "started", tryOn: fresh }
       })
     },
 
@@ -140,6 +170,13 @@ export function fittingRoomStore(): FittingRoomStore {
         const tryOn = (await transaction.get(ref)).data()
         if (!tryOn || tryOn.status !== "running") return false
         transaction.update(ref, { status, failure, updatedAt: Date.now() })
+        if (status === "failed" && madePictures(tryOn)) {
+          transaction.set(
+            roomRef(uid),
+            { failedTries: FieldValue.increment(1) },
+            { merge: true }
+          )
+        }
         return true
       })
     },

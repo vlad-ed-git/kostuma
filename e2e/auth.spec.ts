@@ -225,7 +225,7 @@ test.describe("signed in", () => {
     expect(errors).toEqual([])
   })
 
-  test("the account page: who, since when, the try-ons waiting", async ({
+  test("the account page: who, since when, the free costume", async ({
     page,
   }) => {
     await page.goto("/account")
@@ -240,7 +240,10 @@ test.describe("signed in", () => {
       "September 13, 2026",
     ])
     const fittingRoom = page.getByRole("region", { name: "The Fitting Room" })
-    await expect(fittingRoom).toContainText("2 free try-ons waiting")
+    await expect(fittingRoom).toContainText("Your free costume is waiting.")
+    await expect(
+      fittingRoom.getByRole("button", { name: "Get Kostuma Pro" })
+    ).toBeVisible()
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
       "content",
       /noindex/

@@ -82,7 +82,7 @@
   "FittingRoom": {
     "title": "The Fitting Room",
     "line": "Try on the outfits in your basket, special-effects makeup included.",
-    "price": "{free, plural, one {# free try-on} other {# free try-ons}}, then {price} per costume.",
+    "free": "One costume is free with every account.",
     "enter": "Step inside",
     "lead": "Transform into a monster. Step by step.",
     "transform": "Transform into {name}. Step by step.",
@@ -92,6 +92,11 @@
     "browse": "Browse costumes",
     "notInBasket": "{name} isn't in My Pumpkin Basket yet.",
     "closed": "The Fitting Room is closed right now. Try again later.",
+    "used": {
+      "title": "You've used your free costume.",
+      "named": "You tried on {name}. Get Kostuma Pro to try on more costumes.",
+      "line": "Get Kostuma Pro to try on more costumes."
+    },
     "photos": {
       "title": "Your photos",
       "line": "Two photos: your face, and you from head to toe. They stay private.",
@@ -148,7 +153,8 @@
       "title": "Replace your photos?",
       "line": "New photos make a new try-on of {name}, in place of this one. Nothing changes until you start it.",
       "keep": "Keep current photos",
-      "choose": "Choose new photos"
+      "choose": "Choose new photos",
+      "usedLine": "New photos would make a new try-on of {name}. Get Kostuma Pro for more try-ons."
     },
     "problems": {
       "unreadable": "This file can't be opened. Choose a JPEG, PNG or WebP photo.",
@@ -168,6 +174,7 @@
       "unknown_costume": "This costume can't be tried on yet.",
       "signed_out": "Your session ended. Sign in again to continue.",
       "closed": "The Fitting Room is closed right now. Try again later.",
+      "out_of_units": "You've used your free costume.",
       "unknown": "Something went wrong. Try again."
     }
   },
@@ -225,7 +232,8 @@
     "name": "Name",
     "email": "Email",
     "memberSince": "Member since",
-    "tryOnsWaiting": "{count, plural, =0 {No free try-ons left} one {# free try-on waiting} other {# free try-ons waiting}}",
+    "freeWaiting": "Your free costume is waiting.",
+    "freeUsed": "You've used your free costume.",
     "signOut": "Sign out",
     "signingOut": "Signing out…"
   },
@@ -283,16 +291,17 @@
         "title": "What Kostuma offers",
         "p1": "Anyone can browse the costumes and keep the ones they like in My Pumpkin Basket, without an account. With an account, your basket follows you from device to device, and you can use the Fitting Room.",
         "p2": "Kostuma doesn't sell costumes or makeup: the links to buy them lead to other shops (see “Shops and other sites”).",
-        "p3": "Kostuma is free to use today. We don't take payments, and nothing on the site can charge you. The Fitting Room shows what try-ons will cost once paying is possible; before then, these terms will say how paying works, and you'll always see the price before you pay.",
+        "p3": "Kostuma is free to use. We don't take payments, and nothing on the site can charge you. Every account can try on one costume in the Fitting Room free of charge. For more, “Get Kostuma Pro” puts your account on a waitlist, and we'll write to you about Kostuma Pro at the email you give us. Joining costs nothing and commits you to nothing.",
         "p4": "We keep improving Kostuma, so features can change, pause or stop. We'll try to keep what you've saved, such as your basket and your try-ons."
       },
       "fittingRoom": {
         "title": "The Fitting Room",
-        "p1": "The Fitting Room puts a costume on a photo of you, then shows its makeup on your own face, step by step. You give it a photo of your face and, for most costumes, one of you from head to toe. The pictures are made by artificial intelligence: YouCam, a service of Perfect Corp.",
+        "p1": "The Fitting Room puts a costume on your photos, then shows its makeup on your own face, step by step. You give it a photo of your face and, for most costumes, one of you from head to toe. The pictures are made by artificial intelligence: YouCam, a service of Perfect Corp.",
         "list1": {
           "a": "<b>Only photos of you.</b> Upload photos of yourself and of no one else. Never upload photos of children, or photos with nudity.",
-          "b": "<b>The pictures are previews.</b> They show roughly how a costume and its makeup could look on you. Real clothes and real makeup will look different, and the AI can get things wrong.",
-          "c": "<b>Makeup is on you.</b> The makeup guides are ideas, not professional or medical advice. Before you put on any product, read its label, test it on a small patch of skin, keep it away from your eyes unless it's made for them, and stop if your skin reacts. You choose and use the products at your own risk."
+          "b": "<b>One costume free.</b> Every account can try on one costume free. Once its try-on is done, trying on another costume, or the same one with other photos, needs Kostuma Pro. A try-on that fails can be tried again with other photos, within limits that stop abuse.",
+          "c": "<b>The pictures are previews.</b> They show roughly how a costume and its makeup could look on you. Real clothes and real makeup will look different, and the AI can get things wrong.",
+          "d": "<b>Makeup is on you.</b> The makeup guides are ideas, not professional or medical advice. Before you put on any product, read its label, test it on a small patch of skin, keep it away from your eyes unless it's made for them, and stop if your skin reacts. You choose and use the products at your own risk."
         }
       },
       "yours": {
@@ -351,7 +360,7 @@
     "sections": {
       "about": {
         "title": "About this policy",
-        "p1": "This policy covers Kostuma, the website at kostuma.vercel.app (“Kostuma”, “we”, “us”). It explains what we collect when you browse, create an account, use My Pumpkin Basket and the Fitting Room, or send us a message, and what we do with it.",
+        "p1": "This policy covers Kostuma, the website at kostuma.vercel.app (“Kostuma”, “we”, “us”). It explains what we collect when you browse, create an account, use My Pumpkin Basket and the Fitting Room, join Kostuma Pro's waitlist, or send us a message, and what we do with it.",
         "p2": "For questions or requests about your information, email <email>{address}</email>."
       },
       "browsing": {
@@ -371,7 +380,7 @@
           "a": "your name and email address (and whether it has been verified), and your Google profile picture if you sign in with Google;",
           "b": "your password, which Firebase Authentication (Google) stores for us scrambled (hashed), so no one can read it, not even us;",
           "c": "how you signed up (email or Google), the site's language at the time, and when you agreed to the Terms of service and this policy;",
-          "d": "when the account was made, when you last signed in, how many times you have, and how many free try-ons it has left;",
+          "d": "when the account was made, when you last signed in, and how many times you have;",
           "e": "roughly where you signed up from (country, region, city and time zone), worked out by our host from your IP address, which we don't keep;",
           "f": "the kind of device, operating system and browser you signed up on."
         },
@@ -383,10 +392,15 @@
         "list1": {
           "a": "the photos you choose: your face and, for most costumes, you from head to toe. Before keeping them, we shrink them, turn them upright and save them as new pictures, which drops the hidden details a photo file can carry, such as where it was taken;",
           "b": "the color of your skin, measured from your face photo, so the makeup starts from your own shade;",
-          "c": "each try-on: the costume, the pictures made from your photos, and when."
+          "c": "each try-on: the costume, the pictures made from your photos, and when; and how many of your try-ons failed after pictures were made, which limits trying again."
         },
         "p2": "To make the pictures, we send your photos, with no name, email or account details, to YouCam, a service of Perfect Corp. As soon as each picture comes back, we ask YouCam to delete the job and its files; YouCam deletes them within 30 days in any case.",
         "p3": "Your photos and pictures are private: stored closed to the public, and shown only to you, signed in. We don't make or keep a faceprint, we don't use your photos to identify you, and we don't use them to train AI or for anything other than your try-ons."
+      },
+      "waitlist": {
+        "title": "Kostuma Pro's waitlist",
+        "p1": "When you press “Get Kostuma Pro”, we put your account on the waitlist and keep: the email to write to (your account's, unless you give us another), your account's email, the site's language, where you pressed it, and when you joined and last changed the email.",
+        "p2": "We use them only to tell you about Kostuma Pro."
       },
       "feedback": {
         "title": "Messages you send us",
@@ -413,7 +427,7 @@
         "p1": "We don't sell your personal information or share it for advertising. These companies process it for us, only to run Kostuma:",
         "list1": {
           "a": "<b>Vercel</b> hosts the site (<vercel>Vercel's privacy policy</vercel>).",
-          "b": "<b>Google</b>, through Firebase, runs accounts and sign-in, the database (your profile, basket, try-ons and messages) and the file storage (your photos and pictures), and the robot check (<google>Google's Privacy Policy</google>).",
+          "b": "<b>Google</b>, through Firebase, runs accounts and sign-in, the database (your profile, basket, try-ons, waitlist entry and messages) and the file storage (your photos and pictures), and the robot check (<google>Google's Privacy Policy</google>).",
           "c": "<b>Perfect Corp.</b>, through YouCam, makes the Fitting Room's pictures from your photos."
         },
         "p2": "We may also disclose information when the law requires it, or to protect the rights and safety of Kostuma and others."
@@ -426,16 +440,17 @@
         "title": "How long we keep it",
         "list1": {
           "a": "Your account, basket, photos and try-ons: until you ask us to delete them, or your account.",
-          "b": "Messages from the feedback form: as long as we need them to act on them, or until you ask us to delete them.",
-          "c": "The scrambled codes that limit messages: used for an hour, then deleted.",
-          "d": "At YouCam: deleted as soon as each picture is made, and within 30 days at most.",
-          "e": "On your device: until the cookie ends or you clear your browser's storage."
+          "b": "Your place on Kostuma Pro's waitlist: until you ask us to take you off it, or to delete your account.",
+          "c": "Messages from the feedback form: as long as we need them to act on them, or until you ask us to delete them.",
+          "d": "The scrambled codes that limit messages: used for an hour, then deleted.",
+          "e": "At YouCam: deleted as soon as each picture is made, and within 30 days at most.",
+          "f": "On your device: until the cookie ends or you clear your browser's storage."
         }
       },
       "rights": {
         "title": "Your rights",
         "p1": "Wherever you live, you can ask us for a copy of your information, to correct it, or to delete it, along with your account. Email <email>{address}</email> from the address on your account, so we know it's you. We answer within 30 days.",
-        "p2": "If you're in the European Economic Area, the United Kingdom or Switzerland, you can also object to or restrict how we use your information, take it elsewhere, and complain to your data protection authority. We use it to provide what you asked for (your account, basket, try-ons and replies), and for our legitimate interests in keeping Kostuma secure, stopping abuse and understanding our visitors (the sign-up place and device details).",
+        "p2": "If you're in the European Economic Area, the United Kingdom or Switzerland, you can also object to or restrict how we use your information, take it elsewhere, and complain to your data protection authority. We use it to provide what you asked for (your account, basket, try-ons, the waitlist and replies), and for our legitimate interests in keeping Kostuma secure, stopping abuse and understanding our visitors (the sign-up place and device details).",
         "p3": "If you're in California: we don't sell or share your personal information, and you won't be treated differently for using your rights."
       },
       "security": {
@@ -466,8 +481,7 @@
     "copyright": "© {year} Kostuma"
   },
   "Badge": {
-    "soon": "Soon",
-    "premium": "Premium"
+    "soon": "Soon"
   },
   "SkipLink": {
     "label": "Skip to content"

@@ -7,7 +7,7 @@ import { getCostume, tryOnGarment } from "@/lib/catalog"
 import { PhotoError, preparePhoto, type Prepared } from "./photo"
 import type { PhotoProblem } from "./photo-rules"
 import { fittingRoom } from "./service"
-import { begin } from "./steps"
+import { begin, type Fitting, mayBegin } from "./steps"
 import {
   type FacePhoto,
   type Photo,
@@ -22,6 +22,7 @@ export type StartError =
   | "unknown_costume"
   | "missing_photo"
   | "closed"
+  | "out_of_units"
   | "unknown"
   | PhotoProblem
 
@@ -36,7 +37,9 @@ export type StartResult =
  * prepares it (upright, shrunk, JPEG), keeps it, and starts the renders,
  * which the page then follows (app/api/fitting-room). A photo is a new
  * file, or the one the account used last (`keepFace`, `keepBody`: its id).
- * The same photos and costume again give the try-on already made.
+ * The same photos and costume again give the try-on already made, free; a
+ * new try-on needs the account's free costume (free-costume.ts), and keeps
+ * nothing without it.
  */
 export async function startTryOn(form: FormData): Promise<StartResult> {
   try {
@@ -83,23 +86,23 @@ export async function startTryOn(form: FormData): Promise<StartResult> {
     if (!body && !guide.allMakeup)
       return { ok: false, error: "missing_photo", photo: "body" }
 
+    const garment = guide.allMakeup
+      ? null
+      : (tryOnGarment(costume)?.url ?? null)
+    const fitting: Fitting = { slug, guide, face, body, garment }
+    if (!(await mayBegin(deps, user.uid, fitting)))
+      return { ok: false, error: "out_of_units" }
+
     if (fresh.face || fresh.body) {
       await deps.store.savePhotos(user.uid, {
         face: fresh.face && [fresh.face.photo, fresh.face.image],
         body: fresh.body && [fresh.body.photo, fresh.body.image],
       })
     }
-    const garment = guide.allMakeup
-      ? null
-      : (tryOnGarment(costume)?.url ?? null)
-    const { tryOn } = await begin(deps, user.uid, {
-      slug,
-      guide,
-      face,
-      body,
-      garment,
-    })
-    return { ok: true, tryOn: toView(tryOn) }
+    const begun = await begin(deps, user.uid, fitting)
+    if (begun.outcome === "out_of_units")
+      return { ok: false, error: "out_of_units" }
+    return { ok: true, tryOn: toView(begun.tryOn) }
   } catch (error) {
     console.error("A try-on could not start.", error)
     return { ok: false, error: "unknown" }

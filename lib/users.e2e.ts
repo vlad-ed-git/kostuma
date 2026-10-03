@@ -8,8 +8,6 @@ import type * as Users from "./users"
  * Firestore.
  */
 
-export const FREE_TRY_ONS: typeof Users.FREE_TRY_ONS = 2
-
 export type NewProfile = Users.NewProfile
 export type Profile = Users.Profile
 
@@ -24,7 +22,6 @@ export const getProfile: typeof Users.getProfile = async (uid) =>
     ? {
         name: "Wednesday Addams",
         email: "wednesday@example.com",
-        credits: 2,
         createdAt: new Date("2026-09-13T12:00:00Z"),
       }
     : null

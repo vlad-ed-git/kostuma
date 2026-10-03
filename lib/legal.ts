@@ -10,5 +10,5 @@ export const SUPPORT_EMAIL = "vlad.atwok@gmail.com"
  * (`Terms.*`, `Privacy.*` in messages/*.json), and the Privacy policy
  * whenever a feature changes what is kept.
  */
-export const TERMS_UPDATED = "2026-10-03"
-export const PRIVACY_UPDATED = "2026-10-03"
+export const TERMS_UPDATED = "2026-10-04"
+export const PRIVACY_UPDATED = "2026-10-04"

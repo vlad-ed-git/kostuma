@@ -71,11 +71,24 @@ export type TryOn = {
   updatedAt: number
 }
 
-/** The photos the account used last, offered again for the next costume. */
-export type Room = { face: FacePhoto | null; body: Photo | null }
+/**
+ * The account's Fitting Room: the photos it used last, offered again for the
+ * next costume, and its try-ons that failed after pictures were made for
+ * them (lib/fitting-room/free-costume.ts).
+ */
+export type Room = {
+  face: FacePhoto | null
+  body: Photo | null
+  failedTries: number
+}
 
-/** What starting a try-on came to: a new one, or the one already made. */
-export type Begun = { outcome: "started" | "existing"; tryOn: TryOn }
+/**
+ * What starting a try-on came to: a new one, the one already made, or none,
+ * the account's free costume being used (lib/fitting-room/free-costume.ts).
+ */
+export type Begun =
+  | { outcome: "started" | "existing"; tryOn: TryOn }
+  | { outcome: "out_of_units" }
 
 /**
  * Where try-ons, photos and pictures are kept: Firestore and Cloud Storage
@@ -94,7 +107,8 @@ export interface FittingRoomStore {
   tryOns(uid: string): Promise<TryOn[]>
   /**
    * In one transaction: the try-on if it exists and hasn't failed; else
-   * keeps `fresh` (a failed one starts over).
+   * keeps `fresh` (a failed one starts over), if the account's free costume
+   * allows (`allowanceOf`). Two starts at once never both get it.
    */
   begin(uid: string, fresh: TryOn): Promise<Begun>
   /**
@@ -108,7 +122,11 @@ export interface FittingRoomStore {
     when: (step: StoredStep) => boolean,
     change: Partial<StoredStep>
   ): Promise<boolean>
-  /** Ends a running try-on, in one transaction: false if it had ended already. */
+  /**
+   * Ends a running try-on, in one transaction: false if it had ended already.
+   * One that fails after pictures were made for it counts in the room's
+   * `failedTries`.
+   */
   finish(
     uid: string,
     id: string,

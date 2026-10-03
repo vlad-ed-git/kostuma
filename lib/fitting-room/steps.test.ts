@@ -10,6 +10,7 @@ import {
   lips,
 } from "@/lib/makeup"
 
+import { FAILED_TRIES } from "./free-costume"
 import { memoryStore } from "./memory-store"
 import {
   ProviderError,
@@ -25,10 +26,11 @@ import {
   type Fitting,
   LEASE_MS,
   MAX_ATTEMPTS,
+  mayBegin,
   RUN_LIMIT_MS,
   tryOnId,
 } from "./steps"
-import type { FittingRoomStore } from "./try-on"
+import type { Begun, FittingRoomStore, TryOn } from "./try-on"
 
 const UID = "visitor"
 const FACE = new Uint8Array([1])
@@ -145,17 +147,32 @@ beforeEach(async () => {
 
 afterEach(() => vi.restoreAllMocks())
 
-/** Starts the try-on and returns its id. */
-async function started() {
-  const { tryOn } = await begin(deps, UID, fitting)
-  return tryOn.id
+/** The try-on a start gave; fails the test when it gave none. */
+function made(begun: Begun): TryOn {
+  if (begun.outcome === "out_of_units") throw new Error("Out of units.")
+  return begun.tryOn
 }
+
+/** Starts the try-on (or another `fitting`) and returns its id. */
+async function started(other: Fitting = fitting) {
+  return made(await begin(deps, UID, other)).id
+}
+
+/** The same costume on another face photo. */
+const otherFace = (n: number): Fitting => ({
+  ...fitting,
+  face: { ...fitting.face, id: String(n).padStart(32, "0") },
+})
+
+/** Another costume on the same photos. */
+const otherCostume: Fitting = { ...fitting, slug: "pennywise" }
 
 describe("begin", () => {
   it("keeps a new try-on, its steps waiting: the outfit on the body and on the face, then the guide", async () => {
     const result = await begin(deps, UID, fitting)
     expect(result.outcome).toBe("started")
-    expect(result.tryOn.id).toBe(
+    const tryOn = made(result)
+    expect(tryOn.id).toBe(
       tryOnId(
         fitting.face.id,
         BODY_PHOTO.id,
@@ -164,17 +181,15 @@ describe("begin", () => {
         GARMENT_URL
       )
     )
-    expect(result.tryOn.garment).toBe(GARMENT_URL)
-    expect(result.tryOn.steps.map((step) => step.render.tool)).toEqual([
+    expect(tryOn.garment).toBe(GARMENT_URL)
+    expect(tryOn.steps.map((step) => step.render.tool)).toEqual([
       "clothes",
       "clothes",
       "makeup",
       "makeup",
       "hair",
     ])
-    expect(result.tryOn.steps.every((step) => step.status === "waiting")).toBe(
-      true
-    )
+    expect(tryOn.steps.every((step) => step.status === "waiting")).toBe(true)
   })
 
   it("gives the same try-on again for the same photos and costume", async () => {
@@ -188,7 +203,7 @@ describe("begin", () => {
     await store.finish(UID, id, "failed", "face_photo")
     const again = await begin(deps, UID, fitting)
     expect(again.outcome).toBe("started")
-    expect(again.tryOn.status).toBe("running")
+    expect(made(again).status).toBe("running")
   })
 
   it("makes another try-on for other photos, another costume, another renderer or another outfit picture", () => {
@@ -309,7 +324,7 @@ describe("advance", () => {
       body: null,
       garment: null,
     }
-    const { tryOn } = await begin(deps, UID, allMakeup)
+    const tryOn = made(await begin(deps, UID, allMakeup))
     expect(tryOn.id).toBe(
       tryOnId(fitting.face.id, null, "ghostface", "youcam", null)
     )
@@ -449,5 +464,114 @@ describe("advance", () => {
   it("knows no try-on of another account", async () => {
     const id = await started()
     expect(await advance(deps, "someone-else", id)).toBeNull()
+  })
+})
+
+describe("the free costume", () => {
+  /** Dresses a started try-on's body and face, then fails its makeup. */
+  async function failAfterTheOutfit(id: string) {
+    const latest = () => `task-${render.started.length - 1}`
+    await advance(deps, UID, id)
+    render.finish(latest(), picture(0))
+    await advance(deps, UID, id)
+    render.finish(latest(), picture(1))
+    await advance(deps, UID, id)
+    render.finish(latest(), {
+      status: "error",
+      reason: "face_photo",
+      retry: false,
+      detail: "error_face_angle_invalid",
+    })
+    return advance(deps, UID, id)
+  }
+
+  it("is used once a try-on is done: no try-on of another costume, nor of other photos", async () => {
+    const id = await started()
+    await store.finish(UID, id, "done", null)
+    expect(await begin(deps, UID, otherCostume)).toEqual({
+      outcome: "out_of_units",
+    })
+    expect(await begin(deps, UID, otherFace(1))).toEqual({
+      outcome: "out_of_units",
+    })
+    expect(await store.tryOns(UID)).toHaveLength(1)
+  })
+
+  it("is held while a try-on runs", async () => {
+    await started()
+    expect((await begin(deps, UID, otherCostume)).outcome).toBe("out_of_units")
+  })
+
+  it("never stops the visitor seeing a try-on already made", async () => {
+    const id = await started()
+    await store.finish(UID, id, "done", null)
+    expect(await begin(deps, UID, fitting)).toMatchObject({
+      outcome: "existing",
+      tryOn: { id },
+    })
+  })
+
+  it("comes back when a try-on fails before any picture is made, however often", async () => {
+    for (let n = 0; n < FAILED_TRIES + 2; n++) {
+      const id = await started(otherFace(n))
+      await store.finish(UID, id, "failed", "body_photo")
+    }
+    expect((await store.room(UID)).failedTries).toBe(0)
+    expect((await begin(deps, UID, otherCostume)).outcome).toBe("started")
+  })
+
+  it(`comes back after a failure once pictures were made, ${FAILED_TRIES} times`, async () => {
+    for (let n = 0; n < FAILED_TRIES; n++) {
+      const other = otherFace(n)
+      await store.savePhotos(UID, { face: [other.face, FACE] })
+      const tryOn = await failAfterTheOutfit(await started(other))
+      expect(tryOn).toMatchObject({ status: "failed", failure: "face_photo" })
+    }
+    expect((await store.room(UID)).failedTries).toBe(FAILED_TRIES)
+    expect(await begin(deps, UID, otherCostume)).toEqual({
+      outcome: "out_of_units",
+    })
+  })
+
+  it("counts a failed try-on started over as another try", async () => {
+    for (let n = 0; n < FAILED_TRIES; n++)
+      await failAfterTheOutfit(await started())
+    expect(await begin(deps, UID, fitting)).toEqual({ outcome: "out_of_units" })
+  })
+
+  it("goes to one of two try-ons started at the same time", async () => {
+    const outcomes = await Promise.all([
+      begin(deps, UID, fitting),
+      begin(deps, UID, otherCostume),
+    ])
+    expect(outcomes.map((each) => each.outcome).sort()).toEqual([
+      "out_of_units",
+      "started",
+    ])
+  })
+
+  it("belongs to each account", async () => {
+    const id = await started()
+    await store.finish(UID, id, "done", null)
+    expect((await begin(deps, "someone-else", otherCostume)).outcome).toBe(
+      "started"
+    )
+  })
+})
+
+describe("mayBegin", () => {
+  it("says whether a try-on would start, and keeps nothing", async () => {
+    expect(await mayBegin(deps, UID, otherCostume)).toBe(true)
+    expect(await store.tryOns(UID)).toHaveLength(0)
+    const id = await started()
+    await store.finish(UID, id, "done", null)
+    expect(await mayBegin(deps, UID, otherCostume)).toBe(false)
+    expect(await mayBegin(deps, UID, otherFace(1))).toBe(false)
+  })
+
+  it("lets the visitor see a try-on already made", async () => {
+    const id = await started()
+    await store.finish(UID, id, "done", null)
+    expect(await mayBegin(deps, UID, fitting)).toBe(true)
   })
 })
