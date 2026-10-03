@@ -39,6 +39,7 @@
   "Costume": {
     "metaTitle": "{name} costume",
     "photoAlt": "{name} costume",
+    "film": "{title} ({year})",
     "photos": "Photos",
     "showPhoto": "Photo {number} of {count}",
     "breadcrumb": "Breadcrumb",

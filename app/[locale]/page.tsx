@@ -1,5 +1,5 @@
 import { headers } from "next/headers"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
 import { CostumeRow } from "@/components/costume/costume-row"
 import { Countdown } from "@/components/countdown/countdown"
@@ -21,6 +21,7 @@ import { visitorFrom } from "@/lib/visitor"
  * live here rather than on a page of their own: one less step.
  */
 export default async function HomePage() {
+  const locale = await getLocale()
   const home = await getTranslations("Home")
   const nav = await getTranslations("Nav")
   // The server's guess of the season, by the connection's time zone (on
@@ -82,7 +83,7 @@ export default async function HomePage() {
         className="mx-auto max-w-7xl scroll-mt-16 px-4 pt-4 pb-28 sm:px-6 lg:px-8"
       >
         <ol className="grid gap-x-16 gap-y-2 lg:grid-cols-2">
-          {getCostumes().map((costume) => (
+          {getCostumes(locale).map((costume) => (
             <li key={costume.slug} className="lit">
               <CostumeRow costume={toSummary(costume)} />
             </li>

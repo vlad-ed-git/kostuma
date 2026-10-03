@@ -15,4 +15,18 @@ describe("filmLine", () => {
       ])
     ).toBe("Pearl (2022) / X (2022)")
   })
+
+  it("writes each film as the language does, the year as it is", () => {
+    const chinese = ({ title, year }: { title: string; year: string }) =>
+      `《${title}》（${year}）`
+    expect(
+      filmLine(
+        [
+          { title: "珀尔", year: 2022 },
+          { title: "恐怖X档案", year: 2022 },
+        ],
+        chinese
+      )
+    ).toBe("《珀尔》（2022） / 《恐怖X档案》（2022）")
+  })
 })

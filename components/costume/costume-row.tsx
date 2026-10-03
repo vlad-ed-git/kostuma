@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl"
+
 import { BasketToggle } from "@/components/basket/basket-toggle"
 import { IntentLink } from "@/components/navigation/intent-link"
 import type { CostumeSummary } from "@/lib/catalog/types"
@@ -13,6 +15,7 @@ import { filmLine } from "./format"
  * the pumpkin puts the costume in My Pumpkin Basket or takes it out.
  */
 export function CostumeRow({ costume }: { costume: CostumeSummary }) {
+  const t = useTranslations("Costume")
   return (
     <div className="flex items-center gap-2">
       <IntentLink
@@ -32,7 +35,7 @@ export function CostumeRow({ costume }: { costume: CostumeSummary }) {
             {costume.name}
           </span>
           <span className="text-lg text-muted-foreground italic transition-colors group-hover/row:text-foreground">
-            {filmLine(costume.films)}
+            {filmLine(costume.films, (film) => t("film", film))}
           </span>
         </span>
       </IntentLink>

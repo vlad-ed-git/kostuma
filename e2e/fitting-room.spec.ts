@@ -217,6 +217,55 @@ test.describe("The Fitting Room", () => {
     expect(errors).toEqual([])
   })
 
+  test("speaks the visitor's language: the guide in Spanish, its products the shop's search", async ({
+    page,
+  }) => {
+    const errors = collectErrors(page)
+    await enter(page, ["freddy-krueger"])
+    await page.goto("/es/basket/fitting-room?costume=freddy-krueger")
+    await expect(
+      page.getByText("Transfórmate en Freddy Krueger. Paso a paso.")
+    ).toBeVisible()
+    await page
+      .locator('input[name="face"]')
+      .setInputFiles(await photo(900, 1200))
+    await expect(
+      page.getByRole("button", { name: "Cambiar la foto de tu cara" })
+    ).toBeVisible()
+    await page
+      .locator('input[name="body"]')
+      .setInputFiles(await photo(1000, 1500))
+    await expect(
+      page.getByRole("button", {
+        name: "Cambiar la foto tuya de pies a cabeza",
+      })
+    ).toBeVisible()
+    await page.getByRole("button", { name: "Continuar" }).click()
+    await page.getByRole("button", { name: "Empezar la prueba" }).click()
+    await expect(page.getByText("Tu prueba está lista.")).toBeAttached({
+      timeout: 30_000,
+    })
+
+    const freddy = room(page, "Freddy Krueger")
+    await expect(freddy.getByText("Paso 6 de 6")).toBeVisible()
+    await expect(
+      freddy.getByRole("heading", { name: "Labios agrietados" })
+    ).toBeVisible()
+    const product = freddy.getByRole("link", {
+      name: "Buscar labial rojo ladrillo en Amazon (se abre en una pestaña nueva)",
+    })
+    await expect(product).toHaveAttribute(
+      "href",
+      "https://www.amazon.com/s?k=labial%20rojo%20ladrillo"
+    )
+    await expect(
+      freddy
+        .getByRole("list", { name: "Tus imágenes" })
+        .getByRole("button", { name: "El disfraz" })
+    ).toBeVisible()
+    expect(errors).toEqual([])
+  })
+
   test("offers the same photos again for the next costume", async ({
     page,
   }) => {

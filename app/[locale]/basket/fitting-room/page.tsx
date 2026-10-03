@@ -5,13 +5,13 @@ import {
   type FittingCostume,
   FittingRoom,
 } from "@/components/fitting-room/fitting-room"
-import { makeupGuides } from "@/content/makeup"
 import { redirect } from "@/i18n/navigation"
 import { withNext } from "@/lib/auth/next-path"
 import { getUser } from "@/lib/auth/session"
 import { getCostume, getCostumes, toSummary } from "@/lib/catalog"
 import { currentTryOn } from "@/lib/fitting-room/current-try-on"
 import { allowanceOf } from "@/lib/fitting-room/free-costume"
+import { guideFor } from "@/lib/guides"
 import { fittingRoom } from "@/lib/fitting-room/service"
 import { fittingRoomStore } from "@/lib/fitting-room/store"
 import { toView, type TryOnView } from "@/lib/fitting-room/try-on"
@@ -37,17 +37,16 @@ export default async function FittingRoomPage({
   const here = slug
     ? `/basket/fitting-room?costume=${encodeURIComponent(slug)}`
     : "/basket/fitting-room"
+  const locale = await getLocale()
   const user = await getUser()
   if (!user) {
-    return redirect({
-      href: withNext("/sign-in", here),
-      locale: await getLocale(),
-    })
+    return redirect({ href: withNext("/sign-in", here), locale })
   }
 
   const t = await getTranslations("FittingRoom")
-  const costume = slug ? getCostume(slug) : undefined
-  const guide = costume ? makeupGuides[costume.slug] : undefined
+  const costume = slug ? getCostume(slug, locale) : undefined
+  // The guide's words in the visitor's language; the renders are the same.
+  const guide = costume ? guideFor(costume.slug, locale) : undefined
   const selected: FittingCostume | null =
     costume && guide && costume.images[0]
       ? {
@@ -103,8 +102,8 @@ export default async function FittingRoomPage({
     console.error("Could not read the Fitting Room.", error)
   }
 
-  const costumes = getCostumes()
-    .filter((each) => makeupGuides[each.slug] && each.images[0])
+  const costumes = getCostumes(locale)
+    .filter((each) => guideFor(each.slug) && each.images[0])
     .map(toSummary)
 
   // The dressing room (spec §11.4b): a red light behind the mirrors and

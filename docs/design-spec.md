@@ -908,12 +908,23 @@ The real documents, in plain words and the second person, true to what the site 
 
 ## 14. Internationalization
 
-- Every visible string is a message, translated into Spanish and Chinese (`messages/{en,es,zh}.json`;
-  informal "tú" in Spanish). `i18n/messages.test.ts` checks that each language has every English
-  key and keeps each message's arguments and tags. Any key a language lacks falls back to English.
-- The costume data (`content/costumes.ts`: lore, looks, fun facts, credits) is English in every
-  language; character names and film titles are never translated. "My Pumpkin Basket" is
-  translated as its proper name ("Mi cesta de calabaza", "我的南瓜篮").
+- **Everything a visitor can read is in English, Spanish and Chinese** (owner, 2026-10-04:
+  "everything will be translated"). Every visible string is a message
+  (`messages/{en,es,zh}.json`; neutral Spanish with informal "tú", Simplified Chinese).
+  `i18n/messages.test.ts` requires every message in all three languages, with each message's
+  arguments and tags, none empty, and no price anywhere (12).
+- The collection's words too (`content/translations/{es,zh}.json`, English the source in
+  `content/costumes.ts` and `content/makeup.ts`): each costume's lore, fun fact, look and
+  credits, each film under its official local title (Spanish: Latin America's, else Mexico's,
+  else the original; Chinese: the mainland's), and every makeup guide (its look, every step's
+  title and how-to, its products, which are also the shop's search terms, and its finish).
+  Character names and the people credited stay as they are, in every language. The pages read
+  them through `getCostumes(locale)`, `getCostume(slug, locale)` and `guideFor(slug, locale)`;
+  `content/translations/translations.test.ts` holds every costume and guide to the English
+  (the same parts in the same order, every word translated, the people credited intact, one
+  name per product). A film is written as the language writes it (`Costume.film`: 《猛鬼街》
+  （1984） in Chinese). "My Pumpkin Basket" is translated as its proper name ("Mi cesta de
+  calabaza", "我的南瓜篮"); "Kostuma Pro" stays.
 - Dates and numbers via next-intl formatters (countdown date, counts).
 - Messages in sentence case; CSS applies the small capitals.
 - Endonyms in the language menu and links: English · Español · 中文, each with its own `lang`
@@ -979,11 +990,12 @@ The real documents, in plain words and the second person, true to what the site 
 Each feature branch ships unit and end-to-end tests for the cases that apply to it:
 
 - **Countdown:** time zones east and west of UTC; daylight-saving changes before Oct 31;
-  Halloween day itself ("Tonight."); the rollover after Halloween to next year; a visitor whose
-  clock is wrong; the server-rendered placeholder before hydration.
+  Halloween day itself ("Tonight."); the turn to Christmas after Halloween's night, and back to
+  the next Halloween at Christmas; a visitor whose clock is wrong; the server-rendered
+  placeholder and the server's guess of the season before hydration.
 - **Languages:** the longest strings (Spanish) at 320 px; Chinese line breaking and fallback
-  fonts; dates, numbers and currency formatted per locale; untranslated keys falling back to
-  English.
+  fonts; dates and numbers formatted per locale; every message, costume and guide complete in
+  each language (a missing one fails the tests; the page would show English, never a raw key).
 - **Storage (basket):** absent, corrupted, oversized or outdated data in `localStorage`; storage
   that throws (private mode, blocked) or is full; changes from another tab; costumes that no
   longer exist.
@@ -1016,5 +1028,5 @@ Each feature branch ships unit and end-to-end tests for the cases that apply to 
 
 ## 18. Later
 
-translations · optional opt-in ambient sound: projector whir (never autoplay) · shared-element
+optional opt-in ambient sound: projector whir (never autoplay) · shared-element
 morphs between cards and costume pages.

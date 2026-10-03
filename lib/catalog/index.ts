@@ -1,10 +1,14 @@
 import { costumes } from "@/content/costumes"
+import { translations } from "@/content/translations"
+import type { Locale } from "@/i18n/routing"
 
 import type { Costume, CostumeSummary, Film, Photo } from "./types"
 
 /**
- * The collection (content/costumes.ts), read by the pages. Static data, so
- * every lookup is synchronous.
+ * The collection (content/costumes.ts), read by the pages in the visitor's
+ * language (content/translations): the English with its words translated,
+ * the names, people, photos and order as they are. Static data, so every
+ * lookup is synchronous.
  */
 
 /** The year of the film a character is known from (its first). */
@@ -19,23 +23,52 @@ export function byYear(a: Costume, b: Costume) {
 }
 
 const ordered = [...costumes].sort(byYear)
-const bySlug = new Map(ordered.map((costume) => [costume.slug, costume]))
+const indexOf = new Map(ordered.map((costume, index) => [costume.slug, index]))
 
-/** Every costume, by year, latest first. */
-export function getCostumes(): readonly Costume[] {
-  return ordered
+/** A costume in a language: its words translated, all else as it is. */
+function localized(costume: Costume, locale: Locale): Costume {
+  if (locale === "en") return costume
+  const text = translations[locale].costumes[costume.slug]
+  // translations.test.ts makes sure there is one: never a missing page.
+  if (!text) return costume
+  return {
+    ...costume,
+    films: costume.films.map((film, index) => ({
+      ...film,
+      title: text.films[index] ?? film.title,
+    })),
+    createdBy: text.createdBy,
+    broughtToLifeBy: text.broughtToLifeBy,
+    lore: text.lore,
+    funFact: text.funFact,
+    look: text.look,
+  }
 }
 
-export function getCostume(slug: string) {
-  return bySlug.get(slug)
+const inLocale = new Map<Locale, readonly Costume[]>()
+
+/** Every costume, by year, latest first, in a language (English unless said). */
+export function getCostumes(locale: Locale = "en"): readonly Costume[] {
+  let list = inLocale.get(locale)
+  if (!list) {
+    list = ordered.map((costume) => localized(costume, locale))
+    inLocale.set(locale, list)
+  }
+  return list
+}
+
+export function getCostume(slug: string, locale: Locale = "en") {
+  const index = indexOf.get(slug)
+  return index === undefined ? undefined : getCostumes(locale)[index]
 }
 
 /** The costumes just before and after it (none past either end). */
-export function getNeighbors(costume: Costume) {
-  const index = ordered.indexOf(costume)
+export function getNeighbors(costume: Costume, locale: Locale = "en") {
+  const list = getCostumes(locale)
+  const index = indexOf.get(costume.slug) ?? -1
   return {
-    previous: ordered[index - 1] as Costume | undefined,
-    next: ordered[index + 1] as Costume | undefined,
+    previous: list[index - 1] as Costume | undefined,
+    next: list[index + 1] as Costume | undefined,
   }
 }
 
@@ -46,26 +79,38 @@ type Related =
 /**
  * What to show after a costume: others from its films if there are any,
  * else the costumes that follow it (wrapping past the last to the first).
+ * Films are matched in English, the same in every language.
  */
-export function getRelated(costume: Costume, count = 4): Related {
-  const titles = new Set(costume.films.map((film) => film.title))
+export function getRelated(
+  costume: Costume,
+  count = 4,
+  locale: Locale = "en"
+): Related {
+  const list = getCostumes(locale)
+  const index = indexOf.get(costume.slug) ?? -1
+  const source = ordered[index]
+  if (!source) return { kind: "wanted", costumes: [] }
+  const inLanguage = (other: Costume) => list[indexOf.get(other.slug)!]
+  const titles = new Set(source.films.map((film) => film.title))
   const sameFilm = ordered.filter(
     (other) =>
-      other !== costume && other.films.some((film) => titles.has(film.title))
+      other !== source && other.films.some((film) => titles.has(film.title))
   )
   if (sameFilm.length > 0) {
-    const film =
-      costume.films.find((candidate) =>
-        sameFilm.some((other) =>
-          other.films.some(({ title }) => title === candidate.title)
-        )
-      ) ?? costume.films[0]
-    return { kind: "film", film, costumes: sameFilm.slice(0, count) }
+    const shared = source.films.findIndex((candidate) =>
+      sameFilm.some((other) =>
+        other.films.some(({ title }) => title === candidate.title)
+      )
+    )
+    return {
+      kind: "film",
+      film: list[index].films[Math.max(0, shared)],
+      costumes: sameFilm.slice(0, count).map(inLanguage),
+    }
   }
-  const index = ordered.indexOf(costume)
   const next = Array.from(
     { length: Math.min(count, ordered.length - 1) },
-    (_, offset) => ordered[(index + 1 + offset) % ordered.length]
+    (_, offset) => list[(index + 1 + offset) % ordered.length]
   )
   return { kind: "wanted", costumes: next }
 }

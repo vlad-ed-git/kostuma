@@ -1,6 +1,6 @@
 import { RiArrowLeftLine, RiArrowRightLine, RiFilmLine } from "@remixicon/react"
 import type { Metadata } from "next"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 import { notFound } from "next/navigation"
 import type { ReactNode } from "react"
 
@@ -19,7 +19,7 @@ export async function generateMetadata({
   params,
 }: PageProps<"/[locale]/costumes/[slug]">): Promise<Metadata> {
   const { slug } = await params
-  const costume = getCostume(slug)
+  const costume = getCostume(slug, await getLocale())
   if (!costume) return {}
   const t = await getTranslations("Costume")
   return {
@@ -33,7 +33,8 @@ export default async function CostumePage({
   params,
 }: PageProps<"/[locale]/costumes/[slug]">) {
   const { slug } = await params
-  const costume = getCostume(slug)
+  const locale = await getLocale()
+  const costume = getCostume(slug, locale)
   if (!costume) notFound()
 
   const t = await getTranslations("Costume")
@@ -75,7 +76,7 @@ export default async function CostumePage({
                 aria-hidden="true"
                 className="mt-[0.3em] size-5 shrink-0"
               />
-              {filmLine(costume.films)}
+              {filmLine(costume.films, (film) => t("film", film))}
             </p>
             <AddToBasket slug={costume.slug} name={costume.name} />
           </header>
@@ -115,7 +116,7 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 /** The costumes just before and after this one in the collection. */
 async function Neighbors({ costume }: { costume: Costume }) {
   const t = await getTranslations("Costume")
-  const { previous, next } = getNeighbors(costume)
+  const { previous, next } = getNeighbors(costume, await getLocale())
 
   return (
     <nav
@@ -157,7 +158,7 @@ async function Neighbors({ costume }: { costume: Costume }) {
 /** Others from the same film, else the next costumes. */
 async function Related({ costume }: { costume: Costume }) {
   const t = await getTranslations("Costume")
-  const related = getRelated(costume)
+  const related = getRelated(costume, 4, await getLocale())
 
   return (
     <section aria-labelledby="related" className="mt-20">

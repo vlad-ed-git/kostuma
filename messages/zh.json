@@ -39,6 +39,7 @@
   "Costume": {
     "metaTitle": "{name} 装扮",
     "photoAlt": "{name} 装扮",
+    "film": "《{title}》（{year}）",
     "photos": "照片",
     "showPhoto": "第 {number} 张照片，共 {count} 张",
     "breadcrumb": "面包屑导航",

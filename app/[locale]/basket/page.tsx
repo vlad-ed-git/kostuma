@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
 import { BasketList, BasketSummary } from "@/components/basket/basket-list"
 import { FittingRoomPanel } from "@/components/basket/fitting-room-panel"
@@ -18,9 +18,10 @@ export async function generateMetadata(): Promise<Metadata> {
  */
 export default async function BasketPage() {
   const t = await getTranslations("Basket")
+  const locale = await getLocale()
   const user = await getUser()
   // Only what the rows show: the basket itself is read in the browser.
-  const costumes = getCostumes().map((costume) => ({
+  const costumes = getCostumes(locale).map((costume) => ({
     ...toSummary(costume),
     stores: costume.stores,
   }))

@@ -45,6 +45,45 @@ test.describe("languages", () => {
     }
   })
 
+  test("every costume speaks the visitor's language, names and people as they are", async ({
+    page,
+  }) => {
+    const errors = collectErrors(page)
+    for (const [path, film, lore, piece] of [
+      [
+        "/es/costumes/freddy-krueger",
+        "Pesadilla en la calle del infierno (1984)",
+        "Un asesino de niños al que los padres de Springwood quemaron vivo",
+        "Suéter a rayas rojas y verdes",
+      ],
+      [
+        "/zh/costumes/freddy-krueger",
+        "《猛鬼街》（1984）",
+        "一个被 Springwood 的家长们活活烧死的儿童杀手",
+        "红绿条纹毛衣",
+      ],
+    ]) {
+      await page.goto(path)
+      const main = page.getByRole("main")
+      await expect(
+        main.getByRole("heading", { level: 1, name: "Freddy Krueger" })
+      ).toBeVisible()
+      await expect(main.getByText(film)).toBeVisible()
+      await expect(main.getByText(lore, { exact: false })).toBeVisible()
+      await expect(main.getByText(piece)).toBeVisible()
+      // The people credited stay as they are.
+      await expect(main.getByText("Robert Englund")).toBeVisible()
+    }
+    // The list, too: each film under its local title.
+    await page.goto("/zh")
+    await expect(
+      page
+        .getByRole("region", { name: "装扮" })
+        .getByRole("link", { name: /Freddy Krueger/ })
+    ).toContainText("《猛鬼街》（1984）")
+    expect(errors).toEqual([])
+  })
+
   test("the default locale's prefix redirects to the root", async ({
     page,
   }) => {

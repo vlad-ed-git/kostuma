@@ -246,6 +246,10 @@ test.describe("My Pumpkin Basket", () => {
       .getByRole("list", { name: "Disfraces en Mi cesta de calabaza" })
       .getByRole("listitem")
     await expect(spanishRows).toHaveCount(1)
+    // The film under its title in Latin America.
+    await expect(spanishRows.first()).toContainText(
+      "Pesadilla en la calle del infierno (1984)"
+    )
     await expect(
       page
         .getByRole("region", { name: "El Probador" })

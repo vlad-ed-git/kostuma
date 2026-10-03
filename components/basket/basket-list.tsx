@@ -70,6 +70,7 @@ export function BasketList({
   costumes: readonly BasketCostume[]
 }) {
   const t = useTranslations("Basket")
+  const costumeT = useTranslations("Costume")
   const { ready, slugs, remove, clear, announce } = useBasket()
   const [armed, setArmed] = useState(false)
   const [focus, setFocus] = useState<FocusTarget | null>(null)
@@ -148,7 +149,7 @@ export function BasketList({
                   {costume.name}
                 </span>
                 <span className="text-muted-foreground italic">
-                  {filmLine(costume.films)}
+                  {filmLine(costume.films, (film) => costumeT("film", film))}
                 </span>
               </span>
             </IntentLink>

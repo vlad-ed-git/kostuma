@@ -39,6 +39,7 @@
   "Costume": {
     "metaTitle": "Disfraz de {name}",
     "photoAlt": "Disfraz de {name}",
+    "film": "{title} ({year})",
     "photos": "Fotos",
     "showPhoto": "Foto {number} de {count}",
     "breadcrumb": "Ruta de navegación",
