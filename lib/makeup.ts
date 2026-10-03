@@ -490,7 +490,7 @@ export const lipLine = (
   name: PatternName<"lip_liner">,
   color: Hex,
   intensity = 100,
-  thickness = 60,
+  thickness = 100,
   smoothness = 50
 ): MakeupEffect => ({
   category: "lip_liner",

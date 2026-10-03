@@ -233,7 +233,10 @@ describe("the makeup guides", () => {
         if (effect.category === "eye_shadow" || effect.category === "eye_liner")
           strength(100)
         if (effect.category === "lip_color") strength(100)
-        if (effect.category === "lip_liner") strength(100)
+        if (effect.category === "lip_liner") {
+          strength(100)
+          expect(effect.palettes[0].thickness, where).toBe(100)
+        }
         if (effect.category === "blush") strength(100)
         if (effect.category === "eyebrows") strength(100)
         if (effect.category === "foundation")

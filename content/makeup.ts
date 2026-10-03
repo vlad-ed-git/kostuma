@@ -188,7 +188,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["deep berry lipstick", "lip liner"],
         render: makeup(
           lips(matte("#7E3040", 100)),
-          lipLine("Wider1", "#5A1F2A", 100, 60, 40)
+          lipLine("Wider1", "#5A1F2A", 100, 100, 40)
         ),
       },
       {
@@ -248,7 +248,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["black lipstick", "black lip liner"],
         render: makeup(
           lips(matte("#1A1A1A", 100)),
-          lipLine("Natural1", BLACK, 100, 60, 60)
+          lipLine("Natural1", BLACK, 100, 100, 60)
         ),
       },
     ],
@@ -303,7 +303,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["bright red lipstick", "red lip liner"],
         render: makeup(
           lips(matte("#C21E1E", 100), "heart-shaped"),
-          lipLine("Large&Full1", "#A0141A", 100, 60, 50)
+          lipLine("Large&Full1", "#A0141A", 100, 100, 50)
         ),
       },
       {
@@ -364,7 +364,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["red lipstick", "red lip liner"],
         render: makeup(
           lips(matte("#C0141E", 100), "plump"),
-          lipLine("Large&Full1", "#A01018", 100, 60, 25)
+          lipLine("Large&Full1", "#A01018", 100, 100, 25)
         ),
       },
       {
@@ -730,7 +730,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["dark plum lipstick", "lip liner"],
         render: makeup(
           lips(matte("#5A1E28", 100)),
-          lipLine("Rosebud1", "#3E1218", 100, 60, 70)
+          lipLine("Rosebud1", "#3E1218", 100, 100, 70)
         ),
       },
       {
@@ -777,7 +777,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["dark brown lipstick", "brown lip liner"],
         render: makeup(
           lips(matte("#4A3020", 100), "pouty"),
-          lipLine("Small1", "#2E1E14", 100, 60, 50)
+          lipLine("Small1", "#2E1E14", 100, 100, 50)
         ),
       },
     ],
@@ -1120,7 +1120,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["red lipstick", "red lip liner"],
         render: makeup(
           lips(matte("#B01E22", 100), "heart-shaped"),
-          lipLine("Rosebud1", "#8A1418", 100, 60, 70)
+          lipLine("Rosebud1", "#8A1418", 100, 100, 70)
         ),
       },
       {
@@ -1281,7 +1281,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["dark gray lipstick", "lip liner"],
         render: makeup(
           lips(matte("#4A3E3C", 100)),
-          lipLine("Small1", "#2E2624", 100, 60, 60)
+          lipLine("Small1", "#2E2624", 100, 100, 60)
         ),
       },
     ],
@@ -1624,7 +1624,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["bright red lipstick", "red lip liner"],
         render: makeup(
           lips(matte("#C8141E", 100), "smile"),
-          lipLine("Wider1", "#A01018", 100, 65, 40)
+          lipLine("Wider1", "#A01018", 100, 100, 40)
         ),
       },
       {
@@ -1768,7 +1768,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["black lipstick", "black lip liner"],
         render: makeup(
           lips(matte("#1A1A1A", 100)),
-          lipLine("Wider1", BLACK, 100, 60, 50)
+          lipLine("Wider1", BLACK, 100, 100, 50)
         ),
       },
       {
@@ -1823,7 +1823,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["hot pink lipstick", "pink lip liner"],
         render: makeup(
           lips(matte("#E0408A", 100), "smile"),
-          lipLine("Wider1", "#C02070", 100, 60, 40)
+          lipLine("Wider1", "#C02070", 100, 100, 40)
         ),
       },
     ],
@@ -2115,7 +2115,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["red lipstick", "red lip liner"],
         render: makeup(
           lips(matte("#B0141E", 100), "plump"),
-          lipLine("Large&Full1", "#8A0E16", 100, 60, 70)
+          lipLine("Large&Full1", "#8A0E16", 100, 100, 70)
         ),
       },
       {
@@ -2174,7 +2174,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["dark berry lipstick", "black lip liner"],
         render: makeup(
           lips(matte("#4A1428", 100)),
-          lipLine("Natural1", "#1E0A12", 100, 60, 60)
+          lipLine("Natural1", "#1E0A12", 100, 100, 60)
         ),
       },
       {
@@ -2665,7 +2665,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["red lipstick", "red lip liner"],
         render: makeup(
           lips(matte("#B8202A", 100), "heart-shaped"),
-          lipLine("Small1", "#8A1820", 100, 60, 70)
+          lipLine("Small1", "#8A1820", 100, 100, 70)
         ),
       },
       {
@@ -2711,7 +2711,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["pale teal lipstick", "teal lip liner"],
         render: makeup(
           lips(matte("#8AC0B8", 100), "smile"),
-          lipLine("Natural1", "#4A8078", 100, 60, 60)
+          lipLine("Natural1", "#4A8078", 100, 100, 60)
         ),
       },
     ],
@@ -2764,7 +2764,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["bright red lipstick", "red lip liner"],
         render: makeup(
           lips(matte("#D0141E", 100), "smile"),
-          lipLine("Large&Full1", "#A01018", 100, 65, 50)
+          lipLine("Large&Full1", "#A01018", 100, 100, 50)
         ),
       },
       {
@@ -2857,7 +2857,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["red lipstick"],
         render: makeup(
           lips(matte("#C8202A", 100), "plump"),
-          lipLine("Large&Full1", "#A81820", 100, 60, 20)
+          lipLine("Large&Full1", "#A81820", 100, 100, 20)
         ),
       },
       {
@@ -3053,7 +3053,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["deep red lipstick", "red lip liner"],
         render: makeup(
           lips(satin("#8A0E1E", 100), "m-shaped"),
-          lipLine("Large&Full1", "#5A0A14", 100, 60, 70)
+          lipLine("Large&Full1", "#5A0A14", 100, 100, 70)
         ),
       },
       {
@@ -3640,7 +3640,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["black lipstick"],
         render: makeup(
           lips(matte("#141414", 100), "plump"),
-          lipLine("Wider1", BLACK, 100, 60, 25)
+          lipLine("Wider1", BLACK, 100, 100, 25)
         ),
       },
       {
@@ -3746,7 +3746,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["red lipstick", "red lip liner"],
         render: makeup(
           lips(matte("#B82028", 100), "smile"),
-          lipLine("Wider1", "#8A141C", 100, 60, 60)
+          lipLine("Wider1", "#8A141C", 100, 100, 60)
         ),
       },
       {
@@ -3801,7 +3801,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         products: ["brown red lipstick", "lip liner"],
         render: makeup(
           lips(matte("#7A3A28", 100), "pouty"),
-          lipLine("Small1", "#5A2818", 100, 60, 60)
+          lipLine("Small1", "#5A2818", 100, 100, 60)
         ),
       },
     ],
@@ -3928,7 +3928,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         render: makeup(
           brows("#3A2418", 100, { name: "SoftArch1", thickness: -10 }),
           lips(satin("#A8685A", 100)),
-          lipLine("Natural1", "#7A4436", 100, 60, 70)
+          lipLine("Natural1", "#7A4436", 100, 100, 70)
         ),
       },
       {
