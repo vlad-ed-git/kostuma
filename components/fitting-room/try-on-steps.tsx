@@ -85,11 +85,13 @@ export function TryOnSteps({
   const makeup = frames.filter((each) => each.kind === "step")
   const ready = makeup.filter((each) => each.step?.status === "done").length
   const outfit = frames[0]?.kind === "outfit" ? frames[0].step : null
+  // The outfit on the face too: still the outfit, as far as the visitor knows.
+  const dressing = tryOn.dressed ? tryOn.steps[1] : null
   const status =
     tryOn.status === "done"
       ? t("progress.done")
       : tryOn.status === "running"
-        ? outfit && outfit.status !== "done"
+        ? (outfit && outfit.status !== "done") || dressing?.status === "working"
           ? t("progress.outfit")
           : t("progress.makeup", { done: ready, count: makeup.length })
         : ""

@@ -28,6 +28,8 @@ const outfit: Render = {
   from: "body",
   after: null,
 }
+// The same outfit on the face photo: the dressed face.
+const dressed: Render = { ...outfit, from: "face", after: 0 }
 
 const makeup: Render = {
   tool: "makeup",
@@ -190,6 +192,24 @@ describe("youcamProvider.start", () => {
     })
   })
 
+  it("names the face photo's upload for the dressed face", async () => {
+    const names: string[] = []
+    const { fetcher } = youcam({
+      [`${API}/s2s/v2.0/file`]: (init) => {
+        names.push(JSON.parse(String(init?.body)).files[0].file_name)
+        return uploadAnswer()
+      },
+      "https://upload.example/put": () => new Response(null),
+      [`${API}/s2s/v2.0/task/cloth-v4`]: () =>
+        json({ status: 200, data: { task_id: "task-4" } }),
+    })
+    await youcamProvider(KEY, fetcher).start(dressed, {
+      source: IMAGE,
+      garment: GARMENT,
+    })
+    expect(names).toEqual(["face.jpg", "garment.jpg"])
+  })
+
   it("never starts an outfit without its garment", async () => {
     const { fetcher } = youcam({})
     await expect(
@@ -304,6 +324,28 @@ describe("youcamProvider.check", () => {
     )
   })
 
+  it("keeps an outfit's picture at the size YouCam made it", async () => {
+    const { fetcher } = youcam({
+      [`${API}/s2s/v2.0/task/cloth-v4/t`]: () =>
+        json({
+          data: {
+            task_status: "success",
+            results: { url: "https://results.example/o.png" },
+          },
+        }),
+      "https://results.example/o.png": () => new Response(RESULT),
+    })
+    for (const render of [outfit, dressed]) {
+      const state = await youcamProvider(KEY, fetcher).check("t", render)
+      if (state.status !== "done") throw new Error("done expected")
+      expect(await sharp(state.image).metadata()).toMatchObject({
+        format: "jpeg",
+        width: 8,
+        height: 8,
+      })
+    }
+  })
+
   it("finds a result listed deeper, and brings it to the face photo's size", async () => {
     const { fetcher } = youcam({
       [`${API}/s2s/v2.0/task/makeup-vto/t`]: () =>
@@ -333,6 +375,8 @@ describe("youcamProvider.check", () => {
     ["clothes", "error_pose", "body_photo", false],
     ["clothes", "error_no_face", "body_photo", false],
     ["clothes", "error_multi_person", "body_photo", false],
+    ["dressed", "error_pose", "face_photo", false],
+    ["dressed", "error_no_face", "face_photo", false],
     ["clothes", "error_invalid_ref", "failed", false],
     ["clothes", "error_editing_failed", "failed", false],
     ["makeup", "error_nsfw_content_detected", "photo_rejected", false],
@@ -343,6 +387,7 @@ describe("youcamProvider.check", () => {
   ] as const)("turns %s's %s into %s", async (tool, code, reason, retry) => {
     const path = {
       clothes: "cloth-v4",
+      dressed: "cloth-v4",
       makeup: "makeup-vto",
       hair: "hair-color",
     }[tool]
@@ -352,7 +397,7 @@ describe("youcamProvider.check", () => {
           data: { task_status: "error", error: code, error_message: "x" },
         }),
     })
-    const render = { clothes: outfit, makeup, hair }[tool]
+    const render = { clothes: outfit, dressed, makeup, hair }[tool]
     expect(await youcamProvider(KEY, fetcher).check("t", render)).toMatchObject(
       {
         status: "error",

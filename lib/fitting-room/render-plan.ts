@@ -3,24 +3,29 @@ import type { Hex, MakeupEffect, MakeupGuide, StepRender } from "@/lib/makeup"
 import type { FacePhoto } from "./try-on"
 
 /**
- * What the Fitting Room sends YouCam for one costume (owner, 2026-10-03):
+ * What the Fitting Room sends YouCam for one costume (owner, 2026-10-03/04):
  * first the outfit on the visitor's body photo (AI Clothes, cloth-v4, the
- * costume's own photo as the garment), unless the character is all makeup;
- * then their face through the costume's makeup guide (lib/makeup.ts), one
- * render per step, each on the picture the step before left, as makeup goes
- * on a face: a coat on top of the last one, the hair color after the face.
- * The face's steps wait for the outfit: a body photo YouCam can't read stops
- * the try-on before any makeup is paid for.
+ * costume's garment), then the same outfit on their face photo, so the face
+ * wears the costume too (the dressed face); then that dressed face through
+ * the costume's makeup guide (lib/makeup.ts), one render per step, each on
+ * the picture the step before left, as makeup goes on a face: a coat on top
+ * of the last one, the hair color after the face. A costume that is all
+ * makeup has no outfit: its guide starts on the face photo. Nothing goes on
+ * the face before the body's outfit is done: a body photo YouCam can't read
+ * stops the try-on before more is paid for. A face photo YouCam can't dress
+ * (a close-up it doesn't take for a person) is made up as it is.
  */
 
 /**
  * Bumped whenever the same photos and costume would render differently: a
  * try-on is kept per photos, costume and version (never rendered twice).
  */
-export const PIPELINE_VERSION = 2
+export const PIPELINE_VERSION = 3
 
 /** The outfit's step, when the costume has one: always the first. */
 export const OUTFIT = 0
+/** The dressed face's step: the outfit on the face photo, right after it. */
+export const DRESSED_FACE = 1
 
 type Foundation = Extract<MakeupEffect, { category: "foundation" }>
 type FoundationPalette = Foundation["palettes"][0]
@@ -54,11 +59,12 @@ type FaceStep = {
 export type Render =
   | {
       tool: "clothes"
-      /** The costume whose photo is the garment. */
+      /** The costume whose garment is tried on. */
       garment: string
       category: "full_body"
-      from: "body"
-      after: null
+      /** The body photo, or the face photo once the body is dressed. */
+      from: "body" | "face"
+      after: number | null
     }
   | ({ tool: "makeup"; effects: SentEffect[] } & FaceStep)
   | ({
@@ -66,6 +72,13 @@ export type Render =
       pattern: HairRender["pattern"]
       palettes: HairRender["palettes"]
     } & FaceStep)
+
+/**
+ * Whether a render dresses the face. When it can't, the makeup goes on the
+ * face photo as it is: the try-on goes on without it.
+ */
+export const dressesFace = (render: Render) =>
+  render.tool === "clothes" && render.from === "face"
 
 /** YouCam smooths the skin at 50 unless told otherwise: the face stays theirs. */
 const unsmoothed: SentEffect = {
@@ -75,9 +88,9 @@ const unsmoothed: SentEffect = {
 }
 
 /**
- * A costume's renders: its outfit on the body photo (unless it is all
- * makeup), then its makeup guide's steps on the face photo, one after the
- * other.
+ * A costume's renders: its outfit on the body photo, then on the face photo
+ * (unless it is all makeup), then its makeup guide's steps on that dressed
+ * face, one after the other.
  */
 export function renderPlan(
   slug: string,
@@ -85,18 +98,19 @@ export function renderPlan(
   face: FacePhoto
 ): Render[] {
   const plan: Render[] = []
+  let from: Source = "face"
   if (!guide.allMakeup) {
-    plan.push({
+    const outfit = {
       tool: "clothes",
       garment: slug,
       category: "full_body",
-      from: "body",
-      after: null,
-    })
+    } as const
+    plan.push({ ...outfit, from: "body", after: null })
+    plan.push({ ...outfit, from: "face", after: OUTFIT })
+    from = DRESSED_FACE
   }
   const after = guide.allMakeup ? null : OUTFIT
   const size: [number, number] = [face.width, face.height]
-  let from: Source = "face"
   for (const { render } of guide.steps) {
     const step: FaceStep = { from, after, size }
     from = plan.length

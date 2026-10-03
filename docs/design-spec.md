@@ -683,7 +683,10 @@ words beside them; on phones the words come first.
   the try-on's `h2`, the character's name, is for them too.
   - **The vanity** shows one picture at a time, large (its glass as tall as the screen allows,
     at most 42 rem): the outfit (the visitor in the costume), then their face after each step.
-    Never the face before (owner: "they know how they look"). Until the visitor picks one, it
+    Never the face before (owner: "they know how they look"). The face wears the costume: the
+    outfit is tried on the face photo too, and the makeup starts from that dressed face (owner,
+    2026-10-04), which is no picture of its own; a face photo YouCam can't dress is made up as
+    it is. Until the visitor picks one, it
     follows the newest picture out (with none yet, the frame rendering now) and, once done, shows
     the last step: the whole transformation. A picture it shows by itself comes "into the light";
     one the visitor picks fades up.

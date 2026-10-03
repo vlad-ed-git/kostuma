@@ -57,7 +57,7 @@ export const fakeProvider: RenderProvider = {
     if (await unreadable(images.source)) {
       return {
         status: "error",
-        reason: render.tool === "clothes" ? "body_photo" : "face_photo",
+        reason: render.from === "body" ? "body_photo" : "face_photo",
         retry: false,
         detail: "fake: the photo's top-left corner is red",
       }
@@ -83,7 +83,7 @@ async function unreadable(image: Uint8Array) {
   return data[0] > 235 && data[1] < 25 && data[2] < 25
 }
 
-/** The garment set over the right half of the body photo. */
+/** The garment set over the right half of the body (or face) photo. */
 async function dress(body: Uint8Array, garment?: Uint8Array) {
   const picture = sharp(body)
   const { width = 2, height = 2 } = await picture.metadata()

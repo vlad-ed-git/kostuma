@@ -6,10 +6,10 @@ import type { Render } from "./render-plan"
 /**
  * A try-on: one costume on the visitor's photos (body and face, or only the
  * face for a costume that is all makeup), rendered step by step
- * (lib/fitting-room/steps.ts drives it): the outfit, then each step of the
- * costume's makeup guide. Kept per account, under an id made of the photos,
- * the costume and the pipeline's version, so the same try-on is never
- * rendered twice.
+ * (lib/fitting-room/steps.ts drives it): the outfit on the body and on the
+ * face, then each step of the costume's makeup guide. Kept per account,
+ * under an id made of the photos, the costume and the pipeline's version, so
+ * the same try-on is never rendered twice.
  */
 
 export type PhotoKind = "face" | "body"
@@ -142,6 +142,11 @@ export type TryOnView = {
   body: string | null
   /** Whether the first step is the outfit (not for a costume all makeup). */
   outfit: boolean
+  /**
+   * Whether the second is the outfit on the face (the dressed face): the
+   * makeup's starting point, not a picture of its own.
+   */
+  dressed: boolean
   steps: StepView[]
 }
 
@@ -162,6 +167,7 @@ export function toView(tryOn: TryOn): TryOnView {
     face: tryOn.face,
     body: tryOn.body,
     outfit: tryOn.steps[0]?.render.tool === "clothes",
+    dressed: tryOn.steps[1]?.render.tool === "clothes",
     steps: tryOn.steps.map((step, index) => ({
       // A failed try-on stops every step it hadn't finished.
       status:

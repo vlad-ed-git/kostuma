@@ -12,8 +12,9 @@ import type { Render } from "./render-plan"
 
 /**
  * YouCam's AI APIs the Fitting Room uses (docs.perfectcorp.com, API v2.0;
- * the facts in checkpoint §5.4): AI Clothes (cloth-v4) for the outfit, and
- * for the face Makeup VTO and Hair Color. A render: the pictures go
+ * the facts in checkpoint §5.4): AI Clothes (cloth-v4) for the outfit, on
+ * the body photo and on the face photo, and Makeup VTO and Hair Color for
+ * the face. A render: the pictures go
  * up through the File API (no units), the task starts on them, the task is
  * polled until it has a result (a URL that lives 2 hours, fetched at once
  * and kept as a JPEG on white, at the face photo's size: makeup comes back
@@ -34,11 +35,9 @@ const endpoints: Record<Render["tool"], string> = {
 
 type Failure = { reason: RenderFailure; retry: boolean }
 
-type Tool = Render["tool"]
-
 /** The visitor's own photo could not be read: theirs to retake. */
-const unreadable = (tool: Tool): Failure => ({
-  reason: tool === "clothes" ? "body_photo" : "face_photo",
+const unreadable = (render: Render): Failure => ({
+  reason: render.from === "body" ? "body_photo" : "face_photo",
   retry: false,
 })
 
@@ -47,7 +46,7 @@ const rejected = (): Failure => ({ reason: "photo_rejected", retry: false })
 
 // The engine's errors (a finished task whose `task_status` is "error"), in
 // the visitor's terms. Anything not listed is "failed", worth retrying.
-const engineErrors: Record<string, (tool: Tool) => Failure> = {
+const engineErrors: Record<string, (render: Render) => Failure> = {
   error_no_face: unreadable,
   error_src_no_face: unreadable,
   error_face_position_invalid: unreadable,
@@ -71,9 +70,9 @@ const engineErrors: Record<string, (tool: Tool) => Failure> = {
   error_editing_failed: () => ({ reason: "failed", retry: false }),
 }
 
-function engineFailure(code: string, tool: Tool): Failure {
+function engineFailure(code: string, render: Render): Failure {
   const known = engineErrors[code]
-  if (known) return known(tool)
+  if (known) return known(render)
   return { reason: "failed", retry: true }
 }
 
@@ -149,7 +148,7 @@ export function youcamProvider(
           )
         }
         return {
-          src_file_id: await upload(source, "body.jpg"),
+          src_file_id: await upload(source, `${render.from}.jpg`),
           ref_file_id: await upload(garment, "garment.jpg"),
           garment_category: render.category,
           change_shoes: true,
@@ -211,7 +210,7 @@ export function youcamProvider(
         const code = typeof data.error === "string" ? data.error : "unknown"
         return {
           status: "error",
-          ...engineFailure(code, render.tool),
+          ...engineFailure(code, render),
           detail: `YouCam: ${code} ${String(data.error_message ?? "")}`.trim(),
         }
       }

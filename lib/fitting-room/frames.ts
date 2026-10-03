@@ -8,11 +8,12 @@ export type Frame =
 /**
  * Every picture of a try-on in the order it is made (spec §11.4b): the
  * outfit (not for a costume that is all makeup), then the face after each
- * of the guide's `steps`. Never the face before: the visitor knows it.
+ * of the guide's `steps`. Never the face before: the visitor knows it; nor
+ * the dressed face, the makeup's starting point.
  */
 export function framesOf(tryOn: TryOnView, steps: number): Frame[] {
   const outfit = tryOn.outfit ? tryOn.steps[0] : undefined
-  const makeup = tryOn.outfit ? tryOn.steps.slice(1) : tryOn.steps
+  const makeup = tryOn.steps.slice(tryOn.dressed ? 2 : tryOn.outfit ? 1 : 0)
   return [
     ...(outfit ? [{ kind: "outfit", step: outfit } as const] : []),
     ...Array.from(

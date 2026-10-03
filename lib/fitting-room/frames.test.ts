@@ -14,7 +14,8 @@ const failed: StepView = { status: "failed", image: null }
 function tryOn(
   status: TryOnView["status"],
   steps: StepView[],
-  outfit = true
+  outfit = true,
+  dressed = false
 ): TryOnView {
   return {
     id: "t",
@@ -24,6 +25,7 @@ function tryOn(
     face: "f",
     body: outfit ? "b" : null,
     outfit,
+    dressed,
     steps,
   }
 }
@@ -36,6 +38,32 @@ describe("framesOf", () => {
       { kind: "step", number: 1, step: done(1) },
       { kind: "step", number: 2, step: working },
     ])
+  })
+
+  it("leaves out the dressed face: the makeup's starting point, not a picture of its own", () => {
+    const view = tryOn(
+      "running",
+      [done(0), done(1), done(2), working],
+      true,
+      true
+    )
+    expect(framesOf(view, 2)).toEqual([
+      { kind: "outfit", step: done(0) },
+      { kind: "step", number: 1, step: done(2) },
+      { kind: "step", number: 2, step: working },
+    ])
+  })
+
+  it("shows the first makeup step rendering while the face is still being dressed", () => {
+    const view = tryOn(
+      "running",
+      [done(0), working, working, working],
+      true,
+      true
+    )
+    const frames = framesOf(view, 2)
+    expect(renderingFrame(frames, view)).toBe(1)
+    expect(shownFrame(frames, view)).toBe(0)
   })
 
   it("has no outfit for a costume that is all makeup", () => {

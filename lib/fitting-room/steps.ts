@@ -10,7 +10,12 @@ import {
 } from "./provider"
 
 type Renderer = RenderProvider["name"]
-import { PIPELINE_VERSION, renderPlan, type Render } from "./render-plan"
+import {
+  dressesFace,
+  PIPELINE_VERSION,
+  renderPlan,
+  type Render,
+} from "./render-plan"
 import type {
   Begun,
   FacePhoto,
@@ -140,7 +145,10 @@ export async function advance(
   }
 
   if (tryOn.status !== "running") return tryOn
-  const failed = tryOn.steps.find((step) => step.status === "failed")
+  // A face YouCam couldn't dress is made up as it is: not a failure.
+  const failed = tryOn.steps.find(
+    (step) => step.status === "failed" && !dressesFace(step.render)
+  )
   if (failed) {
     if (await store.finish(uid, id, "failed", failed.failure ?? "failed")) {
       // The rest would be paid for nothing: stop what still runs.
@@ -152,7 +160,13 @@ export async function advance(
         )
       )
     }
-  } else if (tryOn.steps.every((step) => step.status === "done")) {
+  } else if (
+    tryOn.steps.every(
+      (step) =>
+        step.status === "done" ||
+        (step.status === "failed" && dressesFace(step.render))
+    )
+  ) {
     await store.finish(uid, id, "done", null)
   } else {
     return tryOn
@@ -354,8 +368,9 @@ async function setBack(
 
 /**
  * The picture a render starts from: one of the visitor's photos, or an
- * earlier step's picture. "Not yet" while the step it follows works; null
- * if the picture is gone.
+ * earlier step's picture (the face photo, when that step couldn't dress
+ * it). "Not yet" while the step it follows works; null if the picture is
+ * gone.
  */
 async function sourceOf(
   store: FittingRoomStore,
@@ -368,8 +383,11 @@ async function sourceOf(
   if (render.from === "body")
     return tryOn.body ? store.photo(uid, "body", tryOn.body) : null
   if (render.from === "face") return store.photo(uid, "face", tryOn.face)
-  if (!done(render.from)) return "not yet"
-  return store.stepImage(uid, tryOn.id, render.from)
+  if (done(render.from)) return store.stepImage(uid, tryOn.id, render.from)
+  const before = tryOn.steps[render.from]
+  if (before?.status === "failed" && dressesFace(before.render))
+    return store.photo(uid, "face", tryOn.face)
+  return "not yet"
 }
 
 function failureOf(error: unknown): { reason: RenderFailure; retry: boolean } {
