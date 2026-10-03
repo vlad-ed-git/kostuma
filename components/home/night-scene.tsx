@@ -54,13 +54,15 @@ export function NightScene() {
             strokeWidth="12"
           />
         </g>
-        <path
-          fill="#040405"
-          d="M200 112 C166 112 147 142 143 178 C139 214 148 238 139 260 C108 284 76 302 64 344 C48 404 38 524 26 640 L374 640 C362 524 352 404 336 344 C324 302 292 284 261 260 C252 238 261 214 257 178 C253 142 234 112 200 112 Z"
-        />
-        <g fill="#ff5a45">
-          <ellipse className="glint" cx="187" cy="196" rx="3.4" ry="1.8" />
-          <ellipse className="glint" cx="213" cy="196" rx="3.4" ry="1.8" />
+        <g className="figure">
+          <path
+            fill="#040405"
+            d="M200 112 C166 112 147 142 143 178 C139 214 148 238 139 260 C108 284 76 302 64 344 C48 404 38 524 26 640 L374 640 C362 524 352 404 336 344 C324 302 292 284 261 260 C252 238 261 214 257 178 C253 142 234 112 200 112 Z"
+          />
+          <g fill="#ff5a45">
+            <ellipse className="glint" cx="187" cy="196" rx="3.4" ry="1.8" />
+            <ellipse className="glint" cx="213" cy="196" rx="3.4" ry="1.8" />
+          </g>
         </g>
       </svg>
       <Fog />

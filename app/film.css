@@ -285,6 +285,13 @@
   mask-image: linear-gradient(to bottom, #000 55%, transparent 96%);
   mask-repeat: no-repeat;
 }
+/* The hooded figure stands in the window on phones only (owner): on
+   wider screens the window is empty. */
+@media (width >= 40rem) {
+  .apparition .figure {
+    display: none;
+  }
+}
 @media (width < 64rem) {
   /* Small screens: a small tableau above the title, nothing behind words. */
   .apparition {
@@ -753,6 +760,13 @@
   }
   .apparition .lamp {
     animation: lamp 5s steps(1) infinite;
+  }
+  /* Without the figure in front, the whole window is a red field larger
+     than a card: it never flickers (spec §7.3). */
+  @media (width >= 40rem) {
+    .apparition .lamp {
+      animation: none;
+    }
   }
   .apparition .glint {
     transform-box: fill-box;

@@ -317,7 +317,9 @@ test measures brightness across the title's bottom edge and fails on a step of 1
    blink now and then (hidden on small screens).
 6. **The figure in the window (home title).** An SVG: an arched window lit blood red (its lamp
    stutters now and then), a hooded figure standing in it with two red eyes that blink, a red
-   light spill and glow. Between the tagline and the countdown on desktop, a small tableau above
+   light spill and glow. **The figure only on phones** (owner, 2026-10-04): from 40rem the
+   window stands empty, and its lamp never stutters (the whole window is then a red field larger
+   than a card, 7.3). Between the tagline and the countdown on desktop, a small tableau above
    the title on phones. Its feet dissolve into the fog. Nothing else stands in the scene: no
    second window, no figures behind glass, no writing on the wall (owner).
 7. **Fog (home title and the 404).** The same texture in two layers rolling at different speeds
@@ -516,9 +518,10 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
 
 1. **The title, in the night scene (8.4–8.7).** As tall as its content plus 200 px on desktop
    (owner). Desktop: the tagline on the left with the transformation under it, the countdown on
-   the right with "Choose your costume" under it (owner), the countdown's bottom on the
-   tagline's; the figure in the window stands between them. Phones: the figure as a small
-   tableau on top, then one column (tagline, transformation, countdown).
+   the right with its bottom on the tagline's, and under it, beside the strip, "Choose your
+   costume", "Try it on", "Apply makeup", their capitals level with the strip's top (owner);
+   the window stands between the columns, empty. Phones: the window with the figure in it as a
+   small tableau on top, then one column (tagline, transformation, countdown, the three lines).
    - H1 `display-xl`, flickering (7.2) and split into the red and bone ghosts (8.9): "The
      darkest day is coming." (`App.taglineLead`). The VHS band rolls over the whole title (8.9).
    - Under it, in `--blood-text` with a red glow: "Transform into a monster." (`App.taglineTail`).
@@ -532,8 +535,10 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
      November 1 it counts to next year. The server renders dashes at the final size; the
      browser fills in the count. `role="timer"`, and a visually hidden sentence updated once a
      minute ("29 days, 10 hours and 14 minutes until Halloween.").
-   - **"Choose your costume"** (`Home.chooseCostume`), display face, with a red arrow dripping
-     downward: a link to the costumes below (`/#costumes`).
+   - **The way through** (owner, 2026-10-04), one list in the display face: **"Choose your
+     costume"** (`Home.chooseCostume`) with a red arrow dripping downward, a link to the costumes
+     below (`/#costumes`); then "Try it on" (`Home.tryItOn`) and "Apply makeup"
+     (`Home.applyMakeup`), words, not links (the Fitting Room lives in the basket).
    - **The transformation** (owner, 2026-10-04: what to expect, no words), right under "Transform
      into a monster.", as wide as the tagline's column: the owner's red, burnt strip of film
      (`public/images/film-strip.webp`, drawn by `scripts/film-strip.mjs` from

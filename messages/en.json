@@ -7,6 +7,8 @@
   },
   "Home": {
     "chooseCostume": "Choose your costume",
+    "tryItOn": "Try it on",
+    "applyMakeup": "Apply makeup",
     "reel": "A real transformation into {name}, frame by frame: the photo, the outfit tried on, then the first, middle and last steps of the makeup."
   },
   "Countdown": {
