@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils"
 import { Mirror } from "./dressing-room"
 import { PhotoMirror, PhotoPicker, previewOf, type Slot } from "./photo-picker"
 import { CostumeRail, EmptyRail, RailSkeleton } from "./rail"
+import { ReplacePhotos } from "./replace-photos"
 import { type GuideText, TryOnSteps } from "./try-on-steps"
 
 /** How often the page asks how a running try-on is doing. */
@@ -43,7 +44,10 @@ type ErrorCode = Exclude<StartError | RenderFailure, PhotoProblem>
 type Problem = {
   /** Its message under FittingRoom: every code has one. */
   message:
-    `problems.${PhotoProblem}` | `errors.${ErrorCode}` | "errors.missing_face"
+    | `problems.${PhotoProblem}`
+    | `errors.${ErrorCode}`
+    | "errors.missing_face"
+    | "errors.same_photos"
   /** The photo it is about, if one. */
   photo?: PhotoKind
 }
@@ -190,6 +194,9 @@ function Fitting({
     face: room.face ? { kind: "kept", id: room.face } : null,
     body: room.body ? { kind: "kept", id: room.body } : null,
   })
+  // Replacing the photos of a finished try-on: the photos as they were, to
+  // keep them after all (nothing changes until the new try-on starts).
+  const [kept, setKept] = useState<Record<PhotoKind, Slot> | null>(null)
   const [problem, setProblem] = useState<Problem | null>(null)
   const [pending, startTransition] = useTransition()
   const title = useRef<HTMLHeadingElement>(null)
@@ -218,9 +225,67 @@ function Fitting({
 
   function setSlot(kind: PhotoKind, slot: Slot) {
     const before = slots[kind]
-    if (before?.kind === "picked") URL.revokeObjectURL(before.photo.url)
+    if (before?.kind === "picked" && before !== kept?.[kind])
+      URL.revokeObjectURL(before.photo.url)
     setSlots((current) => ({ ...current, [kind]: slot }))
     if (problem?.photo === kind || !problem?.photo) setProblem(null)
+  }
+
+  /** A slot still holding the photo the shown try-on was made from. */
+  const unchanged = (kind: PhotoKind) => {
+    const slot = slots[kind]
+    const made = kind === "face" ? tryOn?.face : tryOn?.body
+    return slot?.kind === "kept" && slot.id === made
+  }
+
+  /** From a finished try-on to the photos, once the visitor has agreed. */
+  function replace() {
+    setKept(slots)
+    setProblem(null)
+    setStage("photos")
+  }
+
+  /** Back to the finished try-on, with the photos it was made from. */
+  function keepCurrent() {
+    if (!kept) return
+    for (const kind of ["face", "body"] as const) {
+      const slot = slots[kind]
+      if (slot?.kind === "picked" && slot !== kept[kind])
+        URL.revokeObjectURL(slot.photo.url)
+    }
+    setSlots(kept)
+    setKept(null)
+    setProblem(null)
+    setStage("follow")
+  }
+
+  /**
+   * On to the confirmation, unless nothing new would come of it: after a
+   * finished try-on, at least one photo must change (the same ones only
+   * show it again); after a photo was at fault, that one must (it would
+   * fail again, after paying for the outfit once more).
+   */
+  function proceed() {
+    if (!chosen) {
+      setProblem({
+        message: costume.allMakeup
+          ? "errors.missing_face"
+          : "errors.missing_photo",
+      })
+      return
+    }
+    if (tryOn?.status === "failed" && tryOn.failure) {
+      const fault = failureProblem(tryOn.failure)
+      if (fault.photo && unchanged(fault.photo)) {
+        setProblem(fault)
+        return
+      }
+    } else if (tryOn && kinds.every(unchanged)) {
+      setProblem({ message: "errors.same_photos" })
+      return
+    }
+    setProblem(null)
+    setStage("confirm")
   }
 
   function start() {
@@ -244,8 +309,20 @@ function Fitting({
         result = { ok: false, error: "unknown" }
       }
       if (result.ok) {
+        // The photos are the account's now: kept by id, as a reload has
+        // them, so the next change is told from them.
+        const made = result.tryOn
+        for (const kind of kinds) {
+          const slot = slots[kind]
+          if (slot?.kind === "picked") URL.revokeObjectURL(slot.photo.url)
+        }
+        setSlots((current) => ({
+          face: { kind: "kept", id: made.face },
+          body: made.body ? { kind: "kept", id: made.body } : current.body,
+        }))
+        setKept(null)
         setProblem(null)
-        setTryOn(result.tryOn)
+        setTryOn(made)
         setStage("follow")
       } else {
         setProblem(failureProblem(result.error, result.photo))
@@ -275,9 +352,11 @@ function Fitting({
   )
 
   if (stage === "follow" && tryOn) {
-    // A failed try-on says why, and the photos open on the one at fault.
+    // A failed try-on says why, and the photos open on the one at fault:
+    // nothing to keep, so no question asked.
     const failed = tryOn.failure ? failureProblem(tryOn.failure) : null
-    const restart = () => {
+    const retry = () => {
+      setKept(null)
       setProblem(failed?.photo ? failed : null)
       setStage("photos")
     }
@@ -306,7 +385,7 @@ function Fitting({
                   {t(failed.message)}
                 </p>
                 {open && (
-                  <Button size="lg" onClick={restart}>
+                  <Button size="lg" onClick={retry}>
                     {t("retry")}
                   </Button>
                 )}
@@ -315,11 +394,7 @@ function Fitting({
           }
           after={
             tryOn.status === "done" &&
-            open && (
-              <Button variant="outline" size="lg" onClick={restart}>
-                {t("again")}
-              </Button>
-            )
+            open && <ReplacePhotos name={costume.name} onReplace={replace} />
           }
         />
       </section>
@@ -440,24 +515,20 @@ function Fitting({
       </div>
       <div className="flex flex-col items-start gap-6 [grid-area:go]">
         {alert}
-        <Button
-          size="lg"
-          variant={chosen ? "default" : "outline"}
-          onClick={() => {
-            if (!chosen) {
-              setProblem({
-                message: costume.allMakeup
-                  ? "errors.missing_face"
-                  : "errors.missing_photo",
-              })
-              return
-            }
-            setProblem(null)
-            setStage("confirm")
-          }}
-        >
-          {t("photos.continue")}
-        </Button>
+        <div className="flex flex-wrap items-center gap-4">
+          <Button
+            size="lg"
+            variant={chosen ? "default" : "outline"}
+            onClick={proceed}
+          >
+            {t("photos.continue")}
+          </Button>
+          {kept && (
+            <Button variant="ghost" size="lg" onClick={keepCurrent}>
+              {t("replace.keep")}
+            </Button>
+          )}
+        </div>
       </div>
     </section>
   )

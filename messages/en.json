@@ -138,6 +138,12 @@
     "finish": "To finish",
     "again": "Try with other photos",
     "retry": "Choose other photos",
+    "replace": {
+      "title": "Replace your photos?",
+      "line": "New photos make a new try-on of {name}, in place of this one. Nothing changes until you start it.",
+      "keep": "Keep current photos",
+      "choose": "Choose new photos"
+    },
     "problems": {
       "unreadable": "This file can't be opened. Choose a JPEG, PNG or WebP photo.",
       "too_small": "This photo is too small. Choose a larger one.",
@@ -152,6 +158,7 @@
       "failed": "Your try-on didn't work out. Try again in a moment.",
       "missing_photo": "Add both photos first.",
       "missing_face": "Add a photo of your face first.",
+      "same_photos": "These are the photos of your try-on. Change at least one, or keep your current photos.",
       "unknown_costume": "This costume can't be tried on yet.",
       "signed_out": "Your session ended. Sign in again to continue.",
       "closed": "The Fitting Room is closed right now. Try again later.",

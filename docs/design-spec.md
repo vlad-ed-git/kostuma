@@ -667,11 +667,24 @@ words beside them; on phones the words come first.
     ones waiting on it dim (35 %); a picture that comes out comes into the light. Each frame is a
     button naming its picture ("Step 2: Rotting hollows"). The strip scrolls when the frames
     outrun it and keeps the frame rendering in sight.
-- Ended: "Try with other photos" (outline) at the bottom, under the strip. Failed: an alert
-  saying what to do ("Your face couldn't be found in the photo…") and "Choose other photos"
-  (primary) heading the card, which opens the photos with the message under the one at fault. A
-  frame not rendered shows "Not rendered" in the mirror (a ✕ on the strip). Reduced motion: no
-  sway, tilt, flicker or breathing; pictures appear at once.
+- Ended: "Try with other photos" (outline) at the bottom, under the strip. It asks first
+  (owner, 2026-10-03: "handle this very carefully"): a pop-up (Base UI alert dialog, 12; `--card`
+  with a `--blood` hairline and glow over a dimmed, blurred page) "Replace your photos?", "New
+  photos make a new try-on of {name}, in place of this one. Nothing changes until you start it.",
+  "Keep current photos" (outline, focused first: Enter or Escape keep them) and "Choose new
+  photos" (primary). Choosing opens the photos, the account's photos in their mirrors, with "Keep
+  current photos" (ghost) beside "Continue" to go back to the try-on as it was. "Continue" with
+  the try-on's own photos says "These are the photos of your try-on. Change at least one, or keep
+  your current photos." (nothing new would come of it). Failed: an alert saying what to do ("Your
+  face couldn't be found in the photo…") and "Choose other photos" (primary) heading the card,
+  which opens the photos with the message under the one at fault, without asking (nothing to
+  keep); "Continue" holds until that photo is changed (it would fail again, after the outfit was
+  paid for once more). A frame not rendered shows "Not rendered" in the mirror (a ✕ on the
+  strip). Reduced motion: no sway, tilt, flicker or breathing; pictures appear at once; the pop-up
+  appears without fading.
+- The try-on shown for a costume is the one made with the account's photos in use, else its
+  newest: going back to earlier photos (the same file again) shows their try-on, made once, after
+  a reload too. Nothing is deleted: older try-ons stay (deleting is the account page's, later).
 - Pictures load from the server only, to their owner (`/api/fitting-room/…`, `private`
   caching), never through the image optimizer.
 

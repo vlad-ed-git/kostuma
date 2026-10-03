@@ -343,6 +343,22 @@ test.describe("The Fitting Room", () => {
 
     await page.getByRole("button", { name: "Choose other photos" }).click()
     await expect(facePicker(page).getByRole("alert")).toHaveText(message)
+
+    // The photo at fault would fail again, after paying for the outfit:
+    // it must change first.
+    await page.getByRole("button", { name: "Continue" }).click()
+    await expect(facePicker(page).getByRole("alert")).toHaveText(message)
+    await expect(
+      page.getByRole("heading", { name: "Ready to try on Pearl?" })
+    ).toHaveCount(0)
+    await page
+      .locator('input[name="face"]')
+      .setInputFiles(await photo(960, 1280))
+    await expect(facePicker(page).getByRole("alert")).toHaveCount(0)
+    await page.getByRole("button", { name: "Continue" }).click()
+    await expect(
+      page.getByRole("heading", { name: "Ready to try on Pearl?" })
+    ).toBeVisible()
   })
 
   test("never shows a visitor's pictures to anyone else", async ({
@@ -366,6 +382,7 @@ test.describe("The Fitting Room", () => {
     // The face photo as the account keeps it, offered again from the server.
     await page.reload()
     await page.getByRole("button", { name: "Try with other photos" }).click()
+    await page.getByRole("button", { name: "Choose new photos" }).click()
     const face = await facePicker(page).locator("img").getAttribute("src")
     const tryOn = step?.replace(/\/\d+\?v=\d+$/, "")
     expect(face).toMatch(/^\/api\/fitting-room\/photos\/face\/[0-9a-f]{32}$/)
@@ -393,5 +410,113 @@ test.describe("The Fitting Room", () => {
         (await stranger.request.get(`http://localhost:3100${url}`)).status()
       ).toBe(404)
     await stranger.close()
+  })
+
+  test.describe("Try with other photos", () => {
+    /** Pearl tried on with these photos, done. */
+    async function tryOnPearl(page: Page, face: Photo, body: Photo) {
+      await enter(page, ["pearl"])
+      await page.goto("/basket/fitting-room?costume=pearl")
+      await givePhotos(page, face, body)
+      await page.getByRole("button", { name: "Continue" }).click()
+      await page.getByRole("button", { name: "Start the try-on" }).click()
+      await expect(page.getByText("Your try-on is ready.")).toBeAttached({
+        timeout: 30_000,
+      })
+    }
+
+    /** The picture in the mirror: the last step once done. */
+    const mirror = (page: Page) =>
+      room(page, "Pearl").getByRole("img", { name: /Your face after step/ })
+
+    test("asks first, and keeps the photos on request", async ({ page }) => {
+      const errors = collectErrors(page)
+      await tryOnPearl(page, await photo(900, 1200), await photo(1000, 1500))
+      const shown = await mirror(page).getAttribute("src")
+
+      const again = page.getByRole("button", { name: "Try with other photos" })
+      const dialog = page.getByRole("alertdialog", {
+        name: "Replace your photos?",
+      })
+      await again.click()
+      await expect(dialog).toContainText(
+        "New photos make a new try-on of Pearl, in place of this one."
+      )
+      // The safe answer is the one Enter would give.
+      const keep = dialog.getByRole("button", { name: "Keep current photos" })
+      await expect(keep).toBeFocused()
+      await keep.click()
+      await expect(dialog).toBeHidden()
+      await expect(again).toBeFocused()
+      await expect(mirror(page)).toHaveAttribute("src", shown ?? "")
+
+      // Escape keeps them too.
+      await again.click()
+      await expect(dialog).toBeVisible()
+      await page.keyboard.press("Escape")
+      await expect(dialog).toBeHidden()
+
+      // Choosing new photos opens them, and they can still be kept.
+      await again.click()
+      await dialog.getByRole("button", { name: "Choose new photos" }).click()
+      await expect(
+        page.getByRole("heading", { name: "Your photos" })
+      ).toBeFocused()
+      // The same photos would only show the same try-on.
+      await page.getByRole("button", { name: "Continue" }).click()
+      await expect(page.getByRole("main").getByRole("alert")).toHaveText(
+        "These are the photos of your try-on. Change at least one, or keep your current photos."
+      )
+      await page
+        .locator('input[name="face"]')
+        .setInputFiles(await photo(960, 1280))
+      await page.getByRole("button", { name: "Keep current photos" }).click()
+      await expect(mirror(page)).toHaveAttribute("src", shown ?? "")
+      // Nothing changed: the photos are the try-on's again.
+      await page.getByRole("button", { name: "Try with other photos" }).click()
+      await page.getByRole("button", { name: "Choose new photos" }).click()
+      await page.getByRole("button", { name: "Continue" }).click()
+      await expect(page.getByRole("main").getByRole("alert")).toHaveText(
+        /These are the photos of your try-on/
+      )
+      expect(errors).toEqual([])
+    })
+
+    test("makes a new try-on, and goes back to the first with the first photos", async ({
+      page,
+    }) => {
+      const face = await photo(900, 1200)
+      await tryOnPearl(page, face, await photo(1000, 1500))
+      const first = await mirror(page).getAttribute("src")
+
+      // A new face: a new try-on, the one shown from now on.
+      await page.getByRole("button", { name: "Try with other photos" }).click()
+      await page.getByRole("button", { name: "Choose new photos" }).click()
+      await page
+        .locator('input[name="face"]')
+        .setInputFiles(await photo(960, 1280))
+      await page.getByRole("button", { name: "Continue" }).click()
+      await page.getByRole("button", { name: "Start the try-on" }).click()
+      await expect(page.getByText("Your try-on is ready.")).toBeAttached({
+        timeout: 30_000,
+      })
+      const second = await mirror(page).getAttribute("src")
+      expect(second).not.toBe(first)
+      await page.reload()
+      await expect(mirror(page)).toHaveAttribute("src", second ?? "")
+
+      // The first face again: its try-on, made once, after a reload too.
+      await page.getByRole("button", { name: "Try with other photos" }).click()
+      await page.getByRole("button", { name: "Choose new photos" }).click()
+      await page.locator('input[name="face"]').setInputFiles(face)
+      await expect(
+        page.getByRole("button", { name: "Change the photo of your face" })
+      ).toBeVisible()
+      await page.getByRole("button", { name: "Continue" }).click()
+      await page.getByRole("button", { name: "Start the try-on" }).click()
+      await expect(mirror(page)).toHaveAttribute("src", first ?? "")
+      await page.reload()
+      await expect(mirror(page)).toHaveAttribute("src", first ?? "")
+    })
   })
 })
