@@ -2,7 +2,6 @@ import { useTranslations } from "next-intl"
 import type { ComponentProps, ReactNode } from "react"
 
 import { LanguageLinks } from "@/components/language/language-links"
-import { Badge } from "@/components/ui/badge"
 import { Link } from "@/i18n/navigation"
 
 import { costumesHref } from "./nav"
@@ -16,8 +15,6 @@ import { Wordmark } from "./wordmark"
 export function Footer() {
   const t = useTranslations("Footer")
   const nav = useTranslations("Nav")
-  const badge = useTranslations("Badge")
-  const soon = <Badge variant="soon">{badge("soon")}</Badge>
 
   return (
     <footer className="relative pt-20 pb-10">
@@ -53,12 +50,8 @@ export function Footer() {
               </FooterLink>
             </Column>
             <Column title={t("finePrint")}>
-              <FooterLink href="/terms">
-                {t("terms")} {soon}
-              </FooterLink>
-              <FooterLink href="/privacy">
-                {t("privacy")} {soon}
-              </FooterLink>
+              <FooterLink href="/terms">{t("terms")}</FooterLink>
+              <FooterLink href="/privacy">{t("privacy")}</FooterLink>
             </Column>
           </div>
         </div>

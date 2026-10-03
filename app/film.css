@@ -622,7 +622,8 @@
   background-repeat: no-repeat;
 }
 /* The tape rolls through the title card across the whole screen. */
-.dressing-tape {
+.dressing-tape,
+.title-tape {
   inset-inline: calc(50% - 50vw);
   inset-block: -1.5rem;
 }

@@ -8,8 +8,8 @@ badges.
 
 Scope: the public site (home with the costumes, costume pages, My Pumpkin Basket, feedback),
 accounts (register, sign in, reset password, account), the Fitting Room (virtual try-on and
-step-by-step makeup, part of My Pumpkin Basket, 11.4b) and polished "coming soon" pages for terms
-and privacy. Every costume shows
+step-by-step makeup, part of My Pumpkin Basket, 11.4b), the Terms of service and the Privacy
+policy (11.9). Every costume shows
 its own photo, a cut-out (9.2).
 
 ---
@@ -45,7 +45,7 @@ a grid of identical cards).
 | Cue mark ("cigarette burn")      | Loading and page-change indicator                |
 | Reel change                      | Moving between pages                             |
 | Wardrobe fitting                 | The Fitting Room: try on what's in your basket   |
-| Coming soon trailer              | Features not open yet (legal pages)              |
+| The fine print                   | Terms of service and Privacy policy              |
 | Admission ticket                 | The premium badge (paid try-ons)                 |
 
 ### 1.3 The flow (owner, 2026-09-30)
@@ -464,7 +464,7 @@ Client components are marked (C). Everything else renders on the server.
 - **Footer** (on the page's grid; no top border and no sign-off line, owner):
   - Top row, aligned at the top: the wordmark and the legal lines (2.3) on the left (5 of 12
     columns); on the right (6 columns), Explore (Costumes, My Pumpkin Basket), Help (Report a
-    bug, Share feedback, Request a costume) and Fine print (Terms `soon`, Privacy `soon`),
+    bug, Share feedback, Request a costume) and Fine print (Terms of service, Privacy policy),
     their small-capital titles on one line.
   - Bottom row: the year (small capitals) on the left, the language links on the right.
   - Small screens: everything stacks; the columns go two, then one, per row.
@@ -500,7 +500,6 @@ Client components are marked (C). Everything else renders on the server.
   ("Buy {name} (opens in a new tab)"), never words glued together, so every language orders
   them its own way.
 - **Empty state**: centered icon (64 px, muted), `h3`, one line of copy, one action.
-- **Coming soon panel**: see 11.9.
 - **Premium price line** (owner's words): "2 free try-ons, then {price} per costume."
   `{price}` is USD 5 (`lib/fitting-room/price.ts`), no cents when whole ("$5"),
   formatted by the locale's currency formatter (next-intl `format.number(5, {style: "currency",
@@ -511,7 +510,7 @@ currency: "USD"})`), never a hardcoded "$5" string.
 ## 11. Pages
 
 All pages: header, `<main id="content">`, footer, atmosphere layers. Titles through
-`generateMetadata` (`%s · Kostuma`). Auth/account/coming-soon/legal-soon pages are `noindex`.
+`generateMetadata` (`%s · Kostuma`). Auth, account, basket and Fitting Room pages are `noindex`.
 
 ### 11.1 Home `/`
 
@@ -781,16 +780,24 @@ this page failed. Try again, or head back to Kostuma."), buttons "Try again" (re
 when the shell itself breaks (`app/global-error.tsx`, its language read from the URL).
 Developers find the details in the console; visitors only ever read messages.
 
-### 11.9 Coming soon pages
+### 11.9 Terms of service `/terms`, Privacy policy `/privacy`
 
-Shared panel ("trailer"): `label` with a blinking red REC dot (1 Hz, static under reduced
-motion) "Coming soon"; `display` title; lead; up to 3 feature bullets; primary action back to
-something that works now; secondary "Want it sooner? Tell us." → `/feedback?type=feedback`.
+The real documents, in plain words and the second person, true to what the site does
+(`Terms.*`, `Privacy.*` in the messages; `LegalPage`). Indexed.
 
-| Route      | Title            | Content                                                                                                                                                                                                                                                                                                                         |
-| ---------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/terms`   | Terms of service | "The fine print is being written." + a link to the feedback form. `noindex`.                                                                                                                                                                                                                                                    |
-| `/privacy` | Privacy policy   | Same pattern; states plainly what is kept today (an account's name, email and Google picture; when it was made, roughly where (country, region, city, time zone, from the connection) and on what (device, system, browser); when it last signed in and how often; feedback messages) + a link to the feedback form. `noindex`. |
+- The title card: H1 `display` split into the red and bone ghosts, the tape rolling through it
+  across the screen (8.9); the lead (`lead`, muted); "Last updated {date}" in small `micro`
+  capitals (the locale's long date, `lib/legal.ts`).
+- From `lg`: the contents (every section's title, `body` size, muted, ember on hover) in 3
+  columns on the left, sticky under the header; the text in 8 columns, at most 68 characters a
+  line. Phones: the text only.
+- Each section: `h2` at `h4` size in the display face, then paragraphs and lists at `body-lg`;
+  list items carry the wardrobe list's small square bullet (10.3). Bold lead-ins for list items
+  that name a thing ("Our host", "session").
+- Links underlined in blood; another company's policy opens in a new tab with the
+  `arrow-right-up-line` icon and sr-only "(opens in a new tab)" (12). The support email, a
+  `mailto:` link, appears only here (never the footer, 2.3).
+- When a feature changes what is kept, the Privacy policy changes with it, and its date.
 
 ---
 
@@ -802,8 +809,8 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
   and selects are Base UI components styled like the language menu (10.1).
 - **Premium**: any paid capability shows the `premium` badge next to its first mention on a
   screen, and the price line near its call to action. Never hide the price.
-- **Coming soon**: never a disabled button (unfocusable, unexplained). Use a working link to the
-  coming-soon page with a `soon` badge.
+- **Coming soon**: never a disabled button (unfocusable, unexplained). A thing not ready yet
+  carries a `soon` stamp and nothing to press (Buy without a shop, 10.3).
 - **External links**: new tab, `noopener noreferrer`, icon + sr-only "(opens in a new tab)".
 - **Loading**: the cue mark for pages, skeletons for content, spinners only inside buttons. No
   full-page spinners.

@@ -243,6 +243,199 @@
     "thanks": "Thank you. We read every message.",
     "again": "Send another"
   },
+  "Legal": {
+    "updated": "Last updated {date}",
+    "contents": "Contents",
+    "newTab": "(opens in a new tab)"
+  },
+  "Terms": {
+    "title": "Terms of service",
+    "lead": "The rules for using Kostuma, in plain words. By using the site, you agree to them.",
+    "sections": {
+      "agreement": {
+        "title": "These terms",
+        "p1": "Kostuma is a website, at kostuma.vercel.app, where horror fans find Halloween costumes, keep them in My Pumpkin Basket and try them on in the Fitting Room. These terms are an agreement between you and Kostuma (“we”, “us”) about using it.",
+        "p2": "By using Kostuma, you agree to these terms and to our <privacy>Privacy policy</privacy>, which says what we keep about you and why. When you create an account, you agree to both by ticking the box. If you don't agree, please don't use Kostuma.",
+        "p3": "These terms come in English, Spanish and Chinese. If the versions ever differ, the English one applies."
+      },
+      "eligibility": {
+        "title": "Who can use Kostuma",
+        "p1": "Kostuma shows horror imagery and is not intended for children. You must be at least 17 years old to create an account or use the Fitting Room.",
+        "p2": "Your account is yours alone. Give your real name and an email address you use, keep your password to yourself, and tell us at once if you think someone else is using your account. You're responsible for what happens under it."
+      },
+      "service": {
+        "title": "What Kostuma offers",
+        "p1": "Anyone can browse the costumes and keep the ones they like in My Pumpkin Basket, without an account. With an account, your basket follows you from device to device, and you can use the Fitting Room.",
+        "p2": "Kostuma doesn't sell costumes or makeup: the links to buy them lead to other shops (see “Shops and other sites”).",
+        "p3": "Kostuma is free to use today. We don't take payments, and nothing on the site can charge you. The Fitting Room shows what try-ons will cost once paying is possible; before then, these terms will say how paying works, and you'll always see the price before you pay.",
+        "p4": "We keep improving Kostuma, so features can change, pause or stop. We'll try to keep what you've saved, such as your basket and your try-ons."
+      },
+      "fittingRoom": {
+        "title": "The Fitting Room",
+        "p1": "The Fitting Room puts a costume on a photo of you, then shows its makeup on your own face, step by step. You give it a photo of your face and, for most costumes, one of you from head to toe. The pictures are made by artificial intelligence: YouCam, a service of Perfect Corp.",
+        "list1": {
+          "a": "<b>Only photos of you.</b> Upload photos of yourself and of no one else. Never upload photos of children, or photos with nudity.",
+          "b": "<b>The pictures are previews.</b> They show roughly how a costume and its makeup could look on you. Real clothes and real makeup will look different, and the AI can get things wrong.",
+          "c": "<b>Makeup is on you.</b> The makeup guides are ideas, not professional or medical advice. Before you put on any product, read its label, test it on a small patch of skin, keep it away from your eyes unless it's made for them, and stop if your skin reacts. You choose and use the products at your own risk."
+        }
+      },
+      "yours": {
+        "title": "Your photos, your pictures, your messages",
+        "p1": "Your photos and the pictures made from them stay yours. You allow us to store them, to send them to YouCam to make your pictures, and to show them to you, only to run the Fitting Room for you. They are shown only to you, signed in to your account. We don't publish them, sell them, or use them to train AI.",
+        "p2": "If you send us feedback or an idea, we may use it to improve Kostuma, without owing you anything for it."
+      },
+      "shops": {
+        "title": "Shops and other sites",
+        "p1": "The Buy buttons and the shopping links in the makeup guides open other websites, such as Amazon. Those shops are not Kostuma: what you buy there, its price, delivery and returns are between you and the shop, under its own terms. We don't check their products and aren't responsible for them.",
+        "p2": "Kostuma earns nothing from these links today. If a link ever earns us a commission, it will be marked as one."
+      },
+      "ownership": {
+        "title": "Characters, films and our work",
+        "p1": "Character names and film titles belong to their owners. Kostuma is not affiliated with, or endorsed by, any studio or retailer, and uses those names only to describe the costumes.",
+        "p2": "The rest of Kostuma is ours: its design, its writing, the costume photos and notes, and the makeup guides. Use them for your own Halloween; don't copy or republish them."
+      },
+      "rules": {
+        "title": "Using Kostuma fairly",
+        "p1": "Please don't:",
+        "list1": {
+          "a": "break the law, or anyone's rights, through Kostuma;",
+          "b": "upload someone else's photo, or pretend to be someone else;",
+          "c": "copy the site in bulk, scrape it, or use bots or other automated tools on it;",
+          "d": "get around the robot check, the limits on messages or try-ons, or any other protection, or try to get into accounts or systems that aren't yours;",
+          "e": "send messages that harass, threaten or spam."
+        }
+      },
+      "closing": {
+        "title": "Closing your account",
+        "p1": "You can stop using Kostuma whenever you like. To delete your account and everything kept with it, email <email>{address}</email> from the address on your account; we'll do it within 30 days.",
+        "p2": "We may suspend or close an account that breaks these terms, or to protect Kostuma and the people who use it. Where we can, we'll tell you why."
+      },
+      "warranty": {
+        "title": "No guarantees",
+        "p1": "We work to keep Kostuma running and its facts right, but we provide it “as is” and “as available”, without warranties of any kind, as far as the law allows. The site can be unavailable, a try-on can fail or look wrong, and the notes about films and characters can contain mistakes."
+      },
+      "liability": {
+        "title": "Limits on our liability",
+        "p1": "As far as the law allows, Kostuma isn't liable for indirect, incidental or consequential losses, such as lost data or lost profits, or for anything you buy from another shop. Our total liability for any claim about Kostuma is limited to what you paid us in the 12 months before it.",
+        "p2": "Nothing in these terms takes away the rights the law gives you as a consumer where you live."
+      },
+      "changes": {
+        "title": "Changes to these terms",
+        "p1": "When these terms change, the date at the top changes too. If a change matters to you, we'll say so on Kostuma before it applies. Using Kostuma after that means you accept the new terms."
+      },
+      "contact": {
+        "title": "Contact",
+        "p1": "Questions about these terms? Write to us through the <feedback>feedback form</feedback>, or email <email>{address}</email>."
+      }
+    }
+  },
+  "Privacy": {
+    "title": "Privacy policy",
+    "lead": "What Kostuma keeps about you, why, who helps us run it, and what you can ask of us. In short: only what the site needs to work. No ads, no trackers, and we never sell your data.",
+    "sections": {
+      "about": {
+        "title": "About this policy",
+        "p1": "This policy covers Kostuma, the website at kostuma.vercel.app (“Kostuma”, “we”, “us”). It explains what we collect when you browse, create an account, use My Pumpkin Basket and the Fitting Room, or send us a message, and what we do with it.",
+        "p2": "For questions or requests about your information, email <email>{address}</email>."
+      },
+      "browsing": {
+        "title": "When you browse",
+        "p1": "You can browse Kostuma without telling us who you are. To show you the site:",
+        "list1": {
+          "a": "<b>Our host</b>, Vercel, receives every request your browser makes, with its IP address and browser details, to deliver the pages and protect the site. It may keep them in short-lived technical logs.",
+          "b": "<b>My Pumpkin Basket</b>, without an account, is kept only in your browser, on your device. We never receive it.",
+          "c": "<b>Your language.</b> If you pick a language other than your browser's, a cookie remembers it until you close the browser."
+        },
+        "p2": "We use no analytics, advertising or tracking tools. Kostuma serves its own fonts and costume photos, so looking at the costumes tells no other company what you look at."
+      },
+      "account": {
+        "title": "Your account",
+        "p1": "When you create an account, we keep:",
+        "list1": {
+          "a": "your name and email address (and whether it has been verified), and your Google profile picture if you sign in with Google;",
+          "b": "your password, which Firebase Authentication (Google) stores for us scrambled (hashed), so no one can read it, not even us;",
+          "c": "how you signed up (email or Google), the site's language at the time, and when you agreed to the Terms of service and this policy;",
+          "d": "when the account was made, when you last signed in, how many times you have, and how many free try-ons it has left;",
+          "e": "roughly where you signed up from (country, region, city and time zone), worked out by our host from your IP address, which we don't keep;",
+          "f": "the kind of device, operating system and browser you signed up on."
+        },
+        "p2": "We use them to run your account and keep it secure, and the last two to understand where our visitors come from and which devices to support. Signed in, My Pumpkin Basket is kept with your account too, so it's the same on every device."
+      },
+      "fittingRoom": {
+        "title": "The Fitting Room",
+        "p1": "When you use the Fitting Room, we keep:",
+        "list1": {
+          "a": "the photos you choose: your face and, for most costumes, you from head to toe. Before keeping them, we shrink them, turn them upright and save them as new pictures, which drops the hidden details a photo file can carry, such as where it was taken;",
+          "b": "the color of your skin, measured from your face photo, so the makeup starts from your own shade;",
+          "c": "each try-on: the costume, the pictures made from your photos, and when."
+        },
+        "p2": "To make the pictures, we send your photos, with no name, email or account details, to YouCam, a service of Perfect Corp. As soon as each picture comes back, we ask YouCam to delete the job and its files; YouCam deletes them within 30 days in any case.",
+        "p3": "Your photos and pictures are private: stored closed to the public, and shown only to you, signed in. We don't make or keep a faceprint, we don't use your photos to identify you, and we don't use them to train AI or for anything other than your try-ons."
+      },
+      "feedback": {
+        "title": "Messages you send us",
+        "p1": "When you use the <feedback>feedback form</feedback>, we keep what you wrote and what it's about, your email if you give one (only to reply), your account if you're signed in, the site's language, the kind of device, operating system and browser, and when you sent it.",
+        "p2": "To stop the form from being flooded, we count the messages from each account, or each connection, over an hour. For that, we keep a scrambled code made from your account or your IP address, never the address itself, and delete it within two days."
+      },
+      "google": {
+        "title": "The robot check and Google sign-in",
+        "p1": "The forms to create an account and to send feedback use Google reCAPTCHA to tell people from bots. It collects information about your device and how you use the page, and sends it to Google. <google>Google's Privacy Policy</google> and <googleTerms>Terms of Service</googleTerms> apply to it.",
+        "p2": "If you choose “Continue with Google”, Google gives us your name, email address and profile picture, under Google's Privacy Policy."
+      },
+      "cookies": {
+        "title": "Cookies and storage on your device",
+        "list1": {
+          "a": "<b>session</b>: keeps you signed in, for up to 14 days or until you sign out.",
+          "b": "<b>NEXT_LOCALE</b>: the language you picked, until you close the browser.",
+          "c": "<b>Browser storage</b>: My Pumpkin Basket (kostuma.basket) and, signed in, a copy of your account's basket (kostuma.basket.account), until you clear it or sign out.",
+          "d": "<b>Google</b> sets its own cookies when the robot check or Google sign-in loads."
+        },
+        "p1": "All of them are needed for the site to work, so there is nothing to accept: we use no advertising or analytics cookies."
+      },
+      "sharing": {
+        "title": "Who helps us run Kostuma",
+        "p1": "We don't sell your personal information or share it for advertising. These companies process it for us, only to run Kostuma:",
+        "list1": {
+          "a": "<b>Vercel</b> hosts the site (<vercel>Vercel's privacy policy</vercel>).",
+          "b": "<b>Google</b>, through Firebase, runs accounts and sign-in, the database (your profile, basket, try-ons and messages) and the file storage (your photos and pictures), and the robot check (<google>Google's Privacy Policy</google>).",
+          "c": "<b>Perfect Corp.</b>, through YouCam, makes the Fitting Room's pictures from your photos."
+        },
+        "p2": "We may also disclose information when the law requires it, or to protect the rights and safety of Kostuma and others."
+      },
+      "transfers": {
+        "title": "Where your information goes",
+        "p1": "These companies operate in the United States, Taiwan and other countries, so your information may be processed outside your own country, where data protection laws can differ."
+      },
+      "retention": {
+        "title": "How long we keep it",
+        "list1": {
+          "a": "Your account, basket, photos and try-ons: until you ask us to delete them, or your account.",
+          "b": "Messages from the feedback form: as long as we need them to act on them, or until you ask us to delete them.",
+          "c": "The scrambled codes that limit messages: two days at most.",
+          "d": "At YouCam: deleted as soon as each picture is made, and within 30 days at most.",
+          "e": "On your device: until the cookie ends or you clear your browser's storage."
+        }
+      },
+      "rights": {
+        "title": "Your rights",
+        "p1": "Wherever you live, you can ask us for a copy of your information, to correct it, or to delete it, along with your account. Email <email>{address}</email> from the address on your account, so we know it's you. We answer within 30 days.",
+        "p2": "If you're in the European Economic Area, the United Kingdom or Switzerland, you can also object to or restrict how we use your information, take it elsewhere, and complain to your data protection authority. We use it to provide what you asked for (your account, basket, try-ons and replies), and for our legitimate interests in keeping Kostuma secure, stopping abuse and understanding our visitors (the sign-up place and device details).",
+        "p3": "If you're in California: we don't sell or share your personal information, and you won't be treated differently for using your rights."
+      },
+      "security": {
+        "title": "Security",
+        "p1": "Kostuma is served only over encrypted connections (HTTPS). Your photos, pictures and account data are closed to the public and reached only through our server, for you. No system is perfectly secure; if a breach puts your information at risk, we'll tell you without undue delay."
+      },
+      "children": {
+        "title": "Children",
+        "p1": "Kostuma isn't for children, and accounts are for people 17 and older. We don't knowingly collect information from children. If you think a child has given us theirs, email us and we'll delete it."
+      },
+      "changes": {
+        "title": "Changes to this policy",
+        "p1": "When this policy changes, the date at the top changes too. If a change matters to you, we'll say so on Kostuma before it applies."
+      }
+    }
+  },
   "Footer": {
     "explore": "Explore",
     "help": "Help",
