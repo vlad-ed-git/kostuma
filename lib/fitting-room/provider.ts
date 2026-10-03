@@ -31,9 +31,6 @@ export type TaskState =
       detail: string
     }
 
-/** What a provider renders: everything but the marks Kostuma paints itself. */
-export type ProviderRender = Exclude<Render, { tool: "paint" }>
-
 /** The pictures a render works on: JPEGs. */
 export type RenderImages = {
   /** The visitor's photo, or an earlier step's picture. */
@@ -44,9 +41,9 @@ export type RenderImages = {
 
 export interface RenderProvider {
   /** Starts a render; the task's id. Throws a ProviderError. */
-  start(render: ProviderRender, images: RenderImages): Promise<string>
+  start(render: Render, images: RenderImages): Promise<string>
   /** Where a task is. Throws a ProviderError when it can't be asked. */
-  check(task: string, tool: ProviderRender["tool"]): Promise<TaskState>
+  check(task: string, tool: Render["tool"]): Promise<TaskState>
   /** Deletes a task and its files from the service (best effort). */
   discard(task: string): Promise<void>
 }

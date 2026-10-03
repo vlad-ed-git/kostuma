@@ -230,57 +230,7 @@ export type MakeupEffect =
       ]
     }
 
-/**
- * Where a painted mark sits, from the features found on the visitor's face
- * (lib/fitting-room/landmarks.ts): the eye and mouth corner on the
- * picture's left (a `mirror`ed mark takes the right ones too), the nose tip,
- * the middle of the mouth, the chin, the middle of the forehead.
- */
-export type Anchor =
-  "eye" | "mouthCorner" | "nose" | "mouth" | "chin" | "forehead"
-
-/**
- * A point near an anchor, `dx` to the picture's right and `dy` down, in
- * eye spans (the distance between the eyes' centers): the same mark fits
- * every face.
- */
-export type Point = { at: Anchor; dx?: number; dy?: number }
-
-/** What Kostuma paints itself: the lines, dots and spirals YouCam can't. */
-export type Mark =
-  | {
-      shape: "line"
-      from: Point
-      to: Point
-      /** A curve through this point instead of a straight line. */
-      via?: Point
-      /** Thickness, in eye spans. */
-      width: number
-      color: Hex
-      /** Also the same mark on the other side of the face. */
-      mirror?: boolean
-    }
-  | { shape: "dot"; at: Point; radius: number; color: Hex; mirror?: boolean }
-  | {
-      shape: "spiral"
-      at: Point
-      radius: number
-      width: number
-      color: Hex
-      mirror?: boolean
-    }
-  | {
-      shape: "stitches"
-      from: Point
-      to: Point
-      /** How many cross stitches. */
-      count: number
-      width: number
-      color: Hex
-      mirror?: boolean
-    }
-
-/** What a step renders, on the previous step's picture. */
+/** What YouCam renders for a step, on the previous step's picture. */
 export type StepRender =
   | { tool: "makeup"; effects: MakeupEffect[] }
   | {
@@ -290,8 +240,6 @@ export type StepRender =
         { color: Hex; color_intensity: number; shine_intensity: number },
       ]
     }
-  /** Painted by Kostuma on the made-up face: no YouCam call, no unit. */
-  | { tool: "paint"; marks: Mark[] }
 
 export type MakeupStep = {
   /** What the step adds, in a few words: "White base". */
@@ -325,67 +273,14 @@ export const makeup = (...effects: MakeupEffect[]): StepRender => ({
   effects,
 })
 
-/** Marks painted on the face (see `Mark`): streaks, a nose, stitches. */
-export const paint = (...marks: Mark[]): StepRender => ({
-  tool: "paint",
-  marks,
-})
-
-/** A painted line from one point to another, or curved through `via`. */
-export const line = (
-  from: Point,
-  to: Point,
-  color: Hex,
-  {
-    width = 0.06,
-    via,
-    mirror = false,
-  }: { width?: number; via?: Point; mirror?: boolean } = {}
-): Mark => ({
-  shape: "line",
-  from,
-  to,
-  color,
-  width,
-  mirror,
-  ...(via && { via }),
-})
-
-/** A painted dot: a clown nose, a beauty mark. */
-export const dot = (
-  at: Point,
-  radius: number,
-  color: Hex,
-  mirror = false
-): Mark => ({ shape: "dot", at, radius, color, mirror })
-
-/** A painted spiral, from the center out. */
-export const spiral = (
-  at: Point,
-  radius: number,
-  color: Hex,
-  mirror = false,
-  width = 0.035
-): Mark => ({ shape: "spiral", at, radius, color, width, mirror })
-
-/** A stitched line: the seam and its cross stitches. */
-export const stitches = (
-  from: Point,
-  to: Point,
-  count: number,
-  color: Hex,
-  mirror = false,
-  width = 0.025
-): Mark => ({ shape: "stitches", from, to, count, color, width, mirror })
-
 /** A Hair Color render: the whole head in one color. */
-export const hair = (color: Hex, intensity = 80, shine = 30): StepRender => ({
+export const hair = (color: Hex, intensity = 100, shine = 30): StepRender => ({
   tool: "hair",
   pattern: { name: "full" },
   palettes: [{ color, color_intensity: intensity, shine_intensity: shine }],
 })
 
-export const matte = (color: Hex, intensity = 80): Matte => ({
+export const matte = (color: Hex, intensity = 100): Matte => ({
   color,
   texture: "matte",
   colorIntensity: intensity,
@@ -394,7 +289,7 @@ export const matte = (color: Hex, intensity = 80): Matte => ({
 /** An eye color with white (or `sparkle`) shimmer in it. */
 export const shimmer = (
   color: Hex,
-  intensity = 70,
+  intensity = 100,
   sparkle: Hex = "#FFFFFF"
 ): EyePalette => ({
   color,
@@ -405,7 +300,7 @@ export const shimmer = (
 })
 
 /** An eye color with a metal sheen of the same color. */
-export const metallic = (color: Hex, intensity = 70): EyePalette => ({
+export const metallic = (color: Hex, intensity = 100): EyePalette => ({
   color,
   texture: "metallic",
   colorIntensity: intensity,
@@ -414,13 +309,13 @@ export const metallic = (color: Hex, intensity = 70): EyePalette => ({
   metallicIntensity: 70,
 })
 
-export const satin = (color: Hex, intensity = 70): LipPalette => ({
+export const satin = (color: Hex, intensity = 100): LipPalette => ({
   color,
   texture: "satin",
   colorIntensity: intensity,
 })
 
-export const gloss = (color: Hex, intensity = 70): LipPalette => ({
+export const gloss = (color: Hex, intensity = 100): LipPalette => ({
   color,
   texture: "gloss",
   colorIntensity: intensity,
@@ -457,14 +352,14 @@ const foundation = (
  * guides "paint the face white" (YouCam's foundation shows about half of the
  * change it is given, so the base needs this much to read as pale).
  */
-export const paler = (shades: number, coverage = 90, glow = 0) =>
+export const paler = (shades: number, coverage = 100, glow = 0) =>
   foundation({ lighterThanSkin: shades }, coverage, glow)
 
 /**
  * A color over the skin: color corrector or face paint mixed into
  * foundation (green for a monster, gray for a corpse).
  */
-export const tint = (color: Hex, coverage = 70) =>
+export const tint = (color: Hex, coverage = 100) =>
   foundation(color, coverage, 0)
 
 /**
@@ -482,7 +377,7 @@ export const facePaint = (color: Hex, coverage = 100) =>
  */
 export const contour = (
   color: Hex,
-  intensity = 85,
+  intensity = 100,
   name: PatternName<"contour"> = "HeartFace3"
 ): MakeupEffect => ({
   category: "contour",
@@ -498,7 +393,7 @@ export const contour = (
 export const shading = (
   name: PatternName<"bronzer">,
   color: Hex,
-  intensity = 85
+  intensity = 100
 ): MakeupEffect => ({
   category: "bronzer",
   pattern: { name },
@@ -508,7 +403,7 @@ export const shading = (
 export const blush = (
   name: PatternName<"blush">,
   color: Hex,
-  intensity = 60
+  intensity = 100
 ): MakeupEffect => ({
   category: "blush",
   pattern: { name },
@@ -516,7 +411,7 @@ export const blush = (
 })
 
 /** A glow on the high points of the face. */
-export const glow = (color: Hex, intensity = 50): MakeupEffect => ({
+export const glow = (color: Hex, intensity = 100): MakeupEffect => ({
   category: "highlighter",
   pattern: { name: "OvalFace5" },
   palettes: [
@@ -573,7 +468,7 @@ export const liner = (
 export const lashes = (
   name: PatternName<"eyelashes">,
   color: Hex = "#111111",
-  intensity = 90
+  intensity = 100
 ): MakeupEffect => ({
   category: "eyelashes",
   pattern: { name },
@@ -594,8 +489,8 @@ export const lips = (
 export const lipLine = (
   name: PatternName<"lip_liner">,
   color: Hex,
-  intensity = 80,
-  thickness = 50,
+  intensity = 100,
+  thickness = 60,
   smoothness = 50
 ): MakeupEffect => ({
   category: "lip_liner",

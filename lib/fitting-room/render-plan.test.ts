@@ -4,15 +4,12 @@ import { describe, expect, it } from "vitest"
 import { makeupGuides } from "@/content/makeup"
 import {
   brows,
-  dot,
   hair,
   lips,
   makeup,
   type MakeupGuide,
   matte,
-  paint,
   paler,
-  shadow,
   smooth,
   tint,
 } from "@/lib/makeup"
@@ -137,7 +134,7 @@ describe("renderPlan", () => {
       if (foundation.category !== "foundation")
         throw new Error("foundation expected")
       expect(foundation.palettes[0].color).toBe(lighter(skin, 2))
-      expect(foundation.palettes[0].coverageIntensity).toBe(90)
+      expect(foundation.palettes[0].coverageIntensity).toBe(100)
     }
   })
 
@@ -150,77 +147,6 @@ describe("renderPlan", () => {
       const first = makeupAt(renderPlan("ghostface", tinted, skin), 1)
       expect(first.effects[1]).toEqual(tint("#9EAA92"))
     }
-  })
-
-  it("paints on the last makeup picture, by the eye and lip steps, and puts hair on the painting", () => {
-    const painted: MakeupGuide = {
-      look: "A painted face.",
-      steps: [
-        {
-          title: "Base",
-          howTo: "Paint.",
-          products: ["paint"],
-          render: makeup(paler(4)),
-        },
-        {
-          title: "Eyes",
-          howTo: "Eyes.",
-          products: ["shadow"],
-          render: makeup(shadow("1color30", matte("#000000", 90))),
-        },
-        {
-          title: "Lips",
-          howTo: "Lips.",
-          products: ["lipstick"],
-          render: makeup(lips(matte("#C00000", 92))),
-        },
-        {
-          title: "Nose",
-          howTo: "Nose.",
-          products: ["red paint"],
-          render: paint(dot({ at: "nose" }, 0.1, "#C00000")),
-        },
-        {
-          title: "Hair",
-          howTo: "Hair.",
-          products: ["wig"],
-          render: hair("#C8501E"),
-        },
-      ],
-    }
-    const plan = renderPlan("pennywise", painted, LIGHT_SKIN)
-    expect(plan.map((render) => render.tool)).toEqual([
-      "clothes",
-      "makeup",
-      "makeup",
-      "makeup",
-      "paint",
-      "hair",
-    ])
-    expect(plan[4]).toMatchObject({
-      tool: "paint",
-      from: 3,
-      eyes: { step: 2, before: 1 },
-      lips: { step: 3, before: 2 },
-      after: OUTFIT,
-    })
-    expect(plan[5]).toMatchObject({ tool: "hair", from: 4 })
-  })
-
-  it("refuses a paint step with no eye or lip step before it", () => {
-    const early: MakeupGuide = {
-      ...guide,
-      steps: [
-        guide.steps[0],
-        {
-          title: "Nose",
-          howTo: "Nose.",
-          products: ["red paint"],
-          render: paint(dot({ at: "nose" }, 0.1, "#C00000")),
-        },
-      ],
-    }
-    expect(() => renderPlan("pennywise", early, LIGHT_SKIN)).toThrow()
   })
 
   it("never changes the guide it plans", () => {
@@ -239,17 +165,11 @@ describe("renderPlan", () => {
         const colors = JSON.stringify(plan).match(/"color":"[^"]*"/g) ?? []
         for (const color of colors)
           expect(color).toMatch(/^"color":"#[0-9A-F]{6}"$/)
-        // Hair on the last picture before it: the painted one, if any.
-        const lastPicture = plan.findLastIndex(
-          (render) => render.tool === "makeup" || render.tool === "paint"
-        )
         const lastMakeup = plan.findLastIndex(
           (render) => render.tool === "makeup"
         )
-        for (const render of plan) {
-          if (render.tool === "hair") expect(render.from).toBe(lastPicture)
-          if (render.tool === "paint") expect(render.from).toBe(lastMakeup)
-        }
+        for (const render of plan)
+          if (render.tool === "hair") expect(render.from).toBe(lastMakeup)
       }
     }
   )

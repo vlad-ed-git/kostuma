@@ -6,11 +6,10 @@ import sharp from "sharp"
 
 import {
   ProviderError,
-  type ProviderRender,
   type RenderImages,
   type RenderProvider,
 } from "./provider"
-import { fromHex } from "./render-plan"
+import { fromHex, type Render } from "./render-plan"
 
 /**
  * A stand-in for YouCam that costs nothing: local development and tests
@@ -25,7 +24,7 @@ import { fromHex } from "./render-plan"
  * render fail.
  */
 
-type Task = { render: ProviderRender; images: RenderImages; startedAt: number }
+type Task = { render: Render; images: RenderImages; startedAt: number }
 
 // Kept on globalThis: `next dev` reloads modules, and running tasks must
 // survive that.
@@ -105,7 +104,7 @@ async function dress(body: Uint8Array, garment?: Uint8Array) {
   )
 }
 
-type Painted = Extract<ProviderRender, { tool: "makeup" | "hair" }>
+type Painted = Extract<Render, { tool: "makeup" | "hair" }>
 
 /** The step's colors: every palette color of its effects, or its hair. */
 function colorsOf(render: Painted): string[] {

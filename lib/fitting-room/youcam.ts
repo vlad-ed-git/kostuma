@@ -4,11 +4,11 @@ import sharp from "sharp"
 
 import {
   ProviderError,
-  type ProviderRender,
   type RenderFailure,
   type RenderProvider,
   type TaskState,
 } from "./provider"
+import type { Render } from "./render-plan"
 
 /**
  * YouCam's AI Clothes (cloth-v4), Makeup VTO and Hair Color
@@ -25,7 +25,7 @@ const BASE = "https://yce-api-01.makeupar.com"
 /** Each call gives up after this long: the next poll tries again. */
 const TIMEOUT_MS = 20_000
 
-const endpoints: Record<ProviderRender["tool"], string> = {
+const endpoints: Record<Render["tool"], string> = {
   clothes: "/s2s/v2.0/task/cloth-v4",
   makeup: "/s2s/v2.0/task/makeup-vto",
   hair: "/s2s/v2.0/task/hair-color",
@@ -34,45 +34,44 @@ const endpoints: Record<ProviderRender["tool"], string> = {
 type Failure = { reason: RenderFailure; retry: boolean }
 
 /** The visitor's own photo could not be read: theirs to retake. */
-const unreadable = (tool: ProviderRender["tool"]): Failure => ({
+const unreadable = (tool: Render["tool"]): Failure => ({
   reason: tool === "clothes" ? "body_photo" : "face_photo",
   retry: false,
 })
 
 // The engine's errors (a finished task whose `task_status` is "error"),
 // in the visitor's terms. Anything not listed is "failed", worth retrying.
-const engineErrors: Record<string, (tool: ProviderRender["tool"]) => Failure> =
-  {
-    error_no_face: unreadable,
-    error_face_position_invalid: unreadable,
-    error_face_position_too_small: unreadable,
-    error_face_position_out_of_boundary: unreadable,
-    error_face_angle_invalid: unreadable,
-    error_face_parsing: unreadable,
-    error_pose: unreadable,
-    error_invalid_src: unreadable,
-    error_apply_region_mismatch: unreadable,
-    error_multi_person: unreadable,
-    error_below_min_image_size: () => ({
-      reason: "photo_rejected",
-      retry: false,
-    }),
-    error_exceed_max_image_size: () => ({
-      reason: "photo_rejected",
-      retry: false,
-    }),
-    exceed_max_filesize: () => ({ reason: "photo_rejected", retry: false }),
-    error_decode_image: () => ({ reason: "photo_rejected", retry: false }),
-    error_nsfw_content_detected: () => ({
-      reason: "photo_rejected",
-      retry: false,
-    }),
-    // The garment (the costume's photo) or the request: Kostuma's to fix.
-    error_invalid_ref: () => ({ reason: "failed", retry: false }),
-    invalid_parameter: () => ({ reason: "failed", retry: false }),
-    // The outfit came out the same as the photo: no point paying again.
-    error_editing_failed: () => ({ reason: "failed", retry: false }),
-  }
+const engineErrors: Record<string, (tool: Render["tool"]) => Failure> = {
+  error_no_face: unreadable,
+  error_face_position_invalid: unreadable,
+  error_face_position_too_small: unreadable,
+  error_face_position_out_of_boundary: unreadable,
+  error_face_angle_invalid: unreadable,
+  error_face_parsing: unreadable,
+  error_pose: unreadable,
+  error_invalid_src: unreadable,
+  error_apply_region_mismatch: unreadable,
+  error_multi_person: unreadable,
+  error_below_min_image_size: () => ({
+    reason: "photo_rejected",
+    retry: false,
+  }),
+  error_exceed_max_image_size: () => ({
+    reason: "photo_rejected",
+    retry: false,
+  }),
+  exceed_max_filesize: () => ({ reason: "photo_rejected", retry: false }),
+  error_decode_image: () => ({ reason: "photo_rejected", retry: false }),
+  error_nsfw_content_detected: () => ({
+    reason: "photo_rejected",
+    retry: false,
+  }),
+  // The garment (the costume's photo) or the request: Kostuma's to fix.
+  error_invalid_ref: () => ({ reason: "failed", retry: false }),
+  invalid_parameter: () => ({ reason: "failed", retry: false }),
+  // The outfit came out the same as the photo: no point paying again.
+  error_editing_failed: () => ({ reason: "failed", retry: false }),
+}
 
 type Fetch = typeof fetch
 

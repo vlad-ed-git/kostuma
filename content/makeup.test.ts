@@ -1,11 +1,8 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest"
 
-import { renderPlan } from "@/lib/fitting-room/render-plan"
 import {
-  type Anchor,
   lipShapes,
-  type Mark,
   type MakeupEffect,
   type MakeupStep,
   patterns,
@@ -185,31 +182,16 @@ describe("the makeup guides", () => {
     }
   })
 
-  it.each(guides)(
-    "%s takes 3 to 6 renders, paint and hair last",
-    (_, guide) => {
-      // One YouCam render per makeup or hair step, one unit each; the painted
-      // marks cost nothing.
-      const tools = guide.steps.map((step) => step.render.tool)
-      const renders = tools.filter((tool) => tool !== "paint").length
-      expect(renders).toBeGreaterThanOrEqual(3)
-      expect(renders).toBeLessThanOrEqual(6)
-      expect(
-        tools.filter((tool) => tool === "hair").length
-      ).toBeLessThanOrEqual(1)
-      expect(
-        tools.filter((tool) => tool === "paint").length
-      ).toBeLessThanOrEqual(1)
-      // Paint goes on the finished makeup; hair on whatever comes last.
-      const order = tools.filter((tool) => tool !== "makeup")
-      expect(order).toEqual(
-        ["paint", "hair"].filter((tool) => tools.includes(tool as "paint"))
-      )
-      const firstLater = tools.findIndex((tool) => tool !== "makeup")
-      if (firstLater >= 0)
-        expect(tools.slice(firstLater).includes("makeup")).toBe(false)
-    }
-  )
+  it.each(guides)("%s takes 3 to 6 renders, hair last", (_, guide) => {
+    // One YouCam render per step, one unit each.
+    expect(guide.steps.length).toBeGreaterThanOrEqual(3)
+    expect(guide.steps.length).toBeLessThanOrEqual(6)
+    const tools = guide.steps.map((step) => step.render.tool)
+    expect(tools.filter((tool) => tool === "hair").length).toBeLessThanOrEqual(
+      1
+    )
+    if (tools.includes("hair")) expect(tools.at(-1)).toBe("hair")
+  })
 
   it.each(guides)("%s makes a whole face: base, eyes and lips", (_, guide) => {
     // The owner (2026-10-03): guides that left a feature alone stopped at
@@ -232,8 +214,8 @@ describe("the makeup guides", () => {
 
   it.each(guides)("%s reads at a glance", (_, guide) => {
     // The owner (2026-10-03): "the results are still very tame... why are
-    // we holding back?" Floors, measured on YouCam's renders: shading shows
-    // only from about 70, a light touch everywhere else reads as nothing.
+    // we holding back?", then "go to 100": every strength YouCam takes
+    // (0-100) at its maximum, every base at full coverage.
     for (const step of guide.steps) {
       if (step.render.tool !== "makeup") continue
       for (const effect of step.render.effects) {
@@ -247,25 +229,20 @@ describe("the makeup guides", () => {
             expect(palette.colorIntensity, where).toBeGreaterThanOrEqual(min)
           )
         if (effect.category === "contour" || effect.category === "bronzer")
-          strength(90)
+          strength(100)
         if (effect.category === "eye_shadow" || effect.category === "eye_liner")
-          strength(90)
-        if (effect.category === "lip_color") strength(92)
-        if (effect.category === "lip_liner") strength(90)
-        if (effect.category === "blush") strength(82)
-        if (effect.category === "eyebrows") strength(85)
+          strength(100)
+        if (effect.category === "lip_color") strength(100)
+        if (effect.category === "lip_liner") strength(100)
+        if (effect.category === "blush") strength(100)
+        if (effect.category === "eyebrows") strength(100)
         if (effect.category === "foundation")
-          expect(
-            effect.palettes[0].coverageIntensity,
-            where
-          ).toBeGreaterThanOrEqual(68)
+          expect(effect.palettes[0].coverageIntensity, where).toBe(100)
       }
     }
     for (const step of guide.steps)
       if (step.render.tool === "hair")
-        expect(step.render.palettes[0].color_intensity).toBeGreaterThanOrEqual(
-          90
-        )
+        expect(step.render.palettes[0].color_intensity).toBe(100)
     // Face paint, yes; a makeup department's work, no.
     const texts = [
       ...guide.steps.map((step) => step.howTo),
@@ -276,38 +253,6 @@ describe("the makeup guides", () => {
         /latex|prosthetic|bald cap|contact lens|scar wax|spirit gum|glue/i
       )
   })
-
-  it.each(guides.filter(([, guide]) => painted(guide.steps)))(
-    "%s paints its marks where the face is",
-    (slug, guide) => {
-      // The painter finds the eyes and the mouth where the eye and lip steps
-      // changed the picture (lib/fitting-room/landmarks.ts): those steps
-      // must change nothing else.
-      const eyeOnly = new Set(["eye_shadow", "eye_liner", "eyelashes"])
-      const lipOnly = new Set(["lip_color", "lip_liner"])
-      for (const step of guide.steps) {
-        if (step.render.tool !== "makeup") continue
-        const categories = step.render.effects.map((effect) => effect.category)
-        if (categories.some((category) => eyeOnly.has(category)))
-          expect(
-            categories.every((c) => eyeOnly.has(c)),
-            step.title
-          ).toBe(true)
-        if (categories.includes("lip_color"))
-          expect(
-            categories.every((c) => lipOnly.has(c)),
-            step.title
-          ).toBe(true)
-      }
-      expect(() => renderPlan(slug, guide, "#C7998A")).not.toThrow()
-      for (const step of guide.steps)
-        if (step.render.tool === "paint")
-          for (const mark of step.render.marks)
-            expect(markProblems(mark), `${step.title}: ${mark.shape}`).toEqual(
-              []
-            )
-    }
-  )
 
   it.each(guides)("%s is renderable as it is", (_, guide) => {
     for (const step of guide.steps) {
@@ -323,15 +268,13 @@ describe("the makeup guides", () => {
           ),
           step.title
         ).toEqual([])
-      } else if (render.tool === "makeup") {
+      } else {
         expect(render.effects.length, step.title).toBeGreaterThan(0)
         for (const effect of render.effects)
           expect(
             problemsOf(effect),
             `${step.title}: ${effect.category}`
           ).toEqual([])
-      } else {
-        expect(render.marks.length, step.title).toBeGreaterThan(0)
       }
     }
   })
@@ -342,40 +285,6 @@ function effectsOf(steps: MakeupStep[]): MakeupEffect[] {
   return steps.flatMap((step) =>
     step.render.tool === "makeup" ? step.render.effects : []
   )
-}
-
-const painted = (steps: MakeupStep[]) =>
-  steps.some((step) => step.render.tool === "paint")
-
-const anchors: Anchor[] = [
-  "eye",
-  "mouthCorner",
-  "nose",
-  "mouth",
-  "chin",
-  "forehead",
-]
-
-/** What is wrong with a painted mark: unknown anchors, odd sizes, colors. */
-function markProblems(mark: Mark): string[] {
-  const problems: string[] = []
-  const points = [
-    ...("from" in mark ? [mark.from, mark.to] : [mark.at]),
-    ...("via" in mark && mark.via ? [mark.via] : []),
-  ]
-  for (const point of points) {
-    if (!anchors.includes(point.at)) problems.push(`anchor ${point.at}`)
-    for (const offset of [point.dx ?? 0, point.dy ?? 0])
-      if (Math.abs(offset) > 2) problems.push(`offset ${offset}`)
-  }
-  if (!HEX.test(mark.color)) problems.push(`color ${mark.color}`)
-  const size = "radius" in mark ? mark.radius : 0
-  if (size < 0 || size > 0.6) problems.push(`radius ${size}`)
-  if ("width" in mark && !(mark.width > 0 && mark.width <= 0.3))
-    problems.push(`width ${mark.width}`)
-  if (mark.shape === "stitches" && !(mark.count >= 1 && mark.count <= 20))
-    problems.push(`count ${mark.count}`)
-  return problems
 }
 
 describe("the effect check", () => {
