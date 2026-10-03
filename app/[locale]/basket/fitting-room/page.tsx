@@ -67,6 +67,7 @@ export default async function FittingRoomPage({
     body: null,
   }
   let tryOn: TryOnView | null = null
+  const renderer = fittingRoom()?.provider.name
   try {
     const store = fittingRoomStore()
     const [kept, tryOns] = await Promise.all([
@@ -74,8 +75,13 @@ export default async function FittingRoomPage({
       store.tryOns(user.uid),
     ])
     room = { face: kept.face?.id ?? null, body: kept.body?.id ?? null }
+    // The latest try-on made by the renderer in use: never a fake one
+    // standing in for real renders.
     const latest =
-      selected && tryOns.find((each) => each.slug === selected.slug)
+      selected &&
+      tryOns.find(
+        (each) => each.slug === selected.slug && each.renderer === renderer
+      )
     tryOn = latest ? toView(latest) : null
   } catch (error) {
     // The page still offers the photos; starting says if it can't.
@@ -99,7 +105,7 @@ export default async function FittingRoomPage({
         selected={selected}
         room={room}
         tryOn={tryOn}
-        open={fittingRoom() !== null}
+        open={renderer !== undefined}
       />
     </div>
   )

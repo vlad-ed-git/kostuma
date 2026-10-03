@@ -40,6 +40,8 @@ export type RenderImages = {
 }
 
 export interface RenderProvider {
+  /** Which it is: a try-on made by one is never shown as the other's. */
+  readonly name: "youcam" | "fake"
   /** Starts a render; the task's id. Throws a ProviderError. */
   start(render: Render, images: RenderImages): Promise<string>
   /**

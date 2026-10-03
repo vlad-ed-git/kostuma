@@ -79,6 +79,7 @@ function scripted() {
   let startError: Error | null = null
   let checkError: Error | null = null
   const provider: RenderProvider = {
+    name: "youcam",
     async start(render, images) {
       if (startError) throw startError
       const task = `task-${started.length}`
@@ -153,7 +154,7 @@ describe("begin", () => {
     const result = await begin(deps, UID, fitting)
     expect(result.outcome).toBe("started")
     expect(result.tryOn.id).toBe(
-      tryOnId(fitting.face.id, BODY_PHOTO.id, "ghostface")
+      tryOnId(fitting.face.id, BODY_PHOTO.id, "ghostface", "youcam")
     )
     expect(result.tryOn.steps.map((step) => step.render.tool)).toEqual([
       "clothes",
@@ -180,12 +181,16 @@ describe("begin", () => {
     expect(again.tryOn.status).toBe("running")
   })
 
-  it("makes another try-on for other photos or another costume", () => {
-    const one = tryOnId("a".repeat(32), "b".repeat(32), "ghostface")
-    expect(tryOnId("c".repeat(32), "b".repeat(32), "ghostface")).not.toBe(one)
-    expect(tryOnId("a".repeat(32), "c".repeat(32), "ghostface")).not.toBe(one)
-    expect(tryOnId("a".repeat(32), "b".repeat(32), "pennywise")).not.toBe(one)
-    expect(tryOnId("a".repeat(32), null, "ghostface")).not.toBe(one)
+  it("makes another try-on for other photos, another costume or another renderer", () => {
+    const face = "a".repeat(32)
+    const body = "b".repeat(32)
+    const one = tryOnId(face, body, "ghostface", "youcam")
+    expect(tryOnId("c".repeat(32), body, "ghostface", "youcam")).not.toBe(one)
+    expect(tryOnId(face, "c".repeat(32), "ghostface", "youcam")).not.toBe(one)
+    expect(tryOnId(face, body, "pennywise", "youcam")).not.toBe(one)
+    expect(tryOnId(face, null, "ghostface", "youcam")).not.toBe(one)
+    // A fake try-on never stands in for a real one.
+    expect(tryOnId(face, body, "ghostface", "fake")).not.toBe(one)
   })
 })
 
@@ -246,7 +251,7 @@ describe("advance", () => {
       body: null,
     }
     const { tryOn } = await begin(deps, UID, allMakeup)
-    expect(tryOn.id).toBe(tryOnId(fitting.face.id, null, "ghostface"))
+    expect(tryOn.id).toBe(tryOnId(fitting.face.id, null, "ghostface", "youcam"))
     expect(tryOn.body).toBeNull()
     expect(tryOn.steps.map((step) => step.render.tool)).toEqual([
       "makeup",

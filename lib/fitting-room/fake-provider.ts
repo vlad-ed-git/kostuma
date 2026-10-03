@@ -12,12 +12,12 @@ import {
 import { fromHex, type Render } from "./render-plan"
 
 /**
- * A stand-in for YouCam that costs nothing: local development and tests
- * (TRY_ON_PROVIDER=fake). Each render takes a moment, like the real one. An
- * outfit sets the garment beside the visitor; a makeup or hair step washes
- * the picture in its colors, so every step looks different.
- * Its tasks live in this server's memory: one process only, never on
- * Vercel.
+ * A stand-in for YouCam that costs nothing, for the automated tests only
+ * (the e2e build, through renderer.e2e.ts): never used by the app. Each
+ * render takes a moment, like the real one. An outfit sets the garment
+ * beside the visitor; a makeup or hair step washes the picture in its
+ * colors, so every step looks different. Its tasks live in this server's
+ * memory: one process only.
  *
  * A photo whose top-left corner is pure red (#FF0000, give or take what JPEG
  * does to it) can't be read (no face, no person), so the tests can watch a
@@ -26,7 +26,7 @@ import { fromHex, type Render } from "./render-plan"
 
 type Task = { render: Render; images: RenderImages; startedAt: number }
 
-// Kept on globalThis: `next dev` reloads modules, and running tasks must
+// Kept on globalThis: modules may be loaded again, and running tasks must
 // survive that.
 const store = globalThis as typeof globalThis & {
   __fakeRenderTasks?: Map<string, Task>
@@ -40,6 +40,8 @@ function renderTime() {
 }
 
 export const fakeProvider: RenderProvider = {
+  name: "fake",
+
   async start(render, images) {
     const task = randomUUID()
     tasks.set(task, { render, images, startedAt: Date.now() })

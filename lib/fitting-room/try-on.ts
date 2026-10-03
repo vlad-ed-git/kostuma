@@ -52,6 +52,8 @@ export type TryOn = {
   id: string
   /** The costume (content/costumes.ts). */
   slug: string
+  /** Who renders it: real YouCam, or the free fake. */
+  renderer: "youcam" | "fake"
   /** The photos' ids; no body photo for a costume that is all makeup. */
   face: string
   body: string | null

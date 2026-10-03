@@ -173,6 +173,8 @@ export function youcamProvider(
   }
 
   return {
+    name: "youcam",
+
     async start(render, images) {
       const params = await paramsOf(render, images)
       const started = await call(endpoints[render.tool], {

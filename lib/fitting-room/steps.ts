@@ -8,6 +8,8 @@ import {
   type RenderImages,
   type RenderProvider,
 } from "./provider"
+
+type Renderer = RenderProvider["name"]
 import { PIPELINE_VERSION, renderPlan, type Render } from "./render-plan"
 import type {
   Begun,
@@ -51,10 +53,20 @@ export type Fitting = {
   body: Photo | null
 }
 
-/** A try-on's id: its photos, costume and pipeline version. */
-export function tryOnId(face: string, body: string | null, slug: string) {
+/**
+ * A try-on's id: its photos, costume, renderer and pipeline version (a
+ * fake try-on never stands in for a real one).
+ */
+export function tryOnId(
+  face: string,
+  body: string | null,
+  slug: string,
+  renderer: Renderer
+) {
   return createHash("sha256")
-    .update(`${face}\n${body ?? "-"}\n${slug}\n${PIPELINE_VERSION}`)
+    .update(
+      `${face}\n${body ?? "-"}\n${slug}\n${renderer}\n${PIPELINE_VERSION}`
+    )
     .digest("hex")
     .slice(0, 32)
 }
@@ -62,11 +74,13 @@ export function tryOnId(face: string, body: string | null, slug: string) {
 /** A try-on, before anything is sent. */
 export function newTryOn(
   { slug, guide, face, body }: Fitting,
-  now: number
+  now: number,
+  renderer: Renderer
 ): TryOn {
   return {
-    id: tryOnId(face.id, body?.id ?? null, slug),
+    id: tryOnId(face.id, body?.id ?? null, slug, renderer),
     slug,
+    renderer,
     face: face.id,
     body: body?.id ?? null,
     version: PIPELINE_VERSION,
@@ -87,11 +101,11 @@ export function newTryOn(
 
 /** Starts a try-on, unless the same one exists already (then that one). */
 export async function begin(
-  { store, now = Date.now }: Pick<Deps, "store" | "now">,
+  { store, provider, now = Date.now }: Pick<Deps, "store" | "provider" | "now">,
   uid: string,
   fitting: Fitting
 ): Promise<Begun> {
-  return store.begin(uid, newTryOn(fitting, now()))
+  return store.begin(uid, newTryOn(fitting, now(), provider.name))
 }
 
 /** Moves a try-on along; the try-on as it now stands (null if none). */
