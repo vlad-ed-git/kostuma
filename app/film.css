@@ -416,7 +416,9 @@
   background-position: 100% 0;
 }
 
-/* ── The Fitting Room's steps (components/fitting-room) ─────────────── */
+/* ── The Fitting Room: a dressing room backstage (components/fitting-room,
+   spec §11.4b) ─────────────────────────────────────────────────────────── */
+
 /* A step not done yet: the character's silhouette in the dark, rimmed in
    red, as a costume photo waits on the home page. The one rendering now
    breathes (motion rules below); the ones waiting on it stay dim. A done
@@ -432,6 +434,208 @@
   opacity: 1;
 }
 
+/* The clothes rail the costumes hang from: a bar of cold metal that fades
+   out at both ends, at the height of the hooks' curl. */
+.rail {
+  position: relative;
+}
+.rail::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0.3125rem;
+  height: 3px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in oklch, var(--moon) 45%, transparent) 4rem,
+    color-mix(in oklch, var(--foreground) 55%, transparent) 50%,
+    color-mix(in oklch, var(--moon) 45%, transparent) calc(100% - 4rem),
+    transparent
+  );
+  background-repeat: no-repeat;
+  box-shadow: 0 0 12px color-mix(in oklch, var(--moon) 30%, transparent);
+}
+
+/* A costume on its hanger: it swings from the hook on the rail. Pushed
+   (hover, focus), it tilts; the chosen one sways by itself. */
+.hanger {
+  display: block;
+  transform-origin: 50% 0.4rem;
+  transition: rotate 1.1s var(--ease-dread);
+}
+.hanger-frame {
+  transition:
+    opacity var(--duration-base) ease,
+    filter var(--duration-base) ease,
+    box-shadow var(--duration-base) ease;
+}
+/* The costumes not chosen wait in the dark until the light finds them. */
+.hanger:not([aria-current]) .hanger-frame {
+  opacity: 0.5;
+  filter: saturate(0.4);
+}
+.hanger:hover .hanger-frame,
+.hanger:focus-visible .hanger-frame {
+  opacity: 1;
+  filter: none;
+}
+
+/* The mirrors: a dark frame lit red from behind, a bone edge round the
+   glass. Nothing is ever drawn over the glass: the visitor's pictures show
+   as they came. `--glass-h` sets the glass's height, `--ratio` its shape;
+   a narrow screen shrinks it to fit. */
+.mirror {
+  --band: 1.25rem;
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  padding: var(--band);
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklch, var(--moon) 10%, var(--card)),
+    var(--card) 40%,
+    color-mix(in oklch, var(--blood) 7%, var(--background))
+  );
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent),
+    0 0 60px -8px color-mix(in oklch, var(--blood) 45%, transparent),
+    0 36px 120px -24px color-mix(in oklch, var(--blood) 55%, transparent);
+}
+.mirror[data-error] {
+  box-shadow:
+    inset 0 0 0 1px var(--destructive),
+    0 0 60px -8px color-mix(in oklch, var(--destructive) 40%, transparent);
+}
+/* Lights out: the Fitting Room is closed. */
+.mirror[data-off] {
+  box-shadow: inset 0 0 0 1px
+    color-mix(in oklch, var(--foreground) 8%, transparent);
+}
+.mirror-glass {
+  position: relative;
+  overflow: hidden;
+  width: calc(var(--glass-h, 20rem) * var(--ratio, 0.75));
+  max-width: 100%;
+  aspect-ratio: var(--ratio, 0.75);
+  background: radial-gradient(
+    ellipse 90% 70% at 30% 20%,
+    color-mix(in oklch, var(--moon) 9%, #000),
+    #000 70%
+  );
+  background-repeat: no-repeat;
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 24%, transparent);
+}
+
+/* The vanity's bulbs, round the top and down both sides (each placed by
+   `--x` and `--y`, fractions along the band). Two flicker, one is dead
+   and sputters now and then (motion rules below). */
+.mirror-bulb {
+  position: absolute;
+  left: calc(var(--band) / 2 + (100% - var(--band)) * var(--x));
+  top: calc(var(--band) / 2 + (100% - var(--band)) * var(--y));
+  width: calc(var(--band) * 0.5);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 40% 35%,
+    var(--foreground),
+    color-mix(in oklch, var(--foreground) 75%, var(--card))
+  );
+  box-shadow:
+    0 0 6px 1px color-mix(in oklch, var(--foreground) 65%, transparent),
+    0 0 20px 6px color-mix(in oklch, var(--foreground) 20%, transparent);
+}
+.mirror-bulb[data-dead],
+.mirror[data-off] .mirror-bulb {
+  background: color-mix(in oklch, var(--foreground) 16%, var(--card));
+  box-shadow: none;
+}
+
+/* Fog rolling at the mirror's feet, behind it, thicker than the night's,
+   fading out on every side before it reaches any words. */
+.mirror-fog {
+  position: absolute;
+  inset: auto -20% -16% -20%;
+  z-index: -1;
+  height: 70%;
+  pointer-events: none;
+  mask-image: radial-gradient(
+    ellipse 50% 50% at 50% 55%,
+    #000 40%,
+    transparent 100%
+  );
+  mask-repeat: no-repeat;
+}
+.mirror-fog .fog > span:first-child {
+  opacity: 0.8;
+}
+.mirror-fog .fog > span:last-child {
+  opacity: 0.55;
+}
+
+/* The film strip under the mirror: every picture of the try-on as a frame
+   between sprocket holes, with light coming through them. It scrolls when
+   the frames outrun it, fading out at its far end. */
+.film-strip {
+  --hole: color-mix(in oklch, var(--foreground) 22%, transparent);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  padding-block: 1.375rem;
+  background:
+    linear-gradient(to right, var(--hole) 0 0.5rem, transparent 0.5rem) 0
+      0.5rem / 1.125rem 0.375rem repeat-x local,
+    linear-gradient(to right, var(--hole) 0 0.5rem, transparent 0.5rem) 0
+      calc(100% - 0.5rem) / 1.125rem 0.375rem repeat-x local,
+    color-mix(in oklch, var(--blood) 5%, #030304);
+  mask-image: linear-gradient(to right, #000 calc(100% - 4rem), transparent);
+  mask-repeat: no-repeat;
+}
+.film-strip::-webkit-scrollbar {
+  display: none;
+}
+.film-frame {
+  transition: box-shadow var(--duration-base) ease;
+}
+[aria-current] > .film-frame {
+  box-shadow:
+    0 0 0 2px var(--blood-text),
+    0 0 22px color-mix(in oklch, var(--blood) 70%, transparent);
+}
+
+/* A red light on "recording" while the try-on runs. */
+.rec-dot {
+  width: 0.625rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--blood-text);
+  box-shadow: 0 0 10px var(--blood);
+}
+
+/* A red light from behind the mirrors and moonlight from the upper right,
+   fading out before every edge (no line where the page ends). */
+.dressing-light {
+  background:
+    radial-gradient(
+      ellipse 55% 40% at 25% 55%,
+      color-mix(in oklch, var(--blood) 16%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 45% 30% at 90% 8%,
+      color-mix(in oklch, var(--moon) 9%, transparent),
+      transparent 70%
+    );
+  background-repeat: no-repeat;
+}
+/* The tape rolls through the title card across the whole screen. */
+.dressing-tape {
+  inset-inline: calc(50% - 50vw);
+  inset-block: -1.5rem;
+}
+
 /* ── Lit by scroll: the costume rows (`.lit`, spec §7.2), below ──────── */
 /* No JavaScript: browsers without scroll-driven animations show every row. */
 
@@ -443,6 +647,31 @@
   }
   .step-silhouette[data-current] {
     animation: breathe 2.4s ease-in-out infinite alternate;
+  }
+  /* The dressing room (spec §11.4b): the chosen costume sways on its
+     hanger, a pushed one tilts; two of the vanity's bulbs flicker and the
+     dead one sputters; the red light blinks while a try-on runs; a picture
+     chosen from the strip fades up in the mirror. */
+  .hanger[aria-current],
+  .hanger[data-sway] {
+    animation: sway 5s ease-in-out var(--sway-delay, 0s) infinite alternate;
+  }
+  @media (hover: hover) {
+    .hanger:not([aria-current]):hover {
+      rotate: 4deg;
+    }
+  }
+  .mirror-bulb[data-flicker] {
+    animation: bulb-flicker var(--flicker, 6s) steps(1) infinite;
+  }
+  .mirror-bulb[data-dead] {
+    animation: bulb-sputter 9s steps(1) infinite;
+  }
+  .rec-dot {
+    animation: rec 1s steps(1) infinite;
+  }
+  .mirror-swap {
+    animation: mirror-swap 0.6s var(--ease-dread) backwards;
   }
   /* Only while a view transition runs: the reel change, never at rest. */
   html:active-view-transition .film-scratches {
@@ -864,6 +1093,73 @@
 @keyframes reel-in {
   from {
     opacity: 0;
+  }
+}
+
+/* A costume left swinging on its hanger. */
+@keyframes sway {
+  from {
+    rotate: -1.6deg;
+  }
+  to {
+    rotate: 1.6deg;
+  }
+}
+
+/* A bulb that catches a bad contact: two dips in a third of a second, a
+   longer drop later (never more than three flashes a second, spec §7.3). */
+@keyframes bulb-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  42% {
+    opacity: 0.2;
+  }
+  44% {
+    opacity: 1;
+  }
+  46% {
+    opacity: 0.35;
+  }
+  48% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.12;
+  }
+  86% {
+    opacity: 1;
+  }
+}
+
+/* The dead bulb: it tries to come on, once in a while, and fails. */
+@keyframes bulb-sputter {
+  61%,
+  67% {
+    background: var(--foreground);
+    box-shadow: 0 0 10px 2px
+      color-mix(in oklch, var(--foreground) 55%, transparent);
+  }
+  63%,
+  68% {
+    background: color-mix(in oklch, var(--foreground) 16%, var(--card));
+    box-shadow: none;
+  }
+}
+
+/* The red light on "recording": on half a second, off half a second. */
+@keyframes rec {
+  50% {
+    opacity: 0.15;
+  }
+}
+
+/* A picture chosen from the strip surfaces in the mirror. */
+@keyframes mirror-swap {
+  from {
+    opacity: 0;
+    filter: brightness(0.3);
   }
 }
 

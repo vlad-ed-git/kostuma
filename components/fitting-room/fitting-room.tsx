@@ -7,7 +7,6 @@ import { useEffect, useRef, useState, useTransition } from "react"
 import { AddToBasket } from "@/components/basket/add-to-basket"
 import { useBasket } from "@/components/basket/basket-provider"
 import { CostumeImage } from "@/components/costume/costume-image"
-import { Pumpkin } from "@/components/icons/pumpkin"
 import { costumesHref } from "@/components/layout/nav"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Link, useRouter } from "@/i18n/navigation"
@@ -22,7 +21,9 @@ import type { PhotoKind, TryOnView } from "@/lib/fitting-room/try-on"
 import type { CostumeSummary } from "@/lib/catalog/types"
 import { cn } from "@/lib/utils"
 
-import { frameOf, PhotoPicker, previewOf, type Slot } from "./photo-picker"
+import { Mirror } from "./dressing-room"
+import { PhotoMirror, PhotoPicker, previewOf, type Slot } from "./photo-picker"
+import { CostumeRail, EmptyRail, RailSkeleton } from "./rail"
 import { type GuideText, TryOnSteps } from "./try-on-steps"
 
 /** How often the page asks how a running try-on is doing. */
@@ -110,13 +111,8 @@ export function FittingRoom({
 
   if (!ready) {
     return (
-      <div
-        aria-hidden="true"
-        className="mt-10 flex gap-3 [@media(scripting:none)]:hidden"
-      >
-        {[0, 1, 2].map((tile) => (
-          <span key={tile} className="skeleton aspect-4/5 w-18" />
-        ))}
+      <div className="mt-8">
+        <RailSkeleton />
       </div>
     )
   }
@@ -124,38 +120,9 @@ export function FittingRoom({
   if (items.length === 0 && !selected) return <EmptyBasket />
 
   return (
-    <div className="mt-10 flex flex-col gap-12">
+    <div className="mt-8 flex flex-col gap-10 lg:gap-14">
       {items.length > 0 && (
-        <nav aria-label={t("costumes")}>
-          <ul className="flex flex-wrap gap-3">
-            {items.map((costume) => {
-              const current = costume.slug === selected?.slug
-              return (
-                <li key={costume.slug}>
-                  <Link
-                    href={`/basket/fitting-room?costume=${costume.slug}`}
-                    scroll={false}
-                    aria-current={current ? "page" : undefined}
-                    title={costume.name}
-                    className={cn(
-                      "relative block aspect-4/5 w-18 overflow-hidden border bg-card outline-offset-4 transition-[border-color,box-shadow] duration-300",
-                      current
-                        ? "border-blood-text shadow-[0_0_24px_color-mix(in_oklch,var(--blood)_45%,transparent)]"
-                        : "border-foreground/10 hover:border-blood-text/50"
-                    )}
-                  >
-                    <CostumeImage
-                      photo={costume.photo}
-                      alt={costume.name}
-                      sizes="72px"
-                      reveal={false}
-                    />
-                  </Link>
-                </li>
-              )
-            })}
-          </ul>
-        </nav>
+        <CostumeRail costumes={items} selected={selected?.slug} />
       )}
 
       {selected &&
@@ -168,16 +135,35 @@ export function FittingRoom({
             open={open}
           />
         ) : (
-          <div className="flex flex-col items-start gap-4">
-            <p className="text-lead">
-              {t("notInBasket", { name: selected.name })}
-            </p>
-            <AddToBasket slug={selected.slug} name={selected.name} />
+          <div className="flex items-center gap-6 sm:gap-10">
+            <div className="relative aspect-4/5 w-28 shrink-0 sm:w-40">
+              <CostumeImage
+                photo={selected.photo}
+                alt={selected.name}
+                sizes="160px"
+              />
+            </div>
+            <div className="flex flex-col items-start gap-5">
+              <p className="font-heading text-h4 font-medium text-balance">
+                {t("notInBasket", { name: selected.name })}
+              </p>
+              <AddToBasket slug={selected.slug} name={selected.name} />
+            </div>
           </div>
         ))}
     </div>
   )
 }
+
+/**
+ * A stage of the try-on (spec §11.4b): on large screens the mirrors on the
+ * left and the words beside them; on phones the words first.
+ */
+const stageGrid =
+  "grid grid-cols-[minmax(0,1fr)] gap-x-12 gap-y-8 lg:grid-cols-[auto_minmax(0,1fr)] lg:grid-rows-[auto_1fr] xl:gap-x-20"
+
+/** The photos' mirrors: smaller on phones, beside their buttons. */
+const photoHeight = "[--photo-h:10rem] sm:[--photo-h:clamp(15rem,34svh,21rem)]"
 
 /** One costume's try-on: its photos, the confirmation, then the pictures. */
 function Fitting({
@@ -206,14 +192,14 @@ function Fitting({
   })
   const [problem, setProblem] = useState<Problem | null>(null)
   const [pending, startTransition] = useTransition()
-  const heading = useRef<HTMLHeadingElement>(null)
+  const title = useRef<HTMLHeadingElement>(null)
 
   useFollow(tryOn, setTryOn)
 
   // Each stage starts at its title.
   const moved = useRef(false)
   useEffect(() => {
-    if (moved.current) heading.current?.focus()
+    if (moved.current) title.current?.focus()
     moved.current = true
   }, [stage])
 
@@ -272,10 +258,20 @@ function Fitting({
   const alert = problem && !problem.photo && (
     <p
       role="alert"
-      className="border border-destructive/40 px-4 py-3 text-destructive"
+      className="max-w-[60ch] border border-destructive/40 px-4 py-3 text-destructive"
     >
       {t(problem.message)}
     </p>
+  )
+  const heading = (text: string) => (
+    <h2
+      id="fitting"
+      ref={title}
+      tabIndex={-1}
+      className="font-heading text-h2 font-semibold text-balance outline-none"
+    >
+      {text}
+    </h2>
   )
 
   if (stage === "follow" && tryOn) {
@@ -283,137 +279,142 @@ function Fitting({
     // A failed try-on says why, and the photos open on the one at fault.
     const failed = tryOn.failure ? failureProblem(tryOn.failure) : null
     return (
-      <section aria-labelledby="fitting" className="flex flex-col gap-8">
-        <h2
-          id="fitting"
-          ref={heading}
-          tabIndex={-1}
-          className="font-heading text-display-fit font-semibold text-balance outline-none"
-        >
-          {costume.name}
-        </h2>
-        {tryOn.status === "failed" && failed && (
-          <p
-            role="alert"
-            className="max-w-[60ch] border border-destructive/40 px-4 py-3 text-destructive"
-          >
-            {t(failed.message)}
-          </p>
-        )}
-        {ended && open && (
-          <Button
-            variant={tryOn.status === "failed" ? "default" : "outline"}
-            size="lg"
-            className="w-fit"
-            onClick={() => {
-              setProblem(failed?.photo ? failed : null)
-              setStage("photos")
-            }}
-          >
-            {tryOn.status === "failed" ? t("retry") : t("again")}
-          </Button>
-        )}
+      <section aria-labelledby="fitting">
         <TryOnSteps
           tryOn={tryOn}
           name={costume.name}
           photo={costume.photo}
           guide={costume.guide}
+          title={heading(costume.name)}
+          actions={
+            <>
+              {tryOn.status === "failed" && failed && (
+                <p
+                  role="alert"
+                  className="max-w-[60ch] border border-destructive/40 px-4 py-3 text-destructive"
+                >
+                  {t(failed.message)}
+                </p>
+              )}
+              {ended && open && (
+                <Button
+                  variant={tryOn.status === "failed" ? "default" : "outline"}
+                  size="lg"
+                  className="mt-2"
+                  onClick={() => {
+                    setProblem(failed?.photo ? failed : null)
+                    setStage("photos")
+                  }}
+                >
+                  {tryOn.status === "failed" ? t("retry") : t("again")}
+                </Button>
+              )}
+            </>
+          }
         />
       </section>
     )
   }
 
   if (!open) {
-    return <p className="text-lead text-muted-foreground">{t("closed")}</p>
+    // Lights out at the vanity.
+    return (
+      <div className="flex flex-col items-start gap-8 sm:flex-row sm:items-center sm:gap-12">
+        <Mirror bulbs="sm" ratio={3 / 4} height="12rem" off />
+        <p className="max-w-[40ch] font-heading text-h4 font-medium text-balance">
+          {t("closed")}
+        </p>
+      </div>
+    )
   }
 
   if (stage === "confirm" && chosen) {
     return (
-      <section aria-labelledby="fitting" className="flex flex-col gap-8">
-        <h2
-          id="fitting"
-          ref={heading}
-          tabIndex={-1}
-          className="font-heading text-h2 font-semibold text-balance outline-none"
-        >
-          {t("confirm.title", { name: costume.name })}
-        </h2>
-        <p className="max-w-[60ch] text-lead">{t("confirm.line")}</p>
-        <div className="flex flex-wrap items-end gap-6">
-          <div className="relative aspect-4/5 w-32 overflow-hidden border border-foreground/10 bg-card">
+      <section
+        aria-labelledby="fitting"
+        className={cn(
+          stageGrid,
+          photoHeight,
+          "[grid-template-areas:'head'_'mirrors'_'go'] lg:[grid-template-areas:'mirrors_head'_'mirrors_go']"
+        )}
+      >
+        <div className="flex flex-col gap-4 [grid-area:head]">
+          {heading(t("confirm.title", { name: costume.name }))}
+          <p className="max-w-[60ch] text-lead text-muted-foreground">
+            {t("confirm.line")}
+          </p>
+        </div>
+        <div className="flex items-end gap-5 [grid-area:mirrors] sm:gap-8">
+          {/* Who they become, standing in the light beside their mirrors. */}
+          <div className="relative hidden aspect-4/5 h-[calc(var(--photo-h)+2.5rem)] shrink-0 sm:block">
             <CostumeImage
               photo={costume.photo}
               alt={costume.name}
-              sizes="128px"
-              reveal={false}
+              sizes="280px"
             />
           </div>
           {kinds.map((kind) => (
-            <div
-              key={kind}
-              className={cn(
-                "w-40 overflow-hidden border border-foreground/10 bg-black",
-                frameOf[kind]
-              )}
-            >
+            <PhotoMirror key={kind} kind={kind}>
               {/* eslint-disable-next-line @next/next/no-img-element -- the visitor's own photo */}
               <img
                 src={previewOf(kind, slots[kind]) ?? ""}
                 alt={t(`photos.${kind}`)}
                 className="size-full object-contain"
               />
-            </div>
+            </PhotoMirror>
           ))}
         </div>
-        {alert}
-        <div className="flex flex-wrap items-center gap-4">
-          <Button
-            size="lg"
-            aria-busy={pending || undefined}
-            disabled={pending}
-            onClick={start}
-            className="gap-2"
-          >
-            {pending && (
-              <RiLoader4Line
-                aria-hidden="true"
-                className="size-4 animate-spin motion-reduce:animate-none"
-              />
-            )}
-            {pending ? t("confirm.starting") : t("confirm.start")}
-          </Button>
-          {!pending && (
+        <div className="flex flex-col items-start gap-6 [grid-area:go]">
+          {alert}
+          <div className="flex flex-wrap items-center gap-4">
             <Button
-              variant="ghost"
               size="lg"
-              onClick={() => setStage("photos")}
+              aria-busy={pending || undefined}
+              disabled={pending}
+              onClick={start}
+              className="gap-2"
             >
-              {t("confirm.back")}
+              {pending && (
+                <RiLoader4Line
+                  aria-hidden="true"
+                  className="size-4 animate-spin motion-reduce:animate-none"
+                />
+              )}
+              {pending ? t("confirm.starting") : t("confirm.start")}
             </Button>
-          )}
+            {!pending && (
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={() => setStage("photos")}
+              >
+                {t("confirm.back")}
+              </Button>
+            )}
+          </div>
         </div>
       </section>
     )
   }
 
   return (
-    <section aria-labelledby="fitting" className="flex flex-col gap-8">
-      <div className="flex flex-col gap-3">
-        <h2
-          id="fitting"
-          ref={heading}
-          tabIndex={-1}
-          className="font-heading text-h2 font-semibold text-balance outline-none"
-        >
-          {t("photos.title")}
-        </h2>
+    <section
+      aria-labelledby="fitting"
+      className={cn(
+        stageGrid,
+        photoHeight,
+        "[grid-template-areas:'head'_'pickers'_'go'] lg:[grid-template-areas:'pickers_head'_'pickers_go']"
+      )}
+    >
+      <div className="flex flex-col gap-4 [grid-area:head]">
+        {heading(t("photos.title"))}
         <p className="max-w-[60ch] text-lead text-muted-foreground">
           {costume.allMakeup
             ? t("photos.lineFace", { name: costume.name })
             : t("photos.line")}
         </p>
       </div>
-      <div className="grid gap-10 sm:grid-cols-2">
+      <div className="flex flex-col gap-12 [grid-area:pickers] sm:flex-row sm:gap-10">
         {kinds.map((kind) => (
           <PhotoPicker
             key={kind}
@@ -427,25 +428,27 @@ function Fitting({
           />
         ))}
       </div>
-      {alert}
-      <Button
-        size="lg"
-        className="w-fit"
-        onClick={() => {
-          if (!chosen) {
-            setProblem({
-              message: costume.allMakeup
-                ? "errors.missing_face"
-                : "errors.missing_photo",
-            })
-            return
-          }
-          setProblem(null)
-          setStage("confirm")
-        }}
-      >
-        {t("photos.continue")}
-      </Button>
+      <div className="flex flex-col items-start gap-6 [grid-area:go]">
+        {alert}
+        <Button
+          size="lg"
+          variant={chosen ? "default" : "outline"}
+          onClick={() => {
+            if (!chosen) {
+              setProblem({
+                message: costume.allMakeup
+                  ? "errors.missing_face"
+                  : "errors.missing_photo",
+              })
+              return
+            }
+            setProblem(null)
+            setStage("confirm")
+          }}
+        >
+          {t("photos.continue")}
+        </Button>
+      </div>
     </section>
   )
 }
@@ -483,13 +486,15 @@ function useFollow(
   }, [id, running, setTryOn])
 }
 
-/** No costume in the basket: where to find one. */
+/** No costume in the basket: bare hangers, and where to find one. */
 function EmptyBasket() {
   const t = useTranslations("FittingRoom")
   return (
-    <div className="mt-16 flex flex-col items-center gap-4 text-center">
-      <Pumpkin className="size-16 text-muted-foreground" />
-      <h2 className="font-heading text-h2 font-semibold">{t("emptyBasket")}</h2>
+    <div className="mt-12 flex flex-col items-center gap-5 text-center">
+      <EmptyRail />
+      <h2 className="mt-4 font-heading text-h2 font-semibold text-balance">
+        {t("emptyBasket")}
+      </h2>
       <p className="text-lead text-muted-foreground">{t("emptyLine")}</p>
       <Link
         href={costumesHref}

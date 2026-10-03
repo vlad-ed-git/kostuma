@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto"
 
-import { expect, test, type Page } from "@playwright/test"
+import { expect, type Locator, test, type Page } from "@playwright/test"
 import sharp from "sharp"
 
 import { collectErrors } from "./console"
@@ -53,9 +53,15 @@ async function givePhotos(page: Page, face: Photo, body: Photo) {
   ).toBeVisible()
 }
 
-/** Every <img> in the region has loaded a picture. */
-async function picturesLoaded(page: Page, region: string) {
-  const images = page.getByRole("region", { name: region }).locator("img")
+/** The try-on of a costume: the mirror, the strip of its pictures, the card. */
+const room = (page: Page, name: string) =>
+  page.getByRole("region", { name, exact: true })
+const strip = (room: Locator) =>
+  room.getByRole("list", { name: "Your pictures" })
+
+/** Every <img> in the try-on has loaded a picture. */
+async function picturesLoaded(room: Locator) {
+  const images = room.locator("img")
   await expect(images.first()).toBeVisible()
   await expect
     .poll(() =>
@@ -144,18 +150,47 @@ test.describe("The Fitting Room", () => {
     await expect(page.getByText("Your try-on is ready.")).toBeVisible({
       timeout: 30_000,
     })
-    await picturesLoaded(page, "The outfit")
-    await picturesLoaded(page, "The makeup")
-    const makeup = page.getByRole("region", { name: "The makeup" })
+    const beetlejuice = room(page, "Beetlejuice")
+    await picturesLoaded(beetlejuice)
+    // Done: the mirror shows the whole transformation, the last step.
     await expect(
-      makeup.getByRole("img", { name: "Your face before the makeup" })
+      beetlejuice.getByRole("img", {
+        name: "Your face after step 7: Moss-green hair",
+      })
     ).toBeVisible()
+    await expect(beetlejuice.getByText("Step 7 of 7")).toBeVisible()
     await expect(
-      makeup.getByRole("img", { name: "Your face after step 1: Corpse base" })
-    ).toBeVisible()
-    await expect(makeup.getByText("Step 7")).toBeVisible()
+      beetlejuice.getByRole("button", { name: "Next", exact: true })
+    ).toBeHidden()
 
-    const product = makeup.getByRole("link", {
+    // The strip holds every picture: the outfit, before, each step.
+    const pictures = strip(beetlejuice)
+    await expect(pictures.getByRole("button")).toHaveCount(9)
+    await pictures.getByRole("button", { name: "The outfit" }).click()
+    await expect(
+      beetlejuice.getByRole("img", {
+        name: "You wearing the Beetlejuice costume",
+      })
+    ).toBeVisible()
+    await expect(
+      beetlejuice.getByRole("button", { name: "Previous", exact: true })
+    ).toBeHidden()
+    await beetlejuice.getByRole("button", { name: "Next", exact: true }).click()
+    await expect(
+      beetlejuice.getByRole("img", { name: "Your face before the makeup" })
+    ).toBeVisible()
+    await beetlejuice.getByRole("button", { name: "Next", exact: true }).click()
+    await expect(
+      beetlejuice.getByRole("img", {
+        name: "Your face after step 1: Corpse base",
+      })
+    ).toBeVisible()
+    await expect(beetlejuice.getByText("Step 1 of 7")).toBeVisible()
+    await expect(
+      pictures.getByRole("button", { name: "Step 1: Corpse base" })
+    ).toHaveAttribute("aria-current", "true")
+
+    const product = beetlejuice.getByRole("link", {
       name: "Find gray cream face paint on Amazon (opens in a new tab)",
     })
     await expect(product).toHaveAttribute(
@@ -168,7 +203,7 @@ test.describe("The Fitting Room", () => {
     // Coming back shows the same try-on, made once.
     await page.reload()
     await expect(page.getByText("Your try-on is ready.")).toBeVisible()
-    await picturesLoaded(page, "The makeup")
+    await picturesLoaded(room(page, "Beetlejuice"))
     expect(errors).toEqual([])
   })
 
@@ -225,12 +260,16 @@ test.describe("The Fitting Room", () => {
     await expect(
       page.getByText("there is no outfit to try on", { exact: false })
     ).toBeVisible()
-    await picturesLoaded(page, "The makeup")
+    const nikki = room(page, "Nikki 'Freaky Nikki' Freeman")
+    await picturesLoaded(nikki)
     await expect(
-      page
-        .getByRole("region", { name: "The makeup" })
-        .getByRole("img", { name: "Your face after step 7: Black hair" })
+      nikki.getByRole("img", { name: "Your face after step 7: Black hair" })
     ).toBeVisible()
+    // Before and the seven steps: no outfit.
+    await expect(strip(nikki).getByRole("button")).toHaveCount(8)
+    await expect(
+      strip(nikki).getByRole("button", { name: "The outfit" })
+    ).toHaveCount(0)
     expect(errors).toEqual([])
   })
 
@@ -294,11 +333,16 @@ test.describe("The Fitting Room", () => {
       message,
       { timeout: 30_000 }
     )
-    // The outfit came out; the makeup steps didn't.
-    await picturesLoaded(page, "The outfit")
+    // The outfit came out, and the mirror shows it; the makeup didn't.
+    const pearl = room(page, "Pearl")
+    await picturesLoaded(pearl)
     await expect(
-      page.getByRole("region", { name: "The makeup" }).getByText("Not rendered")
-    ).not.toHaveCount(0)
+      pearl.getByRole("img", { name: "You wearing the Pearl costume" })
+    ).toBeVisible()
+    await strip(pearl)
+      .getByRole("button", { name: /^Step 1:/ })
+      .click()
+    await expect(pearl.getByText("Not rendered")).toBeVisible()
 
     await page.getByRole("button", { name: "Choose other photos" }).click()
     await expect(facePicker(page).getByRole("alert")).toHaveText(message)
@@ -316,9 +360,12 @@ test.describe("The Fitting Room", () => {
     await expect(page.getByText("Your try-on is ready.")).toBeVisible({
       timeout: 30_000,
     })
+    const pictures = strip(room(page, "Pearl"))
+    await pictures.getByRole("button", { name: "Before" }).click()
     const face = await page
       .getByRole("img", { name: "Your face before the makeup" })
       .getAttribute("src")
+    await pictures.getByRole("button", { name: /^Step 1:/ }).click()
     const step = await page
       .getByRole("img", { name: /Your face after step 1/ })
       .getAttribute("src")

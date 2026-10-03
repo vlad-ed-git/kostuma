@@ -136,6 +136,9 @@
   --text-h2--line-height: 1;
   --text-h3: clamp(1.75rem, 3vw, 2.75rem);
   --text-h3--line-height: 1.02;
+  /* Step titles and the like: clearly under a section title (owner). */
+  --text-h4: clamp(1.5rem, 1.1rem + 1vw, 2rem);
+  --text-h4--line-height: 1.05;
   /* Small capitals for the interface: 1.2 times their first size on
      desktop (owner), their first size on phones. */
   --text-billing: clamp(1.1875rem, 0.85rem + 0.65vw, 1.425rem);

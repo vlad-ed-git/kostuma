@@ -2,13 +2,14 @@
 
 import { RiImageAddLine, RiLoader4Line } from "@remixicon/react"
 import { useTranslations } from "next-intl"
-import { useId, useRef, useState } from "react"
+import { type ReactNode, useId, useRef, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import { type PickedPhoto, readPhoto } from "@/lib/fitting-room/browser-photo"
 import type { PhotoProblem } from "@/lib/fitting-room/photo-rules"
 import { type PhotoKind, photoUrl } from "@/lib/fitting-room/try-on"
-import { cn } from "@/lib/utils"
+
+import { FigureGuide, Mirror } from "./dressing-room"
 
 /** A photo slot's content: the one used last (kept), or one just picked. */
 export type Slot =
@@ -21,16 +22,39 @@ export const previewOf = (kind: PhotoKind, slot: Slot) =>
       ? slot.photo.url
       : null
 
-/** The frame each photo sits in: a close-up is 3:4, head to toe 2:3. */
-export const frameOf: Record<PhotoKind, string> = {
-  face: "aspect-3/4",
-  body: "aspect-2/3",
+/**
+ * The mirror each photo goes in: the face in the vanity, ringed with bulbs
+ * (3:4), the whole body in the full-length mirror (2:3). Both glasses are
+ * `--photo-h` tall (set by the stage), so they stand level.
+ */
+export function PhotoMirror({
+  kind,
+  error = false,
+  children,
+}: {
+  kind: PhotoKind
+  error?: boolean
+  children: ReactNode
+}) {
+  return (
+    <Mirror
+      bulbs={kind === "face" ? "sm" : undefined}
+      ratio={kind === "face" ? 3 / 4 : 2 / 3}
+      height="var(--photo-h)"
+      error={error}
+      fog
+    >
+      {children}
+    </Mirror>
+  )
 }
 
 /**
- * One of the two photos (owner, 2026-10-03): what it must show, the photo
- * (or an empty frame), and a button to choose or change it. A photo that
- * can't be used is said at once, under it; the slot keeps what it had.
+ * One of the two photos (owner, 2026-10-03): its mirror, holding the photo
+ * or, empty, the shape it should show; a button to choose or change it, and
+ * three tips. A photo that can't be used is said at once, under the button;
+ * the slot keeps what it had. Phones: the mirror and the button side by
+ * side, the tips under them.
  */
 export function PhotoPicker({
   kind,
@@ -70,36 +94,61 @@ export function PhotoPicker({
     <section
       aria-labelledby={`${id}-title`}
       data-photo={kind}
-      className="flex flex-col gap-4"
+      className="grid grid-cols-[auto_minmax(0,1fr)] content-start items-center gap-x-5 gap-y-5 sm:flex sm:w-min sm:flex-col sm:items-stretch"
     >
-      <h3
-        id={`${id}-title`}
-        className="font-heading text-[clamp(1.5rem,2.4vw,2rem)] leading-tight font-medium"
-      >
-        {t(titleKey)}
-      </h3>
-      <div
-        className={cn(
-          "relative flex w-full max-w-80 items-center justify-center overflow-hidden border bg-card",
-          frameOf[kind],
-          error ? "border-destructive/60" : "border-foreground/10"
-        )}
-      >
+      <PhotoMirror kind={kind} error={Boolean(error)}>
         {preview ? (
           // The visitor's own photo, from the server or this browser: no
           // optimizer (it would fetch it without their session).
           // eslint-disable-next-line @next/next/no-img-element
           <img src={preview} alt="" className="size-full object-contain" />
         ) : (
-          <RiImageAddLine
-            aria-hidden="true"
-            className="size-12 text-muted-foreground"
-          />
+          <FigureGuide kind={kind} />
         )}
+      </PhotoMirror>
+      <div className="flex flex-col items-start gap-4">
+        <h3
+          id={`${id}-title`}
+          className="font-heading text-h4 font-medium text-balance"
+        >
+          {t(titleKey)}
+        </h3>
+        <Button
+          type="button"
+          variant={preview ? "outline" : "default"}
+          aria-label={
+            preview
+              ? t(kind === "face" ? "changeFace" : "changeBody")
+              : t(kind === "face" ? "chooseFace" : "chooseBody")
+          }
+          aria-busy={reading || undefined}
+          aria-describedby={error ? `${id}-error` : undefined}
+          onClick={() => input.current?.click()}
+          className="gap-2"
+        >
+          {reading ? (
+            <RiLoader4Line
+              aria-hidden="true"
+              className="size-4 animate-spin motion-reduce:animate-none"
+            />
+          ) : (
+            <RiImageAddLine aria-hidden="true" className="size-4" />
+          )}
+          {reading ? t("reading") : preview ? t("change") : t("choose")}
+        </Button>
       </div>
-      <ul className="flex max-w-80 flex-col gap-1 text-muted-foreground">
+      {error && (
+        <p
+          id={`${id}-error`}
+          role="alert"
+          className="col-span-2 text-destructive"
+        >
+          {error}
+        </p>
+      )}
+      <ul className="col-span-2 flex flex-col gap-1.5 text-muted-foreground">
         {tips.map((tip) => (
-          <li key={tip} className="flex gap-2">
+          <li key={tip} className="flex gap-2.5">
             <span
               aria-hidden="true"
               className="mt-[0.6em] size-1.5 shrink-0 bg-blood-text"
@@ -121,36 +170,6 @@ export function PhotoPicker({
           void pick(file)
         }}
       />
-      <Button
-        type="button"
-        variant="outline"
-        aria-label={
-          preview
-            ? t(kind === "face" ? "changeFace" : "changeBody")
-            : t(kind === "face" ? "chooseFace" : "chooseBody")
-        }
-        aria-busy={reading || undefined}
-        aria-describedby={error ? `${id}-error` : undefined}
-        onClick={() => input.current?.click()}
-        className="w-fit gap-2"
-      >
-        {reading && (
-          <RiLoader4Line
-            aria-hidden="true"
-            className="size-4 animate-spin motion-reduce:animate-none"
-          />
-        )}
-        {reading ? t("reading") : preview ? t("change") : t("choose")}
-      </Button>
-      {error && (
-        <p
-          id={`${id}-error`}
-          role="alert"
-          className="max-w-80 text-destructive"
-        >
-          {error}
-        </p>
-      )}
     </section>
   )
 }

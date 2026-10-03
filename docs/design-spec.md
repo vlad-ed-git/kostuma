@@ -178,6 +178,7 @@ blood-text and destructive on background, card and muted ≥ 4.5; ember on backg
 | `display-fit` (account H1) | display | clamp(2.75rem, min(5.2vw, 7.5svh), 5.5rem) | 0.95        | 600    |
 | `h2` (section)             | display | clamp(1.9rem, 3.4vw, 3rem)                 | 1           | 600    |
 | `h3` (names in lists)      | display | clamp(1.75rem, 3vw, 2.75rem)               | 1.02        | 500    |
+| `h4` (step titles)         | display | clamp(1.5rem, 1.1rem + 1vw, 2rem)          | 1.05        | 500    |
 | `numeral` (countdown)      | display | clamp(3rem, 6.2vw, 5.75rem)                | 0.95        | 500    |
 | `lead`                     | text    | 1.3125rem                                  | 1.5         | 400    |
 | `body-lg` (lore)           | text    | 1.25rem                                    | 1.65        | 400    |
@@ -601,40 +602,74 @@ title, toolbar or empty state for one.
 The core of Kostuma (owner, 2026-10-03). `noindex`; signed in only (signed out: sign in, then
 back here with the costume). Paid try-ons (the price line, 10.3) come later: no gating yet.
 
-- H1 "The Fitting Room", one lead line. Under it, the costumes in My Pumpkin Basket as 72 px
-  thumbnails (4:5, the last added first), each a link to its `?costume=`; the chosen one in a
-  `--blood-text` frame with a red glow (`aria-current`). No costume chosen: the one added last.
-  Empty basket: the unlit pumpkin, "Your basket is empty.", "Browse costumes". A chosen costume
-  not in the basket: "{name} isn't in My Pumpkin Basket yet." and "Add to My Pumpkin Basket".
+**A dressing room backstage** (owner, 2026-10-03: "a horror dressing room. immersive. clear.
+responsive"). The costumes hang on a clothes rail; the face photo goes into a vanity mirror ringed
+with bulbs, the body photo into a full-length mirror; the try-on is one big vanity where the
+visitor's face transforms. One type scale: H1 `display` → the stage's title `h2` → a step's title
+`h4` → small capitals → body. On large screens every stage sets its mirrors on the left and its
+words beside them; on phones the words come first.
+
+- **Title card:** H1 "The Fitting Room" split into the red and bone ghosts (8.9), one lead line,
+  the VHS band rolling through the card from one edge of the screen to the other. Behind the
+  room, a red light behind the mirrors and moonlight from the upper right, fading out before the
+  page ends (no seam).
+- **The rail:** the costumes in My Pumpkin Basket, the last added first, each a 4:5 thumbnail
+  (72 px, 80 px from `sm`) hanging from a hook curled over a bar of cold metal that fades out at
+  both ends; each a link to its `?costume=`. The chosen one (`aria-current`) is lit (a
+  `--blood-text` frame, a red glow, its hook red) and sways on its hook; the others wait dimmed
+  (50 %, desaturated) until the pointer or focus finds them, and tilt when pushed. Many costumes
+  scroll along the rail. No costume chosen: the one added last. Loading: three skeleton frames on
+  the rail. Empty basket: three bare hangers swinging on the rail, `h2` "Your basket is
+  empty.", "Browse costumes". A chosen costume not in the basket: its photo, "{name} isn't in My
+  Pumpkin Basket yet." (`h4`) and "Add to My Pumpkin Basket".
+- **The mirrors:** a dark frame lit red from behind, a bone edge round the glass, fog rolling at
+  their feet (behind them, never under words). The vanity carries bulbs across its top and down
+  both sides: two flicker, one is dead and sputters now and then. Nothing is ever drawn over the
+  glass: what it holds shows as it is. Closed (renders can't run): the vanity with every bulb out
+  and "The Fitting Room is closed right now. Try again later."
 - **Your photos** (`h2`, "Two photos: your face, and you from head to toe. They stay
-  private."): two slots side by side (stacked on phones), "Your face" (3:4 frame) and "You,
-  head to toe" (2:3), each with its photo (contained, never cropped) or an empty frame, three
-  short tips, and "Choose a photo" / "Change" (outline). The photos used last are offered
-  again. A file is checked at once in the browser (an image, big enough, a photo's shape:
-  no AI): a problem shows under its photo in `--destructive`. "Continue" needs both. A
-  costume that is all makeup asks only for the face ("{name} is all makeup: one photo, your
-  face. It stays private.").
-- **Confirm** (`h2` "Ready to try on {name}?"): the costume and both photos, "Check your photos
-  first: once the try-on starts, they can't be changed until it's finished.", "Start the
-  try-on" (primary; pending: spinner + "Checking your photos…") and "Change photos" (ghost).
-  Nothing is sent before this button.
-- **The try-on** (`h2` the character's name): locked while it runs (no control to change
-  anything), a polite status line ("Trying on the outfit…", "Doing your makeup: 2 of 4 steps
-  ready…", "Your try-on is ready."). **The outfit** (`h2`): the visitor in the costume (2:3,
-  max 448 px), or for a costume that is all makeup the line "{name} is all makeup: there is no
-  outfit to try on. Everything is on your face." **The makeup** (`h2`): the guide's look line, then a grid (3 / 2 / 1 columns):
-  "Before" (their face), then each step: its picture (3:4), "Step n" (`micro` small capitals,
-  `--blood-text`), the step's title, the how-to, and its products as links to a shop's search
-  (new tab, 10.3 external links); "To finish" and the guide's last line after the grid.
-- **Steps not done:** each step renders on the picture of the one before, so they finish one
-  at a time. A step not done yet is the costume photo as a black silhouette rimmed in red (as
-  the photos wait on the home page, §7.2): the step rendering now at full strength, its red
-  light breathing (2.4 s), the ones waiting on it dim (35 %); no text on screen. A finished
-  picture comes "into the light" like a costume photo. Reduced motion: the light still, the
-  picture at once.
+  private."): "Your face" in the vanity (3:4) and "You, head to toe" in the full-length mirror
+  (2:3), their glasses level; each with its photo (contained, never cropped) or, empty, the shape
+  it should show (a head and shoulders, a standing figure) black and rimmed in breathing red; its
+  title (`h4`), "Choose a photo" (primary while empty) / "Change" (outline), and three short
+  tips. Phones: a small mirror beside its title and button, the tips under them. The photos used
+  last are offered again. A file is checked at once in the browser (an image, big enough, a
+  photo's shape: no AI): a problem rims the mirror and shows under its button in
+  `--destructive`. "Continue" (primary once every photo is in) needs both. A costume that is all
+  makeup asks only for the face ("{name} is all makeup: one photo, your face. It stays
+  private.").
+- **Confirm** (`h2` "Ready to try on {name}?"): the costume standing in the light (from `sm`)
+  beside the two mirrors with the photos, "Check your photos first: once the try-on starts, they
+  can't be changed until it's finished.", "Start the try-on" (primary; pending: spinner +
+  "Checking your photos…") and "Change photos" (ghost). Nothing is sent before this button.
+- **The try-on** (`h2` the character's name): locked while it runs (no control to change the
+  photos). Beside the mirror: the name, a polite status line ("Trying on the outfit…", "Doing
+  your makeup: 2 of 4 steps ready…", "Your try-on is ready."; a red light blinks before it, 1 Hz,
+  while it runs), for a costume that is all makeup "{name} is all makeup: there is no outfit to
+  try on. Everything is on your face.", the guide's look line, then the card.
+  - **The vanity** shows one picture at a time, large (its glass as tall as the screen allows,
+    at most 42 rem): the outfit (the visitor in the costume), "Before" (their face), then their
+    face after each step. Until the visitor picks one, it follows the newest picture out (with
+    none yet, the frame rendering now) and, once done, shows the last step: the whole
+    transformation. A picture it shows by itself comes "into the light"; one the visitor picks
+    fades up.
+  - **The film strip** ("Your pictures") under the mirror (under both columns on large screens):
+    every picture as a frame between sprocket holes, labelled "Outfit", "Before", 1, 2, …; the
+    one in the mirror ringed in `--blood-text`; a frame not done yet is the costume photo as a
+    black silhouette rimmed in red (as the photos wait on the home page, §7.2), the one rendering
+    now at full strength, its red light breathing (2.4 s), the ones waiting on it dim (35 %); a
+    picture that comes out comes into the light. Each frame is a button naming its picture
+    ("Step 2: Rotting hollows"). The strip scrolls when the frames outrun it and keeps the frame
+    rendering in sight.
+  - **The card:** "Step n of N" (`micro` small capitals, `--blood-text`) with "Previous" and
+    "Next" (ghost; each hidden at its end), the step's title (`h4`), the how-to, and its products
+    as links to a shop's search (new tab, 10.3 external links). For the outfit and before, their
+    name. On the last step, "To finish" and the guide's last line.
 - Ended: "Try with other photos" (outline). Failed: an alert saying what to do ("Your face
   couldn't be found in the photo…") and "Choose other photos" (primary), which opens the photos
-  with the message under the one at fault. Steps not rendered say "Not rendered".
+  with the message under the one at fault. A frame not rendered shows "Not rendered" in the
+  mirror (a ✕ on the strip). Reduced motion: no sway, tilt, flicker, blink or breathing; pictures
+  appear at once.
 - Pictures load from the server only, to their owner (`/api/fitting-room/…`, `private`
   caching), never through the image optimizer.
 

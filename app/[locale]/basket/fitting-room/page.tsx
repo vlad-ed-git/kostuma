@@ -92,21 +92,37 @@ export default async function FittingRoomPage({
     .filter((each) => makeupGuides[each.slug] && each.images[0])
     .map(toSummary)
 
+  // The dressing room (spec §11.4b): a red light behind the mirrors and
+  // moonlight from above, fading out before the page ends; the title card
+  // split into its red and bone ghosts, the tape rolling through it from
+  // one edge of the screen to the other (clipped there: no sideways scroll).
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-10 pb-24 sm:px-6 lg:px-8">
-      <h1 className="font-heading text-display font-semibold text-balance">
-        {t("title")}
-      </h1>
-      <p className="mt-4 max-w-[60ch] text-lead text-muted-foreground">
-        {t("lead")}
-      </p>
-      <FittingRoom
-        costumes={costumes}
-        selected={selected}
-        room={room}
-        tryOn={tryOn}
-        open={renderer !== undefined}
+    <div className="relative isolate overflow-x-clip">
+      <div
+        aria-hidden="true"
+        className="dressing-light pointer-events-none absolute inset-0 -z-10"
       />
+      <div className="mx-auto max-w-7xl px-4 pt-10 pb-28 sm:px-6 lg:px-8 lg:pt-14">
+        <header className="relative">
+          <h1 className="vhs-ghost-title font-heading text-display font-semibold text-balance">
+            {t("title")}
+          </h1>
+          <p className="mt-4 max-w-[60ch] text-lead text-muted-foreground">
+            {t("lead")}
+          </p>
+          <div
+            aria-hidden="true"
+            className="vhs-tracking vhs-tracking-fade dressing-tape"
+          />
+        </header>
+        <FittingRoom
+          costumes={costumes}
+          selected={selected}
+          room={room}
+          tryOn={tryOn}
+          open={renderer !== undefined}
+        />
+      </div>
     </div>
   )
 }

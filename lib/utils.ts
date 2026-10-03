@@ -10,6 +10,7 @@ export const typeScale = [
   "display-fit",
   "h2",
   "h3",
+  "h4",
   "billing",
   "ui",
   "badge",
