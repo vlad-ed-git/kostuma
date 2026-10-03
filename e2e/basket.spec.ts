@@ -229,19 +229,26 @@ test.describe("My Pumpkin Basket", () => {
     expect(errors).toEqual([])
   })
 
-  test("speaks the visitor's language around it", async ({ page }) => {
-    // Spanish is still to come for the basket: English, never a raw key.
+  test("speaks the visitor's language", async ({ page }) => {
     await page.goto("/es")
     await page
       .getByRole("region", { name: "Disfraces" })
-      .getByRole("button", { name: "Add Ghostface to My Pumpkin Basket" })
+      .getByRole("button", {
+        name: "Añadir Freddy Krueger a Mi cesta de calabaza",
+      })
       .click()
     await page.goto("/es/basket")
     await expect(page.locator("html")).toHaveAttribute("lang", "es")
-    await expect(rows(page)).toHaveCount(1)
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Mi cesta de calabaza" })
+    ).toBeVisible()
+    const spanishRows = page
+      .getByRole("list", { name: "Disfraces en Mi cesta de calabaza" })
+      .getByRole("listitem")
+    await expect(spanishRows).toHaveCount(1)
     await expect(
       page
-        .getByRole("region", { name: "The Fitting Room" })
+        .getByRole("region", { name: "El Probador" })
         .getByRole("link", { name: "Consigue Kostuma Pro" })
     ).toHaveAttribute("href", "/es/sign-in?next=%2Fbasket")
   })
