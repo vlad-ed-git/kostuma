@@ -212,7 +212,7 @@
       "feedback": {
         "title": "Los mensajes que nos envías",
         "p1": "Cuando usas el <feedback>formulario de comentarios</feedback>, guardamos lo que escribiste y de qué trata, tu correo si nos lo das (solo para responderte), tu cuenta si has iniciado sesión, el idioma del sitio, el tipo de dispositivo, el sistema operativo y el navegador, y cuándo lo enviaste.",
-        "p2": "Para evitar que el formulario se inunde, contamos los mensajes de cada cuenta, o de cada conexión, durante una hora. Para ello guardamos un código cifrado creado a partir de tu cuenta o de tu dirección IP, nunca la dirección en sí, y lo borramos en un plazo de dos días."
+        "p2": "Para evitar que el formulario se inunde, contamos los mensajes de cada cuenta, o de cada conexión, durante una hora. Para ello guardamos un código cifrado creado a partir de tu cuenta o de tu dirección IP, nunca la dirección en sí. Solo lo usamos durante esa hora y después lo borramos."
       },
       "google": {
         "title": "La comprobación anti-robots y el inicio de sesión con Google",
@@ -248,7 +248,7 @@
         "list1": {
           "a": "Tu cuenta, tu cesta, tus fotos y tus pruebas: hasta que nos pidas borrarlas, o borrar tu cuenta.",
           "b": "Los mensajes del formulario de comentarios: mientras los necesitemos para atenderlos, o hasta que nos pidas borrarlos.",
-          "c": "Los códigos cifrados que limitan los mensajes: dos días como máximo.",
+          "c": "Los códigos cifrados que limitan los mensajes: se usan durante una hora y después se borran.",
           "d": "En YouCam: se borran en cuanto se crea cada imagen, y en 30 días como máximo.",
           "e": "En tu dispositivo: hasta que caduque la cookie o borres el almacenamiento de tu navegador."
         }

@@ -375,7 +375,7 @@
       "feedback": {
         "title": "Messages you send us",
         "p1": "When you use the <feedback>feedback form</feedback>, we keep what you wrote and what it's about, your email if you give one (only to reply), your account if you're signed in, the site's language, the kind of device, operating system and browser, and when you sent it.",
-        "p2": "To stop the form from being flooded, we count the messages from each account, or each connection, over an hour. For that, we keep a scrambled code made from your account or your IP address, never the address itself, and delete it within two days."
+        "p2": "To stop the form from being flooded, we count the messages from each account, or each connection, over an hour. For that, we keep a scrambled code made from your account or your IP address, never the address itself. We use it only for that hour, then delete it."
       },
       "google": {
         "title": "The robot check and Google sign-in",
@@ -411,7 +411,7 @@
         "list1": {
           "a": "Your account, basket, photos and try-ons: until you ask us to delete them, or your account.",
           "b": "Messages from the feedback form: as long as we need them to act on them, or until you ask us to delete them.",
-          "c": "The scrambled codes that limit messages: two days at most.",
+          "c": "The scrambled codes that limit messages: used for an hour, then deleted.",
           "d": "At YouCam: deleted as soon as each picture is made, and within 30 days at most.",
           "e": "On your device: until the cookie ends or you clear your browser's storage."
         }
