@@ -173,7 +173,7 @@ blood-text and destructive on background, card and muted ≥ 4.5; ember on backg
 
 | Style                      | Family  | Size                                       | Line height | Weight |
 | -------------------------- | ------- | ------------------------------------------ | ----------- | ------ |
-| `display-xl` (home H1)     | display | clamp(3.25rem, 7.2vw, 7rem)                | 0.92        | 600    |
+| `display-xl` (home H1)     | display | clamp(2.875rem, 6.2vw, 5.5rem)             | 0.92        | 600    |
 | `display` (page H1)        | display | clamp(2.75rem, 6vw, 5.5rem)                | 0.95        | 600    |
 | `display-fit` (account H1) | display | clamp(2.75rem, min(5.2vw, 7.5svh), 5.5rem) | 0.95        | 600    |
 | `h2` (section)             | display | clamp(1.9rem, 3.4vw, 3rem)                 | 1           | 600    |
@@ -518,8 +518,7 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
 
 ### 11.1 Home `/`
 
-1. **The title, in the night scene (8.4–8.7).** As tall as its content plus 200 px on desktop
-   (owner). Desktop: the tagline on the left with the transformation under it, the countdown on
+1. **The title, in the night scene (8.4–8.7).** As tall as its content, 80 px below it on desktop and 40 px on phones before the costumes, short enough that the window behind stays whole: clear of the headline and the film strip (owner, 2026-10-04). Desktop: the tagline on the left with the transformation under it, the countdown on
    the right with its bottom on the tagline's, and under it, beside the strip, "Choose your
    costume", "Try it on", "Apply makeup", their capitals level with the strip's top (owner);
    the window stands between the columns, empty. Phones: the window with the figure in it as a

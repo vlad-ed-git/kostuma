@@ -33,8 +33,9 @@ export default async function HomePage() {
         // card. As tall as its content. Clipped, because the scene is
         // wider than the screen; everything in it fades out before the
         // edges, so no line marks where it ends.
-        // Owner: 200 px taller on desktop than its content needs.
-        className="relative isolate -mt-16 overflow-clip pt-80 pb-14 lg:pt-61 lg:pb-49"
+        // Owner: a short way down to the costumes, and the window behind
+        // left whole (it grows with the card's height).
+        className="relative isolate -mt-16 overflow-clip pt-80 pb-10 lg:pt-61 lg:pb-20"
       >
         <NightScene />
         {/* Desktop: the tagline on the left with the film strip under it;
@@ -51,13 +52,13 @@ export default async function HomePage() {
             </p>
           </div>
           {/* What to expect, without a word. */}
-          <TransformationReel className="lg:col-start-1 lg:row-start-2" />
-          <div className="lg:col-start-2 lg:row-start-1">
+          <TransformationReel className="mt-4 lg:col-start-1 lg:row-start-2 lg:mt-16" />
+          <div className="lg:col-start-2 lg:row-start-1 lg:pl-4">
             <Countdown year={year} />
           </div>
           {/* The way through, as the strip shows it. Wide screens: beside
               the strip, their tops level. */}
-          <ol className="flex flex-col gap-2 font-heading text-[clamp(1.9rem,3.2vw,2.9rem)] leading-none font-semibold lg:col-start-2 lg:row-start-2 lg:-mt-[0.2em] lg:self-start">
+          <ol className="flex flex-col gap-2 font-heading text-[clamp(1.9rem,3.2vw,2.9rem)] leading-none font-semibold lg:col-start-2 lg:row-start-2 lg:mt-[calc(4rem-0.2em)] lg:self-start lg:pl-4">
             <li>
               <Link
                 href={costumesHref}
