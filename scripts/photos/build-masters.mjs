@@ -1,4 +1,5 @@
-// Builds the costume photos' masters from the owner's cut-outs (gitignored):
+// Builds the costume photos' masters from the owner's cut-outs (gitignored),
+// all of them at once (one new photo without the rest: add-masters.mjs):
 //
 //   npm run photos:masters
 //
@@ -10,47 +11,19 @@
 // every photo content/costumes.ts names must have its master, and every
 // master a costume.
 import { existsSync } from "node:fs"
-import { mkdir, readdir, rm, stat, writeFile } from "node:fs/promises"
+import { mkdir, readdir, rm, writeFile } from "node:fs/promises"
 import { fileURLToPath } from "node:url"
-import sharp from "sharp"
 
-import { masterSize, subjectBox, withMargin } from "./masters.mjs"
+import { buildMaster } from "./build.mjs"
 
 const photos = fileURLToPath(new URL("../../photos/", import.meta.url))
 const SOURCE = `${photos}no_bg/`
 const OUT = `${photos}masters/`
 const mb = (bytes) => `${(bytes / 1e6).toFixed(2)} MB`
 
-sharp.cache(false)
-
 /** One master: the subject with a margin, at most MASTER_SIDE, lossless. */
 async function build(name) {
-  const source = `${SOURCE}${name}`
-  const meta = await sharp(source).metadata()
-  let box = { left: 0, top: 0, width: meta.width, height: meta.height }
-  if (meta.hasAlpha) {
-    const alpha = await sharp(source).extractChannel(3).raw().toBuffer()
-    const subject = subjectBox(alpha, meta.width, meta.height)
-    if (subject) box = withMargin(subject, meta.width, meta.height)
-  }
-  const size = masterSize(box.width, box.height)
-  const pipeline = () =>
-    sharp(source)
-      .extract(box)
-      .resize({ ...size, fit: "fill", kernel: "lanczos3" })
-  const png = await pipeline()
-    .png({ compressionLevel: 9, adaptiveFiltering: true })
-    .toBuffer()
-  const expected = await pipeline().ensureAlpha().raw().toBuffer()
-  const decoded = await sharp(png).ensureAlpha().raw().toBuffer()
-  await writeFile(`${OUT}${name}`, png)
-  return {
-    name,
-    from: { ...box, bytes: (await stat(source)).size },
-    ...size,
-    bytes: png.length,
-    lossless: expected.equals(decoded),
-  }
+  return { name, ...(await buildMaster(`${SOURCE}${name}`, `${OUT}${name}`)) }
 }
 
 // The sources first: without them, the masters (maybe the only local copy)
@@ -70,10 +43,14 @@ const masters = []
 for (const name of names) masters.push(await build(name))
 await writeFile(`${OUT}report.json`, JSON.stringify(masters, null, 2) + "\n")
 
-// Every photo the data names has its master, and every master a costume.
+// Every photo the data names has its master, and every master a costume
+// (the photos shown, and the garments only the try-on uses).
 const { costumes } = await import("../../content/costumes.ts")
 const named = new Set(
-  costumes.flatMap((costume) => costume.images.map((photo) => photo.file))
+  costumes.flatMap((costume) => [
+    ...costume.images.map((photo) => photo.file),
+    ...(costume.garment ? [costume.garment.file] : []),
+  ])
 )
 const built = new Set(masters.map((master) => master.name))
 const missing = [...named].filter((name) => !built.has(name))
