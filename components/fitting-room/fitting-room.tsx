@@ -258,7 +258,11 @@ function Fitting({
     if (before?.kind === "picked" && before !== kept?.[kind])
       URL.revokeObjectURL(before.photo.url)
     setSlots((current) => ({ ...current, [kind]: slot }))
-    if (problem?.photo === kind || !problem?.photo) setProblem(null)
+    // As things stand when the photo is read: another may have been refused
+    // meanwhile, and its message stays.
+    setProblem((current) =>
+      current?.photo === kind || !current?.photo ? null : current
+    )
   }
 
   /** A slot still holding the photo the shown try-on was made from. */
