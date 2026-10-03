@@ -6,7 +6,8 @@
     "taglineTail": "化身为怪物吧。"
   },
   "Home": {
-    "chooseCostume": "挑选你的装扮"
+    "chooseCostume": "挑选你的装扮",
+    "reel": "一次真实的{name}变身，逐帧呈现：原始照片、试穿的服装，然后是妆容的第一步、中间一步和最后一步。"
   },
   "Countdown": {
     "label": "距离万圣节还有",

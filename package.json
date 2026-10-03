@@ -20,7 +20,7 @@
     "test:e2e": "playwright test",
     "test:emulators": "firebase emulators:exec --only auth,firestore --project demo-kostuma \"playwright test -c playwright.emulators.config.ts\"",
     "check": "npm run lint && npm run typecheck && npm run format:check && npm test",
-    "images": "node scripts/placeholder.mjs && node scripts/fog.mjs",
+    "images": "node scripts/placeholder.mjs && node scripts/fog.mjs && node scripts/film-strip.mjs",
     "catalog:import": "node scripts/import-catalog.mjs",
     "photos:masters": "node scripts/photos/build-masters.mjs",
     "photos:add": "node scripts/photos/add-masters.mjs",

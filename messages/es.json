@@ -6,7 +6,8 @@
     "taglineTail": "Transfórmate en un monstruo."
   },
   "Home": {
-    "chooseCostume": "Elige tu disfraz"
+    "chooseCostume": "Elige tu disfraz",
+    "reel": "Una transformación real en {name}, fotograma a fotograma: la foto, el disfraz probado y luego el primer paso, el del medio y el último del maquillaje."
   },
   "Countdown": {
     "label": "Tiempo hasta Halloween",

@@ -515,9 +515,10 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
 ### 11.1 Home `/`
 
 1. **The title, in the night scene (8.4–8.7).** As tall as its content plus 200 px on desktop
-   (owner). Desktop: the tagline on the left, the countdown on the right with "Choose your
-   costume" under it (owner), bottoms aligned; the figure in the window stands between them.
-   Phones: the figure as a small tableau on top, then one column.
+   (owner). Desktop: the tagline on the left with the transformation under it, the countdown on
+   the right with "Choose your costume" under it (owner), the countdown's bottom on the
+   tagline's; the figure in the window stands between them. Phones: the figure as a small
+   tableau on top, then one column (tagline, transformation, countdown).
    - H1 `display-xl`, flickering (7.2) and split into the red and bone ghosts (8.9): "The
      darkest day is coming." (`App.taglineLead`). The VHS band rolls over the whole title (8.9).
    - Under it, in `--blood-text` with a red glow: "Transform into a monster." (`App.taglineTail`).
@@ -533,6 +534,18 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
      minute ("29 days, 10 hours and 14 minutes until Halloween.").
    - **"Choose your costume"** (`Home.chooseCostume`), display face, with a red arrow dripping
      downward: a link to the costumes below (`/#costumes`).
+   - **The transformation** (owner, 2026-10-04: what to expect, no words), right under "Transform
+     into a monster.", as wide as the tagline's column: the owner's red, burnt strip of film
+     (`public/images/film-strip.webp`, drawn by `scripts/film-strip.mjs` from
+     `design/film-strip-example@4x.png`), one frame per picture of a real try-on of the owner's
+     sample photos (`content/sample-transformation.ts`, `npm run photos:samples`): the body
+     photo, the outfit tried on, the makeup's first, middle and last steps, each a cut-out
+     standing in its window (`components/home/transformation-reel.tsx`). Its frames are numbered
+     1–5 on the film's edge, between two sprocket holes. The cigarette burns (cue marks, a bone
+     hole ringed in char, ≤ 32 px) sit in the last two windows' upper right: the motor cue blinks
+     twice, then the changeover cue twice, four frames each a second apart, every 6 s; still under
+     reduced motion. It doesn't slide (owner). One `role="img"` named by `Home.reel`; its pictures
+     `alt=""`.
 2. **The costumes** (`<section id="costumes" aria-label="Costumes">`), right below: all 82
    rows (10.3) by year, latest first (owner; the year of the film a character is known from,
    ties in the owner's ranking), two columns from `lg`, lit by scroll (7.2),
@@ -879,9 +892,10 @@ The real documents, in plain words and the second person, true to what the site 
   header over the hero and every atmosphere layer are CSS.
 - Images: `next/image`, explicit `sizes` (rows `(min-width: 1024px) 156px, 114px`; the costume
   page `(min-width: 1280px) 470px, (min-width: 1024px) 37vw, calc(100vw - 2rem)`; thumbnails
-  `72px`), lazy except the costume page photo (`loading="eager"`, `fetchPriority="high"`). Remote
+  `72px`; the home's film strip `(min-width: 1280px) 118px, (min-width: 1024px) 9vw, 17vw`), lazy except the costume page photo (`loading="eager"`, `fetchPriority="high"`). Remote
   photos only from the project's `costumes/` folder on Storage (`next.config.ts`
-  `remotePatterns`, no redirects); the browser loads them from `/_next/image`, so the CSP stays
+  `remotePatterns`, no redirects; the home's sample transformation lives there too, as
+  `sample-<slug>-<nn>.<hash>.webp`); the browser loads them from `/_next/image`, so the CSP stays
   `'self'`.
 - Prefetching: every page renders per request (the CSP nonce), so each prefetch costs the
   server a render. Long lists of links prefetch on intent only (hover, focus, touch:

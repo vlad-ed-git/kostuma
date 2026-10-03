@@ -309,6 +309,61 @@
   display: inline-block;
 }
 
+/* ── The home film strip (components/home/transformation-reel.tsx) ───── */
+
+/* The owner's red, burnt strip (public/images/film-strip.webp, one frame
+   per picture), the pictures standing in its windows. Everything is sized
+   in parts of the strip's width (`cqw`), so it fits whatever column holds
+   it. */
+.home-reel {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: repeat(var(--frames), minmax(0, 1fr));
+  background: url("/images/film-strip.webp") 0 0 / 100% 100% no-repeat;
+}
+.home-reel-frame {
+  position: relative;
+}
+/* The window, inside the frame lines and the bands of holes. */
+.home-reel-window {
+  position: absolute;
+  inset: 13.5% 6% 14%;
+}
+/* The frame's number, printed on the film's edge between two holes. */
+.home-reel-number {
+  position: absolute;
+  top: 7.4%;
+  left: 50%;
+  translate: -50% -50%;
+  font-size: max(0.625rem, calc(13cqw / var(--frames)));
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--foreground);
+  text-shadow: 0 0 0.4em rgb(0 0 0 / 0.9);
+}
+/* A cue mark burnt into the window's upper right: a bone hole with an
+   ember edge and a ring of char, which shows on the light and the dark
+   alike. Still (reduced motion), it stays. */
+.home-reel-burn {
+  position: absolute;
+  top: 5%;
+  right: 6%;
+  width: clamp(0.75rem, calc(14cqw / var(--frames)), 2rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--foreground) 0 36%,
+    color-mix(in oklch, var(--foreground) 60%, var(--ember)) 46%,
+    #1a0605 58% 70%,
+    transparent 76%
+  );
+  filter: drop-shadow(
+    0 0 4px color-mix(in oklch, var(--ember) 50%, transparent)
+  );
+}
+
 /* ── Reel changes between pages (app/[locale]/template.tsx) ────────────── */
 
 /* Clicks during the fade reach the live page, not the snapshot. */
@@ -674,6 +729,16 @@
   .vhs-tracking::before {
     animation: vhs-roll 7s linear 1.5s infinite;
   }
+  /* The home film strip's cue marks: the motor cue blinks twice, then
+     the changeover cue twice, as on the last seconds of a reel; then the
+     reel starts over. Four frames each, a second apart (spec §7.3). */
+  .home-reel-burn {
+    animation: home-reel-cue 6s steps(1, end) infinite;
+  }
+  /* Half a cycle on, from the first frame: never a still burn waiting. */
+  .home-reel-burn[data-cue="changeover"] {
+    animation-delay: -3.5s;
+  }
   .fog > span:first-child {
     animation: roll 70s linear infinite;
   }
@@ -845,6 +910,23 @@
 @keyframes cue-appear {
   to {
     opacity: 1;
+  }
+}
+
+/* Two blinks of four frames, a second apart, in six seconds. */
+@keyframes home-reel-cue {
+  0% {
+    opacity: 1;
+  }
+  2.78% {
+    opacity: 0;
+  }
+  16.67% {
+    opacity: 1;
+  }
+  19.44%,
+  100% {
+    opacity: 0;
   }
 }
 

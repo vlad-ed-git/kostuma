@@ -4,15 +4,18 @@ import { getTranslations } from "next-intl/server"
 import { CostumeRow } from "@/components/costume/costume-row"
 import { Countdown } from "@/components/countdown/countdown"
 import { NightScene } from "@/components/home/night-scene"
+import { TransformationReel } from "@/components/home/transformation-reel"
 import { costumesHref } from "@/components/layout/nav"
 import { Link } from "@/i18n/navigation"
 import { getCostumes, toSummary } from "@/lib/catalog"
 import { countdownTo } from "@/lib/countdown"
 
 /**
- * Home (spec §11.1): the title card, with the countdown to Halloween and,
- * under it, "Choose your costume", then every costume to browse. The
- * costumes live here rather than on a page of their own: one less step.
+ * Home (spec §11.1): the title card, with a real transformation on a strip
+ * of film under the tagline (what to expect) and the countdown to
+ * Halloween with "Choose your costume" under it; then every costume to
+ * browse. The costumes live here rather than on a page of their own: one
+ * less step.
  */
 export default async function HomePage() {
   const t = await getTranslations("App")
@@ -34,9 +37,10 @@ export default async function HomePage() {
         className="relative isolate -mt-16 overflow-clip pt-80 pb-14 lg:pt-61 lg:pb-49"
       >
         <NightScene />
-        {/* Desktop: the tagline on the left, the countdown on the right with
-            "Choose your costume" under it. Small screens: one column. */}
-        <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end lg:gap-16 lg:px-8">
+        {/* Desktop: the tagline on the left with the film strip under it,
+            the countdown on the right with "Choose your costume" under it,
+            its bottom on the tagline's. Small screens: one column. */}
+        <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end lg:gap-x-16 lg:px-8">
           <div>
             <h1 className="flicker vhs-ghost-title max-w-[11ch] font-heading text-display-xl font-semibold text-balance [--title-glow:0_0_40px_rgb(0_0_0/0.8)]">
               {t("taglineLead")}
@@ -45,7 +49,9 @@ export default async function HomePage() {
               {t("taglineTail")}
             </p>
           </div>
-          <div>
+          {/* What to expect, without a word. */}
+          <TransformationReel className="lg:col-start-1 lg:row-start-2" />
+          <div className="lg:col-start-2 lg:row-start-1">
             <Countdown year={year} />
             <Link
               href={costumesHref}
