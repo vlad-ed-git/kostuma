@@ -1,13 +1,18 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
+vi.mock("server-only", () => ({}))
+
 import {
+  dot,
   hair,
+  lips,
   makeup,
   type MakeupGuide,
   matte,
+  paint,
   paler,
-  lips,
+  shadow,
 } from "@/lib/makeup"
 
 import { memoryStore } from "./memory-store"
@@ -347,6 +352,109 @@ describe("advance", () => {
     await store.finish(UID, id, "done", null)
     await advance(deps, UID, id)
     expect(render.started).toHaveLength(0)
+  })
+
+  it("paints the marks on the last makeup picture, then hair on the painting", async () => {
+    const painted: Fitting = {
+      ...fitting,
+      guide: {
+        look: "A painted face.",
+        steps: [
+          guide.steps[0],
+          {
+            title: "Eyes",
+            howTo: "Eyes.",
+            products: ["shadow"],
+            render: makeup(shadow("1color30", matte("#000000", 90))),
+          },
+          guide.steps[1],
+          {
+            title: "Nose",
+            howTo: "Nose.",
+            products: ["red paint"],
+            render: paint(dot({ at: "nose" }, 0.1, "#C00000")),
+          },
+          guide.steps[2],
+        ],
+      },
+    }
+    const face = {
+      eyes: [
+        { x: 1, y: 1, left: 0, right: 2, top: 0, bottom: 2, area: 4 },
+        { x: 5, y: 1, left: 4, right: 6, top: 0, bottom: 2, area: 4 },
+      ] as [never, never],
+      mouth: { x: 3, y: 5, left: 2, right: 4, top: 4, bottom: 6, area: 4 },
+    }
+    const findFace = vi.fn(async () => face)
+    const paintMarks = vi.fn(async () => new Uint8Array([77]))
+    deps = { ...deps, painter: { findFace, paintMarks } }
+    const { tryOn } = await begin(deps, UID, painted)
+    const id = tryOn.id
+    await advance(deps, UID, id)
+    render.finish("task-0", picture(0))
+    await advance(deps, UID, id)
+    for (const task of ["task-1", "task-2", "task-3"])
+      render.finish(task, picture(Number(task.at(-1))))
+    // The makeup is kept, the marks are painted, and the hair is sent: all
+    // in one ask.
+    const now = await advance(deps, UID, id)
+    expect(now?.steps.map((step) => step.status)).toEqual([
+      "done",
+      "done",
+      "done",
+      "done",
+      "done",
+      "running",
+    ])
+    expect(findFace).toHaveBeenCalledWith(
+      { before: new Uint8Array([101]), after: new Uint8Array([102]) },
+      { before: new Uint8Array([102]), after: new Uint8Array([103]) }
+    )
+    expect(paintMarks).toHaveBeenCalledWith(new Uint8Array([103]), face, [
+      dot({ at: "nose" }, 0.1, "#C00000"),
+    ])
+    expect(await store.stepImage(UID, id, 4)).toEqual(new Uint8Array([77]))
+    const hairStart = render.started.find((each) => each.render.tool === "hair")
+    expect(hairStart?.images).toEqual({ source: new Uint8Array([77]) })
+  })
+
+  it("keeps the picture unpainted when no face is found", async () => {
+    const painted: Fitting = {
+      ...fitting,
+      guide: {
+        look: "A painted face.",
+        steps: [
+          guide.steps[0],
+          {
+            title: "Eyes",
+            howTo: "Eyes.",
+            products: ["shadow"],
+            render: makeup(shadow("1color30", matte("#000000", 90))),
+          },
+          guide.steps[1],
+          {
+            title: "Nose",
+            howTo: "Nose.",
+            products: ["red paint"],
+            render: paint(dot({ at: "nose" }, 0.1, "#C00000")),
+          },
+        ],
+      },
+    }
+    const paintMarks = vi.fn()
+    deps = { ...deps, painter: { findFace: async () => null, paintMarks } }
+    const { tryOn } = await begin(deps, UID, painted)
+    await advance(deps, UID, tryOn.id)
+    render.finish("task-0", picture(0))
+    await advance(deps, UID, tryOn.id)
+    for (const task of ["task-1", "task-2", "task-3"])
+      render.finish(task, picture(Number(task.at(-1))))
+    const now = await advance(deps, UID, tryOn.id)
+    expect(now?.status).toBe("done")
+    expect(paintMarks).not.toHaveBeenCalled()
+    expect(await store.stepImage(UID, tryOn.id, 4)).toEqual(
+      new Uint8Array([103])
+    )
   })
 
   it("knows no try-on of another account", async () => {

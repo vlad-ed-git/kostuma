@@ -230,7 +230,57 @@ export type MakeupEffect =
       ]
     }
 
-/** What YouCam renders for a step, on the previous step's picture. */
+/**
+ * Where a painted mark sits, from the features found on the visitor's face
+ * (lib/fitting-room/landmarks.ts): the eye and mouth corner on the
+ * picture's left (a `mirror`ed mark takes the right ones too), the nose tip,
+ * the middle of the mouth, the chin, the middle of the forehead.
+ */
+export type Anchor =
+  "eye" | "mouthCorner" | "nose" | "mouth" | "chin" | "forehead"
+
+/**
+ * A point near an anchor, `dx` to the picture's right and `dy` down, in
+ * eye spans (the distance between the eyes' centers): the same mark fits
+ * every face.
+ */
+export type Point = { at: Anchor; dx?: number; dy?: number }
+
+/** What Kostuma paints itself: the lines, dots and spirals YouCam can't. */
+export type Mark =
+  | {
+      shape: "line"
+      from: Point
+      to: Point
+      /** A curve through this point instead of a straight line. */
+      via?: Point
+      /** Thickness, in eye spans. */
+      width: number
+      color: Hex
+      /** Also the same mark on the other side of the face. */
+      mirror?: boolean
+    }
+  | { shape: "dot"; at: Point; radius: number; color: Hex; mirror?: boolean }
+  | {
+      shape: "spiral"
+      at: Point
+      radius: number
+      width: number
+      color: Hex
+      mirror?: boolean
+    }
+  | {
+      shape: "stitches"
+      from: Point
+      to: Point
+      /** How many cross stitches. */
+      count: number
+      width: number
+      color: Hex
+      mirror?: boolean
+    }
+
+/** What a step renders, on the previous step's picture. */
 export type StepRender =
   | { tool: "makeup"; effects: MakeupEffect[] }
   | {
@@ -240,6 +290,8 @@ export type StepRender =
         { color: Hex; color_intensity: number; shine_intensity: number },
       ]
     }
+  /** Painted by Kostuma on the made-up face: no YouCam call, no unit. */
+  | { tool: "paint"; marks: Mark[] }
 
 export type MakeupStep = {
   /** What the step adds, in a few words: "White base". */
@@ -272,6 +324,59 @@ export const makeup = (...effects: MakeupEffect[]): StepRender => ({
   tool: "makeup",
   effects,
 })
+
+/** Marks painted on the face (see `Mark`): streaks, a nose, stitches. */
+export const paint = (...marks: Mark[]): StepRender => ({
+  tool: "paint",
+  marks,
+})
+
+/** A painted line from one point to another, or curved through `via`. */
+export const line = (
+  from: Point,
+  to: Point,
+  color: Hex,
+  {
+    width = 0.06,
+    via,
+    mirror = false,
+  }: { width?: number; via?: Point; mirror?: boolean } = {}
+): Mark => ({
+  shape: "line",
+  from,
+  to,
+  color,
+  width,
+  mirror,
+  ...(via && { via }),
+})
+
+/** A painted dot: a clown nose, a beauty mark. */
+export const dot = (
+  at: Point,
+  radius: number,
+  color: Hex,
+  mirror = false
+): Mark => ({ shape: "dot", at, radius, color, mirror })
+
+/** A painted spiral, from the center out. */
+export const spiral = (
+  at: Point,
+  radius: number,
+  color: Hex,
+  mirror = false,
+  width = 0.035
+): Mark => ({ shape: "spiral", at, radius, color, width, mirror })
+
+/** A stitched line: the seam and its cross stitches. */
+export const stitches = (
+  from: Point,
+  to: Point,
+  count: number,
+  color: Hex,
+  mirror = false,
+  width = 0.025
+): Mark => ({ shape: "stitches", from, to, count, color, width, mirror })
 
 /** A Hair Color render: the whole head in one color. */
 export const hair = (color: Hex, intensity = 80, shine = 30): StepRender => ({
@@ -356,11 +461,18 @@ export const paler = (shades: number, coverage = 90, glow = 0) =>
   foundation({ lighterThanSkin: shades }, coverage, glow)
 
 /**
- * A sheer color over the skin: a little color corrector or face paint mixed
- * into foundation (green for a monster, gray for a corpse), never painted
- * over the face.
+ * A color over the skin: color corrector or face paint mixed into
+ * foundation (green for a monster, gray for a corpse).
  */
-export const tint = (color: Hex, coverage = 45) =>
+export const tint = (color: Hex, coverage = 70) =>
+  foundation(color, coverage, 0)
+
+/**
+ * Face paint: an opaque color over the whole face (a clown's white, a
+ * monster's green). YouCam's foundation at full coverage reads as paint
+ * (pure white at 100 % turns any skin white, measured 2026-10-03).
+ */
+export const facePaint = (color: Hex, coverage = 100) =>
   foundation(color, coverage, 0)
 
 /**

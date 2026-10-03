@@ -1,4 +1,10 @@
-import type { Hex, MakeupEffect, MakeupGuide, StepRender } from "@/lib/makeup"
+import type {
+  Hex,
+  Mark,
+  MakeupEffect,
+  MakeupGuide,
+  StepRender,
+} from "@/lib/makeup"
 
 /**
  * What the Fitting Room sends YouCam for one costume (owner, 2026-10-03):
@@ -9,7 +15,9 @@ import type { Hex, MakeupEffect, MakeupGuide, StepRender } from "@/lib/makeup"
  * is one render away from their real face (nothing stacks up render after
  * render, and the steps can run at the same time). Hair, always the guide's
  * last step, is colored on the last makeup picture. One unit per makeup or
- * hair step, two for the outfit.
+ * hair step, two for the outfit. What YouCam can't draw (streaks, a clown
+ * nose, stitches) Kostuma paints on the last makeup picture itself, placed
+ * by the eyes and the mouth that the eye and lip steps show (no unit).
  */
 
 /**
@@ -35,6 +43,13 @@ export type SentEffect =
 type HairRender = Extract<StepRender, { tool: "hair" }>
 
 /**
+ * Where a feature shows: the step that put makeup on it, and the picture
+ * just before (an earlier step's, or the face photo): what changed
+ * between the two is the feature.
+ */
+export type Reveal = { step: number; before: number | "face" }
+
+/**
  * One step's render: what YouCam does, on which picture (`from`: the
  * visitor's body or face photo, or an earlier step's picture), and which
  * step must be done before it starts (`after`).
@@ -54,6 +69,15 @@ export type Render =
       pattern: HairRender["pattern"]
       palettes: HairRender["palettes"]
       from: "face" | number
+      after: number
+    }
+  | {
+      tool: "paint"
+      marks: Mark[]
+      /** The last makeup picture, painted on. */
+      from: number
+      eyes: Reveal
+      lips: Reveal
       after: number
     }
 
@@ -83,7 +107,11 @@ export function renderPlan(
     },
   ]
   const sofar: SentEffect[] = []
+  /** The last picture so far that a later step can start from. */
+  let last: number | null = null
   let lastMakeup: number | null = null
+  let eyes: Reveal | null = null
+  let lips: Reveal | null = null
 
   for (const step of guide.steps) {
     const render = step.render
@@ -92,13 +120,33 @@ export function renderPlan(
         tool: "hair",
         pattern: render.pattern,
         palettes: render.palettes,
-        from: lastMakeup ?? "face",
+        from: last ?? "face",
         after: OUTFIT,
       })
       continue
     }
+    if (render.tool === "paint") {
+      if (lastMakeup === null || !eyes || !lips)
+        throw new Error("A paint step needs the eye and lip steps before it.")
+      last = plan.length
+      plan.push({
+        tool: "paint",
+        marks: render.marks,
+        from: lastMakeup,
+        eyes,
+        lips,
+        after: OUTFIT,
+      })
+      continue
+    }
+    const categories = new Set(render.effects.map((effect) => effect.category))
+    const reveal: Reveal = { step: plan.length, before: lastMakeup ?? "face" }
+    if (categories.has("eye_shadow") || categories.has("eye_liner"))
+      eyes = reveal
+    if (categories.has("lip_color")) lips = reveal
     sofar.push(...render.effects.map((effect) => resolve(effect, skin)))
     lastMakeup = plan.length
+    last = plan.length
     const smoothed = sofar.some((effect) => effect.category === "skin_smooth")
     plan.push({
       tool: "makeup",

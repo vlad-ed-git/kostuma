@@ -2,8 +2,11 @@ import { createHash } from "node:crypto"
 
 import type { MakeupGuide } from "@/lib/makeup"
 
+import { findFace } from "./landmarks"
+import { paintMarks } from "./paint"
 import {
   ProviderError,
+  type ProviderRender,
   type RenderFailure,
   type RenderProvider,
 } from "./provider"
@@ -39,6 +42,8 @@ export type Deps = {
   provider: RenderProvider
   /** A costume's garment picture for the outfit's render (garment.ts). */
   garment: (slug: string) => Promise<Uint8Array>
+  /** What paints the marks YouCam can't draw (landmarks.ts, paint.ts). */
+  painter?: { findFace: typeof findFace; paintMarks: typeof paintMarks }
   now?: () => number
 }
 
@@ -104,8 +109,9 @@ export async function advance(
   if (!tryOn || tryOn.status !== "running") return tryOn
 
   // A picture kept in this pass may free the steps that wait on it: they
-  // are sent in a second pass, not on the next ask.
-  for (let pass = 0; pass < 2; pass++) {
+  // go in the next pass, not on the next ask (makeup kept, then the marks
+  // painted, then the hair sent: three passes at most).
+  for (let pass = 0; pass < 3; pass++) {
     const current: TryOn = tryOn
     const kept = await Promise.all(
       current.steps.map((_, index) => advanceStep(deps, uid, current, index))
@@ -154,6 +160,8 @@ async function advanceStep(
   const step = tryOn.steps[index]
   const stale = now() - step.since > LEASE_MS
   if (step.status === "waiting" || (step.status === "starting" && stale)) {
+    // A paint step is done at once: what waits on it can go this pass.
+    if (step.render.tool === "paint") return paintStep(deps, uid, tryOn, index)
     await send(deps, uid, tryOn, index)
     return false
   }
@@ -166,6 +174,7 @@ async function advanceStep(
 async function send(deps: Deps, uid: string, tryOn: TryOn, index: number) {
   const { store, provider, now = Date.now } = deps
   const step = tryOn.steps[index]
+  if (step.render.tool === "paint") return
   const source = await sourceOf(store, uid, tryOn, step.render)
   if (source === "not yet") return
 
@@ -200,7 +209,10 @@ async function send(deps: Deps, uid: string, tryOn: TryOn, index: number) {
       step.render.tool === "clothes"
         ? await deps.garment(step.render.garment)
         : undefined
-    task = await provider.start(step.render, { source, garment })
+    task = await provider.start(step.render as ProviderRender, {
+      source,
+      garment,
+    })
   } catch (error) {
     const { reason, retry } = failureOf(error)
     console.error(`Try-on ${tryOn.id}: step ${index} could not start.`, error)
@@ -230,6 +242,80 @@ async function send(deps: Deps, uid: string, tryOn: TryOn, index: number) {
   if (!running) await provider.discard(task)
 }
 
+/**
+ * Paints a step's marks on the last makeup picture, right away (no
+ * provider): placed by the eyes and mouth that the eye and lip steps
+ * reveal. A face that can't be read keeps its picture unpainted rather
+ * than failing the try-on.
+ */
+async function paintStep(
+  deps: Deps,
+  uid: string,
+  tryOn: TryOn,
+  index: number
+): Promise<boolean> {
+  const { store, now = Date.now, painter = { findFace, paintMarks } } = deps
+  const step = tryOn.steps[index]
+  const render = step.render
+  if (render.tool !== "paint") return false
+  const picture = (at: number | "face") =>
+    at === "face"
+      ? store.photo(uid, "face", tryOn.face)
+      : tryOn.steps[at]?.status === "done"
+        ? store.stepImage(uid, tryOn.id, at)
+        : Promise.resolve("not yet" as const)
+  const wanted = [
+    render.from,
+    render.eyes.before,
+    render.eyes.step,
+    render.lips.before,
+    render.lips.step,
+  ]
+  const pictures = await Promise.all(wanted.map(picture))
+  if (pictures.includes("not yet")) return false
+
+  const claim: Seen = { status: "saving", since: now() }
+  if (!(await store.updateStep(uid, tryOn.id, index, unchanged(step), claim)))
+    return false
+  const [source, eyesBefore, eyesAfter, lipsBefore, lipsAfter] =
+    pictures as (Uint8Array | null)[]
+  if (!source || !eyesBefore || !eyesAfter || !lipsBefore || !lipsAfter) {
+    console.error(`Try-on ${tryOn.id}: step ${index} has no picture to paint.`)
+    await setBack(
+      deps,
+      uid,
+      tryOn.id,
+      index,
+      claim,
+      step.attempts,
+      "failed",
+      false
+    )
+    return false
+  }
+  let image = source
+  try {
+    const face = await painter.findFace(
+      { before: eyesBefore, after: eyesAfter },
+      { before: lipsBefore, after: lipsAfter }
+    )
+    if (face) image = await painter.paintMarks(source, face, render.marks)
+    else
+      console.error(`Try-on ${tryOn.id}: step ${index} found no face to paint.`)
+  } catch (error) {
+    console.error(
+      `Try-on ${tryOn.id}: step ${index} could not be painted.`,
+      error
+    )
+  }
+  await store.saveStepImage(uid, tryOn.id, index, image)
+  return store.updateStep(uid, tryOn.id, index, unchanged(claim), {
+    status: "done",
+    task: null,
+    since: now(),
+  })
+}
+
 /** Looks in on a running render, and keeps its picture once it's done. */
 async function collect(
   deps: Deps,
@@ -250,7 +336,7 @@ async function collect(
 
   let state
   try {
-    state = await provider.check(task, step.render.tool)
+    state = await provider.check(task, (step.render as ProviderRender).tool)
   } catch (error) {
     const { reason, retry } = failureOf(error)
     // A hiccup asking: the next ask tries again, unless it has gone on too long.
