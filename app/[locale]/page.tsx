@@ -1,29 +1,31 @@
+import { headers } from "next/headers"
 import { getTranslations } from "next-intl/server"
 
 import { CostumeRow } from "@/components/costume/costume-row"
 import { Countdown } from "@/components/countdown/countdown"
 import { BloodDrip } from "@/components/home/blood-drip"
 import { NightScene } from "@/components/home/night-scene"
+import { Tagline } from "@/components/home/tagline"
 import { TransformationReel } from "@/components/home/transformation-reel"
 import { costumesHref } from "@/components/layout/nav"
 import { Link } from "@/i18n/navigation"
 import { getCostumes, toSummary } from "@/lib/catalog"
-import { countdownTo } from "@/lib/countdown"
+import { seasonIn } from "@/lib/countdown"
+import { visitorFrom } from "@/lib/visitor"
 
 /**
  * Home (spec §11.1): the title card, with a real transformation on a strip
- * of film under the tagline (what to expect), the countdown to Halloween,
- * and "Choose your costume", "Try it on", "Apply makeup"; then every
- * costume to browse. The costumes live here rather than on a page of their own: one
- * less step.
+ * of film under the tagline (what to expect), the countdown to Halloween
+ * (once its night has passed, to Christmas), and "Choose your costume",
+ * "Try it on", "Apply makeup"; then every costume to browse. The costumes
+ * live here rather than on a page of their own: one less step.
  */
 export default async function HomePage() {
-  const t = await getTranslations("App")
   const home = await getTranslations("Home")
   const nav = await getTranslations("Nav")
-  // The server's guess of the Halloween to come; the browser corrects it
-  // for the visitor's own time zone.
-  const { year } = countdownTo(new Date())
+  // The server's guess of the season, by the connection's time zone (on
+  // Vercel); the browser corrects it with the visitor's own clock.
+  const season = seasonIn(new Date(), visitorFrom(await headers()).timeZone)
 
   return (
     <>
@@ -44,17 +46,12 @@ export default async function HomePage() {
             strip. Small screens: one column. */}
         <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end lg:gap-x-16 lg:px-8">
           <div>
-            <h1 className="flicker vhs-ghost-title max-w-[11ch] font-heading text-display-xl font-semibold text-balance [--title-glow:0_0_40px_rgb(0_0_0/0.8)]">
-              {t("taglineLead")}
-            </h1>
-            <p className="mt-5 font-heading text-[clamp(1.6rem,3vw,2.6rem)] leading-none font-medium text-blood-text [text-shadow:0_0_24px_color-mix(in_oklch,var(--blood)_45%,transparent)]">
-              {t("taglineTail")}
-            </p>
+            <Tagline holiday={season.holiday} />
           </div>
           {/* What to expect, without a word. */}
           <TransformationReel className="mt-4 lg:col-start-1 lg:row-start-2 lg:mt-16" />
           <div className="lg:col-start-2 lg:row-start-1 lg:pl-4">
-            <Countdown year={year} />
+            <Countdown season={season} />
           </div>
           {/* The way through, as the strip shows it. Wide screens: beside
               the strip, their tops level. */}

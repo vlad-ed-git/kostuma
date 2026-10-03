@@ -537,6 +537,13 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
    - H1 `display-xl`, flickering (7.2) and split into the red and bone ghosts (8.9): "The
      darkest day is coming." (`App.taglineLead`). The VHS band rolls over the whole title (8.9).
    - Under it, in `--blood-text` with a red glow: "Transform into a monster." (`App.taglineTail`).
+   - **After Halloween** (owner, 2026-10-04): from November 1 until Christmas, in the visitor's
+     own time zone, the H1 reads "The darkest night has passed." (`App.taglineAfterLead`) and
+     the red line "But you shall stay a monster until Santa comes. Hahaha."
+     (`App.taglineAfterTail`; from `lg` at most 11.5 em wide, so it wraps before the window and
+     never lies red on its glass). Everything else stays. The server guesses the season from
+     the connection's time zone (Vercel's `x-vercel-ip-timezone`, else its own); the browser
+     corrects it with its clock and turns it at midnight (`components/home/tagline.tsx`).
    - **Countdown** (`components/countdown`, logic in `lib/countdown`): a small-capital line
      "Until Halloween · **Saturday, October 31**" (the date in bone, formatted per locale), then
      four cells, Days · Hours · Minutes · Seconds: `numeral` digits in the display face over
@@ -544,7 +551,9 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
      beating on every tick. Counts to midnight of October 31 **in the visitor's time zone**,
      real time left (no jump at daylight-saving changes); all of October 31 shows "Tonight."
      and "The darkest day is here." in the same three rows (no shift at midnight); from
-     November 1 it counts to next year. The server renders dashes at the final size; the
+     November 1 it counts to Christmas, December 25 at the visitor's midnight ("Until
+     Christmas · **Friday, December 25**", "Time until Christmas"), then to the next Halloween.
+     The server renders dashes at the final size, under its guess of the season's line; the
      browser fills in the count. `role="timer"`, and a visually hidden sentence updated once a
      minute ("29 days, 10 hours and 14 minutes until Halloween.").
    - **The way through** (owner, 2026-10-04), one list in the display face: **"Choose your

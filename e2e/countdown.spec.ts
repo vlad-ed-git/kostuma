@@ -5,7 +5,7 @@ import { collectErrors } from "./console"
 const cells = (page: Page) =>
   page.getByRole("timer").locator("li > span:first-child")
 
-test.describe("the countdown to Halloween", () => {
+test.describe("the countdown", () => {
   test.use({ timezoneId: "America/New_York" })
 
   test("counts down in the visitor's time and turns to tonight at midnight", async ({
@@ -31,18 +31,49 @@ test.describe("the countdown to Halloween", () => {
     expect(errors).toEqual([])
   })
 
-  test("counts to next year's Halloween once this one has passed", async ({
+  test("counts to Christmas once Halloween's night has passed, and keeps the visitor a monster", async ({
     page,
   }) => {
-    await page.clock.install({ time: new Date("2026-11-01T00:00:01-04:00") })
+    const errors = collectErrors(page)
+    await page.clock.install({ time: new Date("2026-10-31T23:55:00-04:00") })
     await page.goto("/")
+    await page.clock.pauseAt(new Date("2026-10-31T23:59:58-04:00"))
+    const title = page.getByRole("heading", { level: 1 })
+    await expect(page.getByText("Tonight.")).toBeVisible()
+    await expect(title).toHaveText("The darkest day is coming.")
+
+    await page.clock.runFor(3_000)
+    await expect(title).toHaveText("The darkest night has passed.")
+    await expect(
+      page.getByText("But you shall stay a monster until Santa comes. Hahaha.")
+    ).toBeVisible()
+    await expect(
+      page.getByText("Until Christmas · Friday, December 25")
+    ).toBeVisible()
+    await expect(page.getByRole("timer")).toHaveAccessibleName(
+      "Time until Christmas"
+    )
+    // A second past midnight: 54 days less a second, and the hour New
+    // York's clocks give back on November 1.
+    await expect(cells(page)).toHaveText(["54", "00", "59", "59"])
+    expect(errors).toEqual([])
+  })
+
+  test("counts to the next Halloween once Santa has come", async ({ page }) => {
+    await page.clock.install({ time: new Date("2026-12-24T23:55:00-05:00") })
+    await page.goto("/")
+    await page.clock.pauseAt(new Date("2026-12-24T23:59:58-05:00"))
+    const title = page.getByRole("heading", { level: 1 })
+    await expect(title).toHaveText("The darkest night has passed.")
+    await expect(cells(page)).toHaveText(["00", "00", "00", "02"])
+
+    await page.clock.runFor(3_000)
+    await expect(title).toHaveText("The darkest day is coming.")
     await expect(
       page.getByText("Until Halloween · Sunday, October 31")
     ).toBeVisible()
-    // One second past midnight: 363 days and 23 hours and more (the two
-    // daylight-saving changes on the way cancel out).
-    await expect(cells(page).nth(0)).toHaveText("363")
-    await expect(cells(page).nth(1)).toHaveText("23")
+    // 310 days less a second, less the hour the clocks take in March.
+    await expect(cells(page)).toHaveText(["309", "22", "59", "59"])
   })
 
   test("keeps its size from the dashes to the count and to tonight", async ({
@@ -94,7 +125,10 @@ test.describe("the countdown without JavaScript", () => {
     page,
   }) => {
     await page.goto("/")
-    await expect(page.getByText(/^Until Halloween · /)).toBeVisible()
+    // The season the server guessed from the connection.
+    await expect(
+      page.getByText(/^Until (Halloween|Christmas) · /)
+    ).toBeVisible()
     await expect(cells(page)).toHaveText(["--", "--", "--", "--"])
     await expect(
       page.getByRole("link", { name: "Choose your costume" })

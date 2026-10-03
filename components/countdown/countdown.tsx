@@ -3,23 +3,30 @@
 import { useFormatter, useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
-import { countdownTo, pad, type Countdown as Count } from "@/lib/countdown"
+import {
+  countdownTo,
+  type Countdown as Count,
+  holidayDay,
+  pad,
+  type Season,
+} from "@/lib/countdown"
 import { cn } from "@/lib/utils"
 
 /**
- * The countdown to Halloween in the title card (spec §11.1): four big
- * numerals, the seconds in blood red, beating once a second like a heart.
+ * The countdown in the title card (spec §11.1): to Halloween, then, its
+ * night past, to Christmas (lib/countdown). Four big numerals, the seconds
+ * in blood red, beating once a second like a heart.
  *
- * The server can't know the visitor's time zone, so it renders dashes at
- * the final size; the browser fills in the count once it runs (no layout
- * shift, no mismatch). `year` is the server's guess of the Halloween to
- * come, for the date line until then.
+ * The server can't know the visitor's clock, so it renders dashes at the
+ * final size; the browser fills in the count once it runs (no layout
+ * shift, no mismatch). `season` is the server's guess, for the date line
+ * until then.
  */
 export function Countdown({
-  year,
+  season,
   className,
 }: {
-  year: number
+  season: Season
   className?: string
 }) {
   const t = useTranslations("Countdown")
@@ -38,10 +45,15 @@ export function Countdown({
     return () => clearTimeout(timer)
   }, [])
 
-  const date = format.dateTime(
-    new Date(Date.UTC(count?.year ?? year, 9, 31, 12)),
-    { weekday: "long", month: "long", day: "numeric", timeZone: "UTC" }
-  )
+  const { holiday, year } = count ?? season
+  const christmas = holiday === "christmas"
+  const [month, day] = holidayDay[holiday]
+  const date = format.dateTime(new Date(Date.UTC(year, month, day, 12)), {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  })
 
   // The same three rows as the count, so nothing moves at midnight.
   if (count?.kind === "tonight") {
@@ -68,18 +80,22 @@ export function Countdown({
   return (
     <div className={className}>
       <p className="text-label caps text-muted-foreground">
-        {t.rich("until", {
+        {t.rich(christmas ? "untilChristmas" : "until", {
           date,
           b: (chunks) => (
             <b className="whitespace-nowrap text-foreground">{chunks}</b>
           ),
         })}
       </p>
-      <div role="timer" aria-label={t("label")} className="mt-3">
+      <div
+        role="timer"
+        aria-label={t(christmas ? "labelChristmas" : "label")}
+        className="mt-3"
+      >
         {count && (
           // Changes once a minute; a timer is never announced on its own.
           <p className="sr-only">
-            {t("left", {
+            {t(christmas ? "leftChristmas" : "left", {
               days: count.days,
               hours: count.hours,
               minutes: count.minutes,

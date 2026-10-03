@@ -3,7 +3,9 @@
     "name": "Kostuma",
     "tagline": "最黑暗的一天即将来临。化身为怪物吧。",
     "taglineLead": "最黑暗的一天即将来临。",
-    "taglineTail": "化身为怪物吧。"
+    "taglineTail": "化身为怪物吧。",
+    "taglineAfterLead": "最黑暗的夜晚已经过去。",
+    "taglineAfterTail": "但在圣诞老人到来之前，你仍将是个怪物。哈哈哈。"
   },
   "Home": {
     "chooseCostume": "挑选你的装扮",
@@ -19,6 +21,9 @@
     "minutes": "分钟",
     "seconds": "秒",
     "left": "距离万圣节还有 {days} 天 {hours} 小时 {minutes} 分钟。",
+    "labelChristmas": "距离圣诞节还有",
+    "untilChristmas": "距离圣诞节 · <b>{date}</b>",
+    "leftChristmas": "距离圣诞节还有 {days} 天 {hours} 小时 {minutes} 分钟。",
     "tonight": "就在今夜。",
     "tonightLine": "最黑暗的一天已经到来。"
   },
