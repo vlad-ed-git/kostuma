@@ -10,6 +10,7 @@ import { redirect } from "@/i18n/navigation"
 import { withNext } from "@/lib/auth/next-path"
 import { getUser } from "@/lib/auth/session"
 import { getCostume, getCostumes, toSummary } from "@/lib/catalog"
+import { currentTryOn } from "@/lib/fitting-room/current-try-on"
 import { fittingRoom } from "@/lib/fitting-room/service"
 import { fittingRoomStore } from "@/lib/fitting-room/store"
 import { toView, type TryOnView } from "@/lib/fitting-room/try-on"
@@ -74,14 +75,17 @@ export default async function FittingRoomPage({
       store.tryOns(user.uid),
     ])
     room = { face: kept.face?.id ?? null, body: kept.body?.id ?? null }
-    // The latest try-on made by the renderer in use: never a fake one
-    // standing in for real renders.
-    const latest =
+    // The try-on of the photos in use, else the newest, by the renderer in
+    // use: never a fake one standing in for real renders.
+    const current =
       selected &&
-      tryOns.find(
-        (each) => each.slug === selected.slug && each.renderer === renderer
-      )
-    tryOn = latest ? toView(latest) : null
+      currentTryOn(tryOns, {
+        slug: selected.slug,
+        renderer,
+        room: kept,
+        allMakeup: selected.allMakeup,
+      })
+    tryOn = current ? toView(current) : null
   } catch (error) {
     // The page still offers the photos; starting says if it can't.
     console.error("Could not read the Fitting Room.", error)
