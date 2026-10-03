@@ -3,6 +3,7 @@ import { matchRemotePattern } from "next/dist/shared/lib/match-remote-pattern"
 import { describe, expect, it } from "vitest"
 
 import { costumes } from "@/content/costumes"
+import { sampleTransformation } from "@/content/sample-transformation"
 
 import config, { costumePhotos } from "./next.config"
 
@@ -13,6 +14,12 @@ describe("the image optimizer's remote photos", () => {
     const urls = costumes.flatMap((costume) =>
       costume.images.map((photo) => photo.url)
     )
+    expect(urls.length).toBeGreaterThan(0)
+    expect(urls.filter((url) => !allowed(url))).toEqual([])
+  })
+
+  it("allows every frame of the home page's sample transformation", () => {
+    const urls = sampleTransformation.frames.map((frame) => frame.url)
     expect(urls.length).toBeGreaterThan(0)
     expect(urls.filter((url) => !allowed(url))).toEqual([])
   })

@@ -25,6 +25,7 @@
     "photos:masters": "node scripts/photos/build-masters.mjs",
     "photos:add": "node scripts/photos/add-masters.mjs",
     "photos:upload": "node scripts/photos/upload.mjs",
+    "photos:samples": "node scripts/photos/upload-samples.mjs",
     "makeup:patterns": "node scripts/makeup/check-patterns.mjs"
   },
   "dependencies": {
