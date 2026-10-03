@@ -50,6 +50,19 @@
     "moreFrom": "更多来自《{film}》",
     "moreWanted": "更多装扮"
   },
+  "Pro": {
+    "get": "获取 Kostuma Pro",
+    "joining": "正在加入候补名单…",
+    "added": "你已加入高级功能候补名单。",
+    "deal": "我们会在 24 小时内联系你，为你送上超值优惠。",
+    "email": "邮箱",
+    "update": "更新",
+    "updating": "正在更新…",
+    "updated": "邮箱已更新。",
+    "close": "关闭",
+    "signedOut": "你的登录已失效。请重新登录后加入候补名单。",
+    "failed": "出了点问题。请重试。"
+  },
   "Recaptcha": {
     "unavailable": "人机验证无法加载。请检查网络连接，然后刷新页面。"
   },

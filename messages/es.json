@@ -50,6 +50,19 @@
     "moreFrom": "Más de {film}",
     "moreWanted": "Más disfraces"
   },
+  "Pro": {
+    "get": "Consigue Kostuma Pro",
+    "joining": "Uniéndote a la lista de espera…",
+    "added": "Te hemos añadido a la lista de espera de las funciones premium.",
+    "deal": "Te escribiremos en 24 horas con una oferta increíble.",
+    "email": "Correo",
+    "update": "Actualizar",
+    "updating": "Actualizando…",
+    "updated": "Correo actualizado.",
+    "close": "Cerrar",
+    "signedOut": "Tu sesión terminó. Vuelve a iniciar sesión para unirte a la lista de espera.",
+    "failed": "Algo salió mal. Inténtalo de nuevo."
+  },
   "Recaptcha": {
     "unavailable": "La comprobación «No soy un robot» no pudo cargarse. Revisa tu conexión y vuelve a cargar la página."
   },

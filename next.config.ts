@@ -68,6 +68,7 @@ const nextConfig: NextConfig = {
         "@/lib/fitting-room/store": "./lib/fitting-room/store.e2e.ts",
         "@/lib/fitting-room/renderer": "./lib/fitting-room/renderer.e2e.ts",
         "@/lib/fitting-room/garment": "./lib/fitting-room/garment.e2e.ts",
+        "@/lib/waitlist/store": "./lib/waitlist/store.e2e.ts",
       },
     },
   }),

@@ -8,7 +8,8 @@ import { AuthErrorCodes as E } from "./fireAuthError"
  * the form (`AuthErrors` in messages/*.json), never words of its own.
  */
 
-const email = z
+/** An email address, as every form takes it. */
+export const email = z
   .string()
   .trim()
   .min(1, E.EMAIL_REQUIRED)
