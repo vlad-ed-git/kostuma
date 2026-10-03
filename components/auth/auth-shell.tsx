@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils"
 
 type AuthShellProps = {
   title: string
+  /** The words in the night; the account pages' by default. */
+  panel?: string
   /** One line under the title. */
   lead?: string
   children: ReactNode
@@ -16,15 +18,16 @@ type AuthShellProps = {
 }
 
 /**
- * The account pages' frame (spec §11.5): on desktop, the night on the left
- * (fog, "Are you ready for the dark?" in outlined gothic letters lit red
- * from below, and the 404's VHS tracking band rolling through it); the
- * form on the right, at most 400 px wide (560 px when `wide`), all of it
- * on one screen. Phones: the form. The title splits into the 404's red and
- * bone ghosts.
+ * The account pages' frame (spec §11.5), and the feedback form's (§11.7):
+ * on desktop, the night on the left (fog, a line such as "Are you ready for
+ * the dark?" in outlined gothic letters lit red from below, and the 404's
+ * VHS tracking band rolling through it); the form on the right, at most
+ * 400 px wide (560 px when `wide`), the account pages on one screen.
+ * Phones: the form. The title splits into the 404's red and bone ghosts.
  */
 export async function AuthShell({
   title,
+  panel,
   lead,
   children,
   footer,
@@ -44,7 +47,7 @@ export async function AuthShell({
           <Fog />
         </div>
         <p className="auth-line font-heading text-display font-semibold text-balance">
-          {t("panel")}
+          {panel ?? t("panel")}
         </p>
         {/* The tape rolls up through the night, as on the 404; never over
             the form. */}

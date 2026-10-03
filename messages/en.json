@@ -197,8 +197,10 @@
     "backToSignIn": "Back to sign in",
     "stepTitle": "One more thing",
     "continue": "Continue",
-    "continuing": "Continuing…",
-    "robotCheckUnavailable": "The robot check couldn't load. Check your connection, then reload the page."
+    "continuing": "Continuing…"
+  },
+  "Recaptcha": {
+    "unavailable": "The robot check couldn't load. Check your connection, then reload the page."
   },
   "Account": {
     "title": "Your account",
@@ -210,6 +212,36 @@
     "tryOnsWaiting": "{count, plural, =0 {No free try-ons left} one {# free try-on waiting} other {# free try-ons waiting}}",
     "signOut": "Sign out",
     "signingOut": "Signing out…"
+  },
+  "Feedback": {
+    "metaTitle": "Feedback",
+    "title": "Tell us what haunts you",
+    "lead": "Found a bug, have an idea, or want a costume we don't have yet? We read every message.",
+    "panel": "The dark is listening.",
+    "kind": "What is it about?",
+    "kinds": {
+      "bug": "Report a bug",
+      "feedback": "Share feedback",
+      "costume": "Request a costume"
+    },
+    "message": {
+      "bug": "What went wrong?",
+      "feedback": "What's on your mind?",
+      "costume": "Which costume should we add?"
+    },
+    "hint": {
+      "bug": "What you did, what you expected, and what happened instead.",
+      "feedback": "An idea, a wish, something you loved or didn't.",
+      "costume": "The character, and the film they come from."
+    },
+    "count": "{count, number} of {max, number} characters",
+    "email": "Email",
+    "emailHint": "Only if you want a reply.",
+    "send": "Send",
+    "sending": "Sending…",
+    "received": "Received.",
+    "thanks": "Thank you. We read every message.",
+    "again": "Send another"
   },
   "Footer": {
     "explore": "Explore",
@@ -276,6 +308,10 @@
     "confirm_required": "Enter the password again.",
     "passwords_differ": "The two passwords don't match.",
     "terms_required": "Agree to the Terms of service and Privacy policy to go on.",
-    "robot_check_required": "Tick the “I'm not a robot” box."
+    "robot_check_required": "Tick the “I'm not a robot” box.",
+    "message_required": "Write your message.",
+    "message_too_short": "Write at least 10 characters.",
+    "message_too_long": "Use at most 2,000 characters.",
+    "too_many_messages": "You've sent several messages in the last hour. Wait a while, then try again."
   }
 }

@@ -742,13 +742,28 @@ All `noindex`. A signed-in visitor is sent on to `next` (sign in, register).
 
 ### 11.7 Feedback `/feedback` (`?type=bug|feedback|costume`)
 
-- H1 "Tell us what haunts you" (lead: "Found a bug, have an idea, or want a feature? We read
-  every message.").
-- Segmented control: Report a bug · Share feedback · Request a costume (preselected by `type`).
-- Message textarea (label changes with type; 10–2000 characters, counter), optional email ("Only
-  if you want a reply"), reCAPTCHA, submit "Send".
-- Success replaces the form: check icon, "Received.", "Thank you. We read every message.",
-  button "Send another".
+Open to everyone (no sign-in). The account pages' frame (11.5): the night on the left with its
+own line, "The dark is listening.", the form on the right (560 px).
+
+- H1 "Tell us what haunts you" (ghost title, 8.9); lead: "Found a bug, have an idea, or want a
+  costume we don't have yet? We read every message."
+- The kind: Report a bug · Share feedback · Request a costume, one row of three segments
+  (radio buttons underneath, legend for screen readers "What is it about?"), preselected by
+  `type` (else Share feedback; the footer's three links each open their own). The one chosen
+  is lit: blood fill, ember underline, red glow.
+- The message (textarea, grows with the text), its label and hint following the kind: "What
+  went wrong?" (what you did, what you expected, what happened instead) · "What's on your
+  mind?" · "Which costume should we add?" (the character and the film). 10–2,000 characters
+  (trimmed), a counter under it ("12 of 2,000 characters").
+- Email, optional ("Only if you want a reply."); reCAPTCHA and "Send" side by side from `lg`,
+  as on register.
+- Errors as on the account forms (12); "You've sent several messages in the last hour…" past 5
+  an hour from one account or connection.
+- Success replaces the form: check icon (ember, glowing), `h2` "Received." (focused), "Thank
+  you. We read every message.", outline button "Send another" (a fresh form on the same kind,
+  focus on the message).
+- Kept: `feedback/{id}` (kind, message, email or null, the account's uid when signed in,
+  language, device, system, browser, time); the owner reads it in the Firebase console.
 
 ### 11.8 Not found
 

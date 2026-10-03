@@ -1,6 +1,7 @@
 /**
- * Every problem an account form can meet, as stable codes: Firebase Auth's
- * failures, the server's, and each form field's rule. Each value is also the
+ * Every problem a form can meet (the account forms and the feedback form),
+ * as stable codes: Firebase Auth's failures, the server's, and each form
+ * field's rule. Each value is also the
  * key of its message under `AuthErrors` in `messages/*.json`, so the UI
  * shows `t(\`AuthErrors.${code}\`)`: a visitor never reads an error's own
  * text, in any language.
@@ -35,6 +36,11 @@ export enum AuthErrorCodes {
   PASSWORDS_DIFFER = "passwords_differ",
   TERMS_REQUIRED = "terms_required",
   ROBOT_CHECK_REQUIRED = "robot_check_required",
+  // The feedback form's.
+  MESSAGE_REQUIRED = "message_required",
+  MESSAGE_TOO_SHORT = "message_too_short",
+  MESSAGE_TOO_LONG = "message_too_long",
+  TOO_MANY_MESSAGES = "too_many_messages",
 }
 
 // Firebase's `auth/…` codes. The browser SDK and the Admin SDK name some

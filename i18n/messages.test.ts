@@ -79,7 +79,6 @@ const untranslated = [
     "account_exists_with_different_credential",
     "user_disabled",
     "sign_in_again",
-    "robot_check_failed",
     "account_ready",
     "name_required",
     "name_too_long",
@@ -90,7 +89,6 @@ const untranslated = [
     "confirm_required",
     "passwords_differ",
     "terms_required",
-    "robot_check_required",
   ].map((code) => `AuthErrors.${code}`),
 ]
 const waiting = (key: string) =>

@@ -47,6 +47,39 @@
     "moreFrom": "更多来自《{film}》",
     "moreWanted": "更多装扮"
   },
+  "Recaptcha": {
+    "unavailable": "人机验证无法加载。请检查网络连接，然后刷新页面。"
+  },
+  "Feedback": {
+    "metaTitle": "意见反馈",
+    "title": "告诉我们，是什么在缠着你",
+    "lead": "发现了问题、有了新想法，或者想要一套我们还没有的装扮？每条留言我们都会读。",
+    "panel": "黑暗在聆听。",
+    "kind": "关于什么？",
+    "kinds": {
+      "bug": "报告问题",
+      "feedback": "分享反馈",
+      "costume": "申请新装扮"
+    },
+    "message": {
+      "bug": "出了什么问题？",
+      "feedback": "你有什么想说的？",
+      "costume": "我们应该加上哪套装扮？"
+    },
+    "hint": {
+      "bug": "你做了什么、原本期望什么、实际发生了什么。",
+      "feedback": "一个想法、一个愿望，或者你喜欢或不喜欢的地方。",
+      "costume": "角色名，以及出自哪部电影。"
+    },
+    "count": "{count, number} / {max, number} 个字符",
+    "email": "邮箱",
+    "emailHint": "仅在你希望收到回复时填写。",
+    "send": "发送",
+    "sending": "正在发送…",
+    "received": "已收到。",
+    "thanks": "谢谢。每条留言我们都会读。",
+    "again": "再写一条"
+  },
   "Footer": {
     "explore": "探索",
     "help": "帮助",
@@ -88,6 +121,12 @@
     "too_many_attempts_try_later": "尝试次数过多。请等几分钟后再试。",
     "weak_password": "请设置更强的密码：更长，并混合字母、数字和符号。",
     "unknown_auth_error": "出了点问题。请重试。",
-    "network_error": "没有网络连接。请检查后重试。"
+    "network_error": "没有网络连接。请检查后重试。",
+    "robot_check_failed": "人机验证未通过。请重新勾选。",
+    "robot_check_required": "请勾选“进行人机身份验证”。",
+    "message_required": "请写下你的留言。",
+    "message_too_short": "请至少写 10 个字符。",
+    "message_too_long": "最多 2000 个字符。",
+    "too_many_messages": "你在过去一小时内已发送多条留言。请稍等一会儿再试。"
   }
 }

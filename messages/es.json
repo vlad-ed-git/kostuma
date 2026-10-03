@@ -47,6 +47,39 @@
     "moreFrom": "Más de {film}",
     "moreWanted": "Más disfraces"
   },
+  "Recaptcha": {
+    "unavailable": "La comprobación «No soy un robot» no pudo cargarse. Revisa tu conexión y vuelve a cargar la página."
+  },
+  "Feedback": {
+    "metaTitle": "Comentarios",
+    "title": "Cuéntanos qué te atormenta",
+    "lead": "¿Encontraste un error, tienes una idea o quieres un disfraz que aún no tenemos? Leemos todos los mensajes.",
+    "panel": "La oscuridad te escucha.",
+    "kind": "¿De qué se trata?",
+    "kinds": {
+      "bug": "Informar de un error",
+      "feedback": "Enviar comentarios",
+      "costume": "Pedir un disfraz"
+    },
+    "message": {
+      "bug": "¿Qué salió mal?",
+      "feedback": "¿Qué tienes en mente?",
+      "costume": "¿Qué disfraz deberíamos añadir?"
+    },
+    "hint": {
+      "bug": "Qué hiciste, qué esperabas y qué pasó en realidad.",
+      "feedback": "Una idea, un deseo, algo que te encantó o que no.",
+      "costume": "El personaje y la película de la que viene."
+    },
+    "count": "{count, number} de {max, number} caracteres",
+    "email": "Correo",
+    "emailHint": "Solo si quieres una respuesta.",
+    "send": "Enviar",
+    "sending": "Enviando…",
+    "received": "Recibido.",
+    "thanks": "Gracias. Leemos todos los mensajes.",
+    "again": "Enviar otro"
+  },
   "Footer": {
     "explore": "Explorar",
     "help": "Ayuda",
@@ -88,6 +121,12 @@
     "too_many_attempts_try_later": "Demasiados intentos. Espera unos minutos y vuelve a intentarlo.",
     "weak_password": "Elige una contraseña más segura: más larga, con letras, números y símbolos.",
     "unknown_auth_error": "Algo salió mal. Inténtalo de nuevo.",
-    "network_error": "Sin conexión a internet. Revísala y vuelve a intentarlo."
+    "network_error": "Sin conexión a internet. Revísala y vuelve a intentarlo.",
+    "robot_check_failed": "La comprobación «No soy un robot» no se superó. Marca la casilla otra vez.",
+    "robot_check_required": "Marca la casilla «No soy un robot».",
+    "message_required": "Escribe tu mensaje.",
+    "message_too_short": "Escribe al menos 10 caracteres.",
+    "message_too_long": "Usa como máximo 2000 caracteres.",
+    "too_many_messages": "Has enviado varios mensajes en la última hora. Espera un rato y vuelve a intentarlo."
   }
 }
