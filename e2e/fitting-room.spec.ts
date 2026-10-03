@@ -179,7 +179,17 @@ test.describe("The Fitting Room", () => {
     await expect(
       beetlejuice.getByRole("button", { name: "Previous step" })
     ).toBeHidden()
-    await beetlejuice.getByRole("button", { name: "Next step" }).click()
+    // Before the makeup: what to buy, then on to the makeup.
+    await expect(
+      beetlejuice.getByText("See the photo and note down what to buy.")
+    ).toBeVisible()
+    await expect(
+      beetlejuice.getByText("Now let's get started on the makeup.")
+    ).toBeVisible()
+    await expect(
+      beetlejuice.getByRole("button", { name: "Next step" })
+    ).toHaveCount(0)
+    await beetlejuice.getByRole("button", { name: "Apply makeup" }).click()
     await expect(
       beetlejuice.getByRole("img", {
         name: "Your face after step 1: Corpse base",

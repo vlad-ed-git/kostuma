@@ -169,6 +169,13 @@ export function TryOnSteps({
             {step ? step.title : frameName(frame)}
           </h3>
         )}
+        {frame?.kind === "outfit" && (
+          // Before the makeup (owner, 2026-10-03): what to buy, then on.
+          <div className="flex max-w-[60ch] flex-col gap-3 text-lead">
+            <p>{t("outfitNote")}</p>
+            <p>{t("outfitThen")}</p>
+          </div>
+        )}
         {step && (
           <>
             <p className="max-w-[60ch] text-lead">{step.howTo}</p>
@@ -222,7 +229,7 @@ export function TryOnSteps({
                 shown === last && "max-sm:hidden sm:invisible"
               )}
             >
-              {t("next")}
+              {frame?.kind === "outfit" ? t("applyMakeup") : t("next")}
               <RiArrowRightSLine aria-hidden="true" className="size-5" />
             </Button>
           </div>

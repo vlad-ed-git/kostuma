@@ -666,7 +666,9 @@ words beside them; on phones the words come first.
     the step's title (`h2` size), the how-to (`lead`), its products as links to a shop's search
     (new tab, 10.3 external links), on the last step "To finish" and the guide's last line; then
     "Previous step" (outline) and "Next step" (primary), each hidden at its end (the other keeps
-    focus). For the outfit, its name.
+    focus). For the outfit (owner, 2026-10-03): its name, "See the photo and note down what
+    to buy." and "Now let's get started on the makeup." (`lead`), and the next step's button
+    reads "Apply makeup".
   - **The film strip** ("Your pictures"): every picture as a frame between sprocket holes,
     labelled "Outfit", 1, 2, …; the one in the mirror ringed in `--blood-text`; a frame not done
     yet is the costume photo as a black silhouette rimmed in red (as the photos wait on the home
