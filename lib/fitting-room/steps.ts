@@ -45,27 +45,34 @@ export type Deps = {
   now?: () => number
 }
 
-/** What a try-on is made of: no body photo for a costume that is all makeup. */
+/**
+ * What a try-on is made of: no body photo and no garment for a costume that
+ * is all makeup.
+ */
 export type Fitting = {
   slug: string
   guide: MakeupGuide
   face: FacePhoto
   body: Photo | null
+  /** The outfit picture tried on: its URL, which changes with its content. */
+  garment: string | null
 }
 
 /**
- * A try-on's id: its photos, costume, renderer and pipeline version (a
- * fake try-on never stands in for a real one).
+ * A try-on's id: its photos, costume, renderer, pipeline version and the
+ * outfit picture tried on (a fake try-on never stands in for a real one,
+ * nor a try-on of an outfit picture since replaced for the new one).
  */
 export function tryOnId(
   face: string,
   body: string | null,
   slug: string,
-  renderer: Renderer
+  renderer: Renderer,
+  garment: string | null
 ) {
   return createHash("sha256")
     .update(
-      `${face}\n${body ?? "-"}\n${slug}\n${renderer}\n${PIPELINE_VERSION}`
+      `${face}\n${body ?? "-"}\n${slug}\n${renderer}\n${PIPELINE_VERSION}\n${garment ?? "-"}`
     )
     .digest("hex")
     .slice(0, 32)
@@ -73,16 +80,17 @@ export function tryOnId(
 
 /** A try-on, before anything is sent. */
 export function newTryOn(
-  { slug, guide, face, body }: Fitting,
+  { slug, guide, face, body, garment }: Fitting,
   now: number,
   renderer: Renderer
 ): TryOn {
   return {
-    id: tryOnId(face.id, body?.id ?? null, slug, renderer),
+    id: tryOnId(face.id, body?.id ?? null, slug, renderer, garment),
     slug,
     renderer,
     face: face.id,
     body: body?.id ?? null,
+    garment,
     version: PIPELINE_VERSION,
     status: "running",
     steps: renderPlan(slug, guide, face).map((render) => ({

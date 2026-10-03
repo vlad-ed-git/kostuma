@@ -79,8 +79,9 @@ export default async function FittingRoomPage({
     // use: never a fake one standing in for real renders.
     const current =
       selected &&
+      costume &&
       currentTryOn(tryOns, {
-        slug: selected.slug,
+        costume,
         renderer,
         room: kept,
         allMakeup: selected.allMakeup,

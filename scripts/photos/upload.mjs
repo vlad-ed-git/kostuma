@@ -10,7 +10,8 @@
 //    that object is already there.
 // 3. Writes every costume's photos (master's file name, the web copy's
 //    public URL and size) into content/costumes.ts, formatted with
-//    Prettier: the site shows the web copies.
+//    Prettier: the site shows the web copies of `images`; the try-on uses
+//    the web copy of `garment` (the outfit alone), or else of `images[0]`.
 //
 // Credentials: the service account key in secrets/ (gitignored), or
 // GOOGLE_APPLICATION_CREDENTIALS. Its contents are never printed.
@@ -24,6 +25,7 @@ import prettier from "prettier"
 
 import {
   CACHE_CONTROL,
+  listedGarments,
   listedImages,
   objectPath,
   publicUrl,
@@ -118,7 +120,7 @@ console.log(
 
 // 3. The URLs into the data.
 const source = await readFile(DATA, "utf8")
-const listed = listedImages(source).flat()
+const listed = [...listedImages(source).flat(), ...listedGarments(source)]
 const unlisted = files.filter((file) => !listed.includes(file))
 const updated = withPhotos(source, photos)
 const options = await prettier.resolveConfig(DATA)

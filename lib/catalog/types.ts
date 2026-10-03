@@ -49,6 +49,13 @@ export type Costume = {
   funFact: string
   look: Look
   /**
+   * The outfit alone, stripped of everything else, for the try-on only
+   * (owner, 2026-10-03): YouCam reads it better than the photos shown.
+   * Never shown, never sent to the page. Without one, the try-on uses
+   * `images[0]`. Set by `npm run photos:upload`.
+   */
+  garment?: Photo
+  /**
    * The costume's photos, in the order to show them. Usually one; The
    * Strangers has three, The Purge two. Set by `npm run photos:upload`.
    */

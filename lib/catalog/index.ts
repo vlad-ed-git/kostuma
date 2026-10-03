@@ -1,6 +1,6 @@
 import { costumes } from "@/content/costumes"
 
-import type { Costume, CostumeSummary, Film } from "./types"
+import type { Costume, CostumeSummary, Film, Photo } from "./types"
 
 /**
  * The collection (content/costumes.ts), read by the pages. Static data, so
@@ -74,4 +74,15 @@ export function getRelated(costume: Costume, count = 4): Related {
 export function toSummary(costume: Costume): CostumeSummary {
   const { slug, name, films, images } = costume
   return { slug, name, films, photo: images[0] }
+}
+
+/**
+ * The picture a costume's try-on dresses the visitor in: its garment (the
+ * outfit alone, clearer for YouCam; owner, 2026-10-03), else its first
+ * photo. Server only: never sent to the page.
+ */
+export function tryOnGarment(
+  costume: Pick<Costume, "garment" | "images">
+): Photo | undefined {
+  return costume.garment ?? costume.images[0]
 }

@@ -2,15 +2,16 @@ import "server-only"
 
 import sharp from "sharp"
 
-import { getCostume } from "@/lib/catalog"
+import { getCostume, tryOnGarment } from "@/lib/catalog"
 
 import { ProviderError } from "./provider"
 
 /**
- * The garment YouCam tries on: the costume's first photo (a cut-out of
- * someone wearing it, its web copy on Cloud Storage) set on white, as a
- * product shot is, and saved as JPEG (cloth-v4 takes JPEG or PNG). Kept in
- * memory per costume once made.
+ * The garment YouCam tries on: the costume's garment picture (the outfit
+ * alone, for the try-on only) or else its first photo (a cut-out of someone
+ * wearing it), its web copy on Cloud Storage, set on white, as a product
+ * shot is, and saved as JPEG (cloth-v4 takes JPEG or PNG). Kept in memory
+ * per costume once made.
  */
 
 const TIMEOUT_MS = 15_000
@@ -32,7 +33,8 @@ export function garmentImage(slug: string): Promise<Uint8Array> {
 }
 
 async function make(slug: string) {
-  const photo = getCostume(slug)?.images[0]
+  const costume = getCostume(slug)
+  const photo = costume && tryOnGarment(costume)
   if (!photo) {
     throw new ProviderError(
       `No photo for the costume ${slug}.`,

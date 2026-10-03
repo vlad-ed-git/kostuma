@@ -57,6 +57,12 @@ export type TryOn = {
   /** The photos' ids; no body photo for a costume that is all makeup. */
   face: string
   body: string | null
+  /**
+   * The outfit picture tried on (its URL); null without an outfit. Missing
+   * on try-ons made before garments (2026-10-03): those used the costume's
+   * first photo.
+   */
+  garment?: string | null
   version: number
   status: TryOnStatus
   steps: StoredStep[]

@@ -2,7 +2,7 @@
 
 import { makeupGuides } from "@/content/makeup"
 import { getUser } from "@/lib/auth/session"
-import { getCostume } from "@/lib/catalog"
+import { getCostume, tryOnGarment } from "@/lib/catalog"
 
 import { PhotoError, preparePhoto, type Prepared } from "./photo"
 import type { PhotoProblem } from "./photo-rules"
@@ -45,7 +45,8 @@ export async function startTryOn(form: FormData): Promise<StartResult> {
 
     const slug = form.get("costume")
     const guide = typeof slug === "string" ? makeupGuides[slug] : undefined
-    if (typeof slug !== "string" || !guide || !getCostume(slug)?.images[0])
+    const costume = typeof slug === "string" ? getCostume(slug) : undefined
+    if (typeof slug !== "string" || !guide || !costume?.images[0])
       return { ok: false, error: "unknown_costume" }
 
     const deps = fittingRoom()
@@ -88,7 +89,16 @@ export async function startTryOn(form: FormData): Promise<StartResult> {
         body: fresh.body && [fresh.body.photo, fresh.body.image],
       })
     }
-    const { tryOn } = await begin(deps, user.uid, { slug, guide, face, body })
+    const garment = guide.allMakeup
+      ? null
+      : (tryOnGarment(costume)?.url ?? null)
+    const { tryOn } = await begin(deps, user.uid, {
+      slug,
+      guide,
+      face,
+      body,
+      garment,
+    })
     return { ok: true, tryOn: toView(tryOn) }
   } catch (error) {
     console.error("A try-on could not start.", error)

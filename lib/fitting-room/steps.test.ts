@@ -60,12 +60,14 @@ const guide: MakeupGuide = {
 }
 
 const BODY_PHOTO = { id: "b".repeat(32), width: 960, height: 1440 }
+const GARMENT_URL = "https://example.com/costumes%2Fghostface.1a2b3c4d5e.webp"
 
 const fitting: Fitting = {
   slug: "ghostface",
   guide,
   face: { id: "f".repeat(32), width: 768, height: 1024, skin: "#C7998A" },
   body: BODY_PHOTO,
+  garment: GARMENT_URL,
 }
 
 /**
@@ -154,8 +156,15 @@ describe("begin", () => {
     const result = await begin(deps, UID, fitting)
     expect(result.outcome).toBe("started")
     expect(result.tryOn.id).toBe(
-      tryOnId(fitting.face.id, BODY_PHOTO.id, "ghostface", "youcam")
+      tryOnId(
+        fitting.face.id,
+        BODY_PHOTO.id,
+        "ghostface",
+        "youcam",
+        GARMENT_URL
+      )
     )
+    expect(result.tryOn.garment).toBe(GARMENT_URL)
     expect(result.tryOn.steps.map((step) => step.render.tool)).toEqual([
       "clothes",
       "makeup",
@@ -181,16 +190,29 @@ describe("begin", () => {
     expect(again.tryOn.status).toBe("running")
   })
 
-  it("makes another try-on for other photos, another costume or another renderer", () => {
+  it("makes another try-on for other photos, another costume, another renderer or another outfit picture", () => {
     const face = "a".repeat(32)
     const body = "b".repeat(32)
-    const one = tryOnId(face, body, "ghostface", "youcam")
-    expect(tryOnId("c".repeat(32), body, "ghostface", "youcam")).not.toBe(one)
-    expect(tryOnId(face, "c".repeat(32), "ghostface", "youcam")).not.toBe(one)
-    expect(tryOnId(face, body, "pennywise", "youcam")).not.toBe(one)
-    expect(tryOnId(face, null, "ghostface", "youcam")).not.toBe(one)
-    // A fake try-on never stands in for a real one.
-    expect(tryOnId(face, body, "ghostface", "fake")).not.toBe(one)
+    const garment = GARMENT_URL
+    const one = tryOnId(face, body, "ghostface", "youcam", garment)
+    expect(tryOnId(face, body, "ghostface", "youcam", garment)).toBe(one)
+    for (const other of [
+      tryOnId("c".repeat(32), body, "ghostface", "youcam", garment),
+      tryOnId(face, "c".repeat(32), "ghostface", "youcam", garment),
+      tryOnId(face, body, "pennywise", "youcam", garment),
+      tryOnId(face, null, "ghostface", "youcam", null),
+      // A fake try-on never stands in for a real one,
+      tryOnId(face, body, "ghostface", "fake", garment),
+      // nor one of an outfit picture since replaced.
+      tryOnId(
+        face,
+        body,
+        "ghostface",
+        "youcam",
+        garment.replace("1a2b", "9f8e")
+      ),
+    ])
+      expect(other).not.toBe(one)
   })
 })
 
@@ -249,9 +271,13 @@ describe("advance", () => {
       ...fitting,
       guide: { ...guide, allMakeup: true },
       body: null,
+      garment: null,
     }
     const { tryOn } = await begin(deps, UID, allMakeup)
-    expect(tryOn.id).toBe(tryOnId(fitting.face.id, null, "ghostface", "youcam"))
+    expect(tryOn.id).toBe(
+      tryOnId(fitting.face.id, null, "ghostface", "youcam", null)
+    )
+    expect(tryOn.garment).toBeNull()
     expect(tryOn.body).toBeNull()
     expect(tryOn.steps.map((step) => step.render.tool)).toEqual([
       "makeup",

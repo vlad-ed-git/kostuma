@@ -96,6 +96,12 @@ export const costumes: Costume[] = [
       ],
       alternative: "Or the purple floral dress from the finale.",
     },
+    garment: {
+      file: "nikki-freaky-nikki-freeman-costume.png",
+      url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fnikki-freaky-nikki-freeman-costume.e04ca6dd25.webp?alt=media",
+      width: 504,
+      height: 999,
+    },
     images: [
       {
         file: "nikki-freaky-nikki-freeman.png",
@@ -204,6 +210,12 @@ export const costumes: Costume[] = [
         "Dangly earrings",
         "90s track suit",
       ],
+    },
+    garment: {
+      file: "aunt-gladys-costume.png",
+      url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Faunt-gladys-costume.8f03f62e66.webp?alt=media",
+      width: 367,
+      height: 1001,
     },
     images: [
       {
@@ -581,6 +593,12 @@ export const costumes: Costume[] = [
       alternative:
         "Or Billy: white face, red spiral cheeks, black suit and bow tie.",
     },
+    garment: {
+      file: "jigsaw-and-billy-the-puppet-costume.png",
+      url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fjigsaw-and-billy-the-puppet-costume.ffea03a351.webp?alt=media",
+      width: 933,
+      height: 1400,
+    },
     images: [
       {
         file: "jigsaw-and-billy-the-puppet.png",
@@ -890,6 +908,12 @@ export const costumes: Costume[] = [
     look: {
       pieces: ["Brown bear costume with top hat and bow tie"],
     },
+    garment: {
+      file: "freddy-fazbear-costume.png",
+      url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Ffreddy-fazbear-costume.3eadb7239d.webp?alt=media",
+      width: 1065,
+      height: 1400,
+    },
     images: [
       {
         file: "freddy-fazbear.png",
@@ -1180,6 +1204,12 @@ export const costumes: Costume[] = [
       "The film cost about $10M and earned $402.5M worldwide, making it A24's highest-grossing release. Parsons is the youngest director to top the box office.",
     look: {
       pieces: ["Pirate hat and coat", "Eyepatch", "Stretched proportions"],
+    },
+    garment: {
+      file: "pirate-clark-costume.png",
+      url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fpirate-clark-costume.f52c32c50c.webp?alt=media",
+      width: 710,
+      height: 1254,
     },
     images: [
       {

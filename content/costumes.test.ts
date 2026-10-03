@@ -66,8 +66,8 @@ describe("the collection", () => {
   it("gives each photo its cut-out file, its web copy's public URL and size", () => {
     const url =
       /^https:\/\/firebasestorage\.googleapis\.com\/v0\/b\/kostuma-73f77\.firebasestorage\.app\/o\/costumes%2F[a-z0-9_-]+\.[a-f0-9]{10}\.webp\?alt=media$/
-    for (const { name, images } of costumes) {
-      for (const photo of images) {
+    for (const { name, images, garment } of costumes) {
+      for (const photo of [...images, ...(garment ? [garment] : [])]) {
         expect(photo.file, name).toMatch(/^[a-z0-9]+([-_][a-z0-9]+)*\.png$/)
         expect(photo.url, name).toMatch(url)
         // The object is named after its file (plus a hash of its content).
@@ -85,10 +85,30 @@ describe("the collection", () => {
     }
   })
 
-  it("never gives two costumes the same photo", () => {
-    const photos = costumes.flatMap((costume) => costume.images)
+  it("never gives two costumes the same photo, nor a garment a photo shown", () => {
+    const photos = costumes.flatMap((costume) => [
+      ...costume.images,
+      ...(costume.garment ? [costume.garment] : []),
+    ])
     expect(new Set(photos.map((photo) => photo.file)).size).toBe(photos.length)
     expect(new Set(photos.map((photo) => photo.url)).size).toBe(photos.length)
+  })
+
+  it("gives the try-on its own garment where the owner made one (2026-10-03)", () => {
+    expect(
+      costumes
+        .filter((costume) => costume.garment)
+        .map((costume) => costume.slug)
+        .sort()
+    ).toEqual([
+      "aunt-gladys",
+      "freddy-fazbear",
+      "jigsaw-and-billy-the-puppet",
+      "nikki-freaky-nikki-freeman",
+      "pirate-clark",
+    ])
+    for (const costume of costumes.filter((each) => each.garment))
+      expect(costume.garment?.file).toBe(`${costume.slug}-costume.png`)
   })
 
   it("has a photo for every costume", () => {

@@ -356,6 +356,13 @@ nothing flickers or beats).
   transparent background: the subject trimmed with a 4 % margin. The site shows each one's web
   copy (WebP, long side ≤ 1400 px, about 140 KB) from Firebase Storage, through `next/image`.
   The lossless masters (PNG, 2048 px) are kept for the Fitting Room.
+- **Garments (owner, 2026-10-03):** a costume may also have a `garment`, the outfit alone on a
+  mannequin or a plain ground, stripped of everything else: YouCam reads it better than the
+  photos shown. It is never shown on the site and never sent to the page; the try-on dresses
+  the visitor in it (set on white, JPEG), or in the first photo when there is none. Aunt Gladys,
+  Freddy Fazbear, Jigsaw and Billy the Puppet, Nikki 'Freaky Nikki' Freeman and Pirate Clark
+  have one. A try-on made with an outfit picture since replaced is no longer shown: the visitor
+  tries the costume on afresh.
 - In a 4:5 frame on the dark well (`--card`, a hairline edge), **contained, never cropped**
   (owner), standing on the frame's floor (`object-bottom`).
 - Alt: `"{name} costume"` (`Costume.photoAlt`) on the costume page; `""` in lists and on the
