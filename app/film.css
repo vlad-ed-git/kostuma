@@ -605,15 +605,6 @@
     0 0 22px color-mix(in oklch, var(--blood) 70%, transparent);
 }
 
-/* A red light on "recording" while the try-on runs. */
-.rec-dot {
-  width: 0.625rem;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--blood-text);
-  box-shadow: 0 0 10px var(--blood);
-}
-
 /* A red light from behind the mirrors and moonlight from the upper right,
    fading out before every edge (no line where the page ends). */
 .dressing-light {
@@ -650,8 +641,8 @@
   }
   /* The dressing room (spec §11.4b): the chosen costume sways on its
      hanger, a pushed one tilts; two of the vanity's bulbs flicker and the
-     dead one sputters; the red light blinks while a try-on runs; a picture
-     chosen from the strip fades up in the mirror. */
+     dead one sputters; a picture chosen from the strip fades up in the
+     mirror. */
   .hanger[aria-current],
   .hanger[data-sway] {
     animation: sway 5s ease-in-out var(--sway-delay, 0s) infinite alternate;
@@ -666,9 +657,6 @@
   }
   .mirror-bulb[data-dead] {
     animation: bulb-sputter 9s steps(1) infinite;
-  }
-  .rec-dot {
-    animation: rec 1s steps(1) infinite;
   }
   .mirror-swap {
     animation: mirror-swap 0.6s var(--ease-dread) backwards;
@@ -1145,13 +1133,6 @@
   68% {
     background: color-mix(in oklch, var(--foreground) 16%, var(--card));
     box-shadow: none;
-  }
-}
-
-/* The red light on "recording": on half a second, off half a second. */
-@keyframes rec {
-  50% {
-    opacity: 0.15;
   }
 }
 

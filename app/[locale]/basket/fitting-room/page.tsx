@@ -50,7 +50,6 @@ export default async function FittingRoomPage({
       ? {
           ...toSummary(costume),
           guide: {
-            look: guide.look,
             steps: guide.steps.map(({ title, howTo, products }) => ({
               title,
               howTo,
@@ -108,7 +107,7 @@ export default async function FittingRoomPage({
             {t("title")}
           </h1>
           <p className="mt-4 max-w-[60ch] text-lead text-muted-foreground">
-            {t("lead")}
+            {selected ? t("transform", { name: selected.name }) : t("lead")}
           </p>
           <div
             aria-hidden="true"

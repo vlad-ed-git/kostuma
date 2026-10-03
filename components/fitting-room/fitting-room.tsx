@@ -275,9 +275,12 @@ function Fitting({
   )
 
   if (stage === "follow" && tryOn) {
-    const ended = tryOn.status !== "running"
     // A failed try-on says why, and the photos open on the one at fault.
     const failed = tryOn.failure ? failureProblem(tryOn.failure) : null
+    const restart = () => {
+      setProblem(failed?.photo ? failed : null)
+      setStage("photos")
+    }
     return (
       <section aria-labelledby="fitting">
         <TryOnSteps
@@ -285,31 +288,38 @@ function Fitting({
           name={costume.name}
           photo={costume.photo}
           guide={costume.guide}
-          title={heading(costume.name)}
-          actions={
-            <>
-              {tryOn.status === "failed" && failed && (
+          // The page's lead names the character: the heading is for
+          // screen readers, and where each stage starts.
+          title={
+            <h2 id="fitting" ref={title} tabIndex={-1} className="sr-only">
+              {costume.name}
+            </h2>
+          }
+          failure={
+            tryOn.status === "failed" &&
+            failed && (
+              <>
                 <p
                   role="alert"
                   className="max-w-[60ch] border border-destructive/40 px-4 py-3 text-destructive"
                 >
                   {t(failed.message)}
                 </p>
-              )}
-              {ended && open && (
-                <Button
-                  variant={tryOn.status === "failed" ? "default" : "outline"}
-                  size="lg"
-                  className="mt-2"
-                  onClick={() => {
-                    setProblem(failed?.photo ? failed : null)
-                    setStage("photos")
-                  }}
-                >
-                  {tryOn.status === "failed" ? t("retry") : t("again")}
-                </Button>
-              )}
-            </>
+                {open && (
+                  <Button size="lg" onClick={restart}>
+                    {t("retry")}
+                  </Button>
+                )}
+              </>
+            )
+          }
+          after={
+            tryOn.status === "done" &&
+            open && (
+              <Button variant="outline" size="lg" onClick={restart}>
+                {t("again")}
+              </Button>
+            )
           }
         />
       </section>

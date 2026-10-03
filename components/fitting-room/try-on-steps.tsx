@@ -18,14 +18,13 @@ import {
   renderingFrame,
   shownFrame,
 } from "@/lib/fitting-room/frames"
-import { photoUrl, type TryOnView } from "@/lib/fitting-room/try-on"
+import type { TryOnView } from "@/lib/fitting-room/try-on"
 import { cn } from "@/lib/utils"
 
 import { Mirror } from "./dressing-room"
 
 /** A costume's makeup guide, as the page reads it (content/makeup.ts). */
 export type GuideText = {
-  look: string
   steps: { title: string; howTo: string; products: string[] }[]
   finish?: string
 }
@@ -40,13 +39,14 @@ const GLASS_HEIGHT = "min(100svh - 18rem, 42rem)"
 /**
  * A try-on as it develops, then as it came out (owner, 2026-10-03; spec
  * §11.4b): the visitor sits at the vanity. Its mirror shows one picture
- * at a time, large: the outfit, their face before, then after each makeup
- * step. Under it, the film strip holds every picture as a frame: a frame
- * not done yet is the character's silhouette in the dark, the one
- * rendering now breathing red; a picture that comes out comes into the
- * light. Beside the mirror, the try-on's `title`, how it is going, the
- * look, its `actions`, then the card of the picture shown: the step's
- * how-to and what to buy, with the way to the previous and next.
+ * at a time, large: the outfit, then their face after each makeup step.
+ * Beside it, the main thing: "Step n of N", the step's how-to and what to
+ * buy, and the way to the previous and next step. Under them, the film
+ * strip holds every picture as a frame: a frame not done yet is the
+ * character's silhouette in the dark, the one rendering now breathing red;
+ * a picture that comes out comes into the light. `failure` (what went
+ * wrong and what to do) heads the card; `after` (starting over) closes the
+ * try-on. How it is going is told to screen readers only.
  *
  * Until the visitor picks a frame, the mirror follows the newest picture,
  * and once done shows the last: the whole transformation.
@@ -57,7 +57,8 @@ export function TryOnSteps({
   photo,
   guide,
   title,
-  actions,
+  failure,
+  after,
 }: {
   tryOn: TryOnView
   /** The character. */
@@ -65,17 +66,17 @@ export function TryOnSteps({
   /** The costume's photo: its silhouette stands in for a step not done. */
   photo?: Photo
   guide: GuideText
-  /** The try-on's heading. */
+  /** The try-on's heading (for screen readers: the page names the character). */
   title: ReactNode
-  /** What can be done about it (a failure's alert, starting over). */
-  actions?: ReactNode
+  failure?: ReactNode
+  after?: ReactNode
 }) {
   const t = useTranslations("FittingRoom")
   const frames = framesOf(tryOn, guide.steps.length)
   const now = renderingFrame(frames, tryOn)
   const [chosen, setChosen] = useState<number | null>(null)
-  const shown = Math.min(chosen ?? shownFrame(frames, tryOn), frames.length - 1)
   const last = frames.length - 1
+  const shown = Math.min(chosen ?? shownFrame(frames, tryOn), last)
   const frame = frames[shown]
   const previous = useRef<HTMLButtonElement>(null)
   const next = useRef<HTMLButtonElement>(null)
@@ -84,11 +85,10 @@ export function TryOnSteps({
   const makeup = frames.filter((each) => each.kind === "step")
   const ready = makeup.filter((each) => each.step?.status === "done").length
   const outfit = frames[0]?.kind === "outfit" ? frames[0].step : null
-  const running = tryOn.status === "running"
   const status =
     tryOn.status === "done"
       ? t("progress.done")
-      : running
+      : tryOn.status === "running"
         ? outfit && outfit.status !== "done"
           ? t("progress.outfit")
           : t("progress.makeup", { done: ready, count: makeup.length })
@@ -119,139 +119,59 @@ export function TryOnSteps({
   const frameName = (each: Frame) =>
     each.kind === "outfit"
       ? t("outfit")
-      : each.kind === "before"
-        ? t("before")
-        : t("stepNamed", {
-            number: each.number,
-            title: guide.steps[each.number - 1].title,
-          })
-  const step = frame.kind === "step" ? guide.steps[frame.number - 1] : null
+      : t("stepNamed", {
+          number: each.number,
+          title: guide.steps[each.number - 1].title,
+        })
+  const step = frame?.kind === "step" ? guide.steps[frame.number - 1] : null
 
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-x-12 gap-y-8 [grid-template-areas:'head'_'mirror'_'strip'_'card'] lg:grid-cols-[auto_minmax(0,1fr)] lg:grid-rows-[auto_1fr_auto] lg:[grid-template-areas:'mirror_head'_'mirror_card'_'strip_strip'] xl:gap-x-20">
-      <div className="flex flex-col items-start gap-4 [grid-area:head]">
-        {title}
-        <p
-          aria-live="polite"
-          className="flex items-center gap-3 text-lead text-muted-foreground empty:hidden"
-        >
-          {running && <span aria-hidden="true" className="rec-dot shrink-0" />}
-          {status}
-        </p>
-        {!tryOn.outfit && (
-          <p className="max-w-[60ch] text-body-lg text-muted-foreground">
-            {t("allMakeup", { name })}
-          </p>
-        )}
-        <p className="max-w-[60ch] text-body-lg">{guide.look}</p>
-        {actions}
-      </div>
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-x-12 gap-y-10 [grid-template-areas:'mirror'_'card'_'strip'_'after'] lg:grid-cols-[auto_minmax(0,1fr)] lg:[grid-template-areas:'mirror_card'_'strip_strip'_'after_after'] xl:gap-x-20">
+      {title}
+      <p aria-live="polite" className="sr-only">
+        {status}
+      </p>
 
       <figure className="[grid-area:mirror]">
         <Mirror bulbs="lg" ratio={3 / 4} height={GLASS_HEIGHT} fog>
-          <FrameView
-            frame={frame}
-            tryOn={tryOn}
-            photo={photo}
-            current={shown === now}
-            alt={
-              frame.kind === "outfit"
-                ? t("outfitAlt", { name })
-                : frame.kind === "before"
-                  ? t("beforeAlt")
+          {frame && (
+            <FrameView
+              frame={frame}
+              photo={photo}
+              current={shown === now}
+              alt={
+                frame.kind === "outfit"
+                  ? t("outfitAlt", { name })
                   : t("stepAlt", {
                       number: frame.number,
                       title: guide.steps[frame.number - 1].title,
                     })
-            }
-            // A picture the mirror shows by itself comes into the light;
-            // one the visitor picks surfaces at once.
-            reveal={chosen === null}
-            sizes="(min-width: 1024px) 34rem, 90vw"
-            large
-          />
+              }
+              // A picture the mirror shows by itself comes into the light;
+              // one the visitor picks surfaces at once.
+              reveal={chosen === null}
+              sizes="(min-width: 1024px) 34rem, 90vw"
+              large
+            />
+          )}
         </Mirror>
       </figure>
 
-      <ol
-        ref={strip}
-        aria-label={t("frames")}
-        className="film-strip relative flex gap-3 ps-4 pe-16 [grid-area:strip] sm:gap-4"
-      >
-        {frames.map((each, index) => (
-          <li key={index} className="shrink-0">
-            <button
-              type="button"
-              aria-label={frameName(each)}
-              aria-current={index === shown || undefined}
-              onClick={() => setChosen(index)}
-              className="group flex flex-col items-center gap-1.5 outline-offset-4"
-            >
-              <span className="film-frame relative block aspect-3/4 w-15 overflow-hidden bg-black sm:w-18">
-                <FrameView
-                  frame={each}
-                  tryOn={tryOn}
-                  photo={photo}
-                  current={index === now}
-                  alt=""
-                  reveal
-                  sizes="72px"
-                />
-              </span>
-              <span
-                className={cn(
-                  "text-micro caps transition-colors",
-                  index === shown
-                    ? "text-blood-text"
-                    : "text-muted-foreground group-hover:text-foreground"
-                )}
-              >
-                {each.kind === "outfit"
-                  ? t("outfitShort")
-                  : each.kind === "before"
-                    ? t("before")
-                    : each.number}
-              </span>
-            </button>
-          </li>
-        ))}
-      </ol>
-
-      <div className="flex flex-col items-start gap-4 [grid-area:card]">
-        <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2">
-          <p className="text-micro caps text-blood-text">
-            {frame.kind === "step" &&
-              t("stepOf", { number: frame.number, count: makeup.length })}
+      <div className="flex flex-col items-start gap-5 [grid-area:card] lg:pt-2">
+        {failure}
+        {frame?.kind === "step" && (
+          <p className="text-label caps text-blood-text">
+            {t("stepOf", { number: frame.number, count: makeup.length })}
           </p>
-          <div className="-me-3 flex">
-            <Button
-              ref={previous}
-              variant="ghost"
-              size="sm"
-              onClick={() => go(-1)}
-              className={cn("gap-1", shown === 0 && "invisible")}
-            >
-              <RiArrowLeftSLine aria-hidden="true" className="size-5" />
-              {t("previous")}
-            </Button>
-            <Button
-              ref={next}
-              variant="ghost"
-              size="sm"
-              onClick={() => go(1)}
-              className={cn("gap-1", shown === last && "invisible")}
-            >
-              {t("next")}
-              <RiArrowRightSLine aria-hidden="true" className="size-5" />
-            </Button>
-          </div>
-        </div>
-        <h3 className="font-heading text-h4 font-medium text-balance">
-          {step ? step.title : frameName(frame)}
-        </h3>
+        )}
+        {frame && (
+          <h3 className="font-heading text-h2 font-semibold text-balance">
+            {step ? step.title : frameName(frame)}
+          </h3>
+        )}
         {step && (
           <>
-            <p className="max-w-[60ch] text-body-lg">{step.howTo}</p>
+            <p className="max-w-[60ch] text-lead">{step.howTo}</p>
             <p className="sr-only">{t("youNeed")}</p>
             <ul className="flex flex-col gap-1.5">
               {step.products.map((product) => (
@@ -272,24 +192,94 @@ export function TryOnSteps({
           </>
         )}
         {shown === last && guide.finish && (
-          <div className="mt-4 flex max-w-[60ch] flex-col gap-2">
+          <div className="flex max-w-[60ch] flex-col gap-2">
             <p className="text-micro caps text-blood-text">{t("finish")}</p>
             <p className="text-body-lg">{guide.finish}</p>
           </div>
         )}
+        {frames.length > 1 && (
+          // Phones: the next step first, the width of the screen.
+          <div className="mt-3 flex w-full flex-col-reverse gap-3 sm:w-auto sm:flex-row">
+            <Button
+              ref={previous}
+              variant="outline"
+              size="lg"
+              onClick={() => go(-1)}
+              className={cn(
+                "gap-1.5",
+                shown === 0 && "max-sm:hidden sm:invisible"
+              )}
+            >
+              <RiArrowLeftSLine aria-hidden="true" className="size-5" />
+              {t("previous")}
+            </Button>
+            <Button
+              ref={next}
+              size="lg"
+              onClick={() => go(1)}
+              className={cn(
+                "gap-1.5",
+                shown === last && "max-sm:hidden sm:invisible"
+              )}
+            >
+              {t("next")}
+              <RiArrowRightSLine aria-hidden="true" className="size-5" />
+            </Button>
+          </div>
+        )}
       </div>
+
+      <ol
+        ref={strip}
+        aria-label={t("frames")}
+        className="film-strip relative flex gap-3 ps-4 pe-16 [grid-area:strip] sm:gap-4"
+      >
+        {frames.map((each, index) => (
+          <li key={index} className="shrink-0">
+            <button
+              type="button"
+              aria-label={frameName(each)}
+              aria-current={index === shown || undefined}
+              onClick={() => setChosen(index)}
+              className="group flex flex-col items-center gap-1.5 outline-offset-4"
+            >
+              <span className="film-frame relative block aspect-3/4 w-15 overflow-hidden bg-black sm:w-18">
+                <FrameView
+                  frame={each}
+                  photo={photo}
+                  current={index === now}
+                  alt=""
+                  reveal
+                  sizes="72px"
+                />
+              </span>
+              <span
+                className={cn(
+                  "text-micro caps transition-colors",
+                  index === shown
+                    ? "text-blood-text"
+                    : "text-muted-foreground group-hover:text-foreground"
+                )}
+              >
+                {each.kind === "outfit" ? t("outfitShort") : each.number}
+              </span>
+            </button>
+          </li>
+        ))}
+      </ol>
+
+      {after && <div className="[grid-area:after]">{after}</div>}
     </div>
   )
 }
 
 /**
  * What a frame holds, in the mirror (`large`) or on the strip: the picture
- * once done; the face before; until then the character's silhouette
- * (breathing while it renders, `current`); or nothing, "Not rendered".
+ * once done; until then the character's silhouette (breathing while it
+ * renders, `current`); or nothing, "Not rendered".
  */
 function FrameView({
   frame,
-  tryOn,
   photo,
   current,
   alt,
@@ -298,7 +288,6 @@ function FrameView({
   large = false,
 }: {
   frame: Frame
-  tryOn: TryOnView
   photo?: Photo
   current: boolean
   alt: string
@@ -308,16 +297,13 @@ function FrameView({
   large?: boolean
 }) {
   const t = useTranslations("FittingRoom")
-  const image =
-    frame.kind === "before"
-      ? photoUrl("face", tryOn.face)
-      : frame.step?.status === "done"
-        ? frame.step.image
-        : null
+  const image = frame.step?.status === "done" ? frame.step.image : null
 
   if (image)
-    return frame.kind === "before" || !reveal ? (
-      // The visitor's own photos, through the server only: no optimizer.
+    return reveal ? (
+      <Lit key={image} src={image} alt={alt} />
+    ) : (
+      // The visitor's own pictures, through the server only: no optimizer.
       // eslint-disable-next-line @next/next/no-img-element
       <img
         key={image}
@@ -325,11 +311,9 @@ function FrameView({
         alt={alt}
         className="mirror-swap absolute inset-0 size-full object-contain"
       />
-    ) : (
-      <Lit key={image} src={image} alt={alt} />
     )
 
-  if (frame.kind !== "before" && frame.step?.status === "failed")
+  if (frame.step?.status === "failed")
     return large ? (
       <span className="absolute inset-0 flex items-center justify-center text-micro caps text-muted-foreground">
         {t("stepFailed")}

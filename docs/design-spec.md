@@ -609,8 +609,9 @@ visitor's face transforms. One type scale: H1 `display` → the stage's title `h
 `h4` → small capitals → body. On large screens every stage sets its mirrors on the left and its
 words beside them; on phones the words come first.
 
-- **Title card:** H1 "The Fitting Room" split into the red and bone ghosts (8.9), one lead line,
-  the VHS band rolling through the card from one edge of the screen to the other. Behind the
+- **Title card:** H1 "The Fitting Room" split into the red and bone ghosts (8.9), the lead line
+  "Transform into {name}. Step by step." (owner, 2026-10-03; with no costume chosen, "Transform
+  into a monster. Step by step."), the VHS band rolling through the card from one edge of the screen to the other. Behind the
   room, a red light behind the mirrors and moonlight from the upper right, fading out before the
   page ends (no seam).
 - **The rail:** the costumes in My Pumpkin Basket, the last added first, each a 4:5 thumbnail
@@ -642,34 +643,35 @@ words beside them; on phones the words come first.
   beside the two mirrors with the photos, "Check your photos first: once the try-on starts, they
   can't be changed until it's finished.", "Start the try-on" (primary; pending: spinner +
   "Checking your photos…") and "Change photos" (ghost). Nothing is sent before this button.
-- **The try-on** (`h2` the character's name): locked while it runs (no control to change the
-  photos). Beside the mirror: the name, a polite status line ("Trying on the outfit…", "Doing
-  your makeup: 2 of 4 steps ready…", "Your try-on is ready."; a red light blinks before it, 1 Hz,
-  while it runs), for a costume that is all makeup "{name} is all makeup: there is no outfit to
-  try on. Everything is on your face.", the guide's look line, then the card.
+- **The try-on** (owner, 2026-10-03: the steps are the main thing): the vanity and, beside it,
+  the step card; under them the film strip; at the bottom "Try with other photos". Nothing else:
+  no name (the lead says it), no status line, no look line. Locked while it runs (no control to
+  change the photos). How it is going ("Trying on the outfit…", "Doing your makeup: 2 of 4 steps
+  ready…", "Your try-on is ready.") is told to screen readers only (a polite live region), and
+  the try-on's `h2`, the character's name, is for them too.
   - **The vanity** shows one picture at a time, large (its glass as tall as the screen allows,
-    at most 42 rem): the outfit (the visitor in the costume), "Before" (their face), then their
-    face after each step. Until the visitor picks one, it follows the newest picture out (with
-    none yet, the frame rendering now) and, once done, shows the last step: the whole
-    transformation. A picture it shows by itself comes "into the light"; one the visitor picks
-    fades up.
-  - **The film strip** ("Your pictures") under the mirror (under both columns on large screens):
-    every picture as a frame between sprocket holes, labelled "Outfit", "Before", 1, 2, …; the
-    one in the mirror ringed in `--blood-text`; a frame not done yet is the costume photo as a
-    black silhouette rimmed in red (as the photos wait on the home page, §7.2), the one rendering
-    now at full strength, its red light breathing (2.4 s), the ones waiting on it dim (35 %); a
-    picture that comes out comes into the light. Each frame is a button naming its picture
-    ("Step 2: Rotting hollows"). The strip scrolls when the frames outrun it and keeps the frame
-    rendering in sight.
-  - **The card:** "Step n of N" (`micro` small capitals, `--blood-text`) with "Previous" and
-    "Next" (ghost; each hidden at its end), the step's title (`h4`), the how-to, and its products
-    as links to a shop's search (new tab, 10.3 external links). For the outfit and before, their
-    name. On the last step, "To finish" and the guide's last line.
-- Ended: "Try with other photos" (outline). Failed: an alert saying what to do ("Your face
-  couldn't be found in the photo…") and "Choose other photos" (primary), which opens the photos
-  with the message under the one at fault. A frame not rendered shows "Not rendered" in the
-  mirror (a ✕ on the strip). Reduced motion: no sway, tilt, flicker, blink or breathing; pictures
-  appear at once.
+    at most 42 rem): the outfit (the visitor in the costume), then their face after each step.
+    Never the face before (owner: "they know how they look"). Until the visitor picks one, it
+    follows the newest picture out (with none yet, the frame rendering now) and, once done, shows
+    the last step: the whole transformation. A picture it shows by itself comes "into the light";
+    one the visitor picks fades up.
+  - **The step card**, the main thing: "Step n of N" (`label` small capitals, `--blood-text`),
+    the step's title (`h2` size), the how-to (`lead`), its products as links to a shop's search
+    (new tab, 10.3 external links), on the last step "To finish" and the guide's last line; then
+    "Previous step" (outline) and "Next step" (primary), each hidden at its end (the other keeps
+    focus). For the outfit, its name.
+  - **The film strip** ("Your pictures"): every picture as a frame between sprocket holes,
+    labelled "Outfit", 1, 2, …; the one in the mirror ringed in `--blood-text`; a frame not done
+    yet is the costume photo as a black silhouette rimmed in red (as the photos wait on the home
+    page, §7.2), the one rendering now at full strength, its red light breathing (2.4 s), the
+    ones waiting on it dim (35 %); a picture that comes out comes into the light. Each frame is a
+    button naming its picture ("Step 2: Rotting hollows"). The strip scrolls when the frames
+    outrun it and keeps the frame rendering in sight.
+- Ended: "Try with other photos" (outline) at the bottom, under the strip. Failed: an alert
+  saying what to do ("Your face couldn't be found in the photo…") and "Choose other photos"
+  (primary) heading the card, which opens the photos with the message under the one at fault. A
+  frame not rendered shows "Not rendered" in the mirror (a ✕ on the strip). Reduced motion: no
+  sway, tilt, flicker or breathing; pictures appear at once.
 - Pictures load from the server only, to their owner (`/api/fitting-room/…`, `private`
   caching), never through the image optimizer.
 
