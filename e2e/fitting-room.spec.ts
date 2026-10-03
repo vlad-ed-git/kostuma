@@ -235,22 +235,17 @@ test.describe("The Fitting Room", () => {
     ).toBeVisible()
   })
 
-  test("needs only the face for a costume that is all makeup", async ({
+  test("tries Nikki's outfit on before her makeup, now that she has one", async ({
     page,
   }) => {
     const errors = collectErrors(page)
     await enter(page, ["nikki-freaky-nikki-freeman"])
     await page.goto("/basket/fitting-room?costume=nikki-freaky-nikki-freeman")
+    // Both photos, as for every costume with an outfit.
     await expect(
-      page.getByText("Nikki 'Freaky Nikki' Freeman is all makeup: one photo")
+      page.getByText("Two photos: your face, and you from head to toe.")
     ).toBeVisible()
-    await expect(bodyPicker(page)).toHaveCount(0)
-    await page
-      .locator('input[name="face"]')
-      .setInputFiles(await photo(900, 1200))
-    await expect(
-      page.getByRole("button", { name: "Change the photo of your face" })
-    ).toBeVisible()
+    await givePhotos(page, await photo(900, 1200), await photo(1000, 1500))
     await page.getByRole("button", { name: "Continue" }).click()
     await page.getByRole("button", { name: "Start the try-on" }).click()
 
@@ -262,11 +257,14 @@ test.describe("The Fitting Room", () => {
     await expect(
       nikki.getByRole("img", { name: "Your face after step 7: Black hair" })
     ).toBeVisible()
-    // The seven steps: no outfit.
-    await expect(strip(nikki).getByRole("button")).toHaveCount(7)
+    // The outfit, then the seven steps.
+    await expect(strip(nikki).getByRole("button")).toHaveCount(8)
+    await strip(nikki).getByRole("button", { name: "The outfit" }).click()
     await expect(
-      strip(nikki).getByRole("button", { name: "The outfit" })
-    ).toHaveCount(0)
+      nikki.getByRole("img", {
+        name: "You wearing the Nikki 'Freaky Nikki' Freeman costume",
+      })
+    ).toBeVisible()
     expect(errors).toEqual([])
   })
 

@@ -169,7 +169,6 @@ export const makeupGuides: Record<string, MakeupGuide> = {
   },
   "nikki-freaky-nikki-freeman": {
     look: "Freaky Nikki: clammy pale skin, a fevered flush, red raw eyes ringed in smeared mascara, bitten red lips and wild black hair.",
-    allMakeup: true,
     steps: [
       {
         title: "Clammy pale skin",

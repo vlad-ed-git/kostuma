@@ -162,11 +162,11 @@ describe("the makeup guides", () => {
     )
   })
 
-  it("mark the costumes that are all makeup (owner, 2026-10-03)", () => {
+  it("mark the costumes that are all makeup: none since Nikki has her outfit (owner, 2026-10-03)", () => {
     const allMakeup = guides
       .filter(([, guide]) => guide.allMakeup)
       .map(([slug]) => slug)
-    expect(allMakeup).toEqual(["nikki-freaky-nikki-freeman"])
+    expect(allMakeup).toEqual([])
   })
 
   it.each(guides)("%s reads well", (_, guide) => {
