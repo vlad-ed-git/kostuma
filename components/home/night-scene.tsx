@@ -4,8 +4,9 @@ import { Flashlight } from "./flashlight"
 
 /**
  * Behind the home title (spec §11.1): moonlight, eyes that only the
- * flashlight finds, the darkness the flashlight cuts through, a hooded
- * figure standing in a blood-red window, and fog. All decorative; the
+ * flashlight finds, the darkness the flashlight cuts through, a grimy
+ * blood-red window with a hooded figure standing in it (on phones only),
+ * and fog. All decorative; the
  * parent section must be positioned, isolated and clipped.
  */
 export function NightScene() {
@@ -26,31 +27,80 @@ export function NightScene() {
       <Flashlight />
       <svg aria-hidden="true" viewBox="0 0 400 640" className="apparition">
         <defs>
-          <radialGradient id="lamp-light" cx="50%" cy="48%" r="62%">
-            <stop offset="0" stopColor="#ff4a33" />
-            <stop offset=".5" stopColor="#b30f19" />
-            <stop offset="1" stopColor="#3a0408" />
-          </radialGradient>
           <radialGradient id="lamp-spill" cx="50%" cy="40%" r="50%">
-            <stop offset="0" stopColor="#c8101d" stopOpacity=".45" />
+            <stop offset="0" stopColor="#c8101d" stopOpacity=".3" />
             <stop offset="1" stopColor="#c8101d" stopOpacity="0" />
           </radialGradient>
+          <clipPath id="window-pane">
+            <path d="M112 138 A88 88 0 0 1 288 138 V340 H112 Z" />
+          </clipPath>
+          {/* Burnt in from the frame, as the film's windows are. */}
+          <radialGradient id="window-burn" cx="50%" cy="46%" r="62%">
+            <stop offset="0" stopColor="#1a0204" stopOpacity=".1" />
+            <stop offset=".65" stopColor="#1a0204" stopOpacity=".5" />
+            <stop offset="1" stopColor="#060102" stopOpacity=".9" />
+          </radialGradient>
+          {/* Rotten wood and old glass: no straight edge left. */}
+          <filter
+            id="window-rough"
+            x="-10%"
+            y="-10%"
+            width="120%"
+            height="120%"
+          >
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.09"
+              numOctaves="2"
+              seed="7"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              scale="6"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
         </defs>
         <ellipse cx="200" cy="200" rx="200" ry="220" fill="url(#lamp-spill)" />
-        <g className="lamp">
-          <path
-            d="M112 138 A88 88 0 0 1 288 138 V340 H112 Z"
-            fill="url(#lamp-light)"
-          />
+        {/* The glass: the film strip's grime (public/images/window-glass.webp),
+            dimmed, its edges burnt; the frame dark, worn and rough. */}
+        <g className="lamp" filter="url(#window-rough)">
+          <g clipPath="url(#window-pane)">
+            <image
+              href="/images/window-glass.webp"
+              x="112"
+              y="50"
+              width="176"
+              height="290"
+              preserveAspectRatio="xMidYMid slice"
+            />
+            <rect
+              x="112"
+              y="50"
+              width="176"
+              height="290"
+              fill="#2a0306"
+              opacity=".4"
+            />
+            <rect
+              x="112"
+              y="50"
+              width="176"
+              height="290"
+              fill="url(#window-burn)"
+            />
+          </g>
           <path
             d="M200 52 V340 M112 214 H288"
-            stroke="#07080b"
+            stroke="#170809"
+            strokeOpacity=".92"
             strokeWidth="9"
           />
           <path
             d="M112 138 A88 88 0 0 1 288 138 V340 H112 Z"
             fill="none"
-            stroke="#07080b"
+            stroke="#170809"
             strokeWidth="12"
           />
         </g>

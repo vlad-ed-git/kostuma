@@ -230,15 +230,15 @@ stay at 16 px.
 
 ### 7.1 Tokens
 
-| Token             | Value                          | Use                                                |
-| ----------------- | ------------------------------ | -------------------------------------------------- |
-| `--ease-dread`    | cubic-bezier(0.16, 1, 0.3, 1)  | Row hover, the drip (fast start, long tail).       |
-| `--ease-heavy`    | cubic-bezier(0.65, 0, 0.35, 1) | Toggles, overlays, the heartbeat, the reel change. |
-| `--duration-fast` | 150 ms                         | Color and opacity on hover/press.                  |
-| `--duration-base` | 300 ms                         | Small state changes, menus.                        |
-| `--duration-slow` | 700 ms                         | The mobile menu's items fading up.                 |
-| Frame             | 1000 / 24 ≈ 42 ms              | Film-rate steps (grain, cue mark).                 |
-| Stagger           | 60 ms, max 12 items            | The mobile menu's links.                           |
+| Token             | Value                          | Use                                                  |
+| ----------------- | ------------------------------ | ---------------------------------------------------- |
+| `--ease-dread`    | cubic-bezier(0.16, 1, 0.3, 1)  | Row hover, the blood's pour (fast start, long tail). |
+| `--ease-heavy`    | cubic-bezier(0.65, 0, 0.35, 1) | Toggles, overlays, the heartbeat, the reel change.   |
+| `--duration-fast` | 150 ms                         | Color and opacity on hover/press.                    |
+| `--duration-base` | 300 ms                         | Small state changes, menus.                          |
+| `--duration-slow` | 700 ms                         | The mobile menu's items fading up.                   |
+| Frame             | 1000 / 24 ≈ 42 ms              | Film-rate steps (grain, cue mark).                   |
+| Stagger           | 60 ms, max 12 items            | The mobile menu's links.                             |
 
 ### 7.2 Patterns
 
@@ -284,7 +284,7 @@ Under `prefers-reduced-motion: reduce`:
 - Reveals are off: content is simply there; costume photos are lit from the start.
 - The reel change becomes an instant cut; no scratches.
 - Ambient loops stop: grain frozen, fog still, no flicker, no heartbeat, no blinking eyes, no
-  lamp stutter, no drip, no VHS roll; the flashlight stays where it is; costume rows stay fully
+  lamp stutter, no pour or falling drop (the blood hangs still), no VHS roll; the flashlight stays where it is; costume rows stay fully
   lit. The cue mark shows steadily.
 - Hover keeps its color changes, without movement.
 
@@ -316,7 +316,9 @@ test measures brightness across the title's bottom edge and fails on a step of 1
    hidden tab, and fades out over the title's last 22 %. It hides **eyes in the corner** that
    blink now and then (hidden on small screens).
 6. **The figure in the window (home title).** An SVG: an arched window lit blood red (its lamp
-   stutters now and then), a hooded figure standing in it with two red eyes that blink, a red
+   stutters now and then), as grimy as the film strip (owner, 2026-10-04): its glass the strip's
+   red grime (`public/images/window-glass.webp`, drawn with the strip), dimmed and burnt in from
+   the frame, the frame dark and rough (a displacement filter), low contrast, a hooded figure standing in it with two red eyes that blink, a red
    light spill and glow. **The figure only on phones** (owner, 2026-10-04): from 40rem the
    window stands empty, and its lamp never stutters (the whole window is then a red field larger
    than a card, 7.3). Between the tagline and the countdown on desktop, a small tableau above
@@ -528,7 +530,7 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
    - **Countdown** (`components/countdown`, logic in `lib/countdown`): a small-capital line
      "Until Halloween · **Saturday, October 31**" (the date in bone, formatted per locale), then
      four cells, Days · Hours · Minutes · Seconds: `numeral` digits in the display face over
-     small-capital units, four equal columns on one left edge; the seconds in `--blood-text`,
+     small-capital units, the digits in **decaying ink** (owner, 2026-10-04: an SVG filter, `#decaying-ink`, bites their edges ragged, flakes pits out of them, fades them unevenly and bleeds them a little; seeded, so always the same; the units stay clean), four equal columns on one left edge; the seconds in `--blood-text`,
      beating on every tick. Counts to midnight of October 31 **in the visitor's time zone**,
      real time left (no jump at daylight-saving changes); all of October 31 shows "Tonight."
      and "The darkest day is here." in the same three rows (no shift at midnight); from
@@ -536,8 +538,10 @@ All pages: header, `<main id="content">`, footer, atmosphere layers. Titles thro
      browser fills in the count. `role="timer"`, and a visually hidden sentence updated once a
      minute ("29 days, 10 hours and 14 minutes until Halloween.").
    - **The way through** (owner, 2026-10-04), one list in the display face: **"Choose your
-     costume"** (`Home.chooseCostume`) with a red arrow dripping downward, a link to the costumes
-     below (`/#costumes`); then "Try it on" (`Home.tryItOn`) and "Apply makeup"
+     costume"** (`Home.chooseCostume`), a link to the costumes below (`/#costumes`), blood
+     dripping from its end down past the three lines (owner: it points down;
+     `components/home/blood-drip.tsx`: a pool at the word, two short runs, one long stream with
+     a drop at its tip; it pours down once, then a drop swells and falls every 2.4 s); then "Try it on" (`Home.tryItOn`) and "Apply makeup"
      (`Home.applyMakeup`), words, not links (the Fitting Room lives in the basket).
    - **The transformation** (owner, 2026-10-04: what to expect, no words), right under "Transform
      into a monster.", as wide as the tagline's column: the owner's red, burnt strip of film

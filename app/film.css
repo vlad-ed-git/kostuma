@@ -280,7 +280,7 @@
   translate: -50% 0;
   pointer-events: none;
   filter: drop-shadow(
-    0 0 22px color-mix(in oklch, var(--blood) 55%, transparent)
+    0 0 22px color-mix(in oklch, var(--blood) 35%, transparent)
   );
   mask-image: linear-gradient(to bottom, #000 55%, transparent 96%);
   mask-repeat: no-repeat;
@@ -309,11 +309,42 @@
 .heartbeat {
   transform-origin: 50% 60%;
 }
+/* The numbers in decaying ink (the filter is in the countdown). */
+.decaying-ink {
+  filter: url("#decaying-ink");
+}
 
-/* ── "Choose your costume": the arrow drips toward the costumes ────────── */
+/* ── "Choose your costume": blood drips toward the costumes ───────────── */
 
-.drip {
-  display: inline-block;
+/* Room for the pool at the word's end; the stream hangs from it past the
+   lines below (components/home/blood-drip.tsx), sized in the line's em. */
+.blood-drip {
+  position: relative;
+  flex: none;
+  align-self: stretch;
+  width: 0.8em;
+}
+.blood-drip > svg {
+  position: absolute;
+  top: 0.28em;
+  left: 0;
+  /* Past the third line whatever the lines' height: three touch-sized
+     lines and their gaps (9.25rem), and a drop beyond. */
+  height: max(4em, 10.25rem);
+  aspect-ratio: 60 / 300;
+  pointer-events: none;
+  filter: drop-shadow(
+    0 0 0.12em color-mix(in oklch, var(--blood) 45%, transparent)
+  );
+}
+.blood-drip-stream,
+.blood-drip-fall {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+}
+/* Still: the stream has run; no drop falls. */
+.blood-drip-fall {
+  opacity: 0;
 }
 
 /* ── The home film strip (components/home/transformation-reel.tsx) ───── */
@@ -781,8 +812,13 @@
   .heartbeat {
     animation: pulse 1s var(--ease-heavy);
   }
-  .drip {
-    animation: drip 2.4s var(--ease-heavy) infinite;
+  /* The blood pours down past the lines once, then a drop swells at the
+     tip and falls, every 2.4 s. */
+  .blood-drip-stream {
+    animation: blood-pour 1.4s var(--ease-dread) backwards;
+  }
+  .blood-drip-fall {
+    animation: blood-fall 2.4s 1.4s infinite;
   }
   /* A costume goes into My Pumpkin Basket: the pumpkin catches fire,
      flickers and beats once (spec §7.2, Ignite), and the count rolls. */
@@ -1153,19 +1189,34 @@
   }
 }
 
-/* A small fall and fade, centered on the line's words. */
-@keyframes drip {
-  0% {
-    translate: 0 -0.1em;
-    opacity: 0;
+/* The stream runs down from the pool. */
+@keyframes blood-pour {
+  from {
+    scale: 1 0.04;
   }
-  30%,
-  70% {
+}
+
+/* A drop gathers at the tip, swells, then falls away, faster as it goes. */
+@keyframes blood-fall {
+  0% {
+    opacity: 0;
+    scale: 0.3;
+    translate: 0 -10px;
+    animation-timing-function: ease-out;
+  }
+  12% {
     opacity: 1;
   }
+  55% {
+    opacity: 1;
+    scale: 1;
+    translate: 0 0;
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
   100% {
-    translate: 0 0.12em;
     opacity: 0;
+    scale: 0.8 1.15;
+    translate: 0 60px;
   }
 }
 

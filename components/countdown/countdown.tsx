@@ -86,6 +86,7 @@ export function Countdown({
             })}
           </p>
         )}
+        <DecayingInk />
         {/* Four equal columns, numbers and units on one left edge. */}
         <ol
           aria-hidden="true"
@@ -95,7 +96,7 @@ export function Countdown({
             <li key={unit} className="flex flex-col items-start">
               <span
                 className={cn(
-                  "font-heading text-numeral font-medium tabular-nums",
+                  "decaying-ink font-heading text-numeral font-medium tabular-nums",
                   beat &&
                     "text-blood-text [text-shadow:0_0_22px_color-mix(in_oklch,var(--blood)_50%,transparent)]"
                 )}
@@ -120,5 +121,76 @@ export function Countdown({
         </ol>
       </div>
     </div>
+  )
+}
+
+/**
+ * The numbers' ink, decaying (owner, 2026-10-04): its edges bitten and
+ * ragged, pits where it flaked off, fading unevenly, bled a little into
+ * the page (`.decaying-ink` in app/film.css). The same every time: the
+ * noise is seeded. Only the numbers; the units stay clean.
+ */
+function DecayingInk() {
+  return (
+    <svg aria-hidden="true" width="0" height="0" className="absolute">
+      <filter
+        id="decaying-ink"
+        x="-10%"
+        y="-10%"
+        width="120%"
+        height="120%"
+        colorInterpolationFilters="sRGB"
+      >
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.07"
+          numOctaves="2"
+          seed="4"
+          result="warp"
+        />
+        <feDisplacementMap
+          in="SourceGraphic"
+          in2="warp"
+          scale="5"
+          xChannelSelector="R"
+          yChannelSelector="G"
+          result="bitten"
+        />
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.2"
+          numOctaves="3"
+          seed="9"
+          result="grain"
+        />
+        <feColorMatrix
+          in="grain"
+          values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -16 10.3"
+          result="pits"
+        />
+        <feTurbulence
+          type="fractalNoise"
+          baseFrequency="0.03"
+          numOctaves="2"
+          seed="2"
+          result="wash"
+        />
+        <feColorMatrix
+          in="wash"
+          values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.8 -0.2"
+          result="fade"
+        />
+        <feComposite in="bitten" in2="pits" operator="in" result="eaten" />
+        <feComposite in="eaten" in2="fade" operator="in" result="faded" />
+        <feGaussianBlur in="faded" stdDeviation="0.8" result="bleed" />
+        <feComponentTransfer in="bleed" result="halo">
+          <feFuncA type="linear" slope="0.7" />
+        </feComponentTransfer>
+        <feMerge>
+          <feMergeNode in="halo" />
+          <feMergeNode in="faded" />
+        </feMerge>
+      </filter>
+    </svg>
   )
 }

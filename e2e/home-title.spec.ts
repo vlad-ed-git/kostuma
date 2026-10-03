@@ -66,4 +66,73 @@ test.describe("the home title", () => {
       expect(await lampAnimation()).toBe("lamp")
     }
   })
+
+  test("blood drips from “Choose your costume” down past the three lines", async ({
+    page,
+  }) => {
+    await page.goto("/")
+    const link = page.getByRole("link", { name: "Choose your costume" })
+    const drip = (await link.locator(".blood-drip svg").boundingBox())!
+    // The words alone, not the link (which holds the drip too).
+    const word = await link.evaluate((element) => {
+      const range = document.createRange()
+      range.selectNodeContents(element.firstChild!)
+      const { x, y, width, height } = range.getBoundingClientRect()
+      return { x, y, width, height }
+    })
+    const last = (await steps(page).nth(2).boundingBox())!
+    expect(drip.x).toBeGreaterThanOrEqual(word.x + word.width)
+    expect(drip.y).toBeLessThan(word.y + word.height)
+    expect(drip.y + drip.height).toBeGreaterThan(last.y + last.height)
+
+    const motion = () =>
+      link
+        .locator(".blood-drip-stream, .blood-drip-fall")
+        .evaluateAll((all) =>
+          all.map((el) => getComputedStyle(el).animationName)
+        )
+    // Reduced motion: it hangs still, no drop falling.
+    expect(await motion()).toEqual(["none", "none"])
+    await expect(link.locator(".blood-drip-fall")).toHaveCSS("opacity", "0")
+    await page.emulateMedia({ reducedMotion: "no-preference" })
+    expect(await motion()).toEqual(["blood-pour", "blood-fall"])
+  })
+
+  test("the countdown's numbers are in decaying ink, its units clean", async ({
+    page,
+  }) => {
+    await page.goto("/")
+    await expect(page.locator("filter#decaying-ink")).toHaveCount(1)
+    const filters = await page
+      .getByRole("timer")
+      .locator("li > span")
+      .evaluateAll((all) => all.map((el) => getComputedStyle(el).filter))
+    expect(filters).toEqual([
+      'url("#decaying-ink")',
+      "none",
+      'url("#decaying-ink")',
+      "none",
+      'url("#decaying-ink")',
+      "none",
+      'url("#decaying-ink")',
+      "none",
+    ])
+  })
+
+  test("the window is as grimy as the film: its glass the strip's grime, its frame rough", async ({
+    page,
+  }) => {
+    await page.goto("/")
+    const glass = page.locator(".apparition .lamp image")
+    await expect(glass).toHaveAttribute("href", "/images/window-glass.webp")
+    expect(
+      (await page.request.get("/images/window-glass.webp")).headers()[
+        "content-type"
+      ]
+    ).toBe("image/webp")
+    await expect(page.locator(".apparition .lamp")).toHaveAttribute(
+      "filter",
+      "url(#window-rough)"
+    )
+  })
 })

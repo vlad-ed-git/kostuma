@@ -1,8 +1,8 @@
-import { RiArrowDownLine } from "@remixicon/react"
 import { getTranslations } from "next-intl/server"
 
 import { CostumeRow } from "@/components/costume/costume-row"
 import { Countdown } from "@/components/countdown/countdown"
+import { BloodDrip } from "@/components/home/blood-drip"
 import { NightScene } from "@/components/home/night-scene"
 import { TransformationReel } from "@/components/home/transformation-reel"
 import { costumesHref } from "@/components/layout/nav"
@@ -64,10 +64,7 @@ export default async function HomePage() {
                 className="inline-flex min-h-11 items-center gap-3.5 whitespace-nowrap transition-colors hover:text-blood-text"
               >
                 {home("chooseCostume")}
-                <RiArrowDownLine
-                  aria-hidden="true"
-                  className="drip size-[0.7em] shrink-0 text-blood-text"
-                />
+                <BloodDrip />
               </Link>
             </li>
             <li className="flex min-h-11 items-center">{home("tryItOn")}</li>

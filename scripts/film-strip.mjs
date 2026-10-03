@@ -1,4 +1,6 @@
-// Draws the home page's film strip (public/images/film-strip.webp): the
+// Draws the home page's film strip (public/images/film-strip.webp) and the
+// glass of the window in the night scene (public/images/window-glass.webp):
+// the
 // owner's example of a red, burnt strip of film (design/film-strip-example.png,
 // enlarged 4× with Real-ESRGAN into design/film-strip-example@4x.png), cut
 // into one frame per picture of the sample transformation
@@ -90,4 +92,19 @@ const info = await sharp({
   .toFile(target)
 console.log(
   `film strip → public/images/film-strip.webp (${width} × ${HEIGHT}, ${frames} frames, ${info.size} bytes)`
+)
+
+// The window's glass (components/home/night-scene.tsx): the same grime, an
+// upright stretch of the example's window with its char and scratches, so
+// the window in the night is as worn as the film.
+const glass = await sharp(source)
+  .extract({ left: 150, top: TOP + WINDOW.top, width: 200, height: 322 })
+  .webp({ quality: 80, effort: 6 })
+  .toFile(
+    fileURLToPath(
+      new URL("../public/images/window-glass.webp", import.meta.url)
+    )
+  )
+console.log(
+  `window glass → public/images/window-glass.webp (200 × 322, ${glass.size} bytes)`
 )
