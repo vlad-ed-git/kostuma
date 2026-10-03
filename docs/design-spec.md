@@ -223,6 +223,11 @@ stay at 16 px.
 - Elevation is light: a red glow (`box-shadow` in `--blood`) marks what is under the pointer or
   lit (a thumbnail on hover, the costume picture).
 - Texture comes from the atmosphere (8): grain, fog, the vignette.
+- **Scrollbars** (owner, 2026-10-04: horror, blood, grimy): 13 px; the gutter near-black with
+  blotches of dark rot (seamless fractal noise), darkest at its sides; the thumb a clot of
+  blood, dark at its edges, wet down the middle, rounder at the bottom like a drop, brighter
+  while held. Firefox takes colors only: blood on near-black. Boxes that hide their scrollbar
+  on purpose (the Fitting Room's film strip) still do.
 
 ---
 
