@@ -58,6 +58,7 @@ export default async function FittingRoomPage({
             })),
             finish: guide.finish,
           },
+          allMakeup: guide.allMakeup === true,
         }
       : null
 

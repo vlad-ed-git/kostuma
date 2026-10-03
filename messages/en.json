@@ -91,6 +91,7 @@
     "photos": {
       "title": "Your photos",
       "line": "Two photos: your face, and you from head to toe. They stay private.",
+      "lineFace": "{name} is all makeup: one photo, your face. It stays private.",
       "face": "Your face",
       "faceTip1": "Look straight at the camera, eyes open, mouth closed.",
       "faceTip2": "Even light, no glasses, hair off your face.",
@@ -122,6 +123,7 @@
     },
     "outfit": "The outfit",
     "outfitAlt": "You wearing the {name} costume",
+    "allMakeup": "{name} is all makeup: there is no outfit to try on. Everything is on your face.",
     "makeup": "The makeup",
     "before": "Before",
     "beforeAlt": "Your face before the makeup",
@@ -147,6 +149,7 @@
       "unavailable": "The Fitting Room is closed right now. Try again later.",
       "failed": "Your try-on didn't work out. Try again in a moment.",
       "missing_photo": "Add both photos first.",
+      "missing_face": "Add a photo of your face first.",
       "unknown_costume": "This costume can't be tried on yet.",
       "signed_out": "Your session ended. Sign in again to continue.",
       "closed": "The Fitting Room is closed right now. Try again later.",

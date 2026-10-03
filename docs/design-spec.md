@@ -611,7 +611,9 @@ back here with the costume). Paid try-ons (the price line, 10.3) come later: no 
   head to toe" (2:3), each with its photo (contained, never cropped) or an empty frame, three
   short tips, and "Choose a photo" / "Change" (outline). The photos used last are offered
   again. A file is checked at once in the browser (an image, big enough, a photo's shape:
-  no AI): a problem shows under its photo in `--destructive`. "Continue" needs both.
+  no AI): a problem shows under its photo in `--destructive`. "Continue" needs both. A
+  costume that is all makeup asks only for the face ("{name} is all makeup: one photo, your
+  face. It stays private.").
 - **Confirm** (`h2` "Ready to try on {name}?"): the costume and both photos, "Check your photos
   first: once the try-on starts, they can't be changed until it's finished.", "Start the
   try-on" (primary; pending: spinner + "Checking your photos…") and "Change photos" (ghost).
@@ -619,14 +621,17 @@ back here with the costume). Paid try-ons (the price line, 10.3) come later: no 
 - **The try-on** (`h2` the character's name): locked while it runs (no control to change
   anything), a polite status line ("Trying on the outfit…", "Doing your makeup: 2 of 4 steps
   ready…", "Your try-on is ready."). **The outfit** (`h2`): the visitor in the costume (2:3,
-  max 448 px). **The makeup** (`h2`): the guide's look line, then a grid (3 / 2 / 1 columns):
+  max 448 px), or for a costume that is all makeup the line "{name} is all makeup: there is no
+  outfit to try on. Everything is on your face." **The makeup** (`h2`): the guide's look line, then a grid (3 / 2 / 1 columns):
   "Before" (their face), then each step: its picture (3:4), "Step n" (`micro` small capitals,
   `--blood-text`), the step's title, the how-to, and its products as links to a shop's search
   (new tab, 10.3 external links); "To finish" and the guide's last line after the grid.
-- **The darkroom:** a step still rendering is a print in the developer tray: a `--card` frame
-  under a red safelight that breathes (opacity, 2.4 s), "Developing…" in small capitals; a
-  finished picture comes up out of the black (opacity, 1.8 s). Reduced motion: the light
-  still, the picture at once.
+- **Steps not done:** each step renders on the picture of the one before, so they finish one
+  at a time. A step not done yet is the costume photo as a black silhouette rimmed in red (as
+  the photos wait on the home page, §7.2): the step rendering now at full strength, its red
+  light breathing (2.4 s), the ones waiting on it dim (35 %); no text on screen. A finished
+  picture comes "into the light" like a costume photo. Reduced motion: the light still, the
+  picture at once.
 - Ended: "Try with other photos" (outline). Failed: an alert saying what to do ("Your face
   couldn't be found in the photo…") and "Choose other photos" (primary), which opens the photos
   with the message under the one at fault. Steps not rendered say "Not rendered".

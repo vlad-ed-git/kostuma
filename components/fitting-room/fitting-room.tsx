@@ -28,14 +28,21 @@ import { type GuideText, TryOnSteps } from "./try-on-steps"
 /** How often the page asks how a running try-on is doing. */
 export const POLL_MS = 2_000
 
-/** The costume being tried on, with its makeup guide. */
-export type FittingCostume = CostumeSummary & { guide: GuideText }
+/**
+ * The costume being tried on, with its makeup guide; `allMakeup`: no outfit
+ * to try on, only the face photo needed.
+ */
+export type FittingCostume = CostumeSummary & {
+  guide: GuideText
+  allMakeup: boolean
+}
 
 type ErrorCode = Exclude<StartError | RenderFailure, PhotoProblem>
 
 type Problem = {
   /** Its message under FittingRoom: every code has one. */
-  message: `problems.${PhotoProblem}` | `errors.${ErrorCode}`
+  message:
+    `problems.${PhotoProblem}` | `errors.${ErrorCode}` | "errors.missing_face"
   /** The photo it is about, if one. */
   photo?: PhotoKind
 }
@@ -63,10 +70,11 @@ function failureProblem(
 
 /**
  * The Fitting Room (owner, 2026-10-03), for the costumes in My Pumpkin
- * Basket: pick one, give two photos (the face, and head to toe), confirm
- * them, and the try-on runs: the outfit first, then the costume's makeup on
- * the visitor's face, step by step, every picture shown as it comes out.
- * Once started, nothing can be changed until it's done or fails.
+ * Basket: pick one, give the photos (the face, and head to toe unless the
+ * character is all makeup), confirm them, and the try-on runs: the outfit
+ * first, then the costume's makeup on the visitor's face, step by step,
+ * every picture shown as it comes out. Once started, nothing can be changed
+ * until it's done or fails.
  */
 export function FittingRoom({
   costumes,
@@ -188,6 +196,10 @@ function Fitting({
   const [stage, setStage] = useState<"photos" | "confirm" | "follow">(
     initial ? "follow" : "photos"
   )
+  // The photos this costume needs: no body photo when it is all makeup.
+  const kinds: readonly PhotoKind[] = costume.allMakeup
+    ? ["face"]
+    : ["face", "body"]
   const [slots, setSlots] = useState<Record<PhotoKind, Slot>>({
     face: room.face ? { kind: "kept", id: room.face } : null,
     body: room.body ? { kind: "kept", id: room.body } : null,
@@ -228,7 +240,7 @@ function Fitting({
   function start() {
     const form = new FormData()
     form.set("costume", costume.slug)
-    for (const kind of ["face", "body"] as const) {
+    for (const kind of kinds) {
       const slot = slots[kind]
       if (slot?.kind === "picked")
         form.set(
@@ -256,7 +268,7 @@ function Fitting({
     })
   }
 
-  const both = slots.face !== null && slots.body !== null
+  const chosen = kinds.every((kind) => slots[kind] !== null)
   const alert = problem && !problem.photo && (
     <p
       role="alert"
@@ -301,7 +313,12 @@ function Fitting({
             {tryOn.status === "failed" ? t("retry") : t("again")}
           </Button>
         )}
-        <TryOnSteps tryOn={tryOn} name={costume.name} guide={costume.guide} />
+        <TryOnSteps
+          tryOn={tryOn}
+          name={costume.name}
+          photo={costume.photo}
+          guide={costume.guide}
+        />
       </section>
     )
   }
@@ -310,7 +327,7 @@ function Fitting({
     return <p className="text-lead text-muted-foreground">{t("closed")}</p>
   }
 
-  if (stage === "confirm" && both) {
+  if (stage === "confirm" && chosen) {
     return (
       <section aria-labelledby="fitting" className="flex flex-col gap-8">
         <h2
@@ -331,7 +348,7 @@ function Fitting({
               reveal={false}
             />
           </div>
-          {(["face", "body"] as const).map((kind) => (
+          {kinds.map((kind) => (
             <div
               key={kind}
               className={cn(
@@ -391,11 +408,13 @@ function Fitting({
           {t("photos.title")}
         </h2>
         <p className="max-w-[60ch] text-lead text-muted-foreground">
-          {t("photos.line")}
+          {costume.allMakeup
+            ? t("photos.lineFace", { name: costume.name })
+            : t("photos.line")}
         </p>
       </div>
       <div className="grid gap-10 sm:grid-cols-2">
-        {(["face", "body"] as const).map((kind) => (
+        {kinds.map((kind) => (
           <PhotoPicker
             key={kind}
             kind={kind}
@@ -413,8 +432,12 @@ function Fitting({
         size="lg"
         className="w-fit"
         onClick={() => {
-          if (!both) {
-            setProblem({ message: "errors.missing_photo" })
+          if (!chosen) {
+            setProblem({
+              message: costume.allMakeup
+                ? "errors.missing_face"
+                : "errors.missing_photo",
+            })
             return
           }
           setProblem(null)

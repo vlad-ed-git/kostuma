@@ -151,16 +151,16 @@ test.describe("The Fitting Room", () => {
       makeup.getByRole("img", { name: "Your face before the makeup" })
     ).toBeVisible()
     await expect(
-      makeup.getByRole("img", { name: "Your face after step 1: Pale base" })
+      makeup.getByRole("img", { name: "Your face after step 1: Corpse base" })
     ).toBeVisible()
-    await expect(makeup.getByText("Step 4")).toBeVisible()
+    await expect(makeup.getByText("Step 7")).toBeVisible()
 
     const product = makeup.getByRole("link", {
-      name: "Find light foundation on Amazon (opens in a new tab)",
+      name: "Find gray cream face paint on Amazon (opens in a new tab)",
     })
     await expect(product).toHaveAttribute(
       "href",
-      "https://www.amazon.com/s?k=light%20foundation"
+      "https://www.amazon.com/s?k=gray%20cream%20face%20paint"
     )
     await expect(product).toHaveAttribute("target", "_blank")
     await expect(product).toHaveAttribute("rel", /noopener/)
@@ -198,6 +198,40 @@ test.describe("The Fitting Room", () => {
     await expect(
       page.getByRole("heading", { name: "Ready to try on Pearl?" })
     ).toBeVisible()
+  })
+
+  test("needs only the face for a costume that is all makeup", async ({
+    page,
+  }) => {
+    const errors = collectErrors(page)
+    await enter(page, ["nikki-freaky-nikki-freeman"])
+    await page.goto("/basket/fitting-room?costume=nikki-freaky-nikki-freeman")
+    await expect(
+      page.getByText("Nikki 'Freaky Nikki' Freeman is all makeup: one photo")
+    ).toBeVisible()
+    await expect(bodyPicker(page)).toHaveCount(0)
+    await page
+      .locator('input[name="face"]')
+      .setInputFiles(await photo(900, 1200))
+    await expect(
+      page.getByRole("button", { name: "Change the photo of your face" })
+    ).toBeVisible()
+    await page.getByRole("button", { name: "Continue" }).click()
+    await page.getByRole("button", { name: "Start the try-on" }).click()
+
+    await expect(page.getByText("Your try-on is ready.")).toBeVisible({
+      timeout: 30_000,
+    })
+    await expect(
+      page.getByText("there is no outfit to try on", { exact: false })
+    ).toBeVisible()
+    await picturesLoaded(page, "The makeup")
+    await expect(
+      page
+        .getByRole("region", { name: "The makeup" })
+        .getByRole("img", { name: "Your face after step 7: Black hair" })
+    ).toBeVisible()
+    expect(errors).toEqual([])
   })
 
   test("says at once when a photo is too small, and keeps the other", async ({

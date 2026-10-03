@@ -416,25 +416,20 @@
   background-position: 100% 0;
 }
 
-/* ── The Fitting Room's darkroom (components/fitting-room) ─────────────── */
-/* A step still rendering: a print in the developer tray under the red
-   safelight, which breathes (below; still under reduced motion). */
-.developing {
-  position: relative;
-  isolation: isolate;
-  background-color: var(--card);
-}
-.developing::before {
-  content: "";
+/* ── The Fitting Room's steps (components/fitting-room) ─────────────── */
+/* A step not done yet: the character's silhouette in the dark, rimmed in
+   red, as a costume photo waits on the home page. The one rendering now
+   breathes (motion rules below); the ones waiting on it stay dim. A done
+   step's picture comes in with `.photo-reveal`. */
+.step-silhouette {
   position: absolute;
   inset: 0;
-  z-index: -1;
-  background: radial-gradient(
-      ellipse 75% 60% at 50% 42%,
-      color-mix(in oklch, var(--blood) 45%, transparent),
-      transparent 72%
-    )
-    no-repeat;
+  opacity: 0.35;
+  filter: brightness(0) drop-shadow(0 0 1.5px var(--blood))
+    drop-shadow(0 0 10px color-mix(in oklch, var(--blood) 75%, transparent));
+}
+.step-silhouette[data-current] {
+  opacity: 1;
 }
 
 /* ── Lit by scroll: the costume rows (`.lit`, spec §7.2), below ──────── */
@@ -446,12 +441,8 @@
   .film-grain::before {
     animation: grain 330ms steps(1) infinite;
   }
-  .developing::before {
-    animation: safelight 2.4s ease-in-out infinite alternate;
-  }
-  /* A finished step's picture comes up out of the black, as a print does. */
-  .developed {
-    animation: develop 1.8s ease-out both;
+  .step-silhouette[data-current] {
+    animation: breathe 2.4s ease-in-out infinite alternate;
   }
   /* Only while a view transition runs: the reel change, never at rest. */
   html:active-view-transition .film-scratches {
@@ -876,15 +867,15 @@
   }
 }
 
-@keyframes safelight {
+/* The red light behind a silhouette swells and ebbs. */
+@keyframes breathe {
   from {
-    opacity: 0.35;
+    filter: brightness(0) drop-shadow(0 0 1px var(--blood))
+      drop-shadow(0 0 4px color-mix(in oklch, var(--blood) 45%, transparent));
   }
-}
-
-@keyframes develop {
-  from {
-    opacity: 0;
+  to {
+    filter: brightness(0) drop-shadow(0 0 2px var(--blood))
+      drop-shadow(0 0 24px var(--blood));
   }
 }
 
