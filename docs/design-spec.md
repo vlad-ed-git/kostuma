@@ -742,7 +742,7 @@ All `noindex`. A signed-in visitor is sent on to `next` (sign in, register).
 ### 11.7 Feedback `/feedback` (`?type=bug|feedback|costume`)
 
 Open to everyone (no sign-in). The account pages' frame (11.5): the night on the left with its
-own line, "The dark is listening.", the form on the right (560 px).
+own line, "The shadows hear your whispers." (owner), the form on the right (560 px).
 
 - H1 "Tell us what haunts you" (ghost title, 8.9); lead: "Found a bug, have an idea, or want a
   costume we don't have yet? We read every message."
