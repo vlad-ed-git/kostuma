@@ -633,7 +633,8 @@ title, toolbar or empty state for one.
   know).
 - **The Fitting Room** panel (part of the basket, 1.3), at the top: a `--card` panel with a
   `--blood` hairline at 40 % and a faint red glow; `h2` "The Fitting Room", one line ("Try on
-  the outfits in your basket, special-effects makeup included."), "One costume is free with
+  the outfits in your basket, then see the character's makeup on your own face, step by
+  step."), "One costume is free with
   every account." (`lead`, semibold), then link "Step inside" → `/basket/fitting-room` (11.4b)
   and "Get Kostuma Pro" (10.3), both outline.
 - Rows, the last added first, separated by space (no lines): thumbnail (4:5, 72 px wide, no

@@ -120,10 +120,10 @@ OPP-11 and OPP-12.
 
 ## Copy and content (`04-copy-content.md`), always in en, es and zh
 
-- [ ] **COPY-01** "Torn, bloodied wedding dress".
-- [ ] **COPY-02** "Try on the outfits in your basket, then see the character's makeup on your own
+- [x] **COPY-01** "Torn, bloodied wedding dress".
+- [x] **COPY-02** "Try on the outfits in your basket, then see the character's makeup on your own
       face, step by step."
-- [ ] **COPY-03** One film-accurate outfit each for Hannibal, Grace and Pamela (checked), on the
+- [x] **COPY-03** One film-accurate outfit each for Hannibal, Grace and Pamela (checked), on the
       costume page and in the guide.
 - [ ] **COPY-04** Fix the listed facts; check each "verify" against a reliable source first.
 - [ ] **COPY-05** Ghostface loses the black nose (its step and its repeat in the lips step);

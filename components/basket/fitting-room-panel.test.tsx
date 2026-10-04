@@ -16,7 +16,7 @@ describe("FittingRoomPanel", () => {
     renderInEnglish(<FittingRoomPanel signedIn source="basket" />)
     const panel = screen.getByRole("region", { name: "The Fitting Room" })
     expect(panel).toHaveTextContent(
-      "Try on the outfits in your basket, special-effects makeup included."
+      "Try on the outfits in your basket, then see the character's makeup on your own face, step by step."
     )
     expect(panel).toHaveTextContent("One costume is free with every account.")
     expect(panel).not.toHaveTextContent(/\$|premium|per costume/i)
