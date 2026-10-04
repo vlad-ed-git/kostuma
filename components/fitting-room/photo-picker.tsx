@@ -163,7 +163,8 @@ export function PhotoPicker({
         type="file"
         hidden
         name={kind}
-        accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+        // No HEIC: iOS then hands over a JPEG (todo ENG-14).
+        accept="image/jpeg,image/png,image/webp"
         onChange={(event) => {
           const file = event.target.files?.[0]
           // The same file may be picked again after a change of mind.

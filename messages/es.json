@@ -168,6 +168,7 @@
     },
     "problems": {
       "unreadable": "No se puede abrir este archivo. Elige una foto JPEG, PNG o WebP.",
+      "heic": "Esta foto es HEIC y aquí no se puede abrir. Elige una en JPEG o PNG.",
       "too_small": "Esta foto es demasiado pequeña. Elige una más grande.",
       "odd_shape": "Esto no parece la foto de una persona. Elige otra.",
       "too_big": "Este archivo es demasiado grande. Elige una foto de menos de 8 MB."

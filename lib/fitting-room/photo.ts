@@ -64,6 +64,9 @@ export async function preparePhoto(
     const metadata = await sharp(file, {
       limitInputPixels: PIXEL_LIMIT,
     }).metadata()
+    // An iPhone's HEIC (HEVC inside HEIF); an AVIF is HEIF too, but AV1.
+    if (metadata.format === "heif" && metadata.compression === "hevc")
+      throw new PhotoError("heic")
     if (!metadata.format || !formats.has(metadata.format))
       throw new PhotoError("unreadable")
     // From the header alone, before a pixel is decoded.

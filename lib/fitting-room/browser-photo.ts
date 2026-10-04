@@ -25,6 +25,18 @@ export type PickedPhoto = {
 /** A file no phone's photo comes near: not opened at all. */
 const MAX_FILE_BYTES = 50 * 1024 * 1024
 
+/**
+ * Whether a file is a HEIC/HEIF photo (an iPhone's): the picker no longer
+ * offers them (iOS hands over a JPEG then), but one chosen from a file
+ * browser still comes; only Safari opens it.
+ */
+export function isHeic(file: Pick<File, "name" | "type">) {
+  return (
+    /^image\/hei[cf](-sequence)?$/.test(file.type) ||
+    /\.hei[cf]$/i.test(file.name)
+  )
+}
+
 export async function readPhoto(
   kind: PhotoKind,
   file: File
@@ -34,7 +46,7 @@ export async function readPhoto(
   try {
     bitmap = await createImageBitmap(file, { imageOrientation: "from-image" })
   } catch {
-    return { problem: "unreadable" }
+    return { problem: isHeic(file) ? "heic" : "unreadable" }
   }
   try {
     const problem = sizeProblem(kind, bitmap.width, bitmap.height)

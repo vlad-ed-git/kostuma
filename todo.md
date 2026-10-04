@@ -60,7 +60,7 @@ OPP-11 and OPP-12.
       costume page's main photo.
 - [x] **ENG-11** One alias map feeds both `turbopack.resolveAlias` and `webpack()`;
       `next.config.test.ts` checks it.
-- [ ] **ENG-14** Drop HEIC/HEIF from `accept` (iOS then hands over a JPEG); a specific translated
+- [x] **ENG-14** Drop HEIC/HEIF from `accept` (iOS then hands over a JPEG); a specific translated
       message if one still arrives.
 - [ ] **ENG-15** `Map`/`Object.hasOwn` for slug lookups; the advancing request becomes a POST,
       GET only reads; remove `cn`; `shadcn` to devDependencies; pure `lib/` tests in Vitest's

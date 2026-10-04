@@ -168,6 +168,7 @@
     },
     "problems": {
       "unreadable": "This file can't be opened. Choose a JPEG, PNG or WebP photo.",
+      "heic": "This is a HEIC photo, which can't be opened here. Choose a JPEG or PNG one.",
       "too_small": "This photo is too small. Choose a larger one.",
       "odd_shape": "This doesn't look like a photo of a person. Choose another one.",
       "too_big": "This file is too big. Choose a photo under 8 MB."

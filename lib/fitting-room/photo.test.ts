@@ -126,6 +126,17 @@ describe("preparePhoto", () => {
     expect(await problemOf(preparePhoto("face", await make()))).toBe(problem)
   })
 
+  it("calls an AVIF unreadable, never an iPhone's HEIC (both are HEIF)", async () => {
+    const avif = new Uint8Array(
+      await sharp({
+        create: { width: 900, height: 1200, channels: 3, background: "#888" },
+      })
+        .avif()
+        .toBuffer()
+    )
+    expect(await problemOf(preparePhoto("face", avif))).toBe("unreadable")
+  })
+
   it("refuses a photo over 4096 px a side from its header, before decoding it", async () => {
     // Plain color: a few kilobytes that would open into 33 megabytes.
     const huge = new Uint8Array(

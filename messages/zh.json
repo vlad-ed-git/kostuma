@@ -168,6 +168,7 @@
     },
     "problems": {
       "unreadable": "无法打开这个文件。请选择 JPEG、PNG 或 WebP 格式的照片。",
+      "heic": "这是一张 HEIC 照片，这里无法打开。请选择 JPEG 或 PNG 照片。",
       "too_small": "这张照片太小了。请选择一张更大的。",
       "odd_shape": "这看起来不像人物照片。请换一张。",
       "too_big": "文件太大。请选择小于 8 MB 的照片。"

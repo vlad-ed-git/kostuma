@@ -75,6 +75,7 @@ function failureProblem(
     return { message: "errors.body_photo", photo: "body" }
   if (
     error === "unreadable" ||
+    error === "heic" ||
     error === "too_small" ||
     error === "odd_shape" ||
     error === "too_big"

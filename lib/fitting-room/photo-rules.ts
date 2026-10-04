@@ -11,6 +11,8 @@ import type { PhotoKind } from "./try-on"
 export type PhotoProblem =
   /** Not an image this site can open (JPEG, PNG or WebP). */
   | "unreadable"
+  /** An iPhone's HEIC photo, which this browser (and the server) can't open. */
+  | "heic"
   /** Smaller than the renders need. */
   | "too_small"
   /** A long strip, not a photo of a person. */
