@@ -4,7 +4,16 @@ import { type DocumentReference, FieldValue } from "firebase-admin/firestore"
 
 import { adminBucket, adminDb } from "@/lib/firebase/admin"
 
-import { allowanceOf, madePictures } from "./free-costume"
+import {
+  admits,
+  afterBalance,
+  controlsOf,
+  dayOf,
+  DEFAULT_CONTROLS,
+  unitsOfPlan,
+  unspentUnits,
+} from "./budget"
+import { allowanceOf, countsAsFailedTry } from "./free-costume"
 import type {
   Begun,
   FacePhoto,
@@ -22,7 +31,11 @@ import type {
  * - `fittingRooms/{uid}/tryOns/{id}`: each try-on (lib/fitting-room/try-on.ts);
  * - Storage `fitting-room/{uid}/photos/{face|body}/{id}.jpg`: the photos, as
  *   prepared (lib/fitting-room/photo.ts);
- * - Storage `fitting-room/{uid}/try-ons/{id}/{step}.jpg`: the pictures.
+ * - Storage `fitting-room/{uid}/try-ons/{id}/{step}.jpg`: the pictures;
+ * - `config/fittingRoom`: the switch and the daily budget (budget.ts),
+ *   made with its defaults by the first start, for the owner to change in
+ *   the Firebase console; `usage/{YYYY-MM-DD}`: the units the day's
+ *   try-ons reserved, `{ units }`.
  * The visitor sees them only through the server (app/api/fitting-room).
  */
 
@@ -32,6 +45,14 @@ const tryOnsOf = "tryOns"
 const roomRef = (uid: string) => adminDb().collection(rooms).doc(uid)
 const tryOnRef = (uid: string, id: string) =>
   roomRef(uid).collection(tryOnsOf).doc(id) as DocumentReference<TryOn>
+
+const configRef = () => adminDb().collection("config").doc("fittingRoom")
+const usageRef = (day: string) => adminDb().collection("usage").doc(day)
+
+const reservedOf = (data: Record<string, unknown> | undefined) => {
+  const units = data?.units
+  return typeof units === "number" && units > 0 ? units : 0
+}
 
 const photoPath = (uid: string, kind: PhotoKind, id: string) =>
   `fitting-room/${uid}/photos/${kind}/${id}.jpg`
@@ -124,17 +145,21 @@ export function fittingRoomStore(): FittingRoomStore {
     begin(uid, fresh) {
       const ref = tryOnRef(uid, fresh.id)
       const room = roomRef(uid)
+      const day = dayOf(fresh.createdAt)
+      const units = unitsOfPlan(fresh.steps.map((step) => step.render))
       return adminDb().runTransaction<Begun>(async (transaction) => {
         const existing = (await transaction.get(ref)).data()
         if (existing && existing.status !== "failed")
           return { outcome: "existing", tryOn: existing }
         // The try-ons holding the free costume: filtered on one field, which
         // its automatic index serves.
-        const [kept, holding] = await Promise.all([
+        const [kept, holding, config, usage] = await Promise.all([
           transaction.get(room),
           transaction.get(
             room.collection(tryOnsOf).where("status", "in", ["running", "done"])
           ),
+          transaction.get(configRef()),
+          transaction.get(usageRef(day)),
         ])
         const allowance = allowanceOf(
           holding.docs.map((doc) => doc.data() as TryOn),
@@ -142,11 +167,21 @@ export function fittingRoomStore(): FittingRoomStore {
           fresh.renderer
         )
         if (!allowance.free) return { outcome: "out_of_units" }
-        transaction.set(ref, fresh)
+        // The owner's switch, made with its defaults the first time.
+        if (!config.exists) transaction.set(configRef(), DEFAULT_CONTROLS)
+        if (!admits(controlsOf(config.data()), reservedOf(usage.data()), units))
+          return { outcome: "closed" }
+        const started: TryOn = { ...fresh, reserved: { day, units } }
+        transaction.set(ref, started)
+        transaction.set(
+          usageRef(day),
+          { units: FieldValue.increment(units), updatedAt: Date.now() },
+          { merge: true }
+        )
         // Every start writes the room: of two at once, one is retried, and
         // then finds the other holding the free costume.
         transaction.set(room, { updatedAt: Date.now() }, { merge: true })
-        return { outcome: "started", tryOn: fresh }
+        return { outcome: "started", tryOn: started }
       })
     },
 
@@ -170,10 +205,19 @@ export function fittingRoomStore(): FittingRoomStore {
         const tryOn = (await transaction.get(ref)).data()
         if (!tryOn || tryOn.status !== "running") return false
         transaction.update(ref, { status, failure, updatedAt: Date.now() })
-        if (status === "failed" && madePictures(tryOn)) {
+        if (status === "failed" && countsAsFailedTry(tryOn, failure)) {
           transaction.set(
             roomRef(uid),
             { failedTries: FieldValue.increment(1) },
+            { merge: true }
+          )
+        }
+        // What was never rendered goes back to its day's budget.
+        const unspent = unspentUnits(tryOn)
+        if (unspent > 0 && tryOn.reserved) {
+          transaction.set(
+            usageRef(tryOn.reserved.day),
+            { units: FieldValue.increment(-unspent), updatedAt: Date.now() },
             { merge: true }
           )
         }
@@ -187,6 +231,44 @@ export function fittingRoomStore(): FittingRoomStore {
 
     stepImage(uid, id, index) {
       return load(stepPath(uid, id, index))
+    },
+
+    async capacity(now = Date.now()) {
+      const [config, usage] = await Promise.all([
+        configRef().get(),
+        usageRef(dayOf(now)).get(),
+      ])
+      return {
+        controls: controlsOf(config.data()),
+        reserved: reservedOf(usage.data()),
+      }
+    },
+
+    close(reason) {
+      return adminDb().runTransaction(async (transaction) => {
+        const controls = controlsOf((await transaction.get(configRef())).data())
+        // Closed already (by the owner, or before): left as it is.
+        if (!controls.open) return
+        transaction.set(
+          configRef(),
+          { ...controls, open: false, closedFor: reason },
+          { merge: true }
+        )
+      })
+    },
+
+    recordBalance(balance, now) {
+      return adminDb().runTransaction(async (transaction) => {
+        const controls = controlsOf((await transaction.get(configRef())).data())
+        const next = {
+          ...controls,
+          ...afterBalance(controls, balance),
+          balance,
+          balanceAt: now,
+        }
+        transaction.set(configRef(), next, { merge: true })
+        return next
+      })
     },
   }
 }

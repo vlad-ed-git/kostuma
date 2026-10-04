@@ -84,6 +84,11 @@ export function youcamProvider(
   fetcher: Fetch = fetch
 ): RenderProvider {
   async function call(path: string, init: RequestInit = {}) {
+    return dataOf(await request(path, init))
+  }
+
+  /** A call to the API: its whole answer. */
+  async function request(path: string, init: RequestInit = {}) {
     let response: Response
     try {
       response = await fetcher(BASE + path, {
@@ -104,7 +109,7 @@ export function youcamProvider(
     }
     const body: unknown = await response.json().catch(() => null)
     if (!response.ok) throw refusal(path, response.status, body)
-    return dataOf(body)
+    return body
   }
 
   /** Puts a picture on YouCam; its file id. */
@@ -225,7 +230,33 @@ export function youcamProvider(
         console.warn("Could not delete a YouCam task.", error)
       })
     },
+
+    async balance() {
+      return unitsLeft(await request("/s2s/v1.0/client/credit"))
+    },
   }
+}
+
+/**
+ * The units left, from the Unit API's answer: every batch not expired,
+ * `amount_dec` (two decimals; `amount` is deprecated, read when it's alone).
+ */
+export function unitsLeft(body: unknown, now = Date.now()): number {
+  const results =
+    typeof body === "object" && body !== null && "results" in body
+      ? (body as { results: unknown }).results
+      : null
+  if (!Array.isArray(results))
+    throw new ProviderError("YouCam gave no unit balance.", "failed", true)
+  let total = 0
+  for (const batch of results as Record<string, unknown>[]) {
+    const expiry = batch?.expiry
+    if (typeof expiry === "number" && expiry > 0 && expiry <= now) continue
+    const amount =
+      typeof batch?.amount_dec === "number" ? batch.amount_dec : batch?.amount
+    if (typeof amount === "number" && Number.isFinite(amount)) total += amount
+  }
+  return Math.round(total * 100) / 100
 }
 
 function dataOf(body: unknown): Record<string, unknown> {
@@ -268,8 +299,10 @@ function refusal(path: string, status: number, body: unknown) {
       : ""
   const message = `YouCam ${path}: HTTP ${status} ${code}`.trim()
   // No units left, or the key is wrong, off or expired: closed until fixed.
-  if (status === 401 || code === "CreditInsufficiency")
-    return new ProviderError(message, "unavailable", false)
+  if (code === "CreditInsufficiency")
+    return new ProviderError(message, "unavailable", false, { closes: "units" })
+  if (status === 401)
+    return new ProviderError(message, "unavailable", false, { closes: "key" })
   // Too many requests, or YouCam's own trouble: later.
   if (status === 429 || status >= 500)
     return new ProviderError(message, "failed", true)

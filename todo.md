@@ -39,11 +39,11 @@ OPP-11 and OPP-12.
       Firestore under 250 calls / 300 s; when empty the step waits and the page says "The mirror
       is busy. Your try-on starts in a moment." 429/5xx = busy: backoff, no attempt counted.
       Reuse each garment's `file_id`. Owner: register the webhook in YouCam's console.
-- [ ] **ENG-02** `config/fittingRoom` in Firestore (`open`, `dailyUnits`, `floor`), read at every
+- [x] **ENG-02** `config/fittingRoom` in Firestore (`open`, `dailyUnits`, `floor`), read at every
       start; the day's units reserved in `store.begin`'s transaction; `CreditInsufficiency`
       closes it at once; a daily Vercel Cron (`CRON_SECRET`) syncs the Unit API balance and
       closes it below the floor. Closed shows the existing "closed" message.
-- [ ] **ENG-03** Only photo failures (`face_photo`, `body_photo`, `photo_rejected`) count in
+- [x] **ENG-03** Only photo failures (`face_photo`, `body_photo`, `photo_rejected`) count in
       `failedTries`.
 - [ ] **ENG-04** One 40 s deadline for a whole `start` (under `LEASE_MS`); `maxDuration = 60` on
       the Fitting Room routes.

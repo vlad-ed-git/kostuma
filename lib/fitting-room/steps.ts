@@ -10,6 +10,7 @@ import {
 } from "./provider"
 
 type Renderer = RenderProvider["name"]
+import { admits, unitsOfGuide } from "./budget"
 import { allowanceOf } from "./free-costume"
 import {
   dressesFace,
@@ -126,20 +127,30 @@ export async function begin(
 }
 
 /**
- * Whether `begin` would give a try-on: the one already made, or a new one
- * the free costume allows. Asked before the photos are kept, so a try-on
- * that can't start keeps nothing; `begin` decides for good.
+ * Whether `begin` would give a try-on ("ok"): the one already made, or a
+ * new one the free costume allows ("out_of_units" if not), while the
+ * Fitting Room is open with its units left in the day's budget ("closed"
+ * if not). Asked before the photos are kept, so a try-on that can't start
+ * keeps nothing; `begin` decides for good.
  */
 export async function mayBegin(
-  { store, provider }: Pick<Deps, "store" | "provider">,
+  { store, provider, now = Date.now }: Pick<Deps, "store" | "provider" | "now">,
   uid: string,
-  { slug, face, body, garment }: Fitting
-): Promise<boolean> {
+  fitting: Fitting
+): Promise<"ok" | "out_of_units" | "closed"> {
+  const { slug, face, body, garment } = fitting
   const id = tryOnId(face.id, body?.id ?? null, slug, provider.name, garment)
   const existing = await store.tryOn(uid, id)
-  if (existing && existing.status !== "failed") return true
-  const [room, tryOns] = await Promise.all([store.room(uid), store.tryOns(uid)])
-  return allowanceOf(tryOns, room.failedTries, provider.name).free
+  if (existing && existing.status !== "failed") return "ok"
+  const [room, tryOns, capacity] = await Promise.all([
+    store.room(uid),
+    store.tryOns(uid),
+    store.capacity(now()),
+  ])
+  if (!allowanceOf(tryOns, room.failedTries, provider.name).free)
+    return "out_of_units"
+  const units = unitsOfGuide(fitting.guide)
+  return admits(capacity.controls, capacity.reserved, units) ? "ok" : "closed"
 }
 
 /** Moves a try-on along; the try-on as it now stands (null if none). */
@@ -261,6 +272,7 @@ async function send(deps: Deps, uid: string, tryOn: TryOn, index: number) {
   } catch (error) {
     const { reason, retry } = failureOf(error)
     console.error(`Try-on ${tryOn.id}: step ${index} could not start.`, error)
+    await closeFor(store, error)
     return setBack(
       deps,
       uid,
@@ -316,6 +328,7 @@ async function collect(
       `Try-on ${tryOn.id}: step ${index} could not be checked.`,
       error
     )
+    await closeFor(store, error)
     await back(reason, retry)
     return false
   }
@@ -409,6 +422,19 @@ async function sourceOf(
   if (before?.status === "failed" && dressesFace(before.render))
     return store.photo(uid, "face", tryOn.face)
   return "not yet"
+}
+
+/**
+ * YouCam can't render for anyone (no units left, its key refused): the
+ * Fitting Room closes at once (budget.ts), instead of failing each try-on
+ * that starts.
+ */
+async function closeFor(store: FittingRoomStore, error: unknown) {
+  if (!(error instanceof ProviderError) || !error.closes) return
+  console.error(`The Fitting Room closes: YouCam's ${error.closes}.`)
+  await store.close(error.closes).catch((failure: unknown) => {
+    console.error("The Fitting Room could not be closed.", failure)
+  })
 }
 
 function failureOf(error: unknown): { reason: RenderFailure; retry: boolean } {

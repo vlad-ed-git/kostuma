@@ -88,6 +88,17 @@ const unsmoothed: SentEffect = {
 }
 
 /**
+ * The tools of a guide's renders, in renderPlan's order: what its try-on
+ * costs (budget.ts), known before there is a face photo.
+ */
+export function planTools(guide: MakeupGuide): Render["tool"][] {
+  return [
+    ...(guide.allMakeup ? [] : (["clothes", "clothes"] as const)),
+    ...guide.steps.map((step) => step.render.tool),
+  ]
+}
+
+/**
  * A costume's renders: its outfit on the body photo, then on the face photo
  * (unless it is all makeup), then its makeup guide's steps on that dressed
  * face, one after the other.

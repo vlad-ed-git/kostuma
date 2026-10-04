@@ -1,5 +1,6 @@
 import type { Hex } from "@/lib/makeup"
 
+import type { ClosedFor, Controls } from "./budget"
 import type { RenderFailure } from "./provider"
 import type { Render } from "./render-plan"
 
@@ -67,6 +68,11 @@ export type TryOn = {
   status: TryOnStatus
   steps: StoredStep[]
   failure: RenderFailure | null
+  /**
+   * The units it reserved from its day's budget when it started
+   * (budget.ts); missing on try-ons made before the budget (2026-10-04).
+   */
+  reserved?: { day: string; units: number }
   createdAt: number
   updatedAt: number
 }
@@ -83,12 +89,17 @@ export type Room = {
 }
 
 /**
- * What starting a try-on came to: a new one, the one already made, or none,
- * the account's free costume being used (lib/fitting-room/free-costume.ts).
+ * What starting a try-on came to: a new one, the one already made, or none:
+ * the account's free costume is used (lib/fitting-room/free-costume.ts), or
+ * the Fitting Room is closed or its day's budget spent (budget.ts).
  */
 export type Begun =
   | { outcome: "started" | "existing"; tryOn: TryOn }
   | { outcome: "out_of_units" }
+  | { outcome: "closed" }
+
+/** The switch and what today's try-ons have reserved (budget.ts). */
+export type Capacity = { controls: Controls; reserved: number }
 
 /**
  * Where try-ons, photos and pictures are kept: Firestore and Cloud Storage
@@ -108,7 +119,9 @@ export interface FittingRoomStore {
   /**
    * In one transaction: the try-on if it exists and hasn't failed; else
    * keeps `fresh` (a failed one starts over), if the account's free costume
-   * allows (`allowanceOf`). Two starts at once never both get it.
+   * allows (`allowanceOf`) and the Fitting Room is open with its units left
+   * in the day's budget, which it reserves. Two starts at once never both
+   * get the free costume.
    */
   begin(uid: string, fresh: TryOn): Promise<Begun>
   /**
@@ -124,8 +137,9 @@ export interface FittingRoomStore {
   ): Promise<boolean>
   /**
    * Ends a running try-on, in one transaction: false if it had ended already.
-   * One that fails after pictures were made for it counts in the room's
-   * `failedTries`.
+   * The units of the renders it never made go back to its day's budget. One
+   * that fails for the visitor's photos after pictures were made for it
+   * counts in the room's `failedTries` (free-costume.ts).
    */
   finish(
     uid: string,
@@ -140,6 +154,15 @@ export interface FittingRoomStore {
     image: Uint8Array
   ): Promise<void>
   stepImage(uid: string, id: string, index: number): Promise<Uint8Array | null>
+  /** The Fitting Room's switch and the reservations of `now`'s day (budget.ts). */
+  capacity(now?: number): Promise<Capacity>
+  /** Closes the Fitting Room for Kostuma's reason, until the daily check. */
+  close(reason: ClosedFor): Promise<void>
+  /**
+   * The daily check: keeps YouCam's balance, and closes or reopens the
+   * Fitting Room by it (budget.ts `afterBalance`). The controls after it.
+   */
+  recordBalance(balance: number, now: number): Promise<Controls>
 }
 
 /** A step as the page shows it. */

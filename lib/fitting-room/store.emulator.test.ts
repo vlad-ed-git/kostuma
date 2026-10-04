@@ -146,8 +146,79 @@ describe("finish", () => {
     const first = tryOn()
     await store.begin(UID, first)
     await store.updateStep(UID, first.id, 0, () => true, { status: "done" })
-    expect(await store.finish(UID, first.id, "failed", "failed")).toBe(true)
-    expect(await store.finish(UID, first.id, "failed", "failed")).toBe(false)
+    expect(await store.finish(UID, first.id, "failed", "face_photo")).toBe(true)
+    expect(await store.finish(UID, first.id, "failed", "face_photo")).toBe(
+      false
+    )
     expect((await store.room(UID)).failedTries).toBe(1)
+  })
+
+  it("never counts Kostuma's or YouCam's failures against the visitor", async () => {
+    for (const [n, failure] of (["failed", "unavailable"] as const).entries()) {
+      const fresh = tryOn("ghostface", n)
+      await store.begin(UID, fresh)
+      await store.updateStep(UID, fresh.id, 0, () => true, { status: "done" })
+      await store.finish(UID, fresh.id, "failed", failure)
+    }
+    expect((await store.room(UID)).failedTries).toBe(0)
+  })
+})
+
+describe("the budget", () => {
+  const config = () =>
+    fetch(
+      `http://${EMULATOR}/v1/projects/${PROJECT}/databases/(default)/documents/config/fittingRoom`,
+      { headers: { Authorization: "Bearer owner" } }
+    ).then((response) => response.json())
+
+  it("makes the owner's switch with its defaults, and reserves a try-on's units", async () => {
+    const fresh = tryOn()
+    const begun = await store.begin(UID, fresh)
+    expect(begun).toMatchObject({
+      outcome: "started",
+      // The outfits (2 + 2) and one step.
+      tryOn: { reserved: { units: 5 } },
+    })
+    expect((await config()).fields).toMatchObject({
+      open: { booleanValue: true },
+      dailyUnits: { integerValue: "120" },
+      floor: { integerValue: "40" },
+    })
+    expect((await store.capacity()).reserved).toBe(5)
+  })
+
+  it("refuses starts past the day's budget, and gives back what was never made", async () => {
+    await store.recordBalance(1000, Date.now())
+    const first = tryOn("ghostface", 0)
+    await store.begin(UID, first)
+    // 120 a day: 23 more try-ons of 5 fit, the 25th doesn't.
+    for (let n = 1; n < 24; n++)
+      await store.begin(`visitor-${n}`, tryOn("ghostface", n))
+    expect(await store.begin("visitor-24", tryOn("ghostface", 24))).toEqual({
+      outcome: "closed",
+    })
+    await store.updateStep(UID, first.id, 0, () => true, { status: "done" })
+    await store.finish(UID, first.id, "failed", "face_photo")
+    // Its outfit was made (2 units); 3 come back.
+    expect((await store.capacity()).reserved).toBe(117)
+    expect(
+      (await store.begin("visitor-24", tryOn("ghostface", 24))).outcome
+    ).toBe("closed")
+  })
+
+  it("closes for Kostuma's reasons only when open, and reopens with the daily check", async () => {
+    await store.close("units")
+    expect(await store.begin(UID, tryOn())).toEqual({ outcome: "closed" })
+    const controls = await store.recordBalance(500, Date.now())
+    expect(controls).toMatchObject({
+      open: true,
+      closedFor: null,
+      balance: 500,
+    })
+    expect((await store.begin(UID, tryOn())).outcome).toBe("started")
+    expect(await store.recordBalance(10, Date.now())).toMatchObject({
+      open: false,
+      closedFor: "units",
+    })
   })
 })

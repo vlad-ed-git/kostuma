@@ -218,14 +218,14 @@ describe("youcamProvider.start", () => {
   })
 
   it.each([
-    [401, "InvalidApiKey", "unavailable", false],
-    [400, "CreditInsufficiency", "unavailable", false],
-    [429, "", "failed", true],
-    [503, "", "failed", true],
-    [400, "InvalidParameters", "failed", false],
+    [401, "InvalidApiKey", "unavailable", false, "key"],
+    [400, "CreditInsufficiency", "unavailable", false, "units"],
+    [429, "", "failed", true, null],
+    [503, "", "failed", true, null],
+    [400, "InvalidParameters", "failed", false, null],
   ])(
-    "turns HTTP %i %s into %s (retry: %s)",
-    async (status, code, reason, retry) => {
+    "turns HTTP %i %s into %s (retry: %s, closes: %s)",
+    async (status, code, reason, retry, closes) => {
       const { fetcher } = youcam({
         [`${API}/s2s/v2.0/file`]: () =>
           json({ status, error_code: code }, status),
@@ -234,7 +234,7 @@ describe("youcamProvider.start", () => {
         .start(makeup, { source: IMAGE })
         .catch((caught: unknown) => caught)
       expect(error).toBeInstanceOf(ProviderError)
-      expect(error).toMatchObject({ reason, retry })
+      expect(error).toMatchObject({ reason, retry, closes })
     }
   )
 
@@ -421,5 +421,34 @@ describe("youcamProvider.discard", () => {
     })
     expect(warn).toHaveBeenCalled()
     warn.mockRestore()
+  })
+})
+
+describe("youcamProvider.balance", () => {
+  it("adds up the units of every batch not expired", async () => {
+    const { fetcher, calls } = youcam({
+      [`${API}/s2s/v1.0/client/credit`]: () =>
+        json({
+          status: 200,
+          results: [
+            { id: 1, type: "ApiPaygToken", amount: 500, amount_dec: 500.25 },
+            { id: 2, type: "ApiSubsToken", amount_dec: 31.5, expiry: 1 },
+            { id: 3, type: "ApiSubsToken", amount: 12 },
+          ],
+        }),
+    })
+    expect(await youcamProvider(KEY, fetcher).balance()).toBe(512.25)
+    expect(calls[0].init?.headers).toMatchObject({
+      Authorization: `Bearer ${KEY}`,
+    })
+  })
+
+  it("refuses an answer without a balance", async () => {
+    const { fetcher } = youcam({
+      [`${API}/s2s/v1.0/client/credit`]: () => json({ status: 200 }),
+    })
+    await expect(youcamProvider(KEY, fetcher).balance()).rejects.toBeInstanceOf(
+      ProviderError
+    )
   })
 })

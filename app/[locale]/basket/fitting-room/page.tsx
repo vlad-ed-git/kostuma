@@ -9,6 +9,7 @@ import { redirect } from "@/i18n/navigation"
 import { withNext } from "@/lib/auth/next-path"
 import { getUser } from "@/lib/auth/session"
 import { getCostume, getCostumes, toSummary } from "@/lib/catalog"
+import { admits, unitsOfGuide } from "@/lib/fitting-room/budget"
 import { currentTryOn } from "@/lib/fitting-room/current-try-on"
 import { allowanceOf } from "@/lib/fitting-room/free-costume"
 import { guideFor } from "@/lib/guides"
@@ -72,12 +73,19 @@ export default async function FittingRoomPage({
   let free = true
   let usedOn: string | null = null
   const renderer = fittingRoom()?.provider.name
+  // Closed without a renderer, by the owner's switch, or once the day's
+  // budget can't take this costume's try-on (lib/fitting-room/budget.ts).
+  let open = renderer !== undefined
   try {
     const store = fittingRoomStore()
-    const [kept, tryOns] = await Promise.all([
+    const [kept, tryOns, capacity] = await Promise.all([
       store.room(user.uid),
       store.tryOns(user.uid),
+      store.capacity(),
     ])
+    if (open && guide) {
+      open = admits(capacity.controls, capacity.reserved, unitsOfGuide(guide))
+    }
     room = { face: kept.face?.id ?? null, body: kept.body?.id ?? null }
     // The try-on of the photos in use, else the newest, by the renderer in
     // use: never a fake one standing in for real renders.
@@ -134,7 +142,7 @@ export default async function FittingRoomPage({
           selected={selected}
           room={room}
           tryOn={tryOn}
-          open={renderer !== undefined}
+          open={open}
           free={free}
           usedOn={usedOn}
         />

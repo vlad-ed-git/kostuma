@@ -10,6 +10,7 @@ import {
   lips,
 } from "@/lib/makeup"
 
+import { dayOf } from "./budget"
 import { FAILED_TRIES } from "./free-costume"
 import { memoryStore } from "./memory-store"
 import {
@@ -100,6 +101,9 @@ function scripted() {
     async discard(task) {
       discarded.push(task)
     },
+    async balance() {
+      return null
+    },
   }
   return {
     provider,
@@ -149,7 +153,8 @@ afterEach(() => vi.restoreAllMocks())
 
 /** The try-on a start gave; fails the test when it gave none. */
 function made(begun: Begun): TryOn {
-  if (begun.outcome === "out_of_units") throw new Error("Out of units.")
+  if (begun.outcome === "out_of_units" || begun.outcome === "closed")
+    throw new Error(`No try-on: ${begun.outcome}.`)
   return begun.tryOn
 }
 
@@ -410,11 +415,21 @@ describe("advance", () => {
     expect(render.started).toHaveLength(MAX_ATTEMPTS)
   })
 
-  it("closes the try-on when the service refuses (no units, no key)", async () => {
+  it("fails the try-on and closes the Fitting Room when the service refuses (no units, no key)", async () => {
     const id = await started()
-    render.failStarts(new ProviderError("401", "unavailable", false))
+    render.failStarts(
+      new ProviderError("CreditInsufficiency", "unavailable", false, {
+        closes: "units",
+      })
+    )
     const tryOn = await advance(deps, UID, id)
     expect(tryOn).toMatchObject({ status: "failed", failure: "unavailable" })
+    expect((await store.capacity(now)).controls).toMatchObject({
+      open: false,
+      closedFor: "units",
+    })
+    // Not the visitor's fault: the free costume comes back, untouched.
+    expect((await store.room(UID)).failedTries).toBe(0)
   })
 
   it("asks again next time when the service can't be reached", async () => {
@@ -533,6 +548,18 @@ describe("the free costume", () => {
     })
   })
 
+  it("never counts a failure that isn't the visitor's photos, even after pictures were made", async () => {
+    for (const failure of ["failed", "unavailable"] as const) {
+      for (let n = 0; n < FAILED_TRIES + 1; n++) {
+        const id = await started(otherFace(n))
+        await store.updateStep(UID, id, 0, () => true, { status: "done" })
+        await store.finish(UID, id, "failed", failure)
+      }
+    }
+    expect((await store.room(UID)).failedTries).toBe(0)
+    expect((await begin(deps, UID, otherCostume)).outcome).toBe("started")
+  })
+
   it("counts a failed try-on started over as another try", async () => {
     for (let n = 0; n < FAILED_TRIES; n++)
       await failAfterTheOutfit(await started())
@@ -561,17 +588,85 @@ describe("the free costume", () => {
 
 describe("mayBegin", () => {
   it("says whether a try-on would start, and keeps nothing", async () => {
-    expect(await mayBegin(deps, UID, otherCostume)).toBe(true)
+    expect(await mayBegin(deps, UID, otherCostume)).toBe("ok")
     expect(await store.tryOns(UID)).toHaveLength(0)
     const id = await started()
     await store.finish(UID, id, "done", null)
-    expect(await mayBegin(deps, UID, otherCostume)).toBe(false)
-    expect(await mayBegin(deps, UID, otherFace(1))).toBe(false)
+    expect(await mayBegin(deps, UID, otherCostume)).toBe("out_of_units")
+    expect(await mayBegin(deps, UID, otherFace(1))).toBe("out_of_units")
   })
 
   it("lets the visitor see a try-on already made", async () => {
     const id = await started()
     await store.finish(UID, id, "done", null)
-    expect(await mayBegin(deps, UID, fitting)).toBe(true)
+    expect(await mayBegin(deps, UID, fitting)).toBe("ok")
+  })
+
+  it("says the Fitting Room is closed, by the switch or the day's budget", async () => {
+    deps.store = memoryStore({ controls: { open: false } })
+    expect(await mayBegin(deps, UID, fitting)).toBe("closed")
+    // The outfits (2 + 2) and three steps: 7 units.
+    deps.store = memoryStore({ controls: { dailyUnits: 6 } })
+    expect(await mayBegin(deps, UID, fitting)).toBe("closed")
+    deps.store = memoryStore({ controls: { dailyUnits: 7 } })
+    expect(await mayBegin(deps, UID, fitting)).toBe("ok")
+  })
+})
+
+describe("the budget", () => {
+  /** The units the store has reserved today. */
+  const reserved = async () => (await deps.store.capacity(now)).reserved
+
+  it("reserves a try-on's units when it starts: 2 per outfit, 1 per step", async () => {
+    const tryOn = made(await begin(deps, UID, fitting))
+    expect(tryOn.reserved).toEqual({ day: dayOf(now), units: 7 })
+    expect(await reserved()).toBe(7)
+    // Seeing it again reserves nothing.
+    await begin(deps, UID, fitting)
+    expect(await reserved()).toBe(7)
+  })
+
+  it("refuses a start once the day's budget is reserved, then the next day takes it", async () => {
+    deps.store = store = memoryStore({ controls: { dailyUnits: 10 } })
+    await started()
+    expect(await begin(deps, "someone-else", fitting)).toEqual({
+      outcome: "closed",
+    })
+    now += 24 * 60 * 60 * 1000
+    expect((await begin(deps, "someone-else", fitting)).outcome).toBe("started")
+  })
+
+  it("refuses every start while the switch is off", async () => {
+    deps.store = memoryStore({ controls: { open: false } })
+    expect(await begin(deps, UID, fitting)).toEqual({ outcome: "closed" })
+  })
+
+  it("gives back the units of the renders a try-on never made", async () => {
+    const id = await started()
+    await advance(deps, UID, id)
+    render.finish("task-0", picture(0))
+    await advance(deps, UID, id)
+    render.finish("task-1", {
+      status: "error",
+      reason: "failed",
+      retry: false,
+      detail: "error_editing_failed",
+    })
+    // The face's outfit failed for Kostuma: the makeup goes on.
+    await advance(deps, UID, id)
+    await advance(deps, UID, id)
+    for (const task of [2, 3, 4]) {
+      render.finish(`task-${task}`, picture(task))
+      await advance(deps, UID, id)
+    }
+    expect((await store.tryOn(UID, id))?.status).toBe("done")
+    // The body's outfit (2) and three steps (3) were made: 5 of 7.
+    expect(await reserved()).toBe(5)
+  })
+
+  it("gives all its units back to a try-on that failed before any picture", async () => {
+    const id = await started()
+    await store.finish(UID, id, "failed", "body_photo")
+    expect(await reserved()).toBe(0)
   })
 })

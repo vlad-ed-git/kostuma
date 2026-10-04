@@ -1,3 +1,4 @@
+import type { ClosedFor } from "./budget"
 import type { Render } from "./render-plan"
 
 /**
@@ -51,16 +52,29 @@ export interface RenderProvider {
   check(task: string, render: Render): Promise<TaskState>
   /** Deletes a task and its files from the service (best effort). */
   discard(task: string): Promise<void>
+  /**
+   * The units left to render with (the daily check, budget.ts); null when
+   * the renderer has none to count (the fake). Throws a ProviderError.
+   */
+  balance(): Promise<number | null>
 }
 
 export class ProviderError extends Error {
   readonly reason: RenderFailure
   readonly retry: boolean
+  /** The service can't render for anyone: the Fitting Room closes (budget.ts). */
+  readonly closes: ClosedFor | null
 
-  constructor(message: string, reason: RenderFailure, retry: boolean) {
+  constructor(
+    message: string,
+    reason: RenderFailure,
+    retry: boolean,
+    { closes = null }: { closes?: ClosedFor | null } = {}
+  ) {
     super(message)
     this.name = "ProviderError"
     this.reason = reason
     this.retry = retry
+    this.closes = closes
   }
 }

@@ -72,6 +72,11 @@ export const fakeProvider: RenderProvider = {
   async discard(task) {
     tasks.delete(task)
   },
+
+  // Free: nothing to count.
+  async balance() {
+    return null
+  },
 }
 
 async function unreadable(image: Uint8Array) {

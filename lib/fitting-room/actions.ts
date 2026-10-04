@@ -90,8 +90,8 @@ export async function startTryOn(form: FormData): Promise<StartResult> {
       ? null
       : (tryOnGarment(costume)?.url ?? null)
     const fitting: Fitting = { slug, guide, face, body, garment }
-    if (!(await mayBegin(deps, user.uid, fitting)))
-      return { ok: false, error: "out_of_units" }
+    const may = await mayBegin(deps, user.uid, fitting)
+    if (may !== "ok") return { ok: false, error: may }
 
     if (fresh.face || fresh.body) {
       await deps.store.savePhotos(user.uid, {
@@ -100,8 +100,8 @@ export async function startTryOn(form: FormData): Promise<StartResult> {
       })
     }
     const begun = await begin(deps, user.uid, fitting)
-    if (begun.outcome === "out_of_units")
-      return { ok: false, error: "out_of_units" }
+    if (begun.outcome === "out_of_units" || begun.outcome === "closed")
+      return { ok: false, error: begun.outcome }
     return { ok: true, tryOn: toView(begun.tryOn) }
   } catch (error) {
     console.error("A try-on could not start.", error)

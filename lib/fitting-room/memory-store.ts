@@ -1,4 +1,13 @@
-import { allowanceOf, madePictures } from "./free-costume"
+import {
+  admits,
+  afterBalance,
+  type Controls,
+  dayOf,
+  DEFAULT_CONTROLS,
+  unitsOfPlan,
+  unspentUnits,
+} from "./budget"
+import { allowanceOf, countsAsFailedTry } from "./free-costume"
 import type {
   FacePhoto,
   FittingRoomStore,
@@ -11,7 +20,8 @@ import type {
 /**
  * The Fitting Room kept in memory: the unit tests, and the e2e build
  * (store.e2e.ts). Reads and writes copies, as a database would; each call
- * runs alone, as a transaction would.
+ * runs alone, as a transaction would. `controls`: the switch and budget it
+ * starts with (budget.ts).
  */
 
 type Account = {
@@ -23,8 +33,13 @@ type Account = {
   images: Map<string, Uint8Array>
 }
 
-export function memoryStore(): FittingRoomStore {
+export function memoryStore({
+  controls: initial = {},
+}: { controls?: Partial<Controls> } = {}): FittingRoomStore {
   const accounts = new Map<string, Account>()
+  let controls: Controls = { ...DEFAULT_CONTROLS, ...initial }
+  // Units reserved per day.
+  const usage = new Map<string, number>()
 
   function account(uid: string): Account {
     let found = accounts.get(uid)
@@ -89,8 +104,14 @@ export function memoryStore(): FittingRoomStore {
         fresh.renderer
       )
       if (!allowance.free) return { outcome: "out_of_units" }
-      found.tryOns.set(fresh.id, copy(fresh))
-      return { outcome: "started", tryOn: copy(fresh) }
+      const day = dayOf(fresh.createdAt)
+      const units = unitsOfPlan(fresh.steps.map((step) => step.render))
+      if (!admits(controls, usage.get(day) ?? 0, units))
+        return { outcome: "closed" }
+      usage.set(day, (usage.get(day) ?? 0) + units)
+      const started: TryOn = { ...copy(fresh), reserved: { day, units } }
+      found.tryOns.set(fresh.id, started)
+      return { outcome: "started", tryOn: copy(started) }
     },
 
     async updateStep(uid, id, index, when, change) {
@@ -109,7 +130,13 @@ export function memoryStore(): FittingRoomStore {
       tryOn.status = status
       tryOn.failure = failure
       tryOn.updatedAt = Date.now()
-      if (status === "failed" && madePictures(tryOn)) found.failedTries += 1
+      if (status === "failed" && countsAsFailedTry(tryOn, failure))
+        found.failedTries += 1
+      const unspent = unspentUnits(tryOn)
+      if (unspent > 0 && tryOn.reserved) {
+        const { day } = tryOn.reserved
+        usage.set(day, Math.max(0, (usage.get(day) ?? 0) - unspent))
+      }
       return true
     },
 
@@ -119,6 +146,26 @@ export function memoryStore(): FittingRoomStore {
 
     async stepImage(uid, id, index) {
       return account(uid).images.get(`${id}/${index}`) ?? null
+    },
+
+    async capacity(now = Date.now()) {
+      return { controls: { ...controls }, reserved: usage.get(dayOf(now)) ?? 0 }
+    },
+
+    async close(reason) {
+      // Closed already (by the owner, or before): left as it is.
+      if (controls.open)
+        controls = { ...controls, open: false, closedFor: reason }
+    },
+
+    async recordBalance(balance, now) {
+      controls = {
+        ...controls,
+        ...afterBalance(controls, balance),
+        balance,
+        balanceAt: now,
+      }
+      return { ...controls }
     },
   }
 }

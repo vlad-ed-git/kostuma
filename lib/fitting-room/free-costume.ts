@@ -1,3 +1,4 @@
+import type { RenderFailure } from "./provider"
 import type { TryOn } from "./try-on"
 
 /**
@@ -6,12 +7,17 @@ import type { TryOn } from "./try-on"
  * once one is done, the account has used it, and no other try-on starts:
  * not of another costume, not with other photos. Seeing a try-on already
  * made is always free. A try-on that fails gives it back, so the visitor
- * can try again with other photos, but only FAILED_TRIES times once YouCam
- * had made pictures for them (its units spent): then it is gone too. The
- * server decides (FittingRoomStore `begin`); the page only reflects it.
+ * can try again with other photos, but only FAILED_TRIES times once their
+ * own photos failed after YouCam had made pictures for them (its units
+ * spent): then it is gone too. Kostuma's failures and YouCam's (an outage,
+ * no units left, a timeout) never count (todo ENG-03). The server decides
+ * (FittingRoomStore `begin`); the page only reflects it.
  */
 
-/** Try-ons that may fail after pictures were made, before none can start. */
+/**
+ * Try-ons whose photos may fail after pictures were made, before none can
+ * start.
+ */
 export const FAILED_TRIES = 2
 
 /** Whether the account may start a try-on; if not, which costume has it. */
@@ -44,3 +50,18 @@ export function allowanceOf(
 /** Whether YouCam made any picture for a try-on: its units were spent. */
 export const madePictures = (tryOn: Pick<TryOn, "steps">) =>
   tryOn.steps.some((step) => step.status === "done")
+
+/** The failures that are the visitor's photos': theirs to retake. */
+export const photoFailure = (failure: RenderFailure | null) =>
+  failure === "face_photo" ||
+  failure === "body_photo" ||
+  failure === "photo_rejected"
+
+/**
+ * Whether a try-on that failed for `failure` uses up one of the account's
+ * FAILED_TRIES: its photos failed, after pictures were made.
+ */
+export const countsAsFailedTry = (
+  tryOn: Pick<TryOn, "steps">,
+  failure: RenderFailure | null
+) => photoFailure(failure) && madePictures(tryOn)
