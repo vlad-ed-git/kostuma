@@ -29,7 +29,7 @@ export function DeleteData() {
 
   return (
     <div className="flex flex-col items-start gap-3">
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-x-10 gap-y-1">
         <Ask
           label={t("deletePhotos")}
           title={t("deletePhotosTitle")}
@@ -94,10 +94,11 @@ function Ask({
     >
       <AlertDialog.Trigger
         render={
+          // Quiet text buttons on the page's left line, 44 px tall.
           <Button
             variant="ghost"
             size="lg"
-            className="text-muted-foreground hover:text-destructive"
+            className="px-0 text-muted-foreground hover:bg-transparent hover:text-destructive dark:hover:bg-transparent"
           />
         }
       >
