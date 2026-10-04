@@ -514,13 +514,20 @@ function Fitting({
         className={cn(
           stageGrid,
           photoHeight,
-          "[grid-template-areas:'head'_'mirrors'_'go'] lg:[grid-template-areas:'mirrors_head'_'mirrors_go']"
+          // The words beside the mirrors from `xl` only (three mirrors leave
+          // them too narrow below), and the consent and the start under
+          // both: beside the mirrors, that column grew tall and narrow.
+          "[grid-template-areas:'head'_'mirrors'_'go'] lg:grid-cols-[minmax(0,1fr)] lg:[grid-template-areas:'head'_'mirrors'_'go'] xl:grid-cols-[auto_minmax(0,1fr)] xl:[grid-template-areas:'mirrors_head'_'go_go']"
         )}
       >
         <div className="flex flex-col gap-4 [grid-area:head]">
           {heading(t("confirm.title", { name: costume.name }))}
           <p className="max-w-[60ch] text-lead text-muted-foreground">
             {t("confirm.line")}
+          </p>
+          {/* Only a free costume gets here: starting uses it (todo UX-04). */}
+          <p className="max-w-[60ch] text-lead font-semibold">
+            {t("confirm.free")}
           </p>
         </div>
         <div className="flex items-end gap-5 [grid-area:mirrors] sm:gap-8">

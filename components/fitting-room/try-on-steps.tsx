@@ -81,6 +81,7 @@ export function TryOnSteps({
   const previous = useRef<HTMLButtonElement>(null)
   const next = useRef<HTMLButtonElement>(null)
   const strip = useRef<HTMLOListElement>(null)
+  const mirror = useRef<HTMLElement>(null)
 
   const makeup = frames.filter((each) => each.kind === "step")
   const ready = makeup.filter((each) => each.step?.status === "done").length
@@ -110,12 +111,44 @@ export function TryOnSteps({
     })
   }, [followed])
 
+  // The first makeup step: where a finished try-on's guide starts.
+  const firstStep = frames.findIndex((each) => each.kind === "step")
+  /**
+   * At the last frame of a finished try-on, the way on is back to step 1:
+   * the visitor's next job is to sit at the vanity and follow it (todo
+   * UX-03).
+   */
+  const restartsAt = (index: number) =>
+    tryOn.status === "done" &&
+    index === last &&
+    firstStep >= 0 &&
+    firstStep < last
+  const restart = restartsAt(shown)
+
   function go(by: -1 | 1) {
     const to = Math.max(0, Math.min(last, shown + by))
     setChosen(to)
     // The button pressed is gone at either end: the other one keeps focus.
     if (to === 0) next.current?.focus()
-    if (to === last) previous.current?.focus()
+    if (to === last && !restartsAt(to)) previous.current?.focus()
+  }
+
+  /**
+   * A frame picked on the strip. Below `lg` the strip sits under the card,
+   * the mirror above them both: it comes into view, or the picture changes
+   * out of sight (todo UX-02).
+   */
+  function pick(index: number) {
+    setChosen(index)
+    const glass = mirror.current
+    if (!glass || !matchMedia("(max-width: 1023.98px)").matches) return
+    const { top, bottom } = glass.getBoundingClientRect()
+    if (top >= 0 && bottom <= innerHeight) return
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches
+    glass.scrollIntoView({
+      block: "start",
+      behavior: still ? "auto" : "smooth",
+    })
   }
 
   const frameName = (each: Frame) =>
@@ -134,7 +167,7 @@ export function TryOnSteps({
         {status}
       </p>
 
-      <figure className="[grid-area:mirror]">
+      <figure ref={mirror} className="scroll-mt-20 [grid-area:mirror]">
         <Mirror bulbs="lg" ratio={3 / 4} height={GLASS_HEIGHT} fog>
           {frame && (
             <FrameView
@@ -229,13 +262,17 @@ export function TryOnSteps({
             <Button
               ref={next}
               size="lg"
-              onClick={() => go(1)}
+              onClick={() => (restart ? pick(firstStep) : go(1))}
               className={cn(
                 "gap-1.5",
-                shown === last && "max-sm:hidden sm:invisible"
+                shown === last && !restart && "max-sm:hidden sm:invisible"
               )}
             >
-              {frame?.kind === "outfit" ? t("applyMakeup") : t("next")}
+              {restart
+                ? t("startGuide")
+                : frame?.kind === "outfit"
+                  ? t("applyMakeup")
+                  : t("next")}
               <RiArrowRightSLine aria-hidden="true" className="size-5" />
             </Button>
           </div>
@@ -253,7 +290,7 @@ export function TryOnSteps({
               type="button"
               aria-label={frameName(each)}
               aria-current={index === shown || undefined}
-              onClick={() => setChosen(index)}
+              onClick={() => pick(index)}
               className="group flex flex-col items-center gap-1.5 outline-offset-4"
             >
               <span className="film-frame relative block aspect-3/4 w-15 overflow-hidden bg-black sm:w-18">

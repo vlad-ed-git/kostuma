@@ -695,7 +695,8 @@ words beside them; on phones the words come first.
   (2:3), their glasses level; each with its photo (contained, never cropped) or, empty, the shape
   it should show (a head and shoulders, a standing figure) black and rimmed in breathing red; its
   title (`h4`), "Choose a photo" (primary while empty) / "Change" (outline), and three short
-  tips. Phones: a small mirror beside its title and button, the tips under them. The photos used
+  tips. Phones (below `sm`): a small mirror beside its title, the button under them the width of
+  the screen, the tips last; nothing passes the 16 px gutter at 320 px. The photos used
   last are offered again. A file is checked at once in the browser (an image, big enough, a
   photo's shape: no AI): a problem rims the mirror and shows under its button in
   `--destructive`. "Continue" (primary once every photo is in) needs both. A costume that is all
@@ -703,7 +704,9 @@ words beside them; on phones the words come first.
   private.").
 - **Confirm** (`h2` "Ready to try on {name}?"): the costume standing in the light (from `sm`)
   beside the two mirrors with the photos, "Check your photos first: once the try-on starts, they
-  can't be changed until it's finished.", then the consent to the photos' processing (todo
+  can't be changed until it's finished." and, in `lead` semibold, "This is your free costume.
+  Once it's done, trying on another needs Kostuma Pro." (only a free costume gets here), then
+  the consent to the photos' processing (todo
   SEC-03), a checkbox, unticked: "I agree that Kostuma sends my photos to its image service,
   YouCam (Perfect Corp.), which analyzes my face, skin tone and body only to make my pictures.
   Kostuma keeps them for up to 12 months, or until I delete them; YouCam deletes its copies
@@ -738,7 +741,8 @@ words beside them; on phones the words come first.
     the step's title (`h2` size), the how-to (`lead`), its products as links to a shop's search
     (new tab, 10.3 external links), on the last step "To finish" and the guide's last line; then
     "Previous step" (outline) and "Next step" (primary), each hidden at its end (the other keeps
-    focus). For the outfit (owner, 2026-10-03): its name, "See the photo and note down what
+    focus); at the last frame of a finished try-on, "Next step" reads "Start with step 1" and
+    goes to the guide's first step. For the outfit (owner, 2026-10-03): its name, "See the photo and note down what
     to buy." and "Now let's get started on the makeup." (`lead`), and the next step's button
     reads "Apply makeup".
   - **The film strip** ("Your pictures"): every picture as a frame between sprocket holes,
@@ -747,7 +751,8 @@ words beside them; on phones the words come first.
     page, §7.2), the one rendering now at full strength, its red light breathing (2.4 s), the
     ones waiting on it dim (35 %); a picture that comes out comes into the light. Each frame is a
     button naming its picture ("Step 2: Rotting hollows"). The strip scrolls when the frames
-    outrun it and keeps the frame rendering in sight.
+    outrun it and keeps the frame rendering in sight. Below `lg` (the strip under the card), a
+    frame picked brings the mirror into view (at once under reduced motion).
 - Ended: "Try with other photos" (outline) at the bottom, under the strip. It asks first
   (owner, 2026-10-03: "handle this very carefully"): a pop-up (Base UI alert dialog, 12; `--card`
   with a `--blood` hairline and glow over a dimmed, blurred page) "Replace your photos?", "New

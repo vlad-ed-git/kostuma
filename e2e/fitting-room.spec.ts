@@ -150,6 +150,12 @@ test.describe("The Fitting Room", () => {
     await expect(
       page.getByText("once the try-on starts, they can't be changed")
     ).toBeVisible()
+    // Starting uses the free costume: said before.
+    await expect(
+      page.getByText(
+        "This is your free costume. Once it's done, trying on another needs Kostuma Pro."
+      )
+    ).toBeVisible()
     // Nothing starts without the consent to the photos' processing.
     const consent = page.getByRole("checkbox", {
       name: /I agree that Kostuma sends my photos to its image service, YouCam/,
@@ -192,10 +198,28 @@ test.describe("The Fitting Room", () => {
     await expect(
       beetlejuice.getByRole("button", { name: "Next step" })
     ).toBeHidden()
+    // The way on from the whole transformation: the guide's first step.
+    await beetlejuice.getByRole("button", { name: "Start with step 1" }).click()
+    await expect(beetlejuice.getByText("Step 1 of 7")).toBeVisible()
+    await expect(
+      beetlejuice.getByRole("img", {
+        name: "Your face after step 1: Corpse base",
+      })
+    ).toBeVisible()
+    await expect(
+      beetlejuice.getByRole("button", { name: "Next step" })
+    ).toBeVisible()
 
     // The strip holds every picture: the outfit, then each step.
     const pictures = strip(beetlejuice)
     await expect(pictures.getByRole("button")).toHaveCount(8)
+    if (test.info().project.name === "mobile") {
+      // The strip sits under the card: a frame picked there brings the
+      // mirror back into view.
+      await pictures.scrollIntoViewIfNeeded()
+      await pictures.getByRole("button", { name: /^Step 3:/ }).click()
+      await expect(beetlejuice.locator("figure")).toBeInViewport()
+    }
     await pictures.getByRole("button", { name: "The outfit" }).click()
     await expect(
       beetlejuice.getByRole("img", {
@@ -241,6 +265,37 @@ test.describe("The Fitting Room", () => {
     await expect(page.getByText("Your try-on is ready.")).toBeAttached()
     await picturesLoaded(room(page, "Beetlejuice"))
     expect(errors).toEqual([])
+  })
+
+  test("keeps every photo control inside the gutter on small phones, in every language", async ({
+    page,
+  }) => {
+    await enter(page, ["beetlejuice"])
+    for (const width of [320, 360]) {
+      await page.setViewportSize({ width, height: 740 })
+      for (const prefix of ["", "/es", "/zh"]) {
+        await page.goto(`${prefix}/basket/fitting-room?costume=beetlejuice`)
+        await expect(page.locator("[data-photo]")).toHaveCount(2)
+        const outside = await page.locator("main").evaluate((main, width) => {
+          const gutter = 16
+          const selector =
+            "h1, h2, h3, p, li, button, [data-photo] img, [data-photo] svg"
+          return [...main.querySelectorAll(selector)]
+            .filter((element) => {
+              const box = element.getBoundingClientRect()
+              return (
+                box.width > 0 &&
+                (box.right > width - gutter + 0.5 || box.left < gutter - 0.5)
+              )
+            })
+            .map(
+              (element) =>
+                `${element.tagName}: ${element.textContent?.trim().slice(0, 40)}`
+            )
+        }, width)
+        expect(outside, `${prefix || "/en"} at ${width} px`).toEqual([])
+      }
+    }
   })
 
   test("goes on with the page asking nothing: YouCam's webhooks move the try-on along", async ({

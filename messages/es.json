@@ -127,6 +127,7 @@
     "confirm": {
       "title": "¿Todo listo para probarte el disfraz de {name}?",
       "line": "Revisa tus fotos antes: una vez que empiece la prueba, no podrás cambiarlas hasta que termine.",
+      "free": "Este es tu disfraz gratis. Cuando termine, probarte otro requiere Kostuma Pro.",
       "consent": "Acepto que Kostuma envíe mis fotos a su servicio de imágenes, YouCam (Perfect Corp.), que analiza mi cara, el tono de mi piel y mi cuerpo solo para crear mis imágenes. Kostuma las guarda hasta 12 meses, o hasta que yo las borre; YouCam borra sus copias en un plazo de 30 días. Más información en la <privacy>Política de privacidad</privacy>.",
       "start": "Empezar la prueba",
       "starting": "Revisando tus fotos…",
@@ -149,6 +150,7 @@
     "previous": "Paso anterior",
     "next": "Paso siguiente",
     "applyMakeup": "Maquíllate",
+    "startGuide": "Empezar por el paso 1",
     "stepAlt": "Tu cara después del paso {number}: {title}",
     "developing": "Revelando…",
     "stepFailed": "No se generó",

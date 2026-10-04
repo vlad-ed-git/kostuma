@@ -127,6 +127,7 @@
     "confirm": {
       "title": "准备好试穿 {name} 了吗？",
       "line": "请先检查照片：试穿一旦开始，在完成之前都无法更换照片。",
+      "free": "这是你的免费装扮。试穿完成后，再试穿其他装扮需要 Kostuma Pro。",
       "consent": "我同意 Kostuma 将我的照片发送给其图像服务 YouCam（Perfect Corp.），YouCam 仅为生成我的图片而分析我的面部、肤色和身体。Kostuma 最多保存这些照片 12 个月，或保存到我将其删除为止；YouCam 会在 30 天内删除其副本。详见<privacy>隐私政策</privacy>。",
       "start": "开始试穿",
       "starting": "正在检查你的照片…",
@@ -149,6 +150,7 @@
     "previous": "上一步",
     "next": "下一步",
     "applyMakeup": "画上妆容",
+    "startGuide": "从第 1 步开始",
     "stepAlt": "完成第 {number} 步后的你：{title}",
     "developing": "显影中…",
     "stepFailed": "未生成",

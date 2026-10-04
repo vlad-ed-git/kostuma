@@ -53,8 +53,9 @@ export function PhotoMirror({
  * One of the two photos (owner, 2026-10-03): its mirror, holding the photo
  * or, empty, the shape it should show; a button to choose or change it, and
  * three tips. A photo that can't be used is said at once, under the button;
- * the slot keeps what it had. Phones: the mirror and the button side by
- * side, the tips under them.
+ * the slot keeps what it had. Phones: the mirror and its title side by
+ * side, the button under them the width of the screen (todo UX-01: beside
+ * the mirror it ran off a 360 px screen), the tips last.
  */
 export function PhotoPicker({
   kind,
@@ -106,7 +107,7 @@ export function PhotoPicker({
           <FigureGuide kind={kind} />
         )}
       </PhotoMirror>
-      <div className="flex flex-col items-start gap-4">
+      <div className="flex flex-col items-start gap-4 max-sm:contents">
         <h3
           id={`${id}-title`}
           className="font-heading text-h4 font-medium text-balance"
@@ -124,7 +125,7 @@ export function PhotoPicker({
           aria-busy={reading || undefined}
           aria-describedby={error ? `${id}-error` : undefined}
           onClick={() => input.current?.click()}
-          className="gap-2"
+          className="gap-2 max-sm:col-span-2 max-sm:w-full"
         >
           {reading ? (
             <RiLoader4Line

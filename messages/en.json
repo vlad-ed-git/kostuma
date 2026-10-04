@@ -127,6 +127,7 @@
     "confirm": {
       "title": "Ready to try on {name}?",
       "line": "Check your photos first: once the try-on starts, they can't be changed until it's finished.",
+      "free": "This is your free costume. Once it's done, trying on another needs Kostuma Pro.",
       "consent": "I agree that Kostuma sends my photos to its image service, YouCam (Perfect Corp.), which analyzes my face, skin tone and body only to make my pictures. Kostuma keeps them for up to 12 months, or until I delete them; YouCam deletes its copies within 30 days. More in the <privacy>Privacy policy</privacy>.",
       "start": "Start the try-on",
       "starting": "Checking your photos…",
@@ -149,6 +150,7 @@
     "previous": "Previous step",
     "next": "Next step",
     "applyMakeup": "Apply makeup",
+    "startGuide": "Start with step 1",
     "stepAlt": "Your face after step {number}: {title}",
     "developing": "Developing…",
     "stepFailed": "Not rendered",

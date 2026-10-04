@@ -94,12 +94,12 @@ OPP-11 and OPP-12.
 
 ## Design and UX (`03-ui-ux.md`)
 
-- [ ] **UX-01** Below `sm`, the photo button sits under its mirror at full width; e2e: nothing past
+- [x] **UX-01** Below `sm`, the photo button sits under its mirror at full width; e2e: nothing past
       the gutter at 320 and 360 px, in en, es and zh.
-- [ ] **UX-02** On phones, tapping a strip frame scrolls the mirror into view (instantly with
+- [x] **UX-02** On phones, tapping a strip frame scrolls the mirror into view (instantly with
       reduced motion).
-- [ ] **UX-03** A finished try-on's last frame offers "Start with step 1".
-- [ ] **UX-04** While the costume is free, the confirm screen adds: "This is your free costume.
+- [x] **UX-03** A finished try-on's last frame offers "Start with step 1".
+- [x] **UX-04** While the costume is free, the confirm screen adds: "This is your free costume.
       Once it's done, trying on another needs Kostuma Pro."
 - [ ] **UX-05** Basket: "Try on" in the foreground color, "Remove" muted.
 - [ ] **UX-06** "Choose your costume" gets the site's red link underline.
