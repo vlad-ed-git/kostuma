@@ -13,7 +13,10 @@ describe("the error page", () => {
     const retry = vi.fn()
     renderInEnglish(<ErrorPage retry={retry} />)
     expect(
-      screen.getByRole("heading", { level: 1, name: "Something went wrong" })
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Something went wrong in the dark.",
+      })
     ).toBeInTheDocument()
     expect(
       screen.getByText(

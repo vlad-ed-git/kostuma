@@ -17,8 +17,8 @@ test.describe("the home title", () => {
     await page.goto("/")
     await expect(steps(page)).toHaveText([
       "Choose your costume",
-      "Try it on",
-      "Apply makeup",
+      "Try it on yourself",
+      "Do the makeup, step by step",
     ])
     const choose = steps(page)
       .first()

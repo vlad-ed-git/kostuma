@@ -9,8 +9,8 @@
   },
   "Home": {
     "chooseCostume": "Choose your costume",
-    "tryItOn": "Try it on",
-    "applyMakeup": "Apply makeup",
+    "tryItOn": "Try it on yourself",
+    "applyMakeup": "Do the makeup, step by step",
     "reel": "A real transformation into {name}, frame by frame: the photo, the outfit tried on, then the first, middle and last steps of the makeup.",
     "metaTitle": "Horror movie costumes, tried on you, with step-by-step makeup",
     "metaDescription": "Dress as one of {count} horror movie characters for Halloween. Try one costume on your own photos for free, then do its makeup step by step."
@@ -101,7 +101,7 @@
     "emptyLine": "Add a costume to My Pumpkin Basket, then try it on here.",
     "browse": "Browse costumes",
     "notInBasket": "{name} isn’t in My Pumpkin Basket yet.",
-    "closed": "The Fitting Room is closed right now. Try again later.",
+    "closed": "The Fitting Room is closed for the night. Come back soon.",
     "used": {
       "title": "You’ve used your free costume.",
       "named": "You tried on <costume>{name}</costume>. Get Kostuma Pro to try on more costumes.",
@@ -185,14 +185,14 @@
       "face_photo": "Your face couldn’t be found in the photo. Choose one where you look straight at the camera, in even light.",
       "body_photo": "You couldn’t be found standing in the photo. Choose one of you from head to toe, facing the camera.",
       "photo_rejected": "One of your photos can’t be used. Choose another one.",
-      "unavailable": "The Fitting Room is closed right now. Try again later.",
+      "unavailable": "The Fitting Room is closed for the night. Come back soon.",
       "failed": "Your try-on didn’t work out. Try again in a moment.",
       "missing_photo": "Add both photos first.",
       "missing_face": "Add a photo of your face first.",
       "same_photos": "These are the photos of your try-on. Change at least one, or keep your current photos.",
       "unknown_costume": "This costume can’t be tried on yet.",
       "signed_out": "Your session ended. Sign in again to continue.",
-      "closed": "The Fitting Room is closed right now. Try again later.",
+      "closed": "The Fitting Room is closed for the night. Come back soon.",
       "out_of_units": "You’ve used your free costume.",
       "too_many_starts": "Too many tries in a short time. Try again in an hour.",
       "too_large": "Your photos are too large to send together. Choose smaller ones.",
@@ -556,7 +556,7 @@
     "costumes": "Costumes"
   },
   "Error": {
-    "title": "Something went wrong",
+    "title": "Something went wrong in the dark.",
     "description": "Something on this page failed. Try again, or head back to Kostuma.",
     "retry": "Try again",
     "home": "Back to Kostuma"

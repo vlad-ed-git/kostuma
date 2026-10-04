@@ -551,7 +551,7 @@ every other page is indexed, in every language (14b).
 
 1. **The title, in the night scene (8.4–8.7).** As tall as its content, 80 px below it on desktop and 40 px on phones before the costumes, short enough that the window behind stays whole: clear of the headline and the film strip (owner, 2026-10-04). Desktop: the tagline on the left with the transformation under it, the countdown on
    the right with its bottom on the tagline's, and under it, beside the strip, "Choose your
-   costume", "Try it on", "Apply makeup", their capitals level with the strip's top (owner);
+   costume", "Try it on yourself", "Do the makeup, step by step", their capitals level with the strip's top (owner);
    the window stands between the columns, empty. Phones: the window with the figure in it as a
    small tableau on top, then one column (tagline, transformation, countdown, the three lines).
    - H1 `display-xl`, flickering (7.2) and split into the red and bone ghosts (8.9): "The
@@ -582,7 +582,7 @@ every other page is indexed, in every language (14b).
      screen nothing else tells it from the two lines of words), blood
      dripping from its end down past the three lines (owner: it points down;
      `components/home/blood-drip.tsx`: a pool at the word, two short runs, one long stream with
-     a drop at its tip; it pours down once, then a drop swells and falls every 2.4 s); then "Try it on" (`Home.tryItOn`) and "Apply makeup"
+     a drop at its tip; it pours down once, then a drop swells and falls every 2.4 s); then "Try it on yourself" (`Home.tryItOn`) and "Do the makeup, step by step"
      (`Home.applyMakeup`), words, not links (the Fitting Room lives in the basket).
    - **The transformation** (owner, 2026-10-04: what to expect, no words), right under "Transform
      into a monster.", as wide as the tagline's column: the owner's red, burnt strip of film
@@ -705,7 +705,7 @@ words beside them; on phones the words come first.
   both sides: two flicker, one is dead and sputters now and then. Nothing is ever drawn over the
   glass: what it holds shows as it is. Closed (renders can't run, the owner's switch is off, or
   the day's unit budget can't take this costume's try-on: `lib/fitting-room/budget.ts`): the
-  vanity with every bulb out and "The Fitting Room is closed right now. Try again later."
+  vanity with every bulb out and "The Fitting Room is closed for the night. Come back soon."
 - **Your photos** (`h2`, "Two photos: your face, and you from head to toe. They stay
   private."): "Your face" in the vanity (3:4) and "You, head to toe" in the full-length mirror
   (2:3), their glasses level; each with its photo (contained, never cropped) or, empty, the shape
@@ -889,7 +889,7 @@ outline "Costumes" (→ `/#costumes`) beside its button: most lost visitors mist
 ### 11.8b Something went wrong
 
 A page that breaks shows a title card in the visitor's language, never the error itself and
-never Next.js' English message: `display` "Something went wrong", one line ("Something on
+never Next.js' English message: `display` "Something went wrong in the dark.", one line ("Something on
 this page failed. Try again, or head back to Kostuma."), buttons "Try again" (retries) and
 "Back to Kostuma". Inside the shell for a page (`app/[locale]/error.tsx`); the whole document
 when the shell itself breaks (`app/global-error.tsx`, its language read from the URL).

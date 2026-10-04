@@ -9,8 +9,8 @@
   },
   "Home": {
     "chooseCostume": "挑选<wbr></wbr>你的装扮",
-    "tryItOn": "穿上试试",
-    "applyMakeup": "画上妆容",
+    "tryItOn": "亲自穿上试试",
+    "applyMakeup": "一步步画上妆容",
     "reel": "一次真实的{name}变身，逐帧呈现：原始照片、试穿的服装，然后是妆容的第一步、中间一步和最后一步。",
     "metaTitle": "恐怖片角色装扮，穿在你身上，附分步妆容教程",
     "metaDescription": "从 {count} 个恐怖片角色中挑一个，万圣节就扮成它。免费用你自己的照片试穿一套装扮，再一步步画出它的妆容。"
@@ -101,7 +101,7 @@
     "emptyLine": "先把装扮加入我的南瓜篮，再来这里试穿。",
     "browse": "浏览装扮",
     "notInBasket": "{name} 还不在<wbr></wbr>我的南瓜篮中。",
-    "closed": "试衣间<wbr></wbr>暂时关闭，请稍后<wbr></wbr>再试。",
+    "closed": "试衣间<wbr></wbr>今晚<wbr></wbr>已打烊，<wbr></wbr>请稍后<wbr></wbr>再来。",
     "used": {
       "title": "你已用完<wbr></wbr>免费装扮。",
       "named": "你已试穿过 <costume>{name}</costume>。获取 Kostuma Pro，试穿更多装扮。",
@@ -185,14 +185,14 @@
       "face_photo": "在照片中找不到你的脸。请选择一张直视镜头、光线均匀的照片。",
       "body_photo": "在照片中找不到站立的你。请选择一张面对镜头、从头到脚的全身照。",
       "photo_rejected": "你的一张照片无法使用。请换一张。",
-      "unavailable": "试衣间暂时关闭，请稍后再试。",
+      "unavailable": "试衣间今晚已打烊，请稍后再来。",
       "failed": "试穿没有成功。请稍后再试。",
       "missing_photo": "请先添加两张照片。",
       "missing_face": "请先添加一张面部照片。",
       "same_photos": "这就是本次试穿用的照片。请至少更换一张，或保留当前照片。",
       "unknown_costume": "这套装扮暂时还不能试穿。",
       "signed_out": "你的登录已失效。请重新登录后继续。",
-      "closed": "试衣间暂时关闭，请稍后再试。",
+      "closed": "试衣间今晚已打烊，请稍后再来。",
       "out_of_units": "你已用完免费装扮。",
       "too_many_starts": "短时间内尝试次数过多，请一小时后再试。",
       "too_large": "照片合计太大，无法一起发送。请选择更小的照片。",
@@ -556,7 +556,7 @@
     "costumes": "装扮"
   },
   "Error": {
-    "title": "出了点问题",
+    "title": "黑暗中，出了点问题。",
     "description": "此页面出了故障。请重试，或返回 Kostuma。",
     "retry": "重试",
     "home": "返回 Kostuma"

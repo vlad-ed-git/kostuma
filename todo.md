@@ -142,7 +142,9 @@ OPP-11 and OPP-12.
       and keep paint and fake blood out of your eyes."
 - [x] **COPY-13** The page titles and descriptions as suggested.
 - [ ] **COPY-14** Owner: one native read of the Spanish and the Chinese (not code).
-- [ ] **COPY-15** The listed voice tweaks (error, closed, the home's three lines).
+      Left for the owner: the home, the Fitting Room, two or three guides and the legal pages,
+      under /es and /zh.
+- [x] **COPY-15** The listed voice tweaks (error, closed, the home's three lines).
 - Keep "Pat": it is the correct makeup verb.
 
 ## Features (`06-missed-opportunities.md`)
