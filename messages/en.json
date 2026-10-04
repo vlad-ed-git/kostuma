@@ -309,6 +309,11 @@
         "p2": "By using Kostuma, you agree to these terms and to our <privacy>Privacy policy</privacy>, which says what we keep about you and why. When you create an account, you agree to both by ticking the box. If you don't agree, please don't use Kostuma.",
         "p3": "These terms come in English, Spanish and Chinese. If the versions ever differ, the English one applies."
       },
+      "who": {
+        "title": "Who we are",
+        "p1": "Kostuma is made and run by its developers, a small independent team (not a registered company). You can reach us through the <feedback>feedback form</feedback>, or at <email>{address}</email>.",
+        "p2": "Kostuma is not affiliated with Perfect Corp. (YouCam), which provides its AI image service."
+      },
       "eligibility": {
         "title": "Who can use Kostuma",
         "p1": "Kostuma shows horror imagery and is not intended for children. You must be at least 17 years old to create an account or use the Fitting Room.",
@@ -387,8 +392,12 @@
     "sections": {
       "about": {
         "title": "About this policy",
-        "p1": "This policy covers Kostuma, the website at kostuma.vercel.app (“Kostuma”, “we”, “us”). It explains what we collect when you browse, create an account, use My Pumpkin Basket and the Fitting Room, join Kostuma Pro's waitlist, or send us a message, and what we do with it.",
-        "p2": "For questions or requests about your information, email <email>{address}</email>."
+        "p1": "This policy covers Kostuma, the website at kostuma.vercel.app (“Kostuma”, “we”, “us”). It explains what we collect when you browse, create an account, use My Pumpkin Basket and the Fitting Room, join Kostuma Pro's waitlist, or send us a message, and what we do with it."
+      },
+      "who": {
+        "title": "Who we are",
+        "p1": "Kostuma is made and run by its developers, a small independent team (not a registered company). We are responsible for the information this policy describes. For questions or requests about yours, email <email>{address}</email>.",
+        "p2": "Kostuma is not affiliated with Perfect Corp. (YouCam), which provides its AI image service."
       },
       "browsing": {
         "title": "When you browse",

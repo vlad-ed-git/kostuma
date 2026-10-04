@@ -871,7 +871,10 @@ Developers find the details in the console; visitors only ever read messages.
 ### 11.9 Terms of service `/terms`, Privacy policy `/privacy`
 
 The real documents, in plain words and the second person, true to what the site does
-(`Terms.*`, `Privacy.*` in the messages; `LegalPage`). Indexed.
+(`Terms.*`, `Privacy.*` in the messages; `LegalPage`). Indexed. Both say who runs Kostuma
+right after their first section ("Who we are": its developers, a small independent team, not a
+registered company; the support email; not affiliated with Perfect Corp. (YouCam), which
+provides its AI image service).
 
 - The title card: H1 `display` split into the red and bone ghosts, the tape rolling through it
   across the screen (8.9); the lead (`lead`, muted); "Last updated {date}" in small `micro`

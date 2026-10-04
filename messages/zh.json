@@ -309,6 +309,11 @@
         "p2": "使用 Kostuma 即表示你同意本条款以及我们的<privacy>隐私政策</privacy>，后者说明我们会保存你的哪些信息以及原因。创建账户时，你通过勾选复选框同意这两份文件。如果你不同意，请不要使用 Kostuma。",
         "p3": "本条款提供英文、西班牙文和中文版本。如各版本之间存在差异，以英文版本为准。"
       },
+      "who": {
+        "title": "我们是谁",
+        "p1": "Kostuma 由其开发者打造和运营，他们是一个小型独立团队（并非注册公司）。你可以通过<feedback>反馈表单</feedback>联系我们，或发送邮件至 <email>{address}</email>。",
+        "p2": "Kostuma 与提供其人工智能图像服务的 Perfect Corp.（YouCam）没有关联。"
+      },
       "eligibility": {
         "title": "谁可以使用 Kostuma",
         "p1": "Kostuma 含有恐怖画面，不适合儿童。你必须年满 17 周岁才能创建账户或使用试衣间。",
@@ -387,8 +392,12 @@
     "sections": {
       "about": {
         "title": "关于本政策",
-        "p1": "本政策适用于 Kostuma，即网址为 kostuma.vercel.app 的网站（“Kostuma”“我们”）。它说明了你在浏览、创建账户、使用“我的南瓜篮”和试衣间、加入 Kostuma Pro 候补名单或向我们发送留言时，我们会收集哪些信息，以及如何使用这些信息。",
-        "p2": "如对你的信息有疑问或请求，请发送邮件至 <email>{address}</email>。"
+        "p1": "本政策适用于 Kostuma，即网址为 kostuma.vercel.app 的网站（“Kostuma”“我们”）。它说明了你在浏览、创建账户、使用“我的南瓜篮”和试衣间、加入 Kostuma Pro 候补名单或向我们发送留言时，我们会收集哪些信息，以及如何使用这些信息。"
+      },
+      "who": {
+        "title": "我们是谁",
+        "p1": "Kostuma 由其开发者打造和运营，他们是一个小型独立团队（并非注册公司）。我们对本政策所述的信息负责。如对你的信息有疑问或请求，请发送邮件至 <email>{address}</email>。",
+        "p2": "Kostuma 与提供其人工智能图像服务的 Perfect Corp.（YouCam）没有关联。"
       },
       "browsing": {
         "title": "浏览时",

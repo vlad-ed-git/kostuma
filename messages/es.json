@@ -309,6 +309,11 @@
         "p2": "Al usar Kostuma, aceptas estos términos y nuestra <privacy>Política de privacidad</privacy>, que explica qué guardamos sobre ti y por qué. Al crear una cuenta, aceptas ambos marcando la casilla. Si no estás de acuerdo, por favor no uses Kostuma.",
         "p3": "Estos términos existen en inglés, español y chino. Si alguna vez las versiones no coinciden, se aplica la inglesa."
       },
+      "who": {
+        "title": "Quiénes somos",
+        "p1": "Kostuma la crean y la gestionan sus desarrolladores, un pequeño equipo independiente (no una empresa registrada). Puedes escribirnos con el <feedback>formulario de comentarios</feedback> o al correo <email>{address}</email>.",
+        "p2": "Kostuma no está afiliada a Perfect Corp. (YouCam), que presta su servicio de imágenes con IA."
+      },
       "eligibility": {
         "title": "Quién puede usar Kostuma",
         "p1": "Kostuma muestra imágenes de terror y no es apto para niños. Debes tener al menos 17 años para crear una cuenta o usar el Probador.",
@@ -387,8 +392,12 @@
     "sections": {
       "about": {
         "title": "Sobre esta política",
-        "p1": "Esta política cubre Kostuma, el sitio web en kostuma.vercel.app (“Kostuma”, “nosotros”). Explica qué recogemos cuando navegas, creas una cuenta, usas Mi cesta de calabaza y el Probador, te unes a la lista de espera de Kostuma Pro o nos envías un mensaje, y qué hacemos con ello.",
-        "p2": "Para preguntas o solicitudes sobre tu información, escribe a <email>{address}</email>."
+        "p1": "Esta política cubre Kostuma, el sitio web en kostuma.vercel.app (“Kostuma”, “nosotros”). Explica qué recogemos cuando navegas, creas una cuenta, usas Mi cesta de calabaza y el Probador, te unes a la lista de espera de Kostuma Pro o nos envías un mensaje, y qué hacemos con ello."
+      },
+      "who": {
+        "title": "Quiénes somos",
+        "p1": "Kostuma la crean y la gestionan sus desarrolladores, un pequeño equipo independiente (no una empresa registrada). Somos los responsables de la información que describe esta política. Para preguntas o solicitudes sobre la tuya, escribe a <email>{address}</email>.",
+        "p2": "Kostuma no está afiliada a Perfect Corp. (YouCam), que presta su servicio de imágenes con IA."
       },
       "browsing": {
         "title": "Cuando navegas",

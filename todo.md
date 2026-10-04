@@ -81,7 +81,7 @@ OPP-11 and OPP-12.
       waitlist entry, profile and feedback of that uid, then the Auth user). The free-costume
       facts (costume used, failed tries) move to their own document, which photo deletion and
       expiry never touch. Retention 12 months: the daily cron deletes older try-ons and photos.
-- [ ] **SEC-05** The legal pages say who runs Kostuma: "Kostuma is made and run by its
+- [x] **SEC-05** The legal pages say who runs Kostuma: "Kostuma is made and run by its
       developers, a small independent team (not a registered company)", contact: the support
       email; and "Kostuma is not affiliated with Perfect Corp. (YouCam), which provides its AI
       image service." The Privacy policy names the team as responsible for the information.

@@ -91,12 +91,31 @@ describe("LegalPage", () => {
     expect(
       screen.getAllByRole("link", { name: "Privacy policy" })[0]
     ).toHaveAttribute("href", "/privacy")
-    expect(screen.getByRole("link", { name: "feedback form" })).toHaveAttribute(
-      "href",
-      "/feedback"
-    )
+    for (const form of screen.getAllByRole("link", { name: "feedback form" })) {
+      expect(form).toHaveAttribute("href", "/feedback")
+    }
     for (const email of screen.getAllByRole("link", { name: SUPPORT_EMAIL })) {
       expect(email).toHaveAttribute("href", `mailto:${SUPPORT_EMAIL}`)
+    }
+  })
+
+  it("says who runs Kostuma, and that it isn't YouCam's", async () => {
+    for (const document of ["Terms", "Privacy"] as const) {
+      const { unmount } = await renderDocument(document)
+      expect(
+        screen.getByRole("heading", { name: "Who we are" })
+      ).toBeInTheDocument()
+      expect(
+        screen.getByText(
+          /made and run by its developers, a small independent team \(not a registered company\)/
+        )
+      ).toBeInTheDocument()
+      expect(
+        screen.getByText(
+          "Kostuma is not affiliated with Perfect Corp. (YouCam), which provides its AI image service."
+        )
+      ).toBeInTheDocument()
+      unmount()
     }
   })
 
