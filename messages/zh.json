@@ -80,7 +80,7 @@
     "tryOnNamed": "试穿 {name}",
     "remove": "移除",
     "clear": "清空南瓜篮",
-    "clearConfirm": "再点一次即可清空",
+    "clearConfirm": "再按一次即可清空",
     "empty": "你的南瓜篮是空的。",
     "emptyLine": "长夜才刚刚开始。",
     "browse": "浏览装扮"
@@ -544,7 +544,8 @@
     "code": "404",
     "title": "迷失在黑暗中",
     "description": "此页面不存在，或已被黑夜吞噬。",
-    "home": "返回 Kostuma"
+    "home": "返回 Kostuma",
+    "costumes": "装扮"
   },
   "Error": {
     "title": "出了点问题",

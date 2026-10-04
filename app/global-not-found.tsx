@@ -60,9 +60,18 @@ export default async function GlobalNotFound() {
             title={t("title")}
             description={t("description")}
             action={
-              <Link href={home} className={buttonVariants({ size: "lg" })}>
-                {t("home")}
-              </Link>
+              <div className="flex flex-wrap gap-4">
+                <Link href={home} className={buttonVariants({ size: "lg" })}>
+                  {t("home")}
+                </Link>
+                {/* Most lost visitors were after a costume (todo UX-16). */}
+                <Link
+                  href={`${home}#costumes`}
+                  className={buttonVariants({ variant: "outline", size: "lg" })}
+                >
+                  {t("costumes")}
+                </Link>
+              </div>
             }
           />
         </main>

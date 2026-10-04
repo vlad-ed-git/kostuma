@@ -197,7 +197,7 @@ test.describe("My Pumpkin Basket", () => {
 
     await page.getByRole("button", { name: "Clear basket" }).click()
     await expect(rows(page)).toHaveCount(2)
-    await page.getByRole("button", { name: "Click again to clear" }).click()
+    await page.getByRole("button", { name: "Press again to clear" }).click()
     const empty = page.getByRole("heading", { name: "Your basket is empty." })
     await expect(empty).toBeFocused()
     await expect(headerBasket(page)).toHaveAccessibleName("My Pumpkin Basket")

@@ -80,7 +80,7 @@
     "tryOnNamed": "Try on {name}",
     "remove": "Remove",
     "clear": "Clear basket",
-    "clearConfirm": "Click again to clear",
+    "clearConfirm": "Press again to clear",
     "empty": "Your basket is empty.",
     "emptyLine": "The night is young.",
     "browse": "Browse costumes"
@@ -544,7 +544,8 @@
     "code": "404",
     "title": "Lost in the dark",
     "description": "This page does not exist, or it has already been claimed by the night.",
-    "home": "Back to Kostuma"
+    "home": "Back to Kostuma",
+    "costumes": "Costumes"
   },
   "Error": {
     "title": "Something went wrong",

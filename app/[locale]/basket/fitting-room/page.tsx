@@ -14,6 +14,7 @@ import { currentTryOn } from "@/lib/fitting-room/current-try-on"
 import { guideFor } from "@/lib/guides"
 import { fittingRoom } from "@/lib/fitting-room/service"
 import { fittingRoomStore } from "@/lib/fitting-room/store"
+import { shopLinks } from "@/lib/shops"
 import { toView, type TryOnView } from "@/lib/fitting-room/try-on"
 
 /**
@@ -67,6 +68,7 @@ export default async function FittingRoomPage({
             finish: guide.finish,
           },
           allMakeup: guide.allMakeup === true,
+          shops: shopLinks(costume.shops),
         }
       : null
 

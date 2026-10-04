@@ -10,8 +10,9 @@ import Image from "next/image"
 import { useTranslations } from "next-intl"
 import { type ReactNode, useEffect, useRef, useState } from "react"
 
+import { Buy } from "@/components/basket/buy"
 import { Button } from "@/components/ui/button"
-import type { Photo } from "@/lib/catalog/types"
+import type { Photo, ShopLink } from "@/lib/catalog/types"
 import {
   type Frame,
   framesOf,
@@ -56,6 +57,7 @@ export function TryOnSteps({
   name,
   photo,
   guide,
+  shops,
   title,
   failure,
   after,
@@ -66,6 +68,8 @@ export function TryOnSteps({
   /** The costume's photo: its silhouette stands in for a step not done. */
   photo?: Photo
   guide: GuideText
+  /** Where to buy the costume: Buy on the outfit's card. */
+  shops?: readonly [ShopLink, ...ShopLink[]]
   /** The try-on's heading (for screen readers: the page names the character). */
   title: ReactNode
   failure?: ReactNode
@@ -209,9 +213,11 @@ export function TryOnSteps({
           </h3>
         )}
         {frame?.kind === "outfit" && (
-          // Before the makeup (owner, 2026-10-03): what to buy, then on.
-          <div className="flex max-w-[60ch] flex-col gap-3 text-lead">
+          // Before the makeup (owner, 2026-10-03): what to buy, then on;
+          // Buy right there, as in the basket (todo UX-16).
+          <div className="flex max-w-[60ch] flex-col items-start gap-3 text-lead">
             <p>{t("outfitNote")}</p>
+            {shops && <Buy name={name} shops={shops} />}
             <p>{t("outfitThen")}</p>
           </div>
         )}

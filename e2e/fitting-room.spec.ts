@@ -236,6 +236,12 @@ test.describe("The Fitting Room", () => {
     await expect(
       beetlejuice.getByText("Now let's get started on the makeup.")
     ).toBeVisible()
+    // Buy right there, as in the basket: three shops, a menu.
+    await expect(
+      beetlejuice.getByRole("button", {
+        name: "Buy Beetlejuice: choose a shop",
+      })
+    ).toBeVisible()
     await expect(
       beetlejuice.getByRole("button", { name: "Next step" })
     ).toHaveCount(0)

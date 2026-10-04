@@ -101,7 +101,7 @@ OPP-11 and OPP-12.
 - [x] **UX-03** A finished try-on's last frame offers "Start with step 1".
 - [x] **UX-04** While the costume is free, the confirm screen adds: "This is your free costume.
       Once it's done, trying on another needs Kostuma Pro."
-- [ ] **UX-05** Basket: "Try on" in the foreground color, "Remove" muted.
+- [x] **UX-05** Basket: "Try on" in the foreground color, "Remove" muted.
 - [ ] **UX-06** "Choose your costume" gets the site's red link underline.
 - [ ] **UX-07** While a try-on runs, one line under the mirror: "This takes about two minutes. You
       can leave and come back."
@@ -115,7 +115,7 @@ OPP-11 and OPP-12.
       headings use, through `unicode-range`.
 - [ ] **UX-13** The pumpkin toggle is brighter at rest and shows its name ("Add to / Remove from
       My Pumpkin Basket") as a tooltip on hover and focus.
-- [ ] **UX-16** The basket badge off its label; "Press again to clear"; the outfit card shows the
+- [x] **UX-16** The basket badge off its label; "Press again to clear"; the outfit card shows the
       costume's Buy; the global 404 adds a "Costumes" link.
 
 ## Copy and content (`04-copy-content.md`), always in en, es and zh

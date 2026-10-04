@@ -639,9 +639,10 @@ title, toolbar or empty state for one.
   and "Get Kostuma Pro" (10.3), both outline.
 - Rows, the last added first, separated by space (no lines): thumbnail (4:5, 72 px wide, no
   reveal), name + film (a link to the costume), actions: **Buy** (10.3), "Try on"
-  (→ `/basket/fitting-room?costume={slug}`), "Remove" (ghost, ✕ icon). Removing keeps the
+  (→ `/basket/fitting-room?costume={slug}`, in `--foreground`: the basket's reason to exist),
+  "Remove" (ghost, ✕ icon, muted). Removing keeps the
   visitor's place: focus moves to the next row's Remove (or the previous one's), or to the empty
-  basket's title. "Clear basket" (ghost, under the rows) asks for a second click ("Click again
+  basket's title. "Clear basket" (ghost, under the rows) asks for a second press ("Press again
   to clear", in `--blood-text`, announced) within 4 s.
 - Empty: unlit pumpkin (64 px), `h2` "Your basket is empty.", "The night is young.", button
   "Browse costumes" → `/#costumes`.
@@ -744,8 +745,8 @@ words beside them; on phones the words come first.
     "Previous step" (outline) and "Next step" (primary), each hidden at its end (the other keeps
     focus); at the last frame of a finished try-on, "Next step" reads "Start with step 1" and
     goes to the guide's first step. For the outfit (owner, 2026-10-03): its name, "See the photo and note down what
-    to buy." and "Now let's get started on the makeup." (`lead`), and the next step's button
-    reads "Apply makeup".
+    to buy.", the costume's Buy (10.3, as in the basket), "Now let's get started on the
+    makeup." (`lead`), and the next step's button reads "Apply makeup".
   - **The film strip** ("Your pictures"): every picture as a frame between sprocket holes,
     labelled "Outfit", 1, 2, …; the one in the mirror ringed in `--blood-text`; a frame not done
     yet is the costume photo as a black silhouette rimmed in red (as the photos wait on the home
@@ -863,7 +864,8 @@ own line, "The shadows hear your whispers." (owner), the form on the right (560 
 Centered title card with the VHS tracking layer (8.9): "404" in the display face at `h2` size, split
 into its red and bone ghosts,
 `display` "Lost in the dark", one line, button "Back to Kostuma". Both 404s (the in-app one and
-the global one for unmatched URLs) look the same; the global one has no header.
+the global one for unmatched URLs) look the same; the global one has no header, so it adds an
+outline "Costumes" (→ `/#costumes`) beside its button: most lost visitors mistyped a costume.
 
 ### 11.8b Something went wrong
 

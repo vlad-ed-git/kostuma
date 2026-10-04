@@ -26,7 +26,7 @@ import { fitsOneSend, type PhotoProblem } from "@/lib/fitting-room/photo-rules"
 import { PHOTO_CONSENT_VERSION } from "@/lib/fitting-room/consent"
 import type { RenderFailure } from "@/lib/fitting-room/provider"
 import type { PhotoKind, TryOnView } from "@/lib/fitting-room/try-on"
-import type { CostumeSummary } from "@/lib/catalog/types"
+import type { CostumeSummary, ShopLink } from "@/lib/catalog/types"
 import { cn } from "@/lib/utils"
 
 import { Mirror } from "./dressing-room"
@@ -46,6 +46,8 @@ export const POLL_MS = 2_000
 export type FittingCostume = CostumeSummary & {
   guide: GuideText
   allMakeup: boolean
+  /** Where to buy it: the outfit's card offers Buy (todo UX-16). */
+  shops: readonly [ShopLink, ...ShopLink[]]
 }
 
 type ErrorCode = Exclude<StartError | RenderFailure, PhotoProblem>
@@ -431,6 +433,7 @@ function Fitting({
           name={costume.name}
           photo={costume.photo}
           guide={costume.guide}
+          shops={costume.shops}
           // The page's lead names the character: the heading is for
           // screen readers, and where each stage starts.
           title={

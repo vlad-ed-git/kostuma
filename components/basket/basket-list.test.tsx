@@ -153,10 +153,10 @@ describe("BasketList", () => {
     renderBasket(["pearl", "ghostface"])
     await userEvent.click(screen.getByRole("button", { name: "Clear basket" }))
     expect(storedSlugs()).toEqual(["pearl", "ghostface"])
-    expect(announced()).toBe("Click again to clear")
+    expect(announced()).toBe("Press again to clear")
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Click again to clear" })
+      screen.getByRole("button", { name: "Press again to clear" })
     )
     expect(storedSlugs()).toEqual([])
     expect(announced()).toBe("My Pumpkin Basket is empty.")

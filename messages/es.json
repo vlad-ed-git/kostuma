@@ -80,7 +80,7 @@
     "tryOnNamed": "Probar {name}",
     "remove": "Quitar",
     "clear": "Vaciar la cesta",
-    "clearConfirm": "Haz clic otra vez para vaciarla",
+    "clearConfirm": "Pulsa otra vez para vaciarla",
     "empty": "Tu cesta está vacía.",
     "emptyLine": "La noche es joven.",
     "browse": "Ver disfraces"
@@ -544,7 +544,8 @@
     "code": "404",
     "title": "Perdido en la oscuridad",
     "description": "Esta página no existe, o la noche ya la reclamó.",
-    "home": "Volver a Kostuma"
+    "home": "Volver a Kostuma",
+    "costumes": "Disfraces"
   },
   "Error": {
     "title": "Algo salió mal",

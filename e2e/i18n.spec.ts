@@ -165,11 +165,16 @@ test.describe("languages", () => {
 })
 
 test.describe("unknown pages", () => {
-  for (const [path, tag, title] of [
-    ["/no-such-page", "en", "Lost in the dark"],
-    ["/es/no-such-page", "es", "Perdido en la oscuridad"],
-    ["/zh/a/b", "zh-Hans", "迷失在黑暗中"],
-    ["/missing.txt", "en", "Lost in the dark"],
+  for (const [path, tag, title, costumes] of [
+    ["/no-such-page", "en", "Lost in the dark", 'href="/#costumes"'],
+    [
+      "/es/no-such-page",
+      "es",
+      "Perdido en la oscuridad",
+      'href="/es#costumes"',
+    ],
+    ["/zh/a/b", "zh-Hans", "迷失在黑暗中", 'href="/zh#costumes"'],
+    ["/missing.txt", "en", "Lost in the dark", 'href="/#costumes"'],
   ]) {
     test(`${path} is a server-rendered 404 in ${tag}`, async ({ request }) => {
       const response = await request.get(path)
@@ -179,6 +184,8 @@ test.describe("unknown pages", () => {
       expect(html).toContain(`<html lang="${tag}"`)
       expect(html).not.toContain("__next_error__")
       expect(html).toContain(title)
+      // A mistyped costume address: the costumes, one press away.
+      expect(html).toContain(costumes)
     })
   }
 })
