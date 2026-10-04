@@ -276,7 +276,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Black lips",
         howTo:
-          "Paint the lips solid matte black, lined a little past their edges, two coats, and go over the nose again with black.",
+          "Paint the lips solid matte black, lined a little past their edges. Two coats, then touch up the black nose.",
         products: ["black lipstick", "black lip liner"],
         render: makeup(
           lips(matte(BLACK), "plump"),
@@ -323,7 +323,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Red heart mouth",
         howTo:
-          "Paint the lips bright red, the top lip drawn up into two high points, two coats, and go over the nose again with red.",
+          "Paint the lips bright red, the top lip drawn up into two high points. Two coats, then touch up the red nose.",
         products: ["bright red lipstick", "red lip liner"],
         render: makeup(
           lips(matte("#C8102E"), "heart-shaped"),
@@ -1537,7 +1537,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Bear mouth",
         howTo:
-          "Paint the lips a dark brown, drawn out wide past the corners, and go over the nose again with black.",
+          "Paint the lips a dark brown, drawn out wide past the corners, then touch up the black nose.",
         products: ["dark brown lipstick", "dark brown lip liner"],
         render: makeup(
           lips(matte("#4A2E1A")),
@@ -1577,7 +1577,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Blank doll eyes",
         howTo:
-          "Wash a pale taupe over the lids, draw fine doll lashes top and bottom with liquid liner and add lashes.",
+          "Wash a pale taupe over the lids, draw fine doll lashes top and bottom with liquid liner and add false lashes.",
         products: ["taupe eyeshadow", "black liquid eyeliner", "false lashes"],
         render: makeup(
           shadow("1color8", matte("#B8A8A8")),
@@ -1822,7 +1822,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Big red mouth",
         howTo:
-          "Paint a big red mouth out past the corners, a little smeared, and go over the nose again with red.",
+          "Paint a big red mouth out past the corners, a little smeared, then touch up the red nose.",
         products: ["red cream face paint", "red lip liner"],
         render: makeup(
           lips(matte("#C8101E"), "smile"),
@@ -1892,7 +1892,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       },
     ],
     finish:
-      "File-sharp plastic fangs, a black cape and a jack-o'-lantern under your arm.",
+      "Sharp plastic fangs, a black cape and a jack-o'-lantern under your arm.",
   },
   candyman: {
     look: "Candyman: a honey-gold glow, deep bronze sculpting, burnished gold lids, strong brows and deep plum-brown lips.",
@@ -2287,7 +2287,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Smudged dark eyes",
         howTo:
-          "Blend a smoky gray over the lids, a near-black under the eyes, smudge black kohl all around and add lashes.",
+          "Blend a smoky gray over the lids, a near-black under the eyes, smudge black kohl all around and add false lashes.",
         products: ["gray eyeshadow", "black kohl eyeliner", "false lashes"],
         render: makeup(
           shadow("2colors25", matte("#5A4A50"), matte("#2A2026")),
@@ -2419,7 +2419,8 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       },
       {
         title: "Thin dark brows",
-        howTo: "Pluck-thin your brows with concealer and draw them dark.",
+        howTo:
+          "Cover the outer half of your brows with concealer, then draw them thin and dark.",
         products: ["dark brow pencil", "concealer"],
         render: makeup(
           brows("#1E1612", 100, {
@@ -2464,7 +2465,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Grunge smoky eyes",
         howTo:
-          "Blend a smoky gray-brown over the lids, near-black into the corners, smudge black kohl all around and add lashes.",
+          "Blend a smoky gray-brown over the lids, near-black into the corners, smudge black kohl all around and add false lashes.",
         products: ["gray eyeshadow", "black kohl eyeliner", "false lashes"],
         render: makeup(
           shadow("2colors83", matte("#5A4A4A"), matte("#1E1616")),
@@ -2634,7 +2635,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Thin dark lips",
         howTo:
-          "Paint the lips a dark gray, kept thin, and go over the nose again.",
+          "Paint the lips a dark gray, kept thin, then touch up the dark nose.",
         products: ["dark gray lipstick"],
         render: makeup(
           lips(matte("#3A3432")),
@@ -2956,7 +2957,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Painted doll eyes",
         howTo:
-          "Ring each eye in black and paint spiky doll lashes all around with liquid liner, then add lashes top and bottom.",
+          "Ring each eye in black and paint spiky doll lashes all around with liquid liner, then add false lashes top and bottom.",
         products: ["black eyeshadow", "black liquid eyeliner", "false lashes"],
         render: makeup(
           shadow("1color23", matte("#1A1414")),
@@ -3106,7 +3107,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Huge red mouth",
         howTo:
-          "Paint a huge red mouth out past the corners into a grin, and go over the nose again with red.",
+          "Paint a huge red mouth out past the corners into a grin, then touch up the red nose.",
         products: ["red cream face paint", "red lip liner"],
         render: makeup(
           lips(matte("#D0101E"), "smile"),
@@ -4177,7 +4178,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Painted doll eyes",
         howTo:
-          "Wash a brown over the lids, paint spiky doll lashes all around with liquid liner and add lashes top and bottom.",
+          "Wash a brown over the lids, paint spiky doll lashes all around with liquid liner and add false lashes top and bottom.",
         products: ["brown eyeshadow", "black liquid eyeliner", "false lashes"],
         render: makeup(
           shadow("1color8", matte("#8A5A4A")),
@@ -4348,7 +4349,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Wide sleepless eyes",
         howTo:
-          "Press a gray-mauve over the lids and under the eyes, line the lower lashes and add lashes, so the eyes look wide open.",
+          "Press a gray-mauve over the lids and under the eyes, line the lower lashes and add false lashes, so the eyes look wide open.",
         products: ["mauve eyeshadow", "brown eyeliner", "false lashes"],
         render: makeup(
           shadow("2colors25", matte("#9A8A88"), matte("#6A5A68")),
@@ -4539,7 +4540,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       },
       {
         title: "Cold red lips",
-        howTo: "Paint the lips a cold red, and go over the nose again.",
+        howTo: "Paint the lips a cold red, then touch up the red nose.",
         products: ["red lipstick"],
         render: makeup(
           lips(matte("#A8202E")),

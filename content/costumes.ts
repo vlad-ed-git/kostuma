@@ -184,7 +184,7 @@ export const costumes: Costume[] = [
       pieces: [
         "Cream ruffled jumpsuit",
         "Orange pom-poms",
-        "Forehead-heavy wig",
+        "Receding red clown wig",
         "Red lip streaks",
       ],
     },
@@ -227,7 +227,7 @@ export const costumes: Costume[] = [
         "Thick white makeup",
         "Big glasses",
         "Dangly earrings",
-        "90s track suit",
+        "’90s tracksuit",
       ],
     },
     garment: {
@@ -575,7 +575,7 @@ export const costumes: Costume[] = [
     funFact:
       "Hooper reportedly got the chainsaw idea while stuck in a crowded hardware store at Christmas. Hansen, born in Iceland, filmed through a brutal Texas summer in the same costume.",
     look: {
-      pieces: ["Skin-mask", "Blood-stained butcher's apron", "Chainsaw"],
+      pieces: ["Skin mask", "Blood-stained butcher's apron", "Chainsaw"],
     },
     images: [
       {
@@ -699,7 +699,7 @@ export const costumes: Costume[] = [
     funFact:
       "Her stiff hallway dance went viral before release. The film cost about $12M and earned roughly $180M; M3GAN 2.0 followed in 2025.",
     look: {
-      pieces: ["Bob wig", "Pale porcelain makeup", "Plaid dress", "Mary janes"],
+      pieces: ["Bob wig", "Pale porcelain makeup", "Plaid dress", "Mary Janes"],
     },
     images: [
       {
@@ -1317,7 +1317,7 @@ export const costumes: Costume[] = [
       "Robert Bobroczkyi (performer)",
       "Creature FX by Amazing Ape Productions",
     ],
-    lore: "A towering, distorted copy of a furniture-store owner in his own pirate-mascot outfit, roaming a dimension of endless yellow rooms. Mild spoiler.",
+    lore: "Mild spoiler: a towering, distorted copy of a furniture-store owner in his own pirate-mascot outfit, roaming a dimension of endless yellow rooms.",
     funFact:
       "The film cost about $10M and earned $402.5M worldwide, making it A24's highest-grossing release. Parsons is the youngest director to top the box office.",
     look: {
@@ -2529,7 +2529,7 @@ export const costumes: Costume[] = [
     funFact:
       "The yellow raincoat and paper boat became an instantly recognizable image.",
     look: {
-      pieces: ["Yellow raincoat", "Paper boat", "Storm drain"],
+      pieces: ["Yellow raincoat", "Paper boat", "Rubber boots"],
     },
     images: [
       {
@@ -2692,7 +2692,7 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Eli Roth (director)", "Jeff Rendell"],
     broughtToLifeBy: ["Pilgrim-masked performer"],
-    lore: "A killer wearing the mask of the first governor of Plymouth colony hunts down the residents of a Massachusetts town.",
+    lore: "A killer wearing the mask of the first governor of Plymouth Colony hunts down the residents of a Massachusetts town.",
     funFact:
       "The film grew out of a fake trailer Roth made for Grindhouse (2007).",
     look: {

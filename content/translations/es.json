@@ -88,7 +88,7 @@
         "pieces": [
           "Traje enterizo color crema con volantes",
           "Pompones naranjas",
-          "Peluca con frente prominente",
+          "Peluca roja de payaso con entradas",
           "Trazos rojos en los labios"
         ]
       }
@@ -587,7 +587,7 @@
         "Robert Bobroczkyi (intérprete)",
         "Efectos de criatura de Amazing Ape Productions"
       ],
-      "lore": "Una copia altísima y deformada del dueño de una mueblería, con su propio disfraz de mascota pirata, que deambula por una dimensión de interminables cuartos amarillos. Spoiler leve.",
+      "lore": "Spoiler leve: una copia altísima y deformada del dueño de una mueblería, con su propio disfraz de mascota pirata, que deambula por una dimensión de interminables cuartos amarillos.",
       "funFact": "La película costó unos 10 millones de dólares y recaudó 402,5 millones en todo el mundo, el mayor éxito de taquilla de A24. Parsons es el director más joven en encabezar la taquilla.",
       "look": {
         "pieces": [
@@ -1110,7 +1110,7 @@
       "lore": "El hermano menor de Bill, que persigue un barco de papel hasta una alcantarilla y se encuentra con Pennywise.",
       "funFact": "El impermeable amarillo y el barco de papel se convirtieron en una imagen reconocible al instante.",
       "look": {
-        "pieces": ["Impermeable amarillo", "Barco de papel", "Alcantarilla"]
+        "pieces": ["Impermeable amarillo", "Barco de papel", "Botas de lluvia"]
       }
     },
     "the-leprechaun": {
@@ -1395,7 +1395,7 @@
         },
         {
           "title": "Labios negros",
-          "howTo": "Pinta los labios de negro mate sólido, delineados un poco más allá de sus bordes, en dos capas, y vuelve a pasar el negro por la nariz.",
+          "howTo": "Pinta los labios de negro mate sólido, delineados un poco más allá de sus bordes. Dos capas, y luego retoca la nariz negra.",
           "products": ["labial negro", "delineador de labios negro"]
         }
       ],
@@ -1430,7 +1430,7 @@
         },
         {
           "title": "Boca roja de corazón",
-          "howTo": "Pinta los labios de rojo vivo, con el labio superior estirado hacia arriba en dos picos altos, en dos capas, y vuelve a pasar el rojo por la nariz.",
+          "howTo": "Pinta los labios de rojo vivo, con el labio superior estirado hacia arriba en dos picos altos. Dos capas, y luego retoca la nariz roja.",
           "products": ["labial rojo vivo", "delineador de labios rojo"]
         },
         {
@@ -2293,7 +2293,7 @@
         },
         {
           "title": "Boca de oso",
-          "howTo": "Pinta los labios de marrón oscuro, estirados a lo ancho más allá de las comisuras, y vuelve a pasar el negro por la nariz.",
+          "howTo": "Pinta los labios de marrón oscuro, estirados a lo ancho más allá de las comisuras, y luego retoca la nariz negra.",
           "products": [
             "labial marrón oscuro",
             "delineador de labios marrón oscuro"
@@ -2325,7 +2325,7 @@
         },
         {
           "title": "Ojos vacíos de muñeca",
-          "howTo": "Pasa un topo pálido por los párpados, dibuja con delineador líquido pestañas finas de muñeca arriba y abajo, y añade pestañas.",
+          "howTo": "Pasa un topo pálido por los párpados, dibuja con delineador líquido pestañas finas de muñeca arriba y abajo, y añade pestañas postizas.",
           "products": [
             "sombra de ojos topo",
             "delineador líquido negro",
@@ -2514,7 +2514,7 @@
         },
         {
           "title": "Gran boca roja",
-          "howTo": "Pinta una gran boca roja que sobrepase las comisuras, un poco corrida, y vuelve a pasar el rojo por la nariz.",
+          "howTo": "Pinta una gran boca roja que sobrepase las comisuras, un poco corrida, y luego retoca la nariz roja.",
           "products": [
             "pintura facial en crema roja",
             "delineador de labios rojo"
@@ -2565,7 +2565,7 @@
           "products": ["spray de color negro para el cabello"]
         }
       ],
-      "finish": "Colmillos de plástico afilados como limados, una capa negra y una calabaza tallada bajo el brazo."
+      "finish": "Colmillos de plástico afilados, una capa negra y una calabaza tallada bajo el brazo."
     },
     "candyman": {
       "look": "Candyman: un brillo dorado de miel, un esculpido bronce intenso, párpados de oro bruñido, cejas marcadas y labios ciruela amarronado intenso.",
@@ -2850,7 +2850,7 @@
         },
         {
           "title": "Ojos oscuros y ahumados",
-          "howTo": "Difumina un gris ahumado sobre los párpados y un tono casi negro bajo los ojos, difumina kohl negro alrededor y añade pestañas.",
+          "howTo": "Difumina un gris ahumado sobre los párpados y un tono casi negro bajo los ojos, difumina kohl negro alrededor y añade pestañas postizas.",
           "products": [
             "sombra de ojos gris",
             "delineador kohl negro",
@@ -2940,7 +2940,7 @@
         },
         {
           "title": "Cejas finas y oscuras",
-          "howTo": "Afina tus cejas con corrector, como depiladas, y dibújalas oscuras.",
+          "howTo": "Cubre la mitad exterior de tus cejas con corrector y luego dibújalas finas y oscuras.",
           "products": ["lápiz de cejas oscuro", "corrector"]
         },
         {
@@ -2971,7 +2971,7 @@
         },
         {
           "title": "Ojos ahumados grunge",
-          "howTo": "Difumina un marrón grisáceo ahumado sobre los párpados y un tono casi negro en las esquinas, difumina kohl negro alrededor y añade pestañas.",
+          "howTo": "Difumina un marrón grisáceo ahumado sobre los párpados y un tono casi negro en las esquinas, difumina kohl negro alrededor y añade pestañas postizas.",
           "products": [
             "sombra de ojos gris",
             "delineador kohl negro",
@@ -3101,7 +3101,7 @@
         },
         {
           "title": "Labios oscuros y finos",
-          "howTo": "Pinta los labios de un gris oscuro, finos, y vuelve a pasar por la nariz.",
+          "howTo": "Pinta los labios de un gris oscuro, finos, y luego retoca la nariz oscura.",
           "products": ["labial gris oscuro"]
         },
         {
@@ -3337,7 +3337,7 @@
         },
         {
           "title": "Ojos de muñeca pintados",
-          "howTo": "Rodea cada ojo de negro y pinta con delineador líquido pestañas de muñeca en punta alrededor; luego añade pestañas arriba y abajo.",
+          "howTo": "Rodea cada ojo de negro y pinta con delineador líquido pestañas de muñeca en punta alrededor; luego añade pestañas postizas arriba y abajo.",
           "products": [
             "sombra de ojos negra",
             "delineador líquido negro",
@@ -3442,7 +3442,7 @@
         },
         {
           "title": "Boca roja enorme",
-          "howTo": "Pinta una boca roja enorme que sobrepase las comisuras en una sonrisa, y vuelve a pasar el rojo por la nariz.",
+          "howTo": "Pinta una boca roja enorme que sobrepase las comisuras en una sonrisa, y luego retoca la nariz roja.",
           "products": [
             "pintura facial en crema roja",
             "delineador de labios rojo"
@@ -4258,7 +4258,7 @@
         },
         {
           "title": "Ojos de muñeco pintados",
-          "howTo": "Pasa un marrón por los párpados, pinta con delineador líquido pestañas de muñeco en punta alrededor y añade pestañas arriba y abajo.",
+          "howTo": "Pasa un marrón por los párpados, pinta con delineador líquido pestañas de muñeco en punta alrededor y añade pestañas postizas arriba y abajo.",
           "products": [
             "sombra de ojos marrón",
             "delineador líquido negro",
@@ -4373,7 +4373,7 @@
         },
         {
           "title": "Ojos de no dormir",
-          "howTo": "Presiona un gris malva sobre los párpados y bajo los ojos, delinea las pestañas de abajo y añade pestañas, para que los ojos parezcan muy abiertos.",
+          "howTo": "Presiona un gris malva sobre los párpados y bajo los ojos, delinea las pestañas de abajo y añade pestañas postizas, para que los ojos parezcan muy abiertos.",
           "products": [
             "sombra de ojos malva",
             "delineador marrón",
@@ -4512,7 +4512,7 @@
         },
         {
           "title": "Labios rojo frío",
-          "howTo": "Pinta los labios de un rojo frío y vuelve a pasar por la nariz.",
+          "howTo": "Pinta los labios de un rojo frío y luego retoca la nariz roja.",
           "products": ["labial rojo"]
         },
         {

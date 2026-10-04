@@ -130,7 +130,7 @@ OPP-11 and OPP-12.
       Dracula keeps the fangs and his fun fact adds "Lugosi never bared fangs on screen"; Norman
       Bates' guide says in its first line that it makes you "Mother". A changed guide bumps
       `PIPELINE_VERSION`.
-- [ ] **COPY-06** The wording table.
+- [x] **COPY-06** The wording table.
 - [ ] **COPY-07** "axe"; ’70s and ’90s; typographic quotes and apostrophes in messages and content
       (update the tests that match text).
 - [ ] **COPY-08** Rephrase dated statements so they stay true.
