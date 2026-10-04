@@ -55,6 +55,14 @@ describe("TransformationReel", () => {
     })
   })
 
+  it("loads every frame at once: the strip is in the first screen on phones", async () => {
+    const { container } = await renderReel()
+    for (const image of container.querySelectorAll("img")) {
+      expect(image).toHaveAttribute("loading", "eager")
+      expect(image).toHaveAttribute("fetchpriority", "high")
+    }
+  })
+
   it("burns the motor cue into the second-last frame and the changeover into the last", async () => {
     const { container } = await renderReel()
     const burns = [...container.querySelectorAll(".home-reel-burn")]

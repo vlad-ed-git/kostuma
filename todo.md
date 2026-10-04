@@ -56,7 +56,7 @@ OPP-11 and OPP-12.
       (gzip absorbs the repetition).
 - [x] **ENG-08** Picture routes verify the session cookie without the revocation round trip;
       pages and actions keep it. Pages stay dynamic (nonce CSP).
-- [ ] **ENG-09** `loading="eager"` + `fetchPriority="high"` for the home film strip and the
+- [x] **ENG-09** `loading="eager"` + `fetchPriority="high"` for the home film strip and the
       costume page's main photo.
 - [x] **ENG-11** One alias map feeds both `turbopack.resolveAlias` and `webpack()`;
       `next.config.test.ts` checks it.

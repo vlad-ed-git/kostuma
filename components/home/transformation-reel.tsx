@@ -45,11 +45,14 @@ export async function TransformationReel({
         <div key={frame.file} className="home-reel-frame">
           <span className="home-reel-number">{index + 1}</span>
           <div className="home-reel-window">
+            {/* In the first screen on phones: loaded at once (todo ENG-09). */}
             <Image
               src={frame.url}
               alt=""
               fill
               sizes={SIZES}
+              loading="eager"
+              fetchPriority="high"
               className="object-contain object-bottom"
             />
             {cue[index] && (
