@@ -62,7 +62,7 @@ OPP-11 and OPP-12.
       `next.config.test.ts` checks it.
 - [x] **ENG-14** Drop HEIC/HEIF from `accept` (iOS then hands over a JPEG); a specific translated
       message if one still arrives.
-- [ ] **ENG-15** `Map`/`Object.hasOwn` for slug lookups; the advancing request becomes a POST,
+- [x] **ENG-15** `Map`/`Object.hasOwn` for slug lookups; the advancing request becomes a POST,
       GET only reads; remove `cn`; `shadcn` to devDependencies; pure `lib/` tests in Vitest's
       node environment; a real README.
 
