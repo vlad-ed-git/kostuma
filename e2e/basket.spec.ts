@@ -116,7 +116,19 @@ test.describe("My Pumpkin Basket", () => {
     await expect(rows(page)).toHaveCount(2)
     await expect(rows(page).first()).toContainText("Pearl")
     const pearl = rows(page).first()
-    await expect(pearl.getByText("Buy")).toContainText("Soon")
+    // Buy: the shops that have her, each on its own search for her.
+    await pearl
+      .getByRole("button", { name: "Buy Pearl: choose a shop" })
+      .click()
+    const shops = page.getByRole("menu").getByRole("menuitem")
+    await expect(shops).toHaveText(["Buy at Amazon", "Buy at Etsy"])
+    await expect(shops.first()).toHaveAttribute(
+      "href",
+      "https://www.amazon.com/s?k=Pearl+X+costume"
+    )
+    await expect(shops.last()).toHaveAttribute("target", "_blank")
+    await page.keyboard.press("Escape")
+    await expect(page.getByRole("menu")).toBeHidden()
     await expect(
       pearl.getByRole("link", { name: "Try on Pearl" })
     ).toHaveAttribute("href", "/basket/fitting-room?costume=pearl")
@@ -125,6 +137,44 @@ test.describe("My Pumpkin Basket", () => {
       "/costumes/pearl"
     )
     expect(errors).toEqual([])
+  })
+
+  test("Buy leads to the shops that have each costume, never to Soon", async ({
+    page,
+  }) => {
+    await storeBefore(
+      page,
+      JSON.stringify({ v: 1, slugs: ["ghostface", "carrie-white"] })
+    )
+    await page.goto("/basket")
+    await expect(rows(page)).toHaveCount(2)
+    await expect(page.getByRole("main")).not.toContainText("Soon")
+
+    // One shop has Carrie: Buy opens it in a new tab.
+    const carrie = rows(page).first()
+    const buyCarrie = carrie.getByRole("link", {
+      name: "Buy Carrie White (opens in a new tab)",
+    })
+    await expect(buyCarrie).toHaveAttribute(
+      "href",
+      "https://www.etsy.com/search?q=Carrie+White+costume"
+    )
+    await expect(buyCarrie).toHaveAttribute("target", "_blank")
+    await expect(buyCarrie).toHaveAttribute(
+      "rel",
+      "noopener noreferrer nofollow"
+    )
+
+    // Three have Ghostface: the costume shops first.
+    await rows(page)
+      .last()
+      .getByRole("button", { name: "Buy Ghostface: choose a shop" })
+      .click()
+    await expect(page.getByRole("menu").getByRole("menuitem")).toHaveText([
+      "Buy at HalloweenCostumes.com",
+      "Buy at Spirit Halloween",
+      "Buy at Amazon",
+    ])
   })
 
   test("removing keeps the visitor's place; clearing asks twice", async ({

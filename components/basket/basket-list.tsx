@@ -11,14 +11,16 @@ import { costumesHref } from "@/components/layout/nav"
 import { IntentLink } from "@/components/navigation/intent-link"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Link } from "@/i18n/navigation"
-import type { CostumeSummary, Store } from "@/lib/catalog/types"
+import type { CostumeSummary, ShopLink } from "@/lib/catalog/types"
 import { cn } from "@/lib/utils"
 
 import { useBasket } from "./basket-provider"
 import { Buy } from "./buy"
 
 /** A costume as the basket shows it: a list row and its shops. */
-export type BasketCostume = CostumeSummary & { stores: readonly Store[] }
+export type BasketCostume = CostumeSummary & {
+  shops: readonly [ShopLink, ...ShopLink[]]
+}
 
 /** "Clear basket" waits this long for the second click (spec §11.4). */
 export const CLEAR_WINDOW_MS = 4_000
@@ -155,7 +157,7 @@ export function BasketList({
             </IntentLink>
 
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 sm:justify-end">
-              <Buy name={costume.name} shops={costume.stores} />
+              <Buy name={costume.name} shops={costume.shops} />
               <IntentLink
                 href={`/basket/fitting-room?costume=${costume.slug}`}
                 aria-label={t("tryOnNamed", { name: costume.name })}

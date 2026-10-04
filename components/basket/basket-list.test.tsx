@@ -30,7 +30,7 @@ const costume = (slug: string, name: string, year: number): BasketCostume => ({
   slug,
   name,
   films: [{ title: `${name}: the film`, year }],
-  stores: [],
+  shops: [{ name: "Etsy", url: `https://www.etsy.com/search?q=${slug}` }],
 })
 
 const costumes = [
@@ -77,8 +77,9 @@ describe("BasketList", () => {
       "href",
       "/costumes/ghostface"
     )
-    // No shop yet: it says so, rather than a button that goes nowhere.
-    expect(scope.getByText("Buy")).toHaveTextContent("BuySoon")
+    expect(
+      scope.getByRole("link", { name: "Buy Ghostface (opens in a new tab)" })
+    ).toHaveAttribute("href", "https://www.etsy.com/search?q=ghostface")
     expect(
       scope.getByRole("link", { name: "Try on Ghostface" })
     ).toHaveAttribute("href", "/basket/fitting-room?costume=ghostface")

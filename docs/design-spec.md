@@ -58,7 +58,7 @@ a grid of identical cards).
    outfits in your basket (sign in): the outfit on your photo, then the costume's makeup on
    your own face, step by step (11.4b). Every account tries one costume on free; for more,
    Kostuma Pro's waitlist (owner, 2026-10-04: no prices, no payments).
-4. **Buy**: an action on each outfit in the basket, opening its shop in a new tab.
+4. **Buy**: an action on each outfit in the basket, opening a shop that has it in a new tab.
 
 Menus hold places, never actions: the header and the mobile menu offer Costumes and My Pumpkin
 Basket, nothing else. The Fitting Room and Buy live inside the basket; a costume's page offers
@@ -415,9 +415,7 @@ Client components are marked (C). Everything else renders on the server.
   `aria-busy`. Preset heights (default 40 px); header, menu and other touch-first controls use
   `lg` / `icon-lg` (44 px). Links styled as buttons use `buttonVariants` on the
   link itself.
-- **Badge** (preset: borderless, small capitals, `badge` size). The `soon` variant adds a 1 px
-  border (bone at 20 %) and 2 × 6 px padding so it reads as a stamped label, text muted: "Soon".
-  `count`: a 20 px ember square with the number in `--background`, tabular
+- **Badge** (preset: borderless, small capitals, `badge` size). `count`: a 20 px ember square with the number in `--background`, tabular
   figures and a soft ember glow, set on the header's pumpkin (the basket's count). Each feature
   that needs another badge adds it with its tests.
 - **Field** (preset `field.tsx`: Field, FieldLabel, FieldDescription, FieldError with
@@ -506,13 +504,16 @@ Client components are marked (C). Everything else renders on the server.
   by"). A role with no names is left out.
 - **Wardrobe list** ("The look"): the catalog's look text split into items, each with a thin
   square bullet, `body`. Reads as a wardrobe department checklist.
-- **Buy** (in the basket only, 1.3): opens the outfit's shop in a new tab, with an
-  `arrow-right-up-line` icon and sr-only "(opens in a new tab)"; `target="_blank"`
-  `rel="noopener noreferrer nofollow"` (+ `sponsored` when a link is an affiliate link). With
-  several shops, a styled menu of them ("Buy at {shop}"). A costume without a shop yet shows
-  "Buy" with a `soon` stamp and nothing to press. Each control is named by one whole message
-  ("Buy {name} (opens in a new tab)"), never words glued together, so every language orders
-  them its own way.
+- **Buy** (in the basket only, 1.3; owner, 2026-10-04: no affiliate links, no deals): opens a
+  shop's own search for the costume in a new tab, with an `arrow-right-up-line` icon and sr-only
+  "(opens in a new tab)"; `target="_blank"` `rel="noopener noreferrer nofollow"`. Every costume
+  names the shops whose search was checked and found it (`content/costumes.ts` `shops`, the
+  search words per shop; `lib/shops.ts` builds the links): up to three, and one is enough
+  (owner) where only one has it. With several, a styled menu of them ("Buy at {shop}") in a
+  fixed order, the costume shops first: HalloweenCostumes.com, Spirit Halloween, Amazon, then
+  Etsy, Trick or Treat Studios, eBay. Never "Soon": the type wants at least one shop. Each
+  control is named by one whole message ("Buy {name} (opens in a new tab)"), never words glued
+  together, so every language orders them its own way. The shops' names stay as they are.
 - **Empty state**: centered icon (64 px, muted), `h3`, one line of copy, one action.
 - **Get Kostuma Pro** (owner, 2026-10-04; `components/pro/get-pro.tsx`): a button (outline in
   the Fitting Room panel, primary elsewhere; pending: spinner + "Joining the waitlist…") that
@@ -876,8 +877,7 @@ The real documents, in plain words and the second person, true to what the site 
 - **No prices** (owner, 2026-10-04): no price, currency or payment word anywhere, and no
   Premium badge. One costume is free; for more, "Get Kostuma Pro" (10.3), a waitlist.
   `i18n/messages.test.ts` holds every message to it.
-- **Coming soon**: never a disabled button (unfocusable, unexplained). A thing not ready yet
-  carries a `soon` stamp and nothing to press (Buy without a shop, 10.3).
+- **Never a disabled button** (unfocusable, unexplained): what can't be done isn't offered.
 - **External links**: new tab, `noopener noreferrer`, icon + sr-only "(opens in a new tab)".
 - **Loading**: the cue mark for pages, skeletons for content, spinners only inside buttons. No
   full-page spinners.
@@ -1033,6 +1033,7 @@ Every page a visitor can read without an account is indexed in all three languag
 | Costume photos           | `components/costume/{costume-image,costume-gallery}.tsx`, `lib/in-view.ts`, `.photo-reveal` in `app/film.css`; pipeline `scripts/photos/`                                                                                                               |
 | Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`                                                                                                                                                                      |
 | Search and sharing       | `lib/seo.ts` (addresses, versions, Open Graph, JSON-LD), `lib/site.ts`, `components/seo/json-ld.tsx`, `app/{sitemap,robots,manifest}.ts`, the cards `app/[locale]/**/opengraph-image.tsx` + `lib/og.tsx`; icons `design/icon.svg` → `scripts/icons.mjs` |
+| Shops                    | `lib/shops.ts` (each shop's search) ← `content/costumes.ts` `shops` → Buy (`components/basket/buy.tsx`)                                                                                                                                                 |
 | Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit                                                                                                                                                                  |
 
 ---
@@ -1078,6 +1079,9 @@ Each feature branch ships unit and end-to-end tests for the cases that apply to 
   private pages stay out of search and the sitemap; a card for an unknown costume or language
   is a 404; a card whose photo can't be fetched still draws; a landscape photo never covers
   the name; no text closes the structured data's script.
+- **Shops:** a costume with one shop (a plain link) and with three (a menu, the costume shops
+  first); every costume has at least one, each search a secure link to its shop's own site,
+  every word of it kept (apostrophes, ampersands); never "Soon".
 - **Server cost:** scrolling the costumes prefetches nothing, hovering a card prefetches it;
   language links never prefetch; no section clips its fog; nothing scrolls sideways.
 

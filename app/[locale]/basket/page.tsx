@@ -5,6 +5,7 @@ import { BasketList, BasketSummary } from "@/components/basket/basket-list"
 import { FittingRoomPanel } from "@/components/basket/fitting-room-panel"
 import { getUser } from "@/lib/auth/session"
 import { getCostumes, toSummary } from "@/lib/catalog"
+import { shopLinks } from "@/lib/shops"
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Basket")
@@ -23,7 +24,7 @@ export default async function BasketPage() {
   // Only what the rows show: the basket itself is read in the browser.
   const costumes = getCostumes(locale).map((costume) => ({
     ...toSummary(costume),
-    stores: costume.stores,
+    shops: shopLinks(costume.shops),
   }))
 
   return (

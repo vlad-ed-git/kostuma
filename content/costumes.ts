@@ -36,7 +36,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Ghostface" },
+      { shop: "spirithalloween", search: "Ghost Face" },
+      { shop: "amazon", search: "Ghostface costume" },
+    ],
   },
   {
     rank: 2,
@@ -68,7 +72,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Michael Myers" },
+      { shop: "spirithalloween", search: "Michael Myers" },
+      { shop: "amazon", search: "Michael Myers costume" },
+    ],
   },
   {
     rank: 3,
@@ -110,7 +118,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Freaky Nikki costume" },
+      { shop: "etsy", search: "Nikki Freeman Obsession costume" },
+    ],
   },
   {
     rank: 4,
@@ -147,7 +158,11 @@ export const costumes: Costume[] = [
         height: 1020,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Art the Clown" },
+      { shop: "spirithalloween", search: "Art the Clown" },
+      { shop: "amazon", search: "Art the Clown costume" },
+    ],
   },
   {
     rank: 5,
@@ -181,7 +196,11 @@ export const costumes: Costume[] = [
         height: 1080,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Pennywise" },
+      { shop: "spirithalloween", search: "Pennywise" },
+      { shop: "amazon", search: "Pennywise costume" },
+    ],
   },
   {
     rank: 6,
@@ -225,7 +244,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Aunt Gladys costume" },
+      { shop: "etsy", search: "Aunt Gladys costume" },
+    ],
   },
   {
     rank: 7,
@@ -260,7 +282,11 @@ export const costumes: Costume[] = [
         height: 1080,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Chucky" },
+      { shop: "spirithalloween", search: "Chucky" },
+      { shop: "amazon", search: "Chucky costume" },
+    ],
   },
   {
     rank: 8,
@@ -294,7 +320,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Freddy Krueger" },
+      { shop: "spirithalloween", search: "Freddy Krueger" },
+      { shop: "amazon", search: "Freddy Krueger costume" },
+    ],
   },
   {
     rank: 9,
@@ -327,7 +357,11 @@ export const costumes: Costume[] = [
         height: 1066,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Jason Voorhees" },
+      { shop: "spirithalloween", search: "Jason Voorhees" },
+      { shop: "amazon", search: "Jason Voorhees costume" },
+    ],
   },
   {
     rank: 10,
@@ -366,7 +400,11 @@ export const costumes: Costume[] = [
         height: 1112,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Beetlejuice" },
+      { shop: "spirithalloween", search: "Beetlejuice" },
+      { shop: "amazon", search: "Beetlejuice costume" },
+    ],
   },
   {
     rank: 11,
@@ -400,7 +438,10 @@ export const costumes: Costume[] = [
         height: 1393,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Dracula" },
+      { shop: "amazon", search: "Dracula costume" },
+    ],
   },
   {
     rank: 12,
@@ -435,7 +476,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Frankenstein" },
+      { shop: "spirithalloween", search: "Frankenstein" },
+      { shop: "amazon", search: "Frankenstein costume" },
+    ],
   },
   {
     rank: 13,
@@ -467,7 +512,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Bride of Frankenstein" },
+      { shop: "spirithalloween", search: "Bride of Frankenstein" },
+      { shop: "amazon", search: "Bride of Frankenstein costume" },
+    ],
   },
   {
     rank: 14,
@@ -503,7 +552,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Trick r Treat Sam" },
+      { shop: "spirithalloween", search: "Trick r Treat Sam" },
+      { shop: "amazon", search: "Trick r Treat Sam costume" },
+    ],
   },
   {
     rank: 15,
@@ -532,7 +585,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Leatherface" },
+      { shop: "spirithalloween", search: "Leatherface" },
+      { shop: "amazon", search: "Leatherface costume" },
+    ],
   },
   {
     rank: 16,
@@ -570,7 +627,11 @@ export const costumes: Costume[] = [
         height: 1080,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Pinhead" },
+      { shop: "spirithalloween", search: "Pinhead" },
+      { shop: "amazon", search: "Pinhead costume" },
+    ],
   },
   {
     rank: 17,
@@ -607,7 +668,11 @@ export const costumes: Costume[] = [
         height: 1188,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Billy the Puppet" },
+      { shop: "spirithalloween", search: "Billy the Puppet" },
+      { shop: "amazon", search: "Billy the Puppet costume" },
+    ],
   },
   {
     rank: 18,
@@ -644,7 +709,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "M3GAN" },
+      { shop: "spirithalloween", search: "M3GAN" },
+      { shop: "amazon", search: "M3GAN costume" },
+    ],
   },
   {
     rank: 19,
@@ -677,7 +746,10 @@ export const costumes: Costume[] = [
         height: 1080,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "spirithalloween", search: "Lady of the Ring" },
+      { shop: "amazon", search: "Samara costume" },
+    ],
   },
   {
     rank: 20,
@@ -713,7 +785,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "horror nun" },
+      { shop: "spirithalloween", search: "Valak" },
+      { shop: "amazon", search: "The Nun costume" },
+    ],
   },
   {
     rank: 21,
@@ -742,7 +818,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Annabelle" },
+      { shop: "spirithalloween", search: "Annabelle" },
+      { shop: "amazon", search: "Annabelle costume" },
+    ],
   },
   {
     rank: 22,
@@ -783,7 +863,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "spirithalloween", search: "Regan" },
+      { shop: "amazon", search: "Exorcist Regan costume" },
+    ],
   },
   {
     rank: 23,
@@ -812,7 +895,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "Carrie White costume" }],
   },
   {
     rank: 24,
@@ -850,7 +933,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Nosferatu" },
+      { shop: "amazon", search: "Nosferatu costume" },
+      { shop: "trickortreatstudios", search: "Nosferatu" },
+    ],
   },
   {
     rank: 25,
@@ -887,7 +974,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Pearl X costume" },
+      { shop: "etsy", search: "Pearl Mia Goth costume" },
+    ],
   },
   {
     rank: 26,
@@ -922,7 +1012,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Freddy Fazbear" },
+      { shop: "spirithalloween", search: "Freddy Fazbear" },
+      { shop: "amazon", search: "Freddy Fazbear costume" },
+    ],
   },
   {
     rank: 27,
@@ -956,7 +1050,10 @@ export const costumes: Costume[] = [
         height: 1000,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Grady Twins" },
+      { shop: "amazon", search: "Grady Twins costume" },
+    ],
   },
   {
     rank: 28,
@@ -985,7 +1082,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Jack Torrance costume" },
+      { shop: "etsy", search: "Jack Torrance costume" },
+    ],
   },
   {
     rank: 29,
@@ -1018,7 +1118,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Hannibal Lecter" },
+      { shop: "spirithalloween", search: "Hannibal Lecter" },
+      { shop: "amazon", search: "Hannibal Lecter costume" },
+    ],
   },
   {
     rank: 30,
@@ -1048,7 +1152,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "ebay", search: "Norman Bates Psycho costume" }],
   },
   {
     rank: 31,
@@ -1082,7 +1186,11 @@ export const costumes: Costume[] = [
         height: 789,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Captain Spaulding" },
+      { shop: "spirithalloween", search: "Captain Spaulding" },
+      { shop: "amazon", search: "Captain Spaulding costume" },
+    ],
   },
   {
     rank: 32,
@@ -1114,7 +1222,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Headless Horseman" },
+      { shop: "spirithalloween", search: "Headless Horseman" },
+      { shop: "amazon", search: "Headless Horseman costume" },
+    ],
   },
   {
     rank: 33,
@@ -1149,7 +1261,10 @@ export const costumes: Costume[] = [
         height: 861,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "etsy", search: "Candyman costume" },
+      { shop: "ebay", search: "Candyman costume" },
+    ],
   },
   {
     rank: 34,
@@ -1181,7 +1296,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Babadook" },
+      { shop: "etsy", search: "Babadook costume" },
+    ],
   },
   {
     rank: 35,
@@ -1219,7 +1337,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "spirithalloween", search: "Captain Clark" },
+      { shop: "amazon", search: "Pirate Clark costume" },
+    ],
   },
   {
     rank: 36,
@@ -1252,7 +1373,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Evil Dead Ash" },
+      { shop: "amazon", search: "Evil Dead Ash costume" },
+    ],
   },
   {
     rank: 37,
@@ -1281,7 +1405,7 @@ export const costumes: Costume[] = [
         height: 1330,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "Midsommar May Queen costume" }],
   },
   {
     rank: 38,
@@ -1313,7 +1437,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Us Red jumpsuit costume" },
+      { shop: "etsy", search: "Us Tethered costume" },
+    ],
   },
   {
     rank: 39,
@@ -1345,7 +1472,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "bloody bride" },
+      { shop: "amazon", search: "bloody bride costume" },
+    ],
   },
   {
     rank: 40,
@@ -1375,7 +1505,11 @@ export const costumes: Costume[] = [
         height: 1184,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Lydia Deetz" },
+      { shop: "spirithalloween", search: "Lydia Deetz" },
+      { shop: "amazon", search: "Lydia Deetz costume" },
+    ],
   },
   {
     rank: 41,
@@ -1404,7 +1538,11 @@ export const costumes: Costume[] = [
         height: 1080,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Tiffany Bride of Chucky" },
+      { shop: "spirithalloween", search: "Tiffany Bride of Chucky" },
+      { shop: "amazon", search: "Tiffany Bride of Chucky costume" },
+    ],
   },
   {
     rank: 42,
@@ -1441,7 +1579,7 @@ export const costumes: Costume[] = [
         height: 803,
       },
     ],
-    stores: [],
+    shops: [{ shop: "amazon", search: "The Craft costume" }],
   },
   {
     rank: 43,
@@ -1470,7 +1608,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Jennifer's Body" },
+      { shop: "amazon", search: "Jennifer's Body costume" },
+    ],
   },
   {
     rank: 44,
@@ -1499,7 +1640,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Donnie Darko" },
+      { shop: "amazon", search: "Donnie Darko costume" },
+    ],
   },
   {
     rank: 45,
@@ -1532,7 +1676,10 @@ export const costumes: Costume[] = [
         height: 882,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "spirithalloween", search: "Creature from the Black Lagoon" },
+      { shop: "amazon", search: "Creature from the Black Lagoon costume" },
+    ],
   },
   {
     rank: 46,
@@ -1561,7 +1708,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Phantom of the Opera costume" },
+      { shop: "etsy", search: "Phantom of the Opera costume" },
+    ],
   },
   {
     rank: 47,
@@ -1590,7 +1740,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Krampus" },
+      { shop: "spirithalloween", search: "Krampus" },
+      { shop: "amazon", search: "Krampus costume" },
+    ],
   },
   {
     rank: 48,
@@ -1619,7 +1773,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "The Omen costume" }],
   },
   {
     rank: 49,
@@ -1648,7 +1802,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "amazon", search: "The Grudge costume" }],
   },
   {
     rank: 50,
@@ -1677,7 +1831,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "ebay", search: "Victor Crowley mask" }],
   },
   {
     rank: 51,
@@ -1706,7 +1860,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "etsy", search: "Laurie Strode costume" },
+      { shop: "trickortreatstudios", search: "Laurie Strode" },
+    ],
   },
   {
     rank: 52,
@@ -1751,7 +1908,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "The Strangers costume" },
+      { shop: "etsy", search: "The Strangers Dollface mask" },
+    ],
   },
   {
     rank: 53,
@@ -1789,7 +1949,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "The Purge" },
+      { shop: "spirithalloween", search: "Purge" },
+      { shop: "amazon", search: "The Purge costume" },
+    ],
   },
   {
     rank: 54,
@@ -1823,7 +1987,11 @@ export const costumes: Costume[] = [
         height: 964,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Killer Klowns" },
+      { shop: "spirithalloween", search: "Killer Klowns" },
+      { shop: "amazon", search: "Killer Klowns costume" },
+    ],
   },
   {
     rank: 55,
@@ -1855,7 +2023,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "Remmick Sinners" }],
   },
   {
     rank: 56,
@@ -1888,7 +2056,7 @@ export const costumes: Costume[] = [
         height: 1254,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "Longlegs costume" }],
   },
   {
     rank: 57,
@@ -1920,7 +2088,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "spirithalloween", search: "Lost Boys" },
+      { shop: "amazon", search: "Lost Boys David costume" },
+    ],
   },
   {
     rank: 58,
@@ -1949,7 +2120,11 @@ export const costumes: Costume[] = [
         height: 1239,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Jeepers Creepers" },
+      { shop: "spirithalloween", search: "Jeepers Creepers" },
+      { shop: "amazon", search: "Jeepers Creepers costume" },
+    ],
   },
   {
     rank: 59,
@@ -1981,7 +2156,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Gremlins" },
+      { shop: "spirithalloween", search: "Gremlins" },
+      { shop: "amazon", search: "Gremlins costume" },
+    ],
   },
   {
     rank: 60,
@@ -2010,7 +2189,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Rocky Horror" },
+      { shop: "amazon", search: "Rocky Horror costume" },
+    ],
   },
   {
     rank: 61,
@@ -2039,7 +2221,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "amazon", search: "Annie Wilkes costume" }],
   },
   {
     rank: 62,
@@ -2068,7 +2250,10 @@ export const costumes: Costume[] = [
         height: 1000,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Yuppie Psycho" },
+      { shop: "amazon", search: "American Psycho Patrick Bateman costume" },
+    ],
   },
   {
     rank: 63,
@@ -2097,7 +2282,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Tarman costume" },
+      { shop: "etsy", search: "Tarman mask" },
+      { shop: "trickortreatstudios", search: "Tarman" },
+    ],
   },
   {
     rank: 64,
@@ -2126,7 +2315,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Zombie" },
+      { shop: "spirithalloween", search: "Zombie" },
+      { shop: "amazon", search: "Zombie costume" },
+    ],
   },
   {
     rank: 65,
@@ -2155,7 +2348,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "Insidious Lipstick Demon mask" }],
   },
   {
     rank: 66,
@@ -2184,7 +2377,10 @@ export const costumes: Costume[] = [
         height: 1230,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "The Crow" },
+      { shop: "amazon", search: "The Crow costume" },
+    ],
   },
   {
     rank: 67,
@@ -2213,7 +2409,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "etsy", search: "Pamela Voorhees costume" },
+      { shop: "ebay", search: "Pamela Voorhees sweater" },
+    ],
   },
   {
     rank: 68,
@@ -2242,7 +2441,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "Invisible Man costume" }],
   },
   {
     rank: 69,
@@ -2271,7 +2470,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Sweeney Todd" },
+      { shop: "amazon", search: "Sweeney Todd costume" },
+    ],
   },
   {
     rank: 70,
@@ -2300,7 +2502,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "etsy", search: "Lestat costume" },
+      { shop: "ebay", search: "Lestat costume coat" },
+    ],
   },
   {
     rank: 71,
@@ -2329,7 +2534,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "spirithalloween", search: "Georgie" },
+      { shop: "amazon", search: "Georgie costume" },
+    ],
   },
   {
     rank: 72,
@@ -2358,7 +2566,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Leprechaun" },
+      { shop: "amazon", search: "Leprechaun costume" },
+      { shop: "trickortreatstudios", search: "Leprechaun" },
+    ],
   },
   {
     rank: 73,
@@ -2387,7 +2599,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Sinister Bughuul costume" },
+      { shop: "etsy", search: "Bughuul mask" },
+    ],
   },
   {
     rank: 74,
@@ -2419,7 +2634,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Ellen Ripley" },
+      { shop: "amazon", search: "Ellen Ripley costume" },
+    ],
   },
   {
     rank: 75,
@@ -2450,7 +2668,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Slappy" },
+      { shop: "spirithalloween", search: "Slappy" },
+      { shop: "amazon", search: "Slappy costume" },
+    ],
   },
   {
     rank: 76,
@@ -2479,7 +2701,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Thanksgiving John Carver costume" },
+      { shop: "etsy", search: "John Carver Thanksgiving costume" },
+      { shop: "trickortreatstudios", search: "John Carver" },
+    ],
   },
   {
     rank: 77,
@@ -2511,7 +2737,10 @@ export const costumes: Costume[] = [
         height: 1315,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Blade costume" },
+      { shop: "etsy", search: "Blade Wesley Snipes costume" },
+    ],
   },
   {
     rank: 78,
@@ -2540,7 +2769,10 @@ export const costumes: Costume[] = [
         height: 1085,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Danny Torrance costume" },
+      { shop: "etsy", search: "Danny Torrance Apollo sweater" },
+    ],
   },
   {
     rank: 79,
@@ -2569,7 +2801,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Sidney Prescott costume" },
+      { shop: "etsy", search: "Sidney Prescott costume" },
+    ],
   },
   {
     rank: 80,
@@ -2598,7 +2833,7 @@ export const costumes: Costume[] = [
         height: 1300,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "Ellen Hutter Nosferatu dress" }],
   },
   {
     rank: 81,
@@ -2627,7 +2862,10 @@ export const costumes: Costume[] = [
         height: 1200,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "bloody killer santa costume" },
+      { shop: "etsy", search: "Silent Night Deadly Night costume" },
+    ],
   },
   {
     rank: 82,
@@ -2659,6 +2897,9 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "etsy", search: "Resident Evil Alice costume" },
+      { shop: "ebay", search: "Resident Evil Alice costume" },
+    ],
   },
 ]

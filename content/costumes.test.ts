@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest"
 
+import { SHOP_ORDER } from "@/lib/shops"
 import { WEB_SIDE } from "@/scripts/photos/web.mjs"
 
 import { costumes } from "./costumes"
@@ -57,8 +58,17 @@ describe("the collection", () => {
         expect(new Set(list).size, costume.name).toBe(list.length)
       }
       expect(costume.look.pieces.length).toBeGreaterThan(0)
-      for (const store of costume.stores) {
-        expect(store.url).toMatch(/^https:\/\//)
+      // Where to buy it: the shops that have it, each once, up to three, in
+      // Buy's order, each searched for something.
+      const shops = costume.shops.map(({ shop }) => shop)
+      expect(shops.length, costume.name).toBeLessThanOrEqual(3)
+      expect(new Set(shops).size, costume.name).toBe(shops.length)
+      expect(shops, costume.name).toEqual(
+        shops.toSorted((a, b) => SHOP_ORDER.indexOf(a) - SHOP_ORDER.indexOf(b))
+      )
+      for (const { search } of costume.shops) {
+        expect(search.trim(), costume.name).toBe(search)
+        expect(search, costume.name).not.toBe("")
       }
     }
   )

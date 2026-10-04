@@ -4,11 +4,9 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
-// Kostuma's badges (docs/design-spec.md §10.1) add a hairline border and a
-// little padding to the preset's text badge, so they read as stamped labels.
-// The base sets its own family: a badge inside a title keeps the UI face.
-const stamp = "border px-1.5 py-0.5"
-
+// Kostuma's badges (docs/design-spec.md §10.1): the preset's text badge,
+// and the count on My Pumpkin Basket's pumpkin. The base sets its own
+// family: a badge inside a title keeps the UI face.
 const badgeVariants = cva(
   "group/badge inline-flex w-fit shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-none border-0 bg-transparent px-0 py-0 font-sans text-badge caps whitespace-nowrap transition-colors has-data-[icon=inline-end]:pr-0 has-data-[icon=inline-start]:pl-0 aria-invalid:border-destructive [&>svg]:pointer-events-none [&>svg]:size-3!",
   {
@@ -20,8 +18,6 @@ const badgeVariants = cva(
         outline: "text-foreground [a]:hover:text-foreground/70",
         ghost: "text-muted-foreground hover:text-foreground",
         link: "text-foreground underline-offset-4 hover:underline",
-        /** A feature that isn't open yet. */
-        soon: cn(stamp, "border-foreground/20 text-muted-foreground"),
         /** How many costumes My Pumpkin Basket holds, on its pumpkin. */
         count:
           "relative h-5 min-w-5 bg-ember px-1 text-background tabular-nums shadow-[0_0_10px_color-mix(in_oklch,var(--ember)_55%,transparent)]",

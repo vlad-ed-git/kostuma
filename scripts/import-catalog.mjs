@@ -20,7 +20,9 @@ if (!source) {
 const entries = parseCatalog(await readFile(source, "utf8")).map((entry) => ({
   ...entry,
   images: [],
-  stores: [],
+  // Each costume's shops are looked up by hand (lib/shops.ts): until then
+  // the type, which wants at least one, stops the build.
+  shops: [],
 }))
 
 const target = fileURLToPath(new URL("../content/costumes.ts", import.meta.url))

@@ -4,41 +4,29 @@ import { Menu } from "@base-ui/react/menu"
 import { RiArrowDownSLine, RiArrowRightUpLine } from "@remixicon/react"
 import { useTranslations } from "next-intl"
 
-import { Badge } from "@/components/ui/badge"
 import { buttonVariants } from "@/components/ui/button"
-import type { Store } from "@/lib/catalog/types"
+import type { ShopLink } from "@/lib/catalog/types"
 import { cn } from "@/lib/utils"
 
-/** What a shop link tells search engines (spec §10.3). */
-export function shopRel(shop: Store) {
-  return shop.affiliate
-    ? "noopener noreferrer nofollow sponsored"
-    : "noopener noreferrer nofollow"
-}
+/**
+ * What a shop link tells search engines: another site, not one Kostuma
+ * vouches for, and never paid for (spec §10.3: no affiliate links).
+ */
+const SHOP_REL = "noopener noreferrer nofollow"
 
 type BuyProps = {
   /** The character, for screen readers. */
   name: string
-  shops: readonly Store[]
+  /** At least one: every costume names a shop that has it. */
+  shops: readonly [ShopLink, ...ShopLink[]]
 }
 
 /**
- * Buy, on a costume in My Pumpkin Basket (spec §10.3): opens its shop in a
- * new tab; with several shops, a menu of them. A costume without a shop yet
- * says so ("Soon") instead of offering a button that goes nowhere.
+ * Buy, on a costume in My Pumpkin Basket (spec §10.3): opens its shop's
+ * search for it in a new tab; with several shops, a menu of them.
  */
 export function Buy({ name, shops }: BuyProps) {
   const t = useTranslations("Basket")
-  const badge = useTranslations("Badge")
-
-  if (shops.length === 0) {
-    return (
-      <span className="inline-flex h-10 items-center gap-2 text-ui caps text-muted-foreground">
-        {t("buy")}
-        <Badge variant="soon">{badge("soon")}</Badge>
-      </span>
-    )
-  }
 
   if (shops.length === 1) {
     const [shop] = shops
@@ -46,7 +34,7 @@ export function Buy({ name, shops }: BuyProps) {
       <a
         href={shop.url}
         target="_blank"
-        rel={shopRel(shop)}
+        rel={SHOP_REL}
         aria-label={t("buyNamed", { name })}
         className={buttonVariants()}
       >
@@ -88,7 +76,7 @@ export function Buy({ name, shops }: BuyProps) {
                     <a
                       href={shop.url}
                       target="_blank"
-                      rel={shopRel(shop)}
+                      rel={SHOP_REL}
                       aria-label={t("buyAtNamed", { shop: shop.name })}
                     />
                   }
