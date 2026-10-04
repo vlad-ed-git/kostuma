@@ -39,12 +39,22 @@ function codeOf(error: unknown) {
  * The signed-in visitor, or null. Verified once per request, including
  * whether Firebase has revoked the session since the cookie was made.
  */
-export const getUser = cache(async (): Promise<User | null> => {
+export const getUser = cache(() => verified(true))
+
+/**
+ * The signed-in visitor from the session cookie alone: its signature and
+ * expiry, checked here, without asking Firebase whether it was revoked
+ * (todo ENG-08). For the Fitting Room's pictures only, a dozen to a page,
+ * each its owner's; pages and actions keep `getUser`.
+ */
+export const getPictureViewer = cache(() => verified(false))
+
+async function verified(checkRevoked: boolean): Promise<User | null> {
   const cookie = (await cookies()).get(cookieName)?.value
   if (!cookie) return null
 
   try {
-    const claims = await adminAuth().verifySessionCookie(cookie, true)
+    const claims = await adminAuth().verifySessionCookie(cookie, checkRevoked)
     return {
       uid: claims.uid,
       name: typeof claims.name === "string" ? claims.name : "",
@@ -57,7 +67,7 @@ export const getUser = cache(async (): Promise<User | null> => {
     }
     return null
   }
-})
+}
 
 export async function saveSession(sessionCookie: string) {
   ;(await cookies()).set(cookieName, sessionCookie, {

@@ -54,7 +54,7 @@ OPP-11 and OPP-12.
 - [ ] **ENG-07** Client components get only the message namespaces they use (no legal text on
       other pages); `content-visibility: auto` on costume rows. Leave image URLs as they are
       (gzip absorbs the repetition).
-- [ ] **ENG-08** Picture routes verify the session cookie without the revocation round trip;
+- [x] **ENG-08** Picture routes verify the session cookie without the revocation round trip;
       pages and actions keep it. Pages stay dynamic (nonce CSP).
 - [ ] **ENG-09** `loading="eager"` + `fetchPriority="high"` for the home film strip and the
       costume page's main photo.

@@ -1,4 +1,4 @@
-import { getUser } from "@/lib/auth/session"
+import { getPictureViewer } from "@/lib/auth/session"
 import { fittingRoomStore } from "@/lib/fitting-room/store"
 
 import { picture } from "../../../picture"
@@ -11,7 +11,9 @@ export async function GET(
   _request: Request,
   { params }: RouteContext<"/api/fitting-room/try-ons/[id]/[step]">
 ) {
-  const user = await getUser()
+  // The cookie's signature and expiry only: no round trip to Firebase per
+  // picture (pages still check revocation).
+  const user = await getPictureViewer()
   if (!user) return new Response(null, { status: 401 })
   const { id, step } = await params
   const index = Number(step)

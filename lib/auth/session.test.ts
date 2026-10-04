@@ -27,7 +27,8 @@ vi.mock("react", async (actual) => ({
   cache: (fn: unknown) => fn,
 }))
 
-const { deleteSession, getUser, saveSession } = await import("./session")
+const { deleteSession, getPictureViewer, getUser, saveSession } =
+  await import("./session")
 
 afterEach(() => {
   mocks.cookies.clear()
@@ -56,6 +57,13 @@ describe("getUser", () => {
       emailVerified: true,
     })
     expect(mocks.verifySessionCookie).toHaveBeenCalledWith("cookie", true)
+  })
+
+  it("lets the pictures' routes skip the revocation round trip", async () => {
+    mocks.cookies.set("session", "cookie")
+    mocks.verifySessionCookie.mockResolvedValue({ uid: "u1" })
+    expect(await getPictureViewer()).toMatchObject({ uid: "u1" })
+    expect(mocks.verifySessionCookie).toHaveBeenCalledWith("cookie", false)
   })
 
   it("never takes an email for verified unless Firebase says so", async () => {

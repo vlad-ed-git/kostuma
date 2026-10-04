@@ -39,6 +39,8 @@ export const getUser: typeof Session.getUser = cache(async () => {
   return { ...e2eUser, uid: `${e2eUser.uid}-${value}` }
 })
 
+export const getPictureViewer: typeof Session.getPictureViewer = getUser
+
 export const saveSession: typeof Session.saveSession = async () => {
   throw new Error("The e2e build signs in with a cookie, not with Firebase.")
 }
