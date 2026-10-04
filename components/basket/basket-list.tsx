@@ -161,7 +161,8 @@ export function BasketList({
               <IntentLink
                 href={`/basket/fitting-room?costume=${costume.slug}`}
                 aria-label={t("tryOnNamed", { name: costume.name })}
-                className="inline-flex h-10 items-center gap-2 text-ui caps text-muted-foreground transition-colors hover:text-foreground"
+                // The basket's reason to exist: bright; Remove stays quiet.
+                className="inline-flex h-10 items-center gap-2 text-ui caps text-foreground transition-colors hover:text-blood-text"
               >
                 {t("tryOn")}
               </IntentLink>
@@ -181,7 +182,7 @@ export function BasketList({
                   announce(t("removed", { name: costume.name }))
                   setFocus({ slug: next?.slug ?? null })
                 }}
-                className="-mx-3 px-3"
+                className="-mx-3 px-3 text-muted-foreground"
               >
                 <RiCloseLine aria-hidden="true" className="size-5" />
                 {t("remove")}

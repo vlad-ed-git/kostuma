@@ -90,6 +90,19 @@ describe("BasketList", () => {
     ).toBeInTheDocument()
   })
 
+  it("puts Try on before the eye, and keeps Remove quiet", () => {
+    renderBasket(["ghostface"])
+    const scope = within(rows()[0])
+    expect(
+      scope.getByRole("link", { name: "Try on Ghostface" }).className
+    ).toContain("text-foreground")
+    expect(
+      scope.getByRole("button", {
+        name: "Remove Ghostface from My Pumpkin Basket",
+      }).className
+    ).toContain("text-muted-foreground")
+  })
+
   it("removes a costume and keeps the visitor's place on the next one", async () => {
     renderBasket(["pearl", "ghostface", "carrie-white"])
     // Newest first: Carrie White, Ghostface, Pearl.
