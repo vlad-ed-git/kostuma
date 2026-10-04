@@ -9,6 +9,10 @@ import type { Deps } from "./steps"
 // startTryOn as a server action is reached: a signed-in visitor, the
 // Fitting Room on the memory store and a renderer that never renders.
 vi.mock("server-only", () => ({}))
+const later = vi.hoisted(() => [] as (() => unknown)[])
+vi.mock("next/server", () => ({
+  after: (task: () => unknown) => later.push(task),
+}))
 vi.mock("@/lib/auth/session", () => ({
   getUser: async () => ({ uid: "visitor", email: "v@example.com", name: "V" }),
 }))
@@ -77,6 +81,15 @@ describe("startTryOn", () => {
     const [tryOn] = await deps!.store.tryOns("visitor")
     expect(tryOn.consent?.version).toBe(PHOTO_CONSENT_VERSION)
     expect(tryOn.consent?.at).toBeGreaterThanOrEqual(before)
+  })
+
+  it("sends the first render itself once it has answered: the page may close at once", async () => {
+    later.length = 0
+    await startTryOn(await form())
+    expect(later).toHaveLength(1)
+    await later[0]()
+    const [tryOn] = await deps!.store.tryOns("visitor")
+    expect(tryOn.steps[0].status).toBe("running")
   })
 
   it("starts nothing without the consent to the photos' processing, or to other words", async () => {

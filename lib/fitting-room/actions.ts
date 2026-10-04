@@ -1,5 +1,7 @@
 "use server"
 
+import { after } from "next/server"
+
 import { makeupGuides } from "@/content/makeup"
 import { getUser } from "@/lib/auth/session"
 import { getCostume, tryOnGarment } from "@/lib/catalog"
@@ -11,7 +13,7 @@ import { withinLimit } from "@/lib/rate-limit"
 import { PhotoError, preparePhoto, type Prepared } from "./photo"
 import type { PhotoProblem } from "./photo-rules"
 import { fittingRoom } from "./service"
-import { begin, type Fitting, mayBegin } from "./steps"
+import { begin, drive, type Fitting, mayBegin } from "./steps"
 import {
   type FacePhoto,
   type Photo,
@@ -32,6 +34,9 @@ export type StartError =
   | "unknown"
   | PhotoProblem
 
+/** How long a start may keep its try-on moving, once answered. */
+const DRIVE_MS = 40_000
+
 export type StartResult =
   | { ok: true; tryOn: TryOnView }
   | { ok: false; error: StartError; photo?: PhotoKind }
@@ -47,6 +52,8 @@ export type StartResult =
  * new try-on needs the account's free costume (free-costume.ts), and keeps
  * nothing without it. Nothing starts unless the visitor ticked the consent
  * to the photos' processing (`consent`: the words' version, consent.ts).
+ * Once answered, the first render is sent from here: with YouCam's webhook
+ * doing the rest, the try-on goes on even if the page is closed at once.
  */
 export async function startTryOn(form: FormData): Promise<StartResult> {
   try {
@@ -117,6 +124,15 @@ export async function startTryOn(form: FormData): Promise<StartResult> {
     })
     if (begun.outcome === "out_of_units" || begun.outcome === "closed")
       return { ok: false, error: begun.outcome }
+    if (begun.outcome === "started") {
+      const { id } = begun.tryOn
+      const until = Date.now() + DRIVE_MS
+      after(() =>
+        drive(deps, user.uid, id, { until }).catch((error: unknown) => {
+          console.error(`Try-on ${id} could not be sent.`, error)
+        })
+      )
+    }
     return { ok: true, tryOn: toView(begun.tryOn) }
   } catch (error) {
     console.error("A try-on could not start.", error)
