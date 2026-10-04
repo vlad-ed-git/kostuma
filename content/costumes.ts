@@ -1,7 +1,8 @@
 // The collection: Kostuma's most wanted costumes, in rank order.
 // Imported from the owner's list (scripts/import-catalog.mjs), then curated
 // by hand: this file is the source of truth. Facts about 2025–2026 releases
-// reflect the owner's list as of 2026-09-30; box-office figures are
+// reflect the owner's list as of 2026-09-30, told as what happened (never
+// "now" or "in the works") so they stay true; box-office figures are
 // approximate. content/costumes.test.ts checks every entry.
 import type { Costume } from "@/lib/catalog/types"
 
@@ -24,7 +25,7 @@ export const costumes: Costume[] = [
     ],
     lore: "A prank-calling, horror-trivia-obsessed slasher who is never the same person twice: every film reveals a new killer (or two) under the robe.",
     funFact:
-      "The mask was spotted in a house during location scouting and Craven picked it over custom designs. Its melting face echoes Edvard Munch’s painting The Scream. Scream 7 (Feb 2026) opened to $63.6M in the US, the franchise’s biggest opening.",
+      "The mask was spotted in a house during location scouting and Craven picked it over custom designs. Its melting face echoes Edvard Munch’s painting The Scream. Scream 7 opened to $63.6M in the US in February 2026, a franchise record.",
     look: {
       pieces: ["Black hooded robe", "White mask", "Prop knife"],
     },
@@ -93,7 +94,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Inde Navarrette", "Costume design by Blair James"],
     lore: "Bear makes a selfish wish on a toy called the One Wish Willow: that his friend Nikki will love him more than anyone. Nikki’s personality is overwritten by violent, possessive devotion.",
     funFact:
-      "The year’s breakout horror hit (Focus Features, May 2026), made by a YouTube-native filmmaker. Universal put Nikki in Halloween Horror Nights Hollywood 2026 and sells licensed costumes. Navarrette hosts SNL on Oct 31, 2026.",
+      "A breakout horror hit of 2026 (Focus Features, May), made by a YouTube-native filmmaker. Universal put Nikki in Halloween Horror Nights Hollywood 2026, and licensed costumes went on sale. Navarrette was announced to host SNL on Halloween 2026.",
     look: {
       pieces: [
         "Red-and-black animal-print top",
@@ -220,7 +221,7 @@ export const costumes: Costume[] = [
     ],
     lore: "After all but one of a classroom’s children vanish at 2:17 a.m., the odd, sickly aunt who moves in with the one boy left behind turns out to be a parasitic witch.",
     funFact:
-      "Madigan won the Best Supporting Actress Oscar on March 15, 2026, 40 years after her first nomination. A prequel titled Gladys is in the works. Her look includes elongated earlobe prosthetics.",
+      "Madigan won the Best Supporting Actress Oscar on March 15, 2026, 40 years after her first nomination. A prequel titled Gladys was announced, with Madigan returning. Her look includes elongated earlobe prosthetics.",
     look: {
       pieces: [
         "Red bob with blunt bangs",
@@ -1936,7 +1937,7 @@ export const costumes: Costume[] = [
     createdBy: ["James DeMonaco"],
     broughtToLifeBy: ["Various masked performers"],
     lore: "In a near-future America, all crime is legal for one night each year, and masked killers roam the streets.",
-    funFact: "The franchise now spans five films and a TV series.",
+    funFact: "By 2021 the franchise had grown to five films and a TV series.",
     look: {
       pieces: ["Creepy grinning or police-style mask", "Dark hooded clothes"],
     },
@@ -2016,7 +2017,7 @@ export const costumes: Costume[] = [
     ],
     lore: "An Irish vampire who arrives at a Mississippi juke joint in 1932, with the Black musical community at his mercy.",
     funFact:
-      "Wunmi Mosaku received an Oscar nomination for the film. Universal’s Halloween Horror Nights Hollywood 2026 has a Sinners house. Smoke and Stack are the easier costume.",
+      "Wunmi Mosaku received an Oscar nomination for the film. Sinners got its own house at Universal’s Halloween Horror Nights Hollywood 2026. Smoke and Stack are the easier costume.",
     look: {
       pieces: ["1930s period wear", "Vampire makeup and fangs"],
     },

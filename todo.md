@@ -133,7 +133,7 @@ OPP-11 and OPP-12.
 - [x] **COPY-06** The wording table.
 - [x] **COPY-07** "axe"; ’70s and ’90s; typographic quotes and apostrophes in messages and content
       (update the tests that match text).
-- [ ] **COPY-08** Rephrase dated statements so they stay true.
+- [x] **COPY-08** Rephrase dated statements so they stay true.
 - [ ] **COPY-09** "You're on the Kostuma Pro waitlist. We'll write to you at this email as soon as
       it opens."
 - [ ] **COPY-10** "The darkest night is coming." and "The darkest night is here."
