@@ -49,7 +49,7 @@ OPP-11 and OPP-12.
       the Fitting Room routes.
 - [x] **ENG-05** Webhooks (ENG-01) keep try-ons going without the page; the daily cron ends
       try-ons stuck over 24 h, as Kostuma's failure, not the visitor's.
-- [ ] **ENG-06** The browser sends the face at ≤ 1024 px and the body at ≤ 1440 px (long side),
+- [x] **ENG-06** The browser sends the face at ≤ 1024 px and the body at ≤ 1440 px (long side),
       JPEG 0.85; a translated message if both together pass 4 MB.
 - [ ] **ENG-07** Client components get only the message namespaces they use (no legal text on
       other pages); `content-visibility: auto` on costume rows. Leave image URLs as they are
@@ -58,7 +58,7 @@ OPP-11 and OPP-12.
       pages and actions keep it. Pages stay dynamic (nonce CSP).
 - [ ] **ENG-09** `loading="eager"` + `fetchPriority="high"` for the home film strip and the
       costume page's main photo.
-- [ ] **ENG-11** One alias map feeds both `turbopack.resolveAlias` and `webpack()`;
+- [x] **ENG-11** One alias map feeds both `turbopack.resolveAlias` and `webpack()`;
       `next.config.test.ts` checks it.
 - [ ] **ENG-14** Drop HEIC/HEIF from `accept` (iOS then hands over a JPEG); a specific translated
       message if one still arrives.
@@ -85,7 +85,7 @@ OPP-11 and OPP-12.
       developers, a small independent team (not a registered company)", contact: the support
       email; and "Kostuma is not affiliated with Perfect Corp. (YouCam), which provides its AI
       image service." The Privacy policy names the team as responsible for the information.
-- [ ] **SEC-06** Reject photos over 4096 px a side from metadata, before decoding;
+- [x] **SEC-06** Reject photos over 4096 px a side from metadata, before decoding;
       `limitInputPixels` 25 MP; `startTryOn` at most 10 an hour per account (`withinLimit`).
 - [ ] **SEC-09** reCAPTCHA's `hostname` must be Kostuma's (Google's test hostname only in test
       builds); waitlist entries record `emailVerified` (true only for the account's own

@@ -182,6 +182,8 @@
       "signed_out": "Tu sesión terminó. Vuelve a iniciar sesión para continuar.",
       "closed": "El Probador está cerrado ahora mismo. Vuelve a intentarlo más tarde.",
       "out_of_units": "Ya usaste tu disfraz gratis.",
+      "too_many_starts": "Demasiados intentos en poco tiempo. Vuelve a intentarlo en una hora.",
+      "too_large": "Tus fotos pesan demasiado para enviarlas juntas. Elige otras más pequeñas.",
       "unknown": "Algo salió mal. Inténtalo de nuevo."
     }
   },
@@ -399,10 +401,11 @@
         "list1": {
           "a": "las fotos que eliges: tu cara y, para la mayoría de los disfraces, tu cuerpo entero. Antes de guardarlas, las reducimos, las enderezamos y las guardamos como imágenes nuevas, lo que elimina los datos ocultos que puede llevar un archivo de foto, como el lugar donde se tomó;",
           "b": "el color de tu piel, medido en tu foto de la cara, para que el maquillaje parta de tu propio tono;",
-          "c": "cada prueba: el disfraz, las imágenes creadas a partir de tus fotos y cuándo; y cuántas de tus pruebas fallaron después de crearse imágenes, lo que limita los reintentos."
+          "c": "cada prueba: el disfraz, las imágenes creadas a partir de tus fotos y cuándo; y cuántas de tus pruebas fallaron por tus fotos después de crearse imágenes, lo que limita los reintentos."
         },
         "p2": "Para crear las imágenes, enviamos tus fotos, sin nombre, correo ni datos de la cuenta, a YouCam, un servicio de Perfect Corp. En cuanto vuelve cada imagen, pedimos a YouCam que borre el trabajo y sus archivos; YouCam los borra en un plazo de 30 días en cualquier caso.",
-        "p3": "Tus fotos e imágenes son privadas: se guardan cerradas al público y solo se te muestran a ti, con tu sesión iniciada. No creamos ni guardamos una huella facial, no usamos tus fotos para identificarte y no las usamos para entrenar IA ni para nada que no sean tus pruebas."
+        "p3": "Tus fotos e imágenes son privadas: se guardan cerradas al público y solo se te muestran a ti, con tu sesión iniciada. No creamos ni guardamos una huella facial, no usamos tus fotos para identificarte y no las usamos para entrenar IA ni para nada que no sean tus pruebas.",
+        "p4": "Para que el Probador sea justo, contamos las pruebas que empieza cada cuenta en una hora, con un código cifrado hecho a partir de tu cuenta. Lo usamos solo durante esa hora y después lo borramos."
       },
       "waitlist": {
         "title": "La lista de espera de Kostuma Pro",
@@ -449,7 +452,7 @@
           "a": "Tu cuenta, tu cesta, tus fotos y tus pruebas: hasta que nos pidas borrarlas, o borrar tu cuenta.",
           "b": "Tu lugar en la lista de espera de Kostuma Pro: hasta que nos pidas sacarte de ella, o borrar tu cuenta.",
           "c": "Los mensajes del formulario de comentarios: mientras los necesitemos para atenderlos, o hasta que nos pidas borrarlos.",
-          "d": "Los códigos cifrados que limitan los mensajes: se usan durante una hora y después se borran.",
+          "d": "Los códigos cifrados que limitan los mensajes y las pruebas: se usan durante una hora y después se borran.",
           "e": "En YouCam: se borran en cuanto se crea cada imagen, y en 30 días como máximo.",
           "f": "En tu dispositivo: hasta que caduque la cookie o borres el almacenamiento de tu navegador."
         }

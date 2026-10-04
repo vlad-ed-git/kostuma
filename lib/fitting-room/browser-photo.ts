@@ -1,10 +1,16 @@
-import { type PhotoProblem, SEND_LONG_SIDE, sizeProblem } from "./photo-rules"
+import {
+  type PhotoProblem,
+  SEND_QUALITY,
+  sendLongSide,
+  sizeProblem,
+} from "./photo-rules"
 import type { PhotoKind } from "./try-on"
 
 /**
  * A photo the visitor picked, read in their browser: checked at once (the
- * same rules the server holds it to, photo-rules.ts), then shrunk to a JPEG
- * the server takes quickly. Nothing leaves the browser until they confirm.
+ * same rules the server holds it to, photo-rules.ts), then shrunk to the
+ * size the server keeps, as a JPEG (a few hundred kilobytes, quick on a
+ * phone's data). Nothing leaves the browser until they confirm.
  */
 
 export type PickedPhoto = {
@@ -36,7 +42,7 @@ export async function readPhoto(
 
     const scale = Math.min(
       1,
-      SEND_LONG_SIDE / Math.max(bitmap.width, bitmap.height)
+      sendLongSide(kind) / Math.max(bitmap.width, bitmap.height)
     )
     const width = Math.round(bitmap.width * scale)
     const height = Math.round(bitmap.height * scale)
@@ -50,7 +56,7 @@ export async function readPhoto(
     context.fillRect(0, 0, width, height)
     context.drawImage(bitmap, 0, 0, width, height)
     const blob = await new Promise<Blob | null>((resolve) =>
-      canvas.toBlob(resolve, "image/jpeg", 0.9)
+      canvas.toBlob(resolve, "image/jpeg", SEND_QUALITY)
     )
     if (!blob) return { problem: "unreadable" }
     return { blob, url: URL.createObjectURL(blob), width, height }

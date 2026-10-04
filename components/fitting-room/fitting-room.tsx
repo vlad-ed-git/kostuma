@@ -22,7 +22,7 @@ import {
   type StartError,
   type StartResult,
 } from "@/lib/fitting-room/actions"
-import type { PhotoProblem } from "@/lib/fitting-room/photo-rules"
+import { fitsOneSend, type PhotoProblem } from "@/lib/fitting-room/photo-rules"
 import type { RenderFailure } from "@/lib/fitting-room/provider"
 import type { PhotoKind, TryOnView } from "@/lib/fitting-room/try-on"
 import type { CostumeSummary } from "@/lib/catalog/types"
@@ -55,6 +55,7 @@ type Problem = {
     | `errors.${ErrorCode}`
     | "errors.missing_face"
     | "errors.same_photos"
+    | "errors.too_large"
   /** The photo it is about, if one. */
   photo?: PhotoKind
 }
@@ -323,6 +324,15 @@ function Fitting({
   }
 
   function start() {
+    // Past the server's limit, the request would be refused unread.
+    const sizes = kinds.map((kind) => {
+      const slot = slots[kind]
+      return slot?.kind === "picked" ? slot.photo.blob.size : 0
+    })
+    if (!fitsOneSend(sizes)) {
+      setProblem({ message: "errors.too_large" })
+      return
+    }
     const form = new FormData()
     form.set("costume", costume.slug)
     for (const kind of kinds) {

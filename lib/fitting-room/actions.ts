@@ -3,6 +3,7 @@
 import { makeupGuides } from "@/content/makeup"
 import { getUser } from "@/lib/auth/session"
 import { getCostume, tryOnGarment } from "@/lib/catalog"
+import { type Limit, withinLimit } from "@/lib/rate-limit"
 
 import { PhotoError, preparePhoto, type Prepared } from "./photo"
 import type { PhotoProblem } from "./photo-rules"
@@ -23,8 +24,19 @@ export type StartError =
   | "missing_photo"
   | "closed"
   | "out_of_units"
+  | "too_many_starts"
   | "unknown"
   | PhotoProblem
+
+/**
+ * Starts per account an hour: far more than anyone trying photos needs,
+ * few enough that no account makes the server open photos in a loop.
+ */
+export const START_LIMIT: Limit = {
+  name: "try-on-start",
+  max: 10,
+  windowMs: 60 * 60_000,
+}
 
 export type StartResult =
   | { ok: true; tryOn: TryOnView }
@@ -54,6 +66,9 @@ export async function startTryOn(form: FormData): Promise<StartResult> {
 
     const deps = fittingRoom()
     if (!deps) return { ok: false, error: "closed" }
+    // Before a photo is opened.
+    if (!(await withinLimit(START_LIMIT, `account:${user.uid}`)))
+      return { ok: false, error: "too_many_starts" }
 
     const room = await deps.store.room(user.uid)
     const fresh: {

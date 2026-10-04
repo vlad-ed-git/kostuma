@@ -8,6 +8,7 @@ import type { Hex } from "@/lib/makeup"
 
 import {
   MAX_PHOTO_BYTES,
+  MAX_SIDE,
   photoRules,
   type PhotoProblem,
   sizeProblem,
@@ -35,8 +36,12 @@ export class PhotoError extends Error {
 
 const formats = new Set(["jpeg", "png", "webp"])
 
-/** Pixels sharp may decode: a 100-megapixel photo, no more. */
-const PIXEL_LIMIT = 100_000_000
+/**
+ * Pixels sharp may decode: 25 megapixels, more than any phone's photo the
+ * browser shrank first (a crafted file of a few kilobytes can claim far
+ * more, and cost hundreds of megabytes to open).
+ */
+const PIXEL_LIMIT = 25_000_000
 
 export type Prepared<P extends Photo> = { photo: P; image: Uint8Array }
 
@@ -61,6 +66,9 @@ export async function preparePhoto(
     }).metadata()
     if (!metadata.format || !formats.has(metadata.format))
       throw new PhotoError("unreadable")
+    // From the header alone, before a pixel is decoded.
+    if ((metadata.width ?? 0) > MAX_SIDE || (metadata.height ?? 0) > MAX_SIDE)
+      throw new PhotoError("too_big")
     upright = metadata.autoOrient
   } catch (error) {
     if (error instanceof PhotoError) throw error

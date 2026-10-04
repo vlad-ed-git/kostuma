@@ -5,7 +5,8 @@ import { describe, expect, it, vi } from "vitest"
 vi.mock("server-only", () => ({}))
 
 const { measureSkin, PhotoError, preparePhoto } = await import("./photo")
-const { sizeProblem } = await import("./photo-rules")
+const { fitsOneSend, MAX_SEND_BYTES, sendLongSide, sizeProblem } =
+  await import("./photo-rules")
 
 /** A plain photo of this size: a color, with a skin-colored oval in the middle. */
 async function photo(
@@ -72,8 +73,8 @@ describe("preparePhoto", () => {
   })
 
   it("shrinks a body photo into 1080 × 1440", async () => {
-    const { photo: kept } = await preparePhoto("body", await photo(3648, 5472))
-    expect(kept).toMatchObject({ width: 960, height: 1440 })
+    const { photo: kept } = await preparePhoto("body", await photo(3000, 4000))
+    expect(kept).toMatchObject({ width: 1080, height: 1440 })
   })
 
   it("never enlarges a photo already small enough", async () => {
@@ -125,6 +126,18 @@ describe("preparePhoto", () => {
     expect(await problemOf(preparePhoto("face", await make()))).toBe(problem)
   })
 
+  it("refuses a photo over 4096 px a side from its header, before decoding it", async () => {
+    // Plain color: a few kilobytes that would open into 33 megabytes.
+    const huge = new Uint8Array(
+      await sharp({
+        create: { width: 4097, height: 2800, channels: 3, background: "#888" },
+      })
+        .png()
+        .toBuffer()
+    )
+    expect(await problemOf(preparePhoto("body", huge))).toBe("too_big")
+  })
+
   it("refuses a file far too big before opening it", async () => {
     const huge = new Uint8Array(9 * 1024 * 1024)
     expect(await problemOf(preparePhoto("body", huge))).toBe("too_big")
@@ -158,5 +171,18 @@ describe("measureSkin", () => {
       await photo(600, 800, { skin: "#2040FF", background: "#20FF40" })
     )
     expect(measured).toBe("#C69C82")
+  })
+})
+
+describe("sending the photos", () => {
+  it("sends each photo at the size the server keeps", () => {
+    expect(sendLongSide("face")).toBe(1024)
+    expect(sendLongSide("body")).toBe(1440)
+  })
+
+  it("sends both together only within the server's 4 MB", () => {
+    expect(MAX_SEND_BYTES).toBeLessThan(4 * 1024 * 1024)
+    expect(fitsOneSend([400_000, 900_000])).toBe(true)
+    expect(fitsOneSend([MAX_SEND_BYTES, 1])).toBe(false)
   })
 })

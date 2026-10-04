@@ -182,6 +182,8 @@
       "signed_out": "Your session ended. Sign in again to continue.",
       "closed": "The Fitting Room is closed right now. Try again later.",
       "out_of_units": "You've used your free costume.",
+      "too_many_starts": "Too many tries in a short time. Try again in an hour.",
+      "too_large": "Your photos are too large to send together. Choose smaller ones.",
       "unknown": "Something went wrong. Try again."
     }
   },
@@ -399,10 +401,11 @@
         "list1": {
           "a": "the photos you choose: your face and, for most costumes, you from head to toe. Before keeping them, we shrink them, turn them upright and save them as new pictures, which drops the hidden details a photo file can carry, such as where it was taken;",
           "b": "the color of your skin, measured from your face photo, so the makeup starts from your own shade;",
-          "c": "each try-on: the costume, the pictures made from your photos, and when; and how many of your try-ons failed after pictures were made, which limits trying again."
+          "c": "each try-on: the costume, the pictures made from your photos, and when; and how many of your try-ons failed because of your photos after pictures were made, which limits trying again."
         },
         "p2": "To make the pictures, we send your photos, with no name, email or account details, to YouCam, a service of Perfect Corp. As soon as each picture comes back, we ask YouCam to delete the job and its files; YouCam deletes them within 30 days in any case.",
-        "p3": "Your photos and pictures are private: stored closed to the public, and shown only to you, signed in. We don't make or keep a faceprint, we don't use your photos to identify you, and we don't use them to train AI or for anything other than your try-ons."
+        "p3": "Your photos and pictures are private: stored closed to the public, and shown only to you, signed in. We don't make or keep a faceprint, we don't use your photos to identify you, and we don't use them to train AI or for anything other than your try-ons.",
+        "p4": "To keep the Fitting Room fair, we count the try-ons each account starts over an hour, with a scrambled code made from your account. We use it only for that hour, then delete it."
       },
       "waitlist": {
         "title": "Kostuma Pro's waitlist",
@@ -449,7 +452,7 @@
           "a": "Your account, basket, photos and try-ons: until you ask us to delete them, or your account.",
           "b": "Your place on Kostuma Pro's waitlist: until you ask us to take you off it, or to delete your account.",
           "c": "Messages from the feedback form: as long as we need them to act on them, or until you ask us to delete them.",
-          "d": "The scrambled codes that limit messages: used for an hour, then deleted.",
+          "d": "The scrambled codes that limit messages and try-ons: used for an hour, then deleted.",
           "e": "At YouCam: deleted as soon as each picture is made, and within 30 days at most.",
           "f": "On your device: until the cookie ends or you clear your browser's storage."
         }

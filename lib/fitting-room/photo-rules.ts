@@ -40,11 +40,32 @@ export const photoRules: Record<PhotoKind, PhotoRule> = {
 /** The longest side may be at most this many times the shortest. */
 export const MAX_RATIO = 3
 
-/** The browser shrinks a photo to this long side before sending it. */
-export const SEND_LONG_SIDE = 2048
+/**
+ * The long side the browser shrinks a photo to before sending it: the size
+ * the server keeps (its box), so nothing is sent to be thrown away.
+ */
+export const sendLongSide = (kind: PhotoKind) =>
+  Math.max(...photoRules[kind].box)
+
+/** The JPEG quality the browser sends a photo at. */
+export const SEND_QUALITY = 0.85
+
+/**
+ * What the photos of one start may weigh together: the server action's
+ * limit (next.config.ts `bodySizeLimit`, 4 MB), less room for the rest of
+ * the form.
+ */
+export const MAX_SEND_BYTES = 4 * 1024 * 1024 - 64 * 1024
+
+/** Whether photos of these sizes (bytes) go in one start. */
+export const fitsOneSend = (sizes: readonly number[]) =>
+  sizes.reduce((sum, size) => sum + size, 0) <= MAX_SEND_BYTES
 
 /** The largest file the server takes for one photo. */
 export const MAX_PHOTO_BYTES = 8 * 1024 * 1024
+
+/** The longest side the server opens: a phone's photo comes nowhere near. */
+export const MAX_SIDE = 4096
 
 /** What's wrong with a photo of this size, if anything. */
 export function sizeProblem(
