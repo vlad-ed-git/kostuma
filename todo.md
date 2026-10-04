@@ -159,3 +159,4 @@ OPP-11 and OPP-12.
       on it), falling back to today's measurement; the base step names the shade when the
       API gives one; its units count in ENG-02's budget; a fake in test builds; bump
       `PIPELINE_VERSION`. The calibration run spends units: the owner approves it first.
+      Skipped by the owner (2026-10-05): not built.

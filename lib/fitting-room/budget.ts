@@ -93,9 +93,6 @@ export function unspentUnits(tryOn: Pick<TryOn, "steps" | "reserved">) {
   return Math.min(unspent, tryOn.reserved.units)
 }
 
-/** AI Facial Color Tones Analyzer, once per face photo (OPP-03). */
-export const SKIN_ANALYSIS_UNITS = 20
-
 /** The budget's day: the UTC date, "YYYY-MM-DD". */
 export const dayOf = (ms: number) => new Date(ms).toISOString().slice(0, 10)
 
