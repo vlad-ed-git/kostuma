@@ -43,6 +43,15 @@ test.describe("languages", () => {
       await expect(page.getByRole("link", { name: choose })).toBeVisible()
       await expect(page.getByText(date)).toBeVisible()
     }
+    // Chinese headlines break where their messages say (<wbr>), never
+    // inside a word, in the brush face kept for Chinese headings.
+    const headline = page.getByRole("heading", { level: 1 })
+    await expect(headline.locator("wbr")).toHaveCount(2)
+    await expect(headline).toHaveCSS("word-break", "keep-all")
+    await expect(headline).toHaveCSS(
+      "font-family",
+      /--font-cjk-heading|Ma Shan Zheng|cjk/i
+    )
   })
 
   test("every costume speaks the visitor's language, names and people as they are", async ({

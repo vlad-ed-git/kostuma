@@ -3,6 +3,7 @@
 import { RiLoader4Line } from "@remixicon/react"
 import { useTranslations } from "next-intl"
 import {
+  type ReactNode,
   useEffect,
   useEffectEvent,
   useRef,
@@ -15,6 +16,7 @@ import { useBasket } from "@/components/basket/basket-provider"
 import { CostumeImage } from "@/components/costume/costume-image"
 import { costumesHref } from "@/components/layout/nav"
 import { GetPro } from "@/components/pro/get-pro"
+import { breaks } from "@/components/ui/breaks"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Link, useRouter } from "@/i18n/navigation"
 import {
@@ -179,7 +181,7 @@ export function FittingRoom({
             </div>
             <div className="flex flex-col items-start gap-5">
               <p className="font-heading text-h4 font-medium text-balance">
-                {t("notInBasket", { name: selected.name })}
+                {t.rich("notInBasket", { name: selected.name, ...breaks })}
               </p>
               <AddToBasket slug={selected.slug} name={selected.name} />
             </div>
@@ -416,7 +418,7 @@ function Fitting({
       {t(problem.message)}
     </p>
   )
-  const heading = (text: string) => (
+  const heading = (text: ReactNode) => (
     <h2
       id="fitting"
       ref={title}
@@ -505,7 +507,7 @@ function Fitting({
       <div className="flex flex-col items-start gap-8 sm:flex-row sm:items-center sm:gap-12">
         <Mirror bulbs="sm" ratio={3 / 4} height="12rem" off />
         <p className="max-w-[40ch] font-heading text-h4 font-medium text-balance">
-          {t("closed")}
+          {t.rich("closed", breaks)}
         </p>
       </div>
     )
@@ -520,7 +522,7 @@ function Fitting({
       >
         <Mirror bulbs="sm" ratio={3 / 4} height="12rem" off />
         <div className="flex max-w-[50ch] flex-col items-start gap-4">
-          {heading(t("used.title"))}
+          {heading(t.rich("used.title", breaks))}
           <p className="text-lead text-muted-foreground">
             {usedOn
               ? t.rich("used.named", {
@@ -729,7 +731,7 @@ function EmptyBasket() {
     <div className="mt-12 flex flex-col items-center gap-5 text-center">
       <EmptyRail />
       <h2 className="mt-4 font-heading text-h2 font-semibold text-balance">
-        {t("emptyBasket")}
+        {t.rich("emptyBasket", breaks)}
       </h2>
       <p className="text-lead text-muted-foreground">{t("emptyLine")}</p>
       <Link

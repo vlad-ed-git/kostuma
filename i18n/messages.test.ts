@@ -79,11 +79,16 @@ describe("the translations", () => {
     )
   // The arguments (`{date}`, `{days, plural, …}`) and tags (`<b>`) a
   // message uses: a translation that drops or renames one breaks the page.
+  // `<wbr>` is Chinese typography, a heading's break point: no other
+  // language needs it (components/ui/breaks.tsx).
   const shape = (message: string) => ({
     args: [...message.matchAll(/\{\s*([A-Za-z_]\w*)\s*[,}]/g)]
       .map(([, name]) => name)
       .sort(),
-    tags: [...message.matchAll(/<(\w+)>/g)].map(([, name]) => name).sort(),
+    tags: [...message.matchAll(/<(\w+)>/g)]
+      .map(([, name]) => name)
+      .filter((name) => name !== "wbr")
+      .sort(),
   })
 
   // Every message in all three languages (owner, 2026-10-04: "everything

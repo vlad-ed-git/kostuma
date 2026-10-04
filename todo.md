@@ -110,7 +110,7 @@ OPP-11 and OPP-12.
 - [x] **UX-10** The failure card says whether the free costume is still theirs and how many tries
       are left.
 - [x] **UX-11** Product links search with the English product name, showing the translated one.
-- [ ] **UX-12** zh: `<wbr>` break points in display strings and `word-break: keep-all` on
+- [x] **UX-12** zh: `<wbr>` break points in display strings and `word-break: keep-all` on
       headings; a local CJK display font (Ma Shan Zheng, OFL) subset to the characters zh
       headings use, through `unicode-range`.
 - [x] **UX-13** The pumpkin toggle is brighter at rest and shows its name ("Add to / Remove from

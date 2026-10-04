@@ -10,6 +10,7 @@ import { Tagline } from "@/components/home/tagline"
 import { TransformationReel } from "@/components/home/transformation-reel"
 import { costumesHref } from "@/components/layout/nav"
 import { JsonLd } from "@/components/seo/json-ld"
+import { breaks } from "@/components/ui/breaks"
 import { Link } from "@/i18n/navigation"
 import { getCostumes, toSummary } from "@/lib/catalog"
 import { seasonIn } from "@/lib/countdown"
@@ -94,7 +95,7 @@ export default async function HomePage() {
                 {/* The site's link underline, in blood: the one of the three
                     lines that goes somewhere (todo UX-06). */}
                 <span className="underline decoration-blood decoration-[0.06em] underline-offset-[0.16em]">
-                  {home("chooseCostume")}
+                  {home.rich("chooseCostume", breaks)}
                 </span>
                 <BloodDrip />
               </Link>

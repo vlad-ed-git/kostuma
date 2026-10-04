@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl"
 import { useEffect, useState } from "react"
 
+import { breaks } from "@/components/ui/breaks"
 import { countdownTo, type Holiday } from "@/lib/countdown"
 
 /**
@@ -22,11 +23,11 @@ export function Tagline({ holiday: guess }: { holiday: Holiday }) {
   return (
     <>
       <h1 className="flicker vhs-ghost-title max-w-[11ch] font-heading text-display-xl font-semibold text-balance [--title-glow:0_0_40px_rgb(0_0_0/0.8)]">
-        {t(past ? "taglineAfterLead" : "taglineLead")}
+        {t.rich(past ? "taglineAfterLead" : "taglineLead", breaks)}
       </h1>
       {/* Wide screens: wrapped before the window, never red over its glass. */}
       <p className="mt-5 font-heading text-[clamp(1.6rem,3vw,2.6rem)] leading-none font-medium text-balance text-blood-text [text-shadow:0_0_24px_color-mix(in_oklch,var(--blood)_45%,transparent)] lg:max-w-[11.5em]">
-        {t(past ? "taglineAfterTail" : "taglineTail")}
+        {t.rich(past ? "taglineAfterTail" : "taglineTail", breaks)}
       </p>
     </>
   )

@@ -2,6 +2,7 @@ import { RiArrowRightUpLine } from "@remixicon/react"
 import { getFormatter, getTranslations } from "next-intl/server"
 import type { ReactNode } from "react"
 
+import { breaks } from "@/components/ui/breaks"
 import { Link } from "@/i18n/navigation"
 import { SUPPORT_EMAIL } from "@/lib/legal"
 import en from "@/messages/en.json"
@@ -59,6 +60,7 @@ function richValues(newTab: string) {
       )
     }
   return {
+    ...breaks,
     address: SUPPORT_EMAIL,
     b: (chunks: ReactNode) => (
       <strong className="font-semibold">{chunks}</strong>

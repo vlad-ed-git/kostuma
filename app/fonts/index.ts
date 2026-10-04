@@ -31,9 +31,28 @@ const crimsonPro = localFont({
   adjustFontFallback: "Times New Roman",
 })
 
+/**
+ * Chinese headings (todo UX-12): Ma Shan Zheng, a brush face (google/fonts,
+ * OFL: OFL-MaShanZheng.txt), subset to the characters Chinese headings use
+ * (cjk-heading.txt, scripts/fonts/cjk-heading.mjs). Never preloaded: only a
+ * page whose headings hold Chinese downloads it (unicode-range).
+ */
+const cjkHeading = localFont({
+  src: "./cjk-heading.woff2",
+  weight: "400",
+  style: "normal",
+  variable: "--font-cjk-heading",
+  preload: false,
+  adjustFontFallback: false,
+  declarations: [
+    { prop: "unicode-range", value: "U+3000-303F, U+4E00-9FFF, U+FF00-FFEF" },
+  ],
+})
+
 /** Classes for <html>: the font variables and the dark-only theme. */
 export const documentClassName = cn(
   "dark font-sans antialiased",
   grenzeGotisch.variable,
-  crimsonPro.variable
+  crimsonPro.variable,
+  cjkHeading.variable
 )

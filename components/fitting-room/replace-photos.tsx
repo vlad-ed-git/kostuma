@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl"
 import { useRef, useState } from "react"
 
 import { GetPro } from "@/components/pro/get-pro"
+import { breaks } from "@/components/ui/breaks"
 import { Button } from "@/components/ui/button"
 import { backdropClass, popupClass } from "@/components/ui/popup"
 
@@ -41,7 +42,7 @@ export function ReplacePhotos({
         <AlertDialog.Backdrop className={backdropClass} />
         <AlertDialog.Popup initialFocus={keep} className={popupClass}>
           <AlertDialog.Title className="font-heading text-h4 font-semibold text-balance">
-            {free ? t("replace.title") : t("used.title")}
+            {free ? t("replace.title") : t.rich("used.title", breaks)}
           </AlertDialog.Title>
           <AlertDialog.Description className="text-body-lg text-muted-foreground">
             {free

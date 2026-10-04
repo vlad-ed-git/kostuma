@@ -71,7 +71,9 @@
   /* The families come from app/fonts.ts (next/font sets the variables). */
   --font-sans:
     var(--font-crimson-pro), var(--font-cjk), "Iowan Old Style", Georgia, serif;
-  --font-heading: var(--font-grenze-gotisch), var(--font-cjk), Georgia, serif;
+  --font-heading:
+    var(--font-grenze-gotisch), var(--font-cjk-heading), var(--font-cjk),
+    Georgia, serif;
   --font-mono: var(--font-sans);
 
   --color-blood: var(--blood);
@@ -206,6 +208,10 @@
   .font-heading:lang(zh-Hans) {
     font-weight: 600 !important;
     line-height: 1.2 !important;
+    /* Lines break at the <wbr> a heading's message marks, never inside
+       a word; only a part too long for its line breaks anywhere. */
+    word-break: keep-all;
+    overflow-wrap: anywhere;
   }
   body:lang(zh-Hans) {
     line-height: 1.8;

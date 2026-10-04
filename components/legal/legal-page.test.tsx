@@ -156,6 +156,8 @@ describe("the documents", () => {
     "google",
     "googleTerms",
     "vercel",
+    // A Chinese title's break point (components/ui/breaks.tsx).
+    "wbr",
   ])
 
   it.each(documents)(

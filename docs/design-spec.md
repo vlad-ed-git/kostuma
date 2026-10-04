@@ -162,10 +162,11 @@ blood-text and destructive on background, card and muted ≥ 4.5; ember on backg
 
 ### 4.1 Families (`app/fonts/`, `next/font/local`: the files ship with the app)
 
-| Role    | Family         | Why                                                                                 |
-| ------- | -------------- | ----------------------------------------------------------------------------------- |
-| Display | Grenze Gotisch | Gothic titles like 80s slasher titles; readable at display sizes. `font-heading`.   |
-| Text    | Crimson Pro    | A book serif for lore and interface, the voice of an old horror novel. `font-sans`. |
+| Role            | Family         | Why                                                                                 |
+| --------------- | -------------- | ----------------------------------------------------------------------------------- |
+| Display         | Grenze Gotisch | Gothic titles like 80s slasher titles; readable at display sizes. `font-heading`.   |
+| Text            | Crimson Pro    | A book serif for lore and interface, the voice of an old horror novel. `font-sans`. |
+| Chinese display | Ma Shan Zheng  | A brush face for Chinese headings, in `font-heading` after Grenze Gotisch.          |
 
 - **Labels, buttons, badges, navigation:** the `caps` utility, Crimson Pro in small capitals
   (`font-variant-caps: all-small-caps`, 0.09em tracking, weight 600). The served files carry no
@@ -173,7 +174,11 @@ blood-text and destructive on background, card and muted ≥ 4.5; ember on backg
   italic).
 - **Never uppercase the gothic face**: its capitals are unreadable in a row. Titles and names
   keep their natural case.
-- Chinese: system fonts (`--font-cjk`), no tracking (4.3).
+- Chinese: headings in Ma Shan Zheng (OFL), subset to the characters Chinese headings use
+  (`app/fonts/cjk-heading.txt`, `scripts/fonts/cjk-heading.mjs`), never preloaded and limited by
+  `unicode-range`, so only a page with Chinese headings downloads it; every other character
+  from the system fonts (`--font-cjk`); no tracking (4.3). Chinese headings break only where
+  their messages put `<wbr>` (`word-break: keep-all`), anywhere only when a part overflows.
 
 ### 4.2 Scale (fluid)
 
@@ -1029,13 +1034,13 @@ Every page a visitor can read without an account is indexed in all three languag
 
 ## 15. Performance budgets
 
-| Metric              | Budget                                                                                                                                                                                                                                                                                                                 |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LCP (4G, mid phone) | ≤ 2.0 s; the home LCP is the H1 text, visible from first paint (never starts at opacity 0)                                                                                                                                                                                                                             |
-| CLS                 | ≤ 0.02 (reserved sizes for countdown, reCAPTCHA, images)                                                                                                                                                                                                                                                               |
-| INP                 | ≤ 200 ms                                                                                                                                                                                                                                                                                                               |
-| JS per route        | ≤ 120 KB gz shared + ≤ 40 KB route                                                                                                                                                                                                                                                                                     |
-| Fonts               | 3 files in the repo (`app/fonts/`): Grenze Gotisch, Crimson Pro and its italic, variable, Latin and Latin Extended in one woff2 each (about 188 KB together), preloaded, `display: swap`; never fetched from Google; CJK from the system. The social cards draw with a TTF of the title face, on the server only (14b) |
+| Metric              | Budget                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LCP (4G, mid phone) | ≤ 2.0 s; the home LCP is the H1 text, visible from first paint (never starts at opacity 0)                                                                                                                                                                                                                                                                                                                                                              |
+| CLS                 | ≤ 0.02 (reserved sizes for countdown, reCAPTCHA, images)                                                                                                                                                                                                                                                                                                                                                                                                |
+| INP                 | ≤ 200 ms                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| JS per route        | ≤ 120 KB gz shared + ≤ 40 KB route                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Fonts               | 3 files in the repo (`app/fonts/`): Grenze Gotisch, Crimson Pro and its italic, variable, Latin and Latin Extended in one woff2 each (about 188 KB together), preloaded, `display: swap`; never fetched from Google. Chinese headings: a Ma Shan Zheng subset (729 characters, about 310 KB), loaded only where Chinese headings show; other Chinese text from the system. The social cards draw with a TTF of the title face, on the server only (14b) |
 
 - Ambient effects: CSS, `transform`/`opacity` only, no `mix-blend-mode` on full-screen layers.
 - `motion` only where CSS can't do the job (first use: the basket count's roll), in client
