@@ -31,6 +31,7 @@ vi.mock("./photo", async (original) => {
 })
 
 const { startTryOn } = await import("./actions")
+const { PHOTO_CONSENT_VERSION } = await import("./consent")
 const { START_LIMIT } = await import("@/lib/limits")
 
 const provider = {
@@ -41,7 +42,7 @@ const provider = {
   balance: async () => null,
 } as unknown as RenderProvider
 
-async function form() {
+async function form({ consent = PHOTO_CONSENT_VERSION } = {}) {
   const jpeg = (width: number, height: number) =>
     sharp({
       create: { width, height, channels: 3, background: "#C68642" },
@@ -50,6 +51,7 @@ async function form() {
       .toBuffer()
   const data = new FormData()
   data.set("costume", "beetlejuice")
+  if (consent) data.set("consent", consent)
   data.set("face", new File([await jpeg(768, 1024)], "face.jpg"))
   data.set("body", new File([await jpeg(1080, 1440)], "body.jpg"))
   return data
@@ -67,10 +69,25 @@ beforeEach(() => {
 })
 
 describe("startTryOn", () => {
-  it("starts a try-on of the photos given", async () => {
+  it("starts a try-on of the photos given, keeping the consent it starts on", async () => {
+    const before = Date.now()
     const result = await startTryOn(await form())
     expect(result).toMatchObject({ ok: true, tryOn: { slug: "beetlejuice" } })
     expect(opened).toHaveBeenCalledTimes(2)
+    const [tryOn] = await deps!.store.tryOns("visitor")
+    expect(tryOn.consent?.version).toBe(PHOTO_CONSENT_VERSION)
+    expect(tryOn.consent?.at).toBeGreaterThanOrEqual(before)
+  })
+
+  it("starts nothing without the consent to the photos' processing, or to other words", async () => {
+    for (const consent of ["", "2020-01-01"]) {
+      expect(await startTryOn(await form({ consent }))).toEqual({
+        ok: false,
+        error: "consent_required",
+      })
+    }
+    expect(opened).not.toHaveBeenCalled()
+    expect(limit.calls).toBe(0)
   })
 
   it(`refuses a start past ${START_LIMIT.max} an hour, before opening a photo`, async () => {

@@ -127,6 +127,7 @@
     "confirm": {
       "title": "Ready to try on {name}?",
       "line": "Check your photos first: once the try-on starts, they can't be changed until it's finished.",
+      "consent": "I agree that Kostuma sends my photos to its image service, YouCam (Perfect Corp.), which analyzes my face, skin tone and body only to make my pictures. Kostuma keeps them for up to 12 months, or until I delete them; YouCam deletes its copies within 30 days. More in the <privacy>Privacy policy</privacy>.",
       "start": "Start the try-on",
       "starting": "Checking your photos…",
       "back": "Change photos"
@@ -184,6 +185,7 @@
       "out_of_units": "You've used your free costume.",
       "too_many_starts": "Too many tries in a short time. Try again in an hour.",
       "too_large": "Your photos are too large to send together. Choose smaller ones.",
+      "consent_required": "Tick the box to agree before the try-on starts.",
       "unknown": "Something went wrong. Try again."
     }
   },
@@ -421,8 +423,15 @@
           "d": "whether your account has used its free costume, on which costume, and how many of its try-ons failed because of your photos after pictures were made, which limits trying again. This stays with your account when your photos are deleted."
         },
         "p2": "To make the pictures, we send your photos, with no name, email or account details, to YouCam, a service of Perfect Corp. As soon as each picture comes back, we ask YouCam to delete the job and its files; YouCam deletes them within 30 days in any case.",
-        "p3": "Your photos and pictures are private: stored closed to the public, and shown only to you, signed in. We don't make or keep a faceprint, we don't use your photos to identify you, and we don't use them to train AI or for anything other than your try-ons.",
+        "p3": "Your photos and pictures are private: stored closed to the public, and shown only to you, signed in.",
         "p4": "To keep the Fitting Room fair, we count the try-ons each account starts over an hour, with a scrambled code made from your account. We use it only for that hour, then delete it."
+      },
+      "faceData": {
+        "title": "Your face and body in photos",
+        "p1": "Your face photo shows your face and skin tone, and your head-to-toe photo your body. To make your pictures, YouCam's software finds your face and its features, to put the makeup on them, and your body, to put the costume on it. Kostuma itself only measures the color of your skin, so the makeup starts from your own shade. This is done only to make your pictures.",
+        "p2": "We don't use your photos to identify you or to recognize you again, and we don't make or keep a faceprint (a template of your face's geometry). We never sell your photos, your pictures or what is measured from them, never share them for advertising, and never use them to train AI. YouCam handles them for us only to make your pictures.",
+        "p3": "We keep your photos and the pictures made from them for up to 12 months after you add them, or until you delete them on your account page. YouCam deletes its copies within 30 days.",
+        "p4": "Before every try-on, we ask for your consent to this on the screen where you confirm your photos, and we keep when you gave it and to which words. You can withdraw it at any time by deleting your photos on your account page: nothing more is made from them."
       },
       "waitlist": {
         "title": "Kostuma Pro's waitlist",

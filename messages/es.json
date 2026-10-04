@@ -127,6 +127,7 @@
     "confirm": {
       "title": "¿Todo listo para probarte el disfraz de {name}?",
       "line": "Revisa tus fotos antes: una vez que empiece la prueba, no podrás cambiarlas hasta que termine.",
+      "consent": "Acepto que Kostuma envíe mis fotos a su servicio de imágenes, YouCam (Perfect Corp.), que analiza mi cara, el tono de mi piel y mi cuerpo solo para crear mis imágenes. Kostuma las guarda hasta 12 meses, o hasta que yo las borre; YouCam borra sus copias en un plazo de 30 días. Más información en la <privacy>Política de privacidad</privacy>.",
       "start": "Empezar la prueba",
       "starting": "Revisando tus fotos…",
       "back": "Cambiar fotos"
@@ -184,6 +185,7 @@
       "out_of_units": "Ya usaste tu disfraz gratis.",
       "too_many_starts": "Demasiados intentos en poco tiempo. Vuelve a intentarlo en una hora.",
       "too_large": "Tus fotos pesan demasiado para enviarlas juntas. Elige otras más pequeñas.",
+      "consent_required": "Marca la casilla para aceptar antes de que empiece la prueba.",
       "unknown": "Algo salió mal. Inténtalo de nuevo."
     }
   },
@@ -421,8 +423,15 @@
           "d": "si tu cuenta ya usó su disfraz gratis, con qué disfraz, y cuántas de sus pruebas fallaron por tus fotos después de crearse imágenes, lo que limita los reintentos. Esto se queda con tu cuenta aunque se borren tus fotos."
         },
         "p2": "Para crear las imágenes, enviamos tus fotos, sin nombre, correo ni datos de la cuenta, a YouCam, un servicio de Perfect Corp. En cuanto vuelve cada imagen, pedimos a YouCam que borre el trabajo y sus archivos; YouCam los borra en un plazo de 30 días en cualquier caso.",
-        "p3": "Tus fotos e imágenes son privadas: se guardan cerradas al público y solo se te muestran a ti, con tu sesión iniciada. No creamos ni guardamos una huella facial, no usamos tus fotos para identificarte y no las usamos para entrenar IA ni para nada que no sean tus pruebas.",
+        "p3": "Tus fotos e imágenes son privadas: se guardan cerradas al público y solo se te muestran a ti, con tu sesión iniciada.",
         "p4": "Para que el Probador sea justo, contamos las pruebas que empieza cada cuenta en una hora, con un código cifrado hecho a partir de tu cuenta. Lo usamos solo durante esa hora y después lo borramos."
+      },
+      "faceData": {
+        "title": "Tu cara y tu cuerpo en las fotos",
+        "p1": "Tu foto de la cara muestra tu cara y el tono de tu piel, y tu foto de pies a cabeza, tu cuerpo. Para crear tus imágenes, el software de YouCam localiza tu cara y sus rasgos, para ponerles el maquillaje, y tu cuerpo, para ponerle el disfraz. Kostuma por su parte solo mide el color de tu piel, para que el maquillaje parta de tu propio tono. Todo esto se hace solo para crear tus imágenes.",
+        "p2": "No usamos tus fotos para identificarte ni para reconocerte, y no creamos ni guardamos una huella facial (una plantilla de la geometría de tu cara). Nunca vendemos tus fotos, tus imágenes ni lo que se mide en ellas, nunca las compartimos para publicidad y nunca las usamos para entrenar IA. YouCam las trata por encargo nuestro solo para crear tus imágenes.",
+        "p3": "Guardamos tus fotos y las imágenes creadas a partir de ellas hasta 12 meses después de que las añadas, o hasta que las borres en la página de tu cuenta. YouCam borra sus copias en un plazo de 30 días.",
+        "p4": "Antes de cada prueba te pedimos tu consentimiento para esto, en la pantalla donde confirmas tus fotos, y guardamos cuándo lo diste y a qué texto. Puedes retirarlo cuando quieras borrando tus fotos en la página de tu cuenta: ya no se crea nada más a partir de ellas."
       },
       "waitlist": {
         "title": "La lista de espera de Kostuma Pro",

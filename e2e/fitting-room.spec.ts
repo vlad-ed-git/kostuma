@@ -53,6 +53,15 @@ async function givePhotos(page: Page, face: Photo, body: Photo) {
   ).toBeVisible()
 }
 
+/**
+ * On the confirm screen: agrees to the photos' processing (required), then
+ * starts the try-on.
+ */
+async function startTryOn(page: Page, start = "Start the try-on") {
+  await page.getByRole("checkbox").check()
+  await page.getByRole("button", { name: start }).click()
+}
+
 /** The try-on of a costume: the mirror, the strip of its pictures, the card. */
 const room = (page: Page, name: string) =>
   page.getByRole("region", { name, exact: true })
@@ -141,7 +150,24 @@ test.describe("The Fitting Room", () => {
     await expect(
       page.getByText("once the try-on starts, they can't be changed")
     ).toBeVisible()
+    // Nothing starts without the consent to the photos' processing.
+    const consent = page.getByRole("checkbox", {
+      name: /I agree that Kostuma sends my photos to its image service, YouCam/,
+    })
+    await expect(consent).not.toBeChecked()
+    await expect(
+      page
+        .getByRole("region", { name: "Ready to try on Beetlejuice?" })
+        .getByRole("link", { name: "Privacy policy" })
+    ).toHaveAttribute("href", "/privacy")
     await page.getByRole("button", { name: "Start the try-on" }).click()
+    await expect(
+      page.getByText("Tick the box to agree before the try-on starts.")
+    ).toBeVisible()
+    await expect(
+      page.getByRole("heading", { name: "Ready to try on Beetlejuice?" })
+    ).toBeVisible()
+    await startTryOn(page)
 
     // Locked while it runs: no way to change the photos.
     // How it is going is told to screen readers.
@@ -229,7 +255,7 @@ test.describe("The Fitting Room", () => {
     await page.goto("/basket/fitting-room?costume=beetlejuice")
     await givePhotos(page, await photo(900, 1200), await photo(1000, 1500))
     await page.getByRole("button", { name: "Continue" }).click()
-    await page.getByRole("button", { name: "Start the try-on" }).click()
+    await startTryOn(page)
     await expect(page.getByText("Trying on the outfit…")).toBeAttached()
 
     await expect
@@ -270,7 +296,7 @@ test.describe("The Fitting Room", () => {
       })
     ).toBeVisible()
     await page.getByRole("button", { name: "Continuar" }).click()
-    await page.getByRole("button", { name: "Empezar la prueba" }).click()
+    await startTryOn(page, "Empezar la prueba")
     await expect(page.getByText("Tu prueba está lista.")).toBeAttached({
       timeout: 30_000,
     })
@@ -308,7 +334,7 @@ test.describe("The Fitting Room", () => {
       await photo(1000, 1500, { redCorner: true })
     )
     await page.getByRole("button", { name: "Continue" }).click()
-    await page.getByRole("button", { name: "Start the try-on" }).click()
+    await startTryOn(page)
     await expect(
       page.getByRole("button", { name: "Choose other photos" })
     ).toBeVisible({ timeout: 30_000 })
@@ -341,7 +367,7 @@ test.describe("The Fitting Room", () => {
     ).toBeVisible()
     await givePhotos(page, await photo(900, 1200), await photo(1000, 1500))
     await page.getByRole("button", { name: "Continue" }).click()
-    await page.getByRole("button", { name: "Start the try-on" }).click()
+    await startTryOn(page)
 
     await expect(page.getByText("Your try-on is ready.")).toBeAttached({
       timeout: 30_000,
@@ -414,7 +440,7 @@ test.describe("The Fitting Room", () => {
       await photo(1000, 1500)
     )
     await page.getByRole("button", { name: "Continue" }).click()
-    await page.getByRole("button", { name: "Start the try-on" }).click()
+    await startTryOn(page)
 
     const message =
       "Your face couldn't be found in the photo. Choose one where you look straight at the camera, in even light."
@@ -467,7 +493,7 @@ test.describe("The Fitting Room", () => {
       await photo(1000, 1500)
     )
     await page.getByRole("button", { name: "Continue" }).click()
-    await page.getByRole("button", { name: "Start the try-on" }).click()
+    await startTryOn(page)
     const retry = page.getByRole("button", { name: "Choose other photos" })
     await expect(retry).toBeVisible({ timeout: 30_000 })
     const step = await room(page, "Pearl")
@@ -512,7 +538,7 @@ test.describe("The Fitting Room", () => {
       await page.goto("/basket/fitting-room?costume=pearl")
       await givePhotos(page, await photo(900, 1200), await photo(1000, 1500))
       await page.getByRole("button", { name: "Continue" }).click()
-      await page.getByRole("button", { name: "Start the try-on" }).click()
+      await startTryOn(page)
       await expect(page.getByText("Your try-on is ready.")).toBeAttached({
         timeout: 30_000,
       })

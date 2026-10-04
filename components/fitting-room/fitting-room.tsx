@@ -23,12 +23,14 @@ import {
   type StartResult,
 } from "@/lib/fitting-room/actions"
 import { fitsOneSend, type PhotoProblem } from "@/lib/fitting-room/photo-rules"
+import { PHOTO_CONSENT_VERSION } from "@/lib/fitting-room/consent"
 import type { RenderFailure } from "@/lib/fitting-room/provider"
 import type { PhotoKind, TryOnView } from "@/lib/fitting-room/try-on"
 import type { CostumeSummary } from "@/lib/catalog/types"
 import { cn } from "@/lib/utils"
 
 import { Mirror } from "./dressing-room"
+import { PhotoConsent } from "./photo-consent"
 import { PhotoMirror, PhotoPicker, previewOf, type Slot } from "./photo-picker"
 import { CostumeRail, EmptyRail, RailSkeleton } from "./rail"
 import { ReplacePhotos } from "./replace-photos"
@@ -228,6 +230,9 @@ function Fitting({
   // keep them after all (nothing changes until the new try-on starts).
   const [kept, setKept] = useState<Record<PhotoKind, Slot> | null>(null)
   const [problem, setProblem] = useState<Problem | null>(null)
+  // The consent to the photos' processing, asked before every start.
+  const [agreed, setAgreed] = useState(false)
+  const [unagreed, setUnagreed] = useState(false)
   const [pending, startTransition] = useTransition()
   const title = useRef<HTMLHeadingElement>(null)
 
@@ -324,6 +329,10 @@ function Fitting({
   }
 
   function start() {
+    if (!agreed) {
+      setUnagreed(true)
+      return
+    }
     // Past the server's limit, the request would be refused unread.
     const sizes = kinds.map((kind) => {
       const slot = slots[kind]
@@ -335,6 +344,7 @@ function Fitting({
     }
     const form = new FormData()
     form.set("costume", costume.slug)
+    form.set("consent", PHOTO_CONSENT_VERSION)
     for (const kind of kinds) {
       const slot = slots[kind]
       if (slot?.kind === "picked")
@@ -358,6 +368,9 @@ function Fitting({
         setRefused(true)
         if (kept) keepCurrent()
         else setProblem(null)
+      } else if (!result.ok && result.error === "consent_required") {
+        setAgreed(false)
+        setUnagreed(true)
       } else if (result.ok) {
         // The photos are the account's now: kept by id, as a reload has
         // them, so the next change is told from them.
@@ -531,6 +544,11 @@ function Fitting({
           ))}
         </div>
         <div className="flex flex-col items-start gap-6 [grid-area:go]">
+          <PhotoConsent
+            agreed={agreed}
+            error={unagreed && !agreed}
+            onChange={setAgreed}
+          />
           {alert}
           <div className="flex flex-wrap items-center gap-4">
             <Button

@@ -703,8 +703,15 @@ words beside them; on phones the words come first.
   private.").
 - **Confirm** (`h2` "Ready to try on {name}?"): the costume standing in the light (from `sm`)
   beside the two mirrors with the photos, "Check your photos first: once the try-on starts, they
-  can't be changed until it's finished.", "Start the try-on" (primary; pending: spinner +
-  "Checking your photos…") and "Change photos" (ghost). Nothing is sent before this button.
+  can't be changed until it's finished.", then the consent to the photos' processing (todo
+  SEC-03), a checkbox, unticked: "I agree that Kostuma sends my photos to its image service,
+  YouCam (Perfect Corp.), which analyzes my face, skin tone and body only to make my pictures.
+  Kostuma keeps them for up to 12 months, or until I delete them; YouCam deletes its copies
+  within 30 days. More in the Privacy policy." (the policy a link, new tab; the one place the
+  interface names the service), then "Start the try-on" (primary; pending: spinner + "Checking
+  your photos…") and "Change photos" (ghost). Start without the tick: "Tick the box to agree
+  before the try-on starts." under it (`--destructive`). Nothing is sent before this button;
+  each try-on keeps the consent's time and wording version (`lib/fitting-room/consent.ts`).
 - **Used** (the free costume gone, no try-on of this costume to show): the vanity dark (every
   bulb out) beside `h2` "You've used your free costume.", "You tried on {name}. Get Kostuma Pro
   to try on more costumes." (without a costume to name: "Get Kostuma Pro to try on more

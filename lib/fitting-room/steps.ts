@@ -4,6 +4,7 @@ import type { MakeupGuide } from "@/lib/makeup"
 
 import { admits, unitsOfGuide } from "./budget"
 import { BUSY_LIMIT_MS, busyDelay, checkEvery } from "./calls"
+import type { Consent } from "./consent"
 import {
   ProviderError,
   type RenderFailure,
@@ -92,13 +93,15 @@ export function tryOnId(
     .slice(0, 32)
 }
 
-/** A try-on, before anything is sent. */
+/** A try-on, before anything is sent, with the consent it starts on. */
 export function newTryOn(
   { slug, guide, face, body, garment }: Fitting,
   now: number,
-  renderer: Renderer
+  renderer: Renderer,
+  consent?: Consent
 ): TryOn {
   return {
+    ...(consent && { consent }),
     id: tryOnId(face.id, body?.id ?? null, slug, renderer, garment),
     slug,
     renderer,
@@ -128,9 +131,10 @@ export function newTryOn(
 export async function begin(
   { store, provider, now = Date.now }: Pick<Deps, "store" | "provider" | "now">,
   uid: string,
-  fitting: Fitting
+  fitting: Fitting,
+  consent?: Consent
 ): Promise<Begun> {
-  return store.begin(uid, newTryOn(fitting, now(), provider.name))
+  return store.begin(uid, newTryOn(fitting, now(), provider.name, consent))
 }
 
 /**

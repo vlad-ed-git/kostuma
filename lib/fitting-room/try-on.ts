@@ -1,6 +1,7 @@
 import type { Hex } from "@/lib/makeup"
 
 import type { ClosedFor, Controls } from "./budget"
+import type { Consent } from "./consent"
 import type { Allowance } from "./free-costume"
 import type { RenderFailure } from "./provider"
 import type { Render } from "./render-plan"
@@ -88,6 +89,11 @@ export type TryOn = {
    * (budget.ts); missing on try-ons made before the budget (2026-10-04).
    */
   reserved?: { day: string; units: number }
+  /**
+   * The visitor's consent to the photos' processing, when and to which
+   * words (consent.ts); missing on try-ons made before it was asked.
+   */
+  consent?: Consent
   createdAt: number
   updatedAt: number
 }

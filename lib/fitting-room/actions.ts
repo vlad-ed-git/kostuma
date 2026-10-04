@@ -4,6 +4,8 @@ import { makeupGuides } from "@/content/makeup"
 import { getUser } from "@/lib/auth/session"
 import { getCostume, tryOnGarment } from "@/lib/catalog"
 import { START_LIMIT } from "@/lib/limits"
+
+import { PHOTO_CONSENT_VERSION } from "./consent"
 import { withinLimit } from "@/lib/rate-limit"
 
 import { PhotoError, preparePhoto, type Prepared } from "./photo"
@@ -26,6 +28,7 @@ export type StartError =
   | "closed"
   | "out_of_units"
   | "too_many_starts"
+  | "consent_required"
   | "unknown"
   | PhotoProblem
 
@@ -42,7 +45,8 @@ export type StartResult =
  * file, or the one the account used last (`keepFace`, `keepBody`: its id).
  * The same photos and costume again give the try-on already made, free; a
  * new try-on needs the account's free costume (free-costume.ts), and keeps
- * nothing without it.
+ * nothing without it. Nothing starts unless the visitor ticked the consent
+ * to the photos' processing (`consent`: the words' version, consent.ts).
  */
 export async function startTryOn(form: FormData): Promise<StartResult> {
   try {
@@ -55,6 +59,8 @@ export async function startTryOn(form: FormData): Promise<StartResult> {
     if (typeof slug !== "string" || !guide || !costume?.images[0])
       return { ok: false, error: "unknown_costume" }
 
+    if (form.get("consent") !== PHOTO_CONSENT_VERSION)
+      return { ok: false, error: "consent_required" }
     const deps = fittingRoom()
     if (!deps) return { ok: false, error: "closed" }
     // Before a photo is opened.
@@ -105,7 +111,10 @@ export async function startTryOn(form: FormData): Promise<StartResult> {
         body: fresh.body && [fresh.body.photo, fresh.body.image],
       })
     }
-    const begun = await begin(deps, user.uid, fitting)
+    const begun = await begin(deps, user.uid, fitting, {
+      version: PHOTO_CONSENT_VERSION,
+      at: Date.now(),
+    })
     if (begun.outcome === "out_of_units" || begun.outcome === "closed")
       return { ok: false, error: begun.outcome }
     return { ok: true, tryOn: toView(begun.tryOn) }

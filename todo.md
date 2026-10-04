@@ -68,7 +68,7 @@ OPP-11 and OPP-12.
 
 ## Security and privacy (`02-security-privacy.md`)
 
-- [ ] **SEC-03** An unticked checkbox on the confirm screen, required to start, saved with its
+- [x] **SEC-03** An unticked checkbox on the confirm screen, required to start, saved with its
       time and wording version on the try-on, linking to the Privacy policy: "I agree that
       Kostuma sends my photos to its image service, YouCam (Perfect Corp.), which analyzes my
       face, skin tone and body only to make my pictures. Kostuma keeps them for up to 12
