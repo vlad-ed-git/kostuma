@@ -15,6 +15,8 @@ import { languageTags, routing } from "@/i18n/routing"
 import { getUser } from "@/lib/auth/session"
 import { getCostumes } from "@/lib/catalog"
 import { themeColor } from "@/lib/design/theme"
+import { ogLocaleOf, SITE_NAME } from "@/lib/seo"
+import { siteUrl } from "@/lib/site"
 
 import "../globals.css"
 
@@ -29,9 +31,19 @@ export async function generateMetadata({
   if (!hasLocale(routing.locales, locale)) notFound()
   const t = await getTranslations({ locale, namespace: "App" })
 
+  // What every page shares; each indexable page adds its own address, its
+  // versions in the other languages and its card (lib/seo.ts).
   return {
+    metadataBase: siteUrl(),
+    applicationName: SITE_NAME,
     title: { default: t("name"), template: `%s · ${t("name")}` },
     description: t("tagline"),
+    openGraph: {
+      type: "website",
+      siteName: SITE_NAME,
+      locale: ogLocaleOf[locale],
+    },
+    twitter: { card: "summary_large_image" },
   }
 }
 

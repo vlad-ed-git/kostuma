@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { headers } from "next/headers"
 import { getLocale, getTranslations } from "next-intl/server"
 
@@ -8,10 +9,29 @@ import { NightScene } from "@/components/home/night-scene"
 import { Tagline } from "@/components/home/tagline"
 import { TransformationReel } from "@/components/home/transformation-reel"
 import { costumesHref } from "@/components/layout/nav"
+import { JsonLd } from "@/components/seo/json-ld"
 import { Link } from "@/i18n/navigation"
 import { getCostumes, toSummary } from "@/lib/catalog"
 import { seasonIn } from "@/lib/countdown"
+import {
+  costumeList,
+  jsonLd,
+  organization,
+  SITE_NAME,
+  seoFor,
+  website,
+} from "@/lib/seo"
 import { visitorFrom } from "@/lib/visitor"
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale()
+  const t = await getTranslations("App")
+  return seoFor(locale, {
+    path: "/",
+    title: SITE_NAME,
+    description: t("tagline"),
+  })
+}
 
 /**
  * Home (spec §11.1): the title card, with a real transformation on a strip
@@ -22,14 +42,23 @@ import { visitorFrom } from "@/lib/visitor"
  */
 export default async function HomePage() {
   const locale = await getLocale()
+  const app = await getTranslations("App")
   const home = await getTranslations("Home")
   const nav = await getTranslations("Nav")
+  const costumes = getCostumes(locale)
   // The server's guess of the season, by the connection's time zone (on
   // Vercel); the browser corrects it with the visitor's own clock.
   const season = seasonIn(new Date(), visitorFrom(await headers()).timeZone)
 
   return (
     <>
+      <JsonLd
+        data={jsonLd(
+          organization(),
+          website(locale, app("tagline")),
+          costumeList(costumes, locale, nav("costumes"))
+        )}
+      />
       <section
         data-title-card
         // Slides under the header, which stays transparent over a title
@@ -83,7 +112,7 @@ export default async function HomePage() {
         className="mx-auto max-w-7xl scroll-mt-16 px-4 pt-4 pb-28 sm:px-6 lg:px-8"
       >
         <ol className="grid gap-x-16 gap-y-2 lg:grid-cols-2">
-          {getCostumes(locale).map((costume) => (
+          {costumes.map((costume) => (
             <li key={costume.slug} className="lit">
               <CostumeRow costume={toSummary(costume)} />
             </li>

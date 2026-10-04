@@ -8,6 +8,10 @@ export const routing = defineRouting({
   locales: ["en", "es", "zh"],
   defaultLocale: "en",
   localePrefix: "as-needed",
+  // Each page names its versions in the other languages itself, in its head
+  // and the sitemap (lib/seo.ts), with the production address and zh-Hans:
+  // no Link header built from whatever host served the request.
+  alternateLinks: false,
 })
 
 export type Locale = (typeof routing.locales)[number]

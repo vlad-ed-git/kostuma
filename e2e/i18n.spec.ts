@@ -91,11 +91,29 @@ test.describe("languages", () => {
     await expect(page).toHaveURL(/\/$/)
   })
 
-  test("sends alternate links for search engines", async ({ request }) => {
-    const response = await request.get("/", { maxRedirects: 0 })
-    const links = response.headers()["link"] ?? ""
-    expect(links).toContain('hreflang="es"')
-    expect(links).toContain('hreflang="x-default"')
+  test("names each page's versions in every language for search engines", async ({
+    request,
+    baseURL,
+  }) => {
+    // In the page's head, on the site's own address (lib/seo.ts), never in
+    // a header built from whatever host served the request.
+    const response = await request.get("/es", { maxRedirects: 0 })
+    expect(response.headers()["link"] ?? "").not.toContain("hreflang")
+    const alternates = (await response.text()).matchAll(
+      /<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/gi
+    )
+    const at = (path: string) => new URL(path, baseURL).href
+    // Compared as addresses: Next writes the root without its slash.
+    expect(
+      Object.fromEntries(
+        alternates.map(([, tag, href]) => [tag, new URL(href).href])
+      )
+    ).toEqual({
+      en: at("/"),
+      es: at("/es"),
+      "zh-Hans": at("/zh"),
+      "x-default": at("/"),
+    })
   })
 
   test("language links are never prefetched", async ({ page }) => {

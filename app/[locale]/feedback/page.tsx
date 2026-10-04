@@ -1,13 +1,25 @@
 import type { Metadata } from "next"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
 import { AuthShell } from "@/components/auth/auth-shell"
 import { Feedback } from "@/components/feedback/feedback"
 import { kindOf } from "@/lib/feedback/schema"
+import { seoFor } from "@/lib/seo"
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Feedback")
-  return { title: t("metaTitle") }
+  const app = await getTranslations("App")
+  const title = t("metaTitle")
+  return {
+    title,
+    description: t("lead"),
+    ...seoFor(await getLocale(), {
+      path: "/feedback",
+      title,
+      description: t("lead"),
+      homeCard: { alt: app("tagline") },
+    }),
+  }
 }
 
 /**

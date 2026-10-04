@@ -5,8 +5,8 @@ import { routing } from "@/i18n/routing"
 import { contentSecurityPolicy, createNonce } from "@/lib/security/csp"
 
 // Picks each request's language: the URL prefix (`/es/…`), else the visitor's
-// saved choice (cookie), else their browser's languages, else English. Also
-// sends hreflang alternate links for search engines.
+// saved choice (cookie), else their browser's languages, else English. Each
+// page names its versions in the other languages itself (lib/seo.ts).
 const handleI18nRouting = createMiddleware(routing)
 
 export function proxy(request: NextRequest) {
@@ -28,9 +28,11 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // Pages only: not API routes, Next.js or Vercel internals, nor files (any
-  // path with a dot, such as favicon.ico). Page paths must not contain dots.
-  // Prefetches must run through here too: English pages live at `/…` only
-  // after next-intl rewrites them to `/en/…`.
-  matcher: "/((?!api|_next|_vercel|.*\\..*).*)",
+  // Pages only: not API routes, Next.js or Vercel internals, files (any
+  // path with a dot, such as favicon.ico), nor the social cards, which Next
+  // names under their language, English too (`/en/opengraph-image/card`):
+  // redirected to `/…`, they would cost every crawler a hop. Page paths
+  // must not contain dots. Prefetches must run through here too: English
+  // pages live at `/…` only after next-intl rewrites them to `/en/…`.
+  matcher: "/((?!api|_next|_vercel|.*\\..*|.*opengraph-image).*)",
 }

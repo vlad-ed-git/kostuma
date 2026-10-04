@@ -11,20 +11,30 @@ import { CostumeRow } from "@/components/costume/costume-row"
 import { filmLine } from "@/components/costume/format"
 import { WardrobeList } from "@/components/costume/wardrobe-list"
 import { costumesHref } from "@/components/layout/nav"
+import { JsonLd } from "@/components/seo/json-ld"
 import { Link } from "@/i18n/navigation"
 import { getCostume, getNeighbors, getRelated, toSummary } from "@/lib/catalog"
 import type { Costume } from "@/lib/catalog/types"
+import { breadcrumbs, jsonLd, seoFor, urlIn } from "@/lib/seo"
 
 export async function generateMetadata({
   params,
 }: PageProps<"/[locale]/costumes/[slug]">): Promise<Metadata> {
   const { slug } = await params
-  const costume = getCostume(slug, await getLocale())
+  const locale = await getLocale()
+  const costume = getCostume(slug, locale)
   if (!costume) return {}
   const t = await getTranslations("Costume")
+  const title = t("metaTitle", { name: costume.name })
   return {
-    title: t("metaTitle", { name: costume.name }),
+    title,
     description: costume.lore,
+    // The card itself: opengraph-image.tsx beside this page.
+    ...seoFor(locale, {
+      path: `/costumes/${costume.slug}`,
+      title,
+      description: costume.lore,
+    }),
   }
 }
 
@@ -41,6 +51,15 @@ export default async function CostumePage({
 
   return (
     <article className="mx-auto max-w-7xl px-4 pt-10 pb-24 sm:px-6 lg:px-8">
+      {/* The breadcrumb below, for search engines. */}
+      <JsonLd
+        data={jsonLd(
+          breadcrumbs([
+            { name: t("costumes"), url: `${urlIn("/", locale)}#costumes` },
+            { name: costume.name },
+          ])
+        )}
+      />
       <nav
         aria-label={t("breadcrumb")}
         className="text-label caps text-muted-foreground"

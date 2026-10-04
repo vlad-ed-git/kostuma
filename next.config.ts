@@ -72,6 +72,10 @@ const nextConfig: NextConfig = {
       },
     },
   }),
+  // The social cards' font, read from disk (lib/og.tsx): shipped with them.
+  outputFileTracingIncludes: {
+    "/**/opengraph-image*": ["./app/fonts/og/*.ttf"],
+  },
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
   // Next 16 removed the `eslint` option: `next build` no longer lints, so

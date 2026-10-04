@@ -525,7 +525,8 @@ Client components are marked (C). Everything else renders on the server.
 ## 11. Pages
 
 All pages: header, `<main id="content">`, footer, atmosphere layers. Titles through
-`generateMetadata` (`%s · Kostuma`). Auth, account, basket and Fitting Room pages are `noindex`.
+`generateMetadata` (`%s · Kostuma`). Auth, account, basket and Fitting Room pages are `noindex`;
+every other page is indexed, in every language (14b).
 
 ### 11.1 Home `/`
 
@@ -933,15 +934,57 @@ The real documents, in plain words and the second person, true to what the site 
 
 ---
 
+## 14b. Search and sharing
+
+Every page a visitor can read without an account is indexed in all three languages (owner,
+2026-10-04: everything is translated). The pages that are each visitor's own stay out.
+
+- **Addresses:** one per page and language (English at the root, `/es/…`, `/zh/…`). Each page
+  names its canonical address (itself, in its language) and its versions in every language
+  (`hreflang` `en`, `es`, `zh-Hans`, and `x-default`, the English) in its head and in the
+  sitemap, never in a `Link` header (next-intl's `alternateLinks: false`). All on the
+  production domain (`lib/site.ts`: `SITE_URL`, else https://kostuma.vercel.app), so a preview
+  or a local build never points search engines at itself.
+- **Indexed:** home, every costume, feedback, terms and privacy. **Not:** sign in, register,
+  reset password, account, the basket and the Fitting Room (`noindex`, not in the sitemap).
+- **`/sitemap.xml`:** every indexed page in every language, each with its versions; the legal
+  pages dated by their last change. **`/robots.txt`:** all open but `/api/`; names the sitemap.
+- **Titles and descriptions:** each page's own, in its language (`%s · Kostuma`): the tagline at
+  home, a costume's lore, a page's lead.
+- **Shared links:** Open Graph and X (`summary_large_image`) in the page's language
+  (`og:locale` `en_US`, `es_LA`, `zh_CN`, the others as alternates). The cards, 1200 × 630 PNG
+  drawn by `next/og` in the night's colors and the title face (`lib/og.tsx`):
+  - home (`app/[locale]/opengraph-image.tsx`): the wordmark over the home page's real
+    transformation, five frames, in red light. Feedback, terms and privacy, without a card of
+    their own, show it too;
+  - a costume (`app/[locale]/costumes/[slug]/opengraph-image.tsx`): its name and year, its photo
+    standing in red light on the right (a landscape photo fills its place, cropped to its
+    subject, never covering the name), the wordmark below.
+
+  Names stay as they are in every language, so a card is the same in each; its description
+  (`alt`) is translated. A photo that can't be fetched leaves the card without it. Next names
+  the cards under their language, English too (`/en/…`): the proxy lets them be, never
+  redirected. An unknown costume or language has no card (404).
+
+- **Structured data (JSON-LD):** home names Kostuma (`Organization`, `WebSite` in its language)
+  and its collection (`ItemList`, every costume in order); a costume page its breadcrumb
+  (`BreadcrumbList`). A data block, never run; nothing in it can close its script.
+- **Icons:** a drop of blood on the night (`design/icon.svg`, drawn by `npm run images`): the
+  tab's (`app/icon.svg`, `favicon.ico` at 16 and 32 px), an iPhone's (`apple-icon.png`,
+  180 px, its corners left to iOS) and the manifest's (`/manifest.webmanifest`: 192 and 512 px
+  and a maskable 512; the night's colors).
+
+---
+
 ## 15. Performance budgets
 
-| Metric              | Budget                                                                                                                                                                                                                                   |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LCP (4G, mid phone) | ≤ 2.0 s; the home LCP is the H1 text, visible from first paint (never starts at opacity 0)                                                                                                                                               |
-| CLS                 | ≤ 0.02 (reserved sizes for countdown, reCAPTCHA, images)                                                                                                                                                                                 |
-| INP                 | ≤ 200 ms                                                                                                                                                                                                                                 |
-| JS per route        | ≤ 120 KB gz shared + ≤ 40 KB route                                                                                                                                                                                                       |
-| Fonts               | 3 files in the repo (`app/fonts/`): Grenze Gotisch, Crimson Pro and its italic, variable, Latin and Latin Extended in one woff2 each (about 188 KB together), preloaded, `display: swap`; never fetched from Google; CJK from the system |
+| Metric              | Budget                                                                                                                                                                                                                                                                                                                 |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LCP (4G, mid phone) | ≤ 2.0 s; the home LCP is the H1 text, visible from first paint (never starts at opacity 0)                                                                                                                                                                                                                             |
+| CLS                 | ≤ 0.02 (reserved sizes for countdown, reCAPTCHA, images)                                                                                                                                                                                                                                                               |
+| INP                 | ≤ 200 ms                                                                                                                                                                                                                                                                                                               |
+| JS per route        | ≤ 120 KB gz shared + ≤ 40 KB route                                                                                                                                                                                                                                                                                     |
+| Fonts               | 3 files in the repo (`app/fonts/`): Grenze Gotisch, Crimson Pro and its italic, variable, Latin and Latin Extended in one woff2 each (about 188 KB together), preloaded, `display: swap`; never fetched from Google; CJK from the system. The social cards draw with a TTF of the title face, on the server only (14b) |
 
 - Ambient effects: CSS, `transform`/`opacity` only, no `mix-blend-mode` on full-screen layers.
 - `motion` only where CSS can't do the job (first use: the basket count's roll), in client
@@ -963,25 +1006,26 @@ The real documents, in plain words and the second person, true to what the site 
 
 ## 16. Implementation map
 
-| Piece                    | Where                                                                                                                                                      |
-| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Tokens (palette, motion) | `app/globals.css` `:root` + `@theme inline`                                                                                                                |
-| Fonts                    | `app/fonts/` (the woff2 files, their OFL licenses, `index.ts`)                                                                                             |
-| Atmosphere               | `components/horror/{atmosphere,fog}.tsx` + `app/film.css` (grain, vignette, ground fog, scratches, VHS)                                                    |
-| Reel change              | `app/[locale]/template.tsx` (`<ViewTransition>`), `::view-transition` rules in `app/film.css`                                                              |
-| Cue mark                 | `components/horror/cue-mark.tsx`, fed by `lib/navigation-status.ts` from `i18n/navigation.tsx`                                                             |
-| Shell                    | `components/layout/{header,mobile-menu,footer,wordmark,skip-link,lost-in-the-dark}.tsx`                                                                    |
-| Primitives               | `components/ui/*` (shadcn style, cva)                                                                                                                      |
-| Feature components       | `components/{costume,basket,auth,forms,countdown}/*`                                                                                                       |
-| Catalog                  | `content/costumes.ts` (the owner's list, typed) → `lib/catalog` → `components/costume/*`                                                                   |
-| Links on intent          | `components/navigation/intent-link.tsx` (the costume rows)                                                                                                 |
-| Night scene              | `components/home/{night-scene,flashlight}.tsx`, fog texture `scripts/fog.mjs` → `public/images/fog.webp`                                                   |
-| Countdown                | `lib/countdown` (logic, tested per time zone) + `components/countdown/countdown.tsx`                                                                       |
-| My Pumpkin Basket        | `lib/basket` (store, storage format, Firestore) + `components/basket/*` + `app/[locale]/basket`; `firestore.rules`                                         |
-| The Fitting Room         | `lib/fitting-room` (photos, render plan, YouCam, steps, store) + `components/fitting-room/*` + `app/[locale]/basket/fitting-room` + `app/api/fitting-room` |
-| Costume photos           | `components/costume/{costume-image,costume-gallery}.tsx`, `lib/in-view.ts`, `.photo-reveal` in `app/film.css`; pipeline `scripts/photos/`                  |
-| Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`                                                                         |
-| Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit                                                                     |
+| Piece                    | Where                                                                                                                                                                                                                                                   |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tokens (palette, motion) | `app/globals.css` `:root` + `@theme inline`                                                                                                                                                                                                             |
+| Fonts                    | `app/fonts/` (the woff2 files, their OFL licenses, `index.ts`; `og/`, the social cards' TTF)                                                                                                                                                            |
+| Atmosphere               | `components/horror/{atmosphere,fog}.tsx` + `app/film.css` (grain, vignette, ground fog, scratches, VHS)                                                                                                                                                 |
+| Reel change              | `app/[locale]/template.tsx` (`<ViewTransition>`), `::view-transition` rules in `app/film.css`                                                                                                                                                           |
+| Cue mark                 | `components/horror/cue-mark.tsx`, fed by `lib/navigation-status.ts` from `i18n/navigation.tsx`                                                                                                                                                          |
+| Shell                    | `components/layout/{header,mobile-menu,footer,wordmark,skip-link,lost-in-the-dark}.tsx`                                                                                                                                                                 |
+| Primitives               | `components/ui/*` (shadcn style, cva)                                                                                                                                                                                                                   |
+| Feature components       | `components/{costume,basket,auth,forms,countdown}/*`                                                                                                                                                                                                    |
+| Catalog                  | `content/costumes.ts` (the owner's list, typed) → `lib/catalog` → `components/costume/*`                                                                                                                                                                |
+| Links on intent          | `components/navigation/intent-link.tsx` (the costume rows)                                                                                                                                                                                              |
+| Night scene              | `components/home/{night-scene,flashlight}.tsx`, fog texture `scripts/fog.mjs` → `public/images/fog.webp`                                                                                                                                                |
+| Countdown                | `lib/countdown` (logic, tested per time zone) + `components/countdown/countdown.tsx`                                                                                                                                                                    |
+| My Pumpkin Basket        | `lib/basket` (store, storage format, Firestore) + `components/basket/*` + `app/[locale]/basket`; `firestore.rules`                                                                                                                                      |
+| The Fitting Room         | `lib/fitting-room` (photos, render plan, YouCam, steps, store) + `components/fitting-room/*` + `app/[locale]/basket/fitting-room` + `app/api/fitting-room`                                                                                              |
+| Costume photos           | `components/costume/{costume-image,costume-gallery}.tsx`, `lib/in-view.ts`, `.photo-reveal` in `app/film.css`; pipeline `scripts/photos/`                                                                                                               |
+| Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`                                                                                                                                                                      |
+| Search and sharing       | `lib/seo.ts` (addresses, versions, Open Graph, JSON-LD), `lib/site.ts`, `components/seo/json-ld.tsx`, `app/{sitemap,robots,manifest}.ts`, the cards `app/[locale]/**/opengraph-image.tsx` + `lib/og.tsx`; icons `design/icon.svg` → `scripts/icons.mjs` |
+| Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit                                                                                                                                                                  |
 
 ---
 
@@ -1021,6 +1065,11 @@ Each feature branch ships unit and end-to-end tests for the cases that apply to 
   never ends (given up after 5 minutes); two tabs following one try-on (each render sent once);
   the same photos and costume again (the same try-on, never rendered twice); another visitor
   or a signed-out request asking for someone's pictures (nothing).
+- **Search and sharing:** every indexed page in each language names itself and its versions
+  on the production domain, whatever host served it (a malformed `SITE_URL` keeps to it); the
+  private pages stay out of search and the sitemap; a card for an unknown costume or language
+  is a 404; a card whose photo can't be fetched still draws; a landscape photo never covers
+  the name; no text closes the structured data's script.
 - **Server cost:** scrolling the costumes prefetches nothing, hovering a card prefetches it;
   language links never prefetch; no section clips its fog; nothing scrolls sideways.
 
