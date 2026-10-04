@@ -29,6 +29,13 @@ export const withinLimit: typeof RateLimit.withinLimit = async (
   return true
 }
 
+export const forgetSender: typeof RateLimit.forgetSender = async (
+  limits,
+  sender
+) => {
+  for (const limit of limits) counts.delete(`${limit.name}:${sender}`)
+}
+
 export const sweepRateLimits: typeof RateLimit.sweepRateLimits = async (
   now = Date.now()
 ) => {

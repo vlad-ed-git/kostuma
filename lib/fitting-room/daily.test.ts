@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 import { makeup, type MakeupGuide, paler } from "@/lib/makeup"
 
 import { dailyCheck, STUCK_MS } from "./daily"
+import { FAILED_TRIES } from "./free-costume"
 import { memoryStore } from "./memory-store"
 import { ProviderError, type RenderProvider } from "./provider"
 import { newTryOn } from "./steps"
@@ -23,7 +24,13 @@ describe("dailyCheck", () => {
       { store, provider: provider(async () => 49) },
       NOW
     )
-    expect(report).toEqual({ balance: 49, open: false, ended: 0, failed: [] })
+    expect(report).toEqual({
+      balance: 49,
+      open: false,
+      ended: 0,
+      expired: 0,
+      failed: [],
+    })
     expect((await store.capacity(NOW)).controls).toMatchObject({
       open: false,
       closedFor: "units",
@@ -67,6 +74,7 @@ describe("dailyCheck", () => {
       balance: null,
       open: null,
       ended: 0,
+      expired: 0,
       failed: ["balance"],
     })
     expect((await store.capacity(NOW)).controls.open).toBe(true)
@@ -78,6 +86,7 @@ describe("dailyCheck", () => {
       balance: null,
       open: null,
       ended: 0,
+      expired: 0,
       failed: [],
     })
     expect(
@@ -151,7 +160,10 @@ describe("dailyCheck, stuck try-ons and old notes", () => {
     expect(discarded).toEqual(["task-9"])
     expect(await store.taskStep("task-9")).toBeNull()
     // Never the visitor's: the free costume comes back.
-    expect((await store.room("visitor")).failedTries).toBe(0)
+    expect(await store.allowance("visitor", "youcam")).toEqual({
+      free: true,
+      triesLeft: FAILED_TRIES,
+    })
     // Ended once.
     expect((await dailyCheck({ store, provider: youcam }, NOW)).ended).toBe(0)
   })

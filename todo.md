@@ -76,7 +76,7 @@ OPP-11 and OPP-12.
       disclosure: the one place the interface names the service.) A Privacy section on face
       and body data: what, who, why, how long; never used to identify anyone, sold or used for
       training; deleting the photos withdraws consent.
-- [ ] **SEC-04** Account page: "Delete my photos and pictures" and "Delete my account", each
+- [x] **SEC-04** Account page: "Delete my photos and pictures" and "Delete my account", each
       behind a confirm pop-up (Storage `fitting-room/{uid}/`, the room and its try-ons, basket,
       waitlist entry, profile and feedback of that uid, then the Auth user). The free-costume
       facts (costume used, failed tries) move to their own document, which photo deletion and

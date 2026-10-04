@@ -10,6 +10,7 @@ import { verifyRecaptcha } from "@/lib/auth/recaptcha"
 import { fieldErrorsOf, type FieldErrors } from "@/lib/auth/schemas"
 // By its alias: the e2e build swaps in a stand-in (session.e2e.ts).
 import { getUser } from "@/lib/auth/session"
+import { FEEDBACK_LIMIT } from "@/lib/limits"
 import { addressOf, sweepRateLimits, withinLimit } from "@/lib/rate-limit"
 import { visitorFrom } from "@/lib/visitor"
 
@@ -20,7 +21,6 @@ import { saveFeedback } from "./store"
  * Per hour, per account (signed in) or per connection: plenty for anyone
  * with something to say, too few to flood the form.
  */
-const FEEDBACK_LIMIT = { name: "feedback", max: 5, windowMs: 60 * 60 * 1000 }
 
 export type FeedbackResult =
   | { ok: true }

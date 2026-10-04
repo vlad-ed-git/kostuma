@@ -31,10 +31,7 @@ export async function withinLimit(
   sender: string,
   now = Date.now()
 ): Promise<boolean> {
-  const id = createHash("sha256")
-    .update(`${limit.name}:${sender}`)
-    .digest("hex")
-  const ref = adminDb().collection(rateLimits).doc(id)
+  const ref = adminDb().collection(rateLimits).doc(idOf(limit, sender))
 
   return adminDb().runTransaction(async (transaction) => {
     const data = (await transaction.get(ref)).data()
@@ -52,6 +49,19 @@ export async function withinLimit(
     })
     return true
   })
+}
+
+/** An entry's id: the limit and its sender, hashed. */
+const idOf = (limit: Limit, sender: string) =>
+  createHash("sha256").update(`${limit.name}:${sender}`).digest("hex")
+
+/** Deletes a sender's counts for these limits (an account deleted). */
+export async function forgetSender(limits: readonly Limit[], sender: string) {
+  await Promise.all(
+    limits.map((limit) =>
+      adminDb().collection(rateLimits).doc(idOf(limit, sender)).delete()
+    )
+  )
 }
 
 /** Deletes spent entries, a batch at a time. */

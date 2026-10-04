@@ -30,7 +30,8 @@ vi.mock("./photo", async (original) => {
   }
 })
 
-const { START_LIMIT, startTryOn } = await import("./actions")
+const { startTryOn } = await import("./actions")
+const { START_LIMIT } = await import("@/lib/limits")
 
 const provider = {
   name: "fake",

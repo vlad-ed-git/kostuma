@@ -762,7 +762,8 @@ words beside them; on phones the words come first.
   appears without fading.
 - The try-on shown for a costume is the one made with the account's photos in use, else its
   newest: going back to earlier photos (the same file again) shows their try-on, made once, after
-  a reload too. Nothing is deleted: older try-ons stay (deleting is the account page's, later).
+  a reload too. Older try-ons stay until the visitor deletes them (the account page, 11.6) or
+  they turn 12 months old; the free costume used stays used either way.
 - Pictures load from the server only, to their owner (`/api/fitting-room/…`, `private`
   caching), never through the image optimizer.
 
@@ -809,6 +810,15 @@ All `noindex`. A signed-in visitor is sent on to `next` (sign in, register).
   costume is waiting." or "You've used your free costume." (unknown: the general line).
 - Sign out (outline button, a form: works before scripts load). Signed-out visitors are
   redirected to sign in (with `next`). `noindex`.
+- Under it, quiet (ghost buttons, muted, red on hover): "Delete my photos and pictures" and
+  "Delete my account" (todo SEC-04). Each asks first in a pop-up (12), its first focus the
+  button that keeps everything: "Delete your photos and pictures?" / "Your photos, every
+  picture made from them and your try-ons will be deleted for good. Your free costume stays as
+  it is." / "Keep them" · "Delete them" (destructive); "Delete your account?" / "Your account,
+  photos, pictures, My Pumpkin Basket and place on Kostuma Pro's waitlist will be deleted for
+  good. This can't be undone." / "Keep my account" · "Delete my account". Pending: spinner +
+  "Deleting…"; done, "Your photos and pictures are deleted." (a status line), or the account
+  signed out and sent home; failed, the reason in the pop-up, which stays.
 
 ### 11.7 Feedback `/feedback` (`?type=bug|feedback|costume`)
 

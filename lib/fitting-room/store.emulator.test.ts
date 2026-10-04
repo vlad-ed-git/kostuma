@@ -7,8 +7,9 @@ import type { Fitting } from "./steps"
 import type { TryOn } from "./try-on"
 
 // The Fitting Room's store through the real Admin SDK, against the Firestore
-// emulator (`npm run test:firestore`): its transactions, the free costume's
-// query among them, as Firestore runs them. Only Firestore: no Storage.
+// and Storage emulators (`npm run test:firestore`): its transactions, the
+// free costume's record among them, as Firestore runs them, and the files
+// deleting photos and their expiry remove.
 
 vi.mock("server-only", () => ({}))
 
@@ -18,8 +19,12 @@ process.env.NEXT_PUBLIC_projectId = PROJECT
 process.env.FIRESTORE_EMULATOR_HOST = EMULATOR
 // No credentials against the emulators (lib/firebase/admin.ts).
 process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099"
+// Cloud Storage's emulator too: deleting and expiring photos.
+process.env.FIREBASE_STORAGE_EMULATOR_HOST = "127.0.0.1:9199"
+process.env.NEXT_PUBLIC_storageBucket = `${PROJECT}.appspot.com`
 
 const { fittingRoomStore } = await import("./store")
+const { adminBucket, adminDb } = await import("@/lib/firebase/admin")
 const { newTryOn } = await import("./steps")
 const { FAILED_TRIES } = await import("./free-costume")
 
@@ -37,6 +42,14 @@ const guide: MakeupGuide = {
     },
   ],
 }
+
+/** Face photo `n`. */
+const faceOf = (n: number) => ({
+  id: String(n).padStart(32, "0"),
+  width: 768,
+  height: 1024,
+  skin: "#C7998A" as const,
+})
 
 /** A try-on of `slug` on face photo `n`, before anything is sent. */
 function tryOn(
@@ -57,6 +70,13 @@ function tryOn(
     garment: `https://example.com/${slug}.webp`,
   }
   return newTryOn(fitting, Date.now(), renderer)
+}
+
+/** The failed tries the account has used, as its free costume tells. */
+async function failedTries(uid = UID) {
+  const allowance = await store.allowance(uid, "youcam")
+  if (allowance.free) return FAILED_TRIES - allowance.triesLeft
+  return allowance.costume === null ? FAILED_TRIES : 0
 }
 
 /** A started try-on whose outfit came out, then failed. */
@@ -128,14 +148,14 @@ describe("finish", () => {
     const first = tryOn("ghostface")
     await store.begin(UID, first)
     expect(await store.finish(UID, first.id, "failed", "body_photo")).toBe(true)
-    expect((await store.room(UID)).failedTries).toBe(0)
+    expect(await failedTries()).toBe(0)
     expect((await store.begin(UID, tryOn("pennywise"))).outcome).toBe("started")
   })
 
   it(`counts the failures after pictures were made, and stops at ${FAILED_TRIES}`, async () => {
     for (let n = 0; n < FAILED_TRIES; n++) {
       expect(await failAfterAPicture(tryOn("ghostface", n))).toBe(true)
-      expect((await store.room(UID)).failedTries).toBe(n + 1)
+      expect(await failedTries()).toBe(n + 1)
     }
     expect(await store.begin(UID, tryOn("pennywise"))).toEqual({
       outcome: "out_of_units",
@@ -150,7 +170,7 @@ describe("finish", () => {
     expect(await store.finish(UID, first.id, "failed", "face_photo")).toBe(
       false
     )
-    expect((await store.room(UID)).failedTries).toBe(1)
+    expect(await failedTries()).toBe(1)
   })
 
   it("never counts Kostuma's or YouCam's failures against the visitor", async () => {
@@ -160,7 +180,7 @@ describe("finish", () => {
       await store.updateStep(UID, fresh.id, 0, () => true, { status: "done" })
       await store.finish(UID, fresh.id, "failed", failure)
     }
-    expect((await store.room(UID)).failedTries).toBe(0)
+    expect(await failedTries()).toBe(0)
   })
 })
 
@@ -276,5 +296,101 @@ describe("YouCam's calls and webhooks", () => {
     expect(await store.taskStep("old")).toBeNull()
     expect(await store.taskStep("new")).toEqual(step)
     expect(await store.firstDelivery("old-delivery", Date.now())).toBe(true)
+  })
+})
+
+describe("deleting and expiring photos", () => {
+  const files = async (uid: string) =>
+    (await adminBucket().getFiles({ prefix: `fitting-room/${uid}/` }))[0].map(
+      (file) => file.name
+    )
+
+  /** An account with its photos kept, and a done try-on with a picture. */
+  async function used(uid: string) {
+    const fresh = tryOn("ghostface", 0)
+    await store.savePhotos(uid, {
+      face: [faceOf(0), new Uint8Array([1])],
+      body: [
+        { id: "b".repeat(32), width: 960, height: 1440 },
+        new Uint8Array([2]),
+      ],
+    })
+    await store.begin(uid, fresh)
+    await store.updateStep(uid, fresh.id, 0, () => true, { status: "done" })
+    await store.saveStepImage(uid, fresh.id, 0, new Uint8Array([3]))
+    await store.finish(uid, fresh.id, "done", null)
+    return fresh
+  }
+
+  it("deletes the photos, pictures and try-ons, never the free costume used", async () => {
+    const uid = `erase-${Date.now()}`
+    await used(uid)
+    expect(await files(uid)).toHaveLength(3)
+    await store.erase(uid)
+    expect(await files(uid)).toEqual([])
+    expect(await store.tryOns(uid)).toEqual([])
+    expect(await store.room(uid)).toEqual({ face: null, body: null })
+    expect((await store.begin(uid, tryOn("pennywise", 1))).outcome).toBe(
+      "out_of_units"
+    )
+  })
+
+  it("keeps the free costume of an account from before records, worked out from its try-ons", async () => {
+    const uid = `legacy-${Date.now()}`
+    const done = { ...tryOn("ghostface", 0), status: "done" as const }
+    await adminDb()
+      .collection("fittingRooms")
+      .doc(uid)
+      .set({ updatedAt: Date.now(), failedTries: 1 })
+    await adminDb()
+      .collection("fittingRooms")
+      .doc(uid)
+      .collection("tryOns")
+      .doc(done.id)
+      .set(done)
+    expect(await store.allowance(uid, "youcam")).toMatchObject({
+      free: false,
+      costume: "ghostface",
+    })
+    await store.erase(uid)
+    expect(await store.allowance(uid, "youcam")).toMatchObject({
+      free: false,
+      costume: "ghostface",
+    })
+  })
+
+  it("deletes everything of an account nothing was made in since a time", async () => {
+    const uid = `idle-${Date.now()}`
+    await used(uid)
+    expect(await store.expire(Date.now() + 1_000, 50)).toBeGreaterThan(0)
+    expect(await files(uid)).toEqual([])
+    expect(await store.tryOns(uid)).toEqual([])
+  })
+
+  it("deletes only the older try-ons of an account still in use", async () => {
+    const uid = `aged-${Date.now()}`
+    const recent = await used(uid)
+    const years = 2 * 365 * 24 * 60 * 60 * 1000
+    const old = {
+      ...tryOn("ghostface", 5),
+      status: "failed" as const,
+      createdAt: Date.now() - years,
+    }
+    const room = adminDb().collection("fittingRooms").doc(uid)
+    await room.collection("tryOns").doc(old.id).set(old)
+    await store.saveStepImage(uid, old.id, 0, new Uint8Array([4]))
+    await room.update({ oldestAt: old.createdAt })
+
+    await store.expire(Date.now() - 24 * 60 * 60 * 1000, 50)
+    expect((await store.tryOns(uid)).map((each) => each.id)).toEqual([
+      recent.id,
+    ])
+    expect((await files(uid)).filter((name) => name.includes(old.id))).toEqual(
+      []
+    )
+    // The photos and the recent picture stay.
+    expect(await files(uid)).toHaveLength(3)
+    const oldestAt = (await room.get()).data()?.oldestAt
+    expect(oldestAt).toBeGreaterThan(old.createdAt)
   })
 })

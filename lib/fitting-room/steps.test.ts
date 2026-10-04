@@ -174,6 +174,13 @@ async function ask(id: string, options?: { due?: number }) {
   return advance(deps, UID, id, options)
 }
 
+/** The failed tries the account has used, as its free costume tells. */
+async function failedTries(uid = UID) {
+  const allowance = await store.allowance(uid, "youcam")
+  if (allowance.free) return FAILED_TRIES - allowance.triesLeft
+  return allowance.costume === null ? FAILED_TRIES : 0
+}
+
 /** Starts the try-on (or another `fitting`) and returns its id. */
 async function started(other: Fitting = fitting) {
   return made(await begin(deps, UID, other)).id
@@ -450,7 +457,7 @@ describe("advance", () => {
       closedFor: "units",
     })
     // Not the visitor's fault: the free costume comes back, untouched.
-    expect((await store.room(UID)).failedTries).toBe(0)
+    expect(await failedTries()).toBe(0)
   })
 
   it("asks again next time when the service can't be reached", async () => {
@@ -552,7 +559,7 @@ describe("the free costume", () => {
       const id = await started(otherFace(n))
       await store.finish(UID, id, "failed", "body_photo")
     }
-    expect((await store.room(UID)).failedTries).toBe(0)
+    expect(await failedTries()).toBe(0)
     expect((await begin(deps, UID, otherCostume)).outcome).toBe("started")
   })
 
@@ -563,7 +570,7 @@ describe("the free costume", () => {
       const tryOn = await failAfterTheOutfit(await started(other))
       expect(tryOn).toMatchObject({ status: "failed", failure: "face_photo" })
     }
-    expect((await store.room(UID)).failedTries).toBe(FAILED_TRIES)
+    expect(await failedTries()).toBe(FAILED_TRIES)
     expect(await begin(deps, UID, otherCostume)).toEqual({
       outcome: "out_of_units",
     })
@@ -577,7 +584,7 @@ describe("the free costume", () => {
         await store.finish(UID, id, "failed", failure)
       }
     }
-    expect((await store.room(UID)).failedTries).toBe(0)
+    expect(await failedTries()).toBe(0)
     expect((await begin(deps, UID, otherCostume)).outcome).toBe("started")
   })
 
@@ -831,7 +838,7 @@ describe("a busy YouCam", () => {
     }
     expect(now - 1_000_000).toBeGreaterThan(BUSY_LIMIT_MS)
     expect(tryOn).toMatchObject({ status: "failed", failure: "failed" })
-    expect((await store.room(UID)).failedTries).toBe(0)
+    expect(await failedTries()).toBe(0)
   })
 
   it("asks about a running render again after a while", async () => {

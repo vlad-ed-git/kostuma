@@ -8,7 +8,14 @@ import {
   unspentUnits,
 } from "./budget"
 import { type Bucket, take } from "./calls"
-import { allowanceOf, countsAsFailedTry } from "./free-costume"
+import {
+  type AllowanceRecord,
+  allowanceFrom,
+  ended,
+  erased,
+  holding,
+  NO_RECORD,
+} from "./free-costume"
 import type {
   FacePhoto,
   FittingRoomStore,
@@ -30,8 +37,8 @@ import type {
 type Account = {
   face: FacePhoto | null
   body: Photo | null
-  failedTries: number
-  photos: Map<string, Uint8Array>
+  /** The photos, and when each was kept. */
+  photos: Map<string, { image: Uint8Array; at: number }>
   tryOns: Map<string, TryOn>
   images: Map<string, Uint8Array>
 }
@@ -40,6 +47,8 @@ export function memoryStore({
   controls: initial = {},
 }: { controls?: Partial<Controls> } = {}): FittingRoomStore {
   const accounts = new Map<string, Account>()
+  // Apart from the photos and try-ons: deleting them never touches it.
+  const allowances = new Map<string, AllowanceRecord>()
   let controls: Controls = { ...DEFAULT_CONTROLS, ...initial }
   // Units reserved per day.
   const usage = new Map<string, number>()
@@ -54,7 +63,6 @@ export function memoryStore({
       found = {
         face: null,
         body: null,
-        failedTries: 0,
         photos: new Map(),
         tryOns: new Map(),
         images: new Map(),
@@ -64,29 +72,38 @@ export function memoryStore({
     return found
   }
 
+  const recordOf = (uid: string) => allowances.get(uid) ?? NO_RECORD
   const copy = <T>(value: T): T => structuredClone(value)
   const photoKey = (kind: PhotoKind, id: string) => `${kind}/${id}`
 
+  /** Deletes a try-on with its pictures. */
+  function drop(found: Account, id: string) {
+    const tryOn = found.tryOns.get(id)
+    found.tryOns.delete(id)
+    tryOn?.steps.forEach((_, index) => found.images.delete(`${id}/${index}`))
+  }
+
   return {
     async room(uid) {
-      const { face, body, failedTries } = account(uid)
-      return { face: face && copy(face), body: body && copy(body), failedTries }
+      const { face, body } = account(uid)
+      return { face: face && copy(face), body: body && copy(body) }
     },
 
     async savePhotos(uid, { face, body }) {
       const found = account(uid)
+      const at = Date.now()
       if (face) {
-        found.photos.set(photoKey("face", face[0].id), face[1])
+        found.photos.set(photoKey("face", face[0].id), { image: face[1], at })
         found.face = copy(face[0])
       }
       if (body) {
-        found.photos.set(photoKey("body", body[0].id), body[1])
+        found.photos.set(photoKey("body", body[0].id), { image: body[1], at })
         found.body = copy(body[0])
       }
     },
 
     async photo(uid, kind, id) {
-      return account(uid).photos.get(photoKey(kind, id)) ?? null
+      return account(uid).photos.get(photoKey(kind, id))?.image ?? null
     },
 
     async tryOn(uid, id) {
@@ -100,17 +117,18 @@ export function memoryStore({
         .map(copy)
     },
 
+    async allowance(uid, renderer) {
+      return allowanceFrom(recordOf(uid), renderer)
+    },
+
     async begin(uid, fresh) {
       const found = account(uid)
       const existing = found.tryOns.get(fresh.id)
       if (existing && existing.status !== "failed")
         return { outcome: "existing", tryOn: copy(existing) }
-      const allowance = allowanceOf(
-        [...found.tryOns.values()],
-        found.failedTries,
-        fresh.renderer
-      )
-      if (!allowance.free) return { outcome: "out_of_units" }
+      const record = recordOf(uid)
+      if (!allowanceFrom(record, fresh.renderer).free)
+        return { outcome: "out_of_units" }
       const day = dayOf(fresh.createdAt)
       const units = unitsOfPlan(fresh.steps.map((step) => step.render))
       if (!admits(controls, usage.get(day) ?? 0, units))
@@ -118,6 +136,7 @@ export function memoryStore({
       usage.set(day, (usage.get(day) ?? 0) + units)
       const started: TryOn = { ...copy(fresh), reserved: { day, units } }
       found.tryOns.set(fresh.id, started)
+      allowances.set(uid, holding(record, fresh))
       running.set(`${uid}/${fresh.id}`, {
         uid,
         id: fresh.id,
@@ -143,8 +162,7 @@ export function memoryStore({
       tryOn.status = status
       tryOn.failure = failure
       tryOn.updatedAt = Date.now()
-      if (status === "failed" && countsAsFailedTry(tryOn, failure))
-        found.failedTries += 1
+      allowances.set(uid, ended(recordOf(uid), tryOn, status, failure))
       const unspent = unspentUnits(tryOn)
       if (unspent > 0 && tryOn.reserved) {
         const { day } = tryOn.reserved
@@ -159,6 +177,43 @@ export function memoryStore({
 
     async stepImage(uid, id, index) {
       return account(uid).images.get(`${id}/${index}`) ?? null
+    },
+
+    async erase(uid, { account: everything = false } = {}) {
+      const found = accounts.get(uid)
+      const tryOns = found ? [...found.tryOns.values()] : []
+      if (everything) allowances.delete(uid)
+      else if (allowances.has(uid))
+        allowances.set(uid, erased(recordOf(uid), tryOns))
+      for (const tryOn of tryOns) running.delete(`${uid}/${tryOn.id}`)
+      accounts.delete(uid)
+      return tryOns.flatMap((tryOn) =>
+        tryOn.steps.flatMap((step) => (step.task ? [step.task] : []))
+      )
+    },
+
+    async expire(before, limit) {
+      let rooms = 0
+      for (const found of accounts.values()) {
+        if (rooms >= limit) break
+        let touched = false
+        for (const tryOn of [...found.tryOns.values()]) {
+          if (tryOn.status === "running" || tryOn.createdAt >= before) continue
+          drop(found, tryOn.id)
+          touched = true
+        }
+        for (const [key, { at }] of [...found.photos]) {
+          if (at >= before) continue
+          found.photos.delete(key)
+          touched = true
+          if (found.face && key === photoKey("face", found.face.id))
+            found.face = null
+          if (found.body && key === photoKey("body", found.body.id))
+            found.body = null
+        }
+        if (touched) rooms += 1
+      }
+      return rooms
     },
 
     async capacity(now = Date.now()) {

@@ -1,6 +1,7 @@
 import type { Hex } from "@/lib/makeup"
 
 import type { ClosedFor, Controls } from "./budget"
+import type { Allowance } from "./free-costume"
 import type { RenderFailure } from "./provider"
 import type { Render } from "./render-plan"
 
@@ -92,14 +93,12 @@ export type TryOn = {
 }
 
 /**
- * The account's Fitting Room: the photos it used last, offered again for the
- * next costume, and its try-ons that failed after pictures were made for
- * them (lib/fitting-room/free-costume.ts).
+ * The account's Fitting Room: the photos it used last, offered again for
+ * the next costume.
  */
 export type Room = {
   face: FacePhoto | null
   body: Photo | null
-  failedTries: number
 }
 
 /**
@@ -136,6 +135,20 @@ export interface FittingRoomStore {
   tryOn(uid: string, id: string): Promise<TryOn | null>
   /** The account's try-ons, the latest first. */
   tryOns(uid: string): Promise<TryOn[]>
+  /** The account's free costume (free-costume.ts), for `renderer`. */
+  allowance(uid: string, renderer: TryOn["renderer"]): Promise<Allowance>
+  /**
+   * Deletes the account's photos, pictures and try-ons, and with `account`
+   * its free costume's record too; a try-on still running keeps the free
+   * costume used if pictures were made. The YouCam tasks they still held,
+   * for the caller to delete there.
+   */
+  erase(uid: string, options?: { account?: boolean }): Promise<string[]>
+  /**
+   * Deletes the photos, pictures and try-ons older than `before` (12
+   * months: the Privacy policy), in at most `limit` accounts; how many.
+   */
+  expire(before: number, limit: number): Promise<number>
   /**
    * In one transaction: the try-on if it exists and hasn't failed; else
    * keeps `fresh` (a failed one starts over), if the account's free costume
@@ -160,7 +173,7 @@ export interface FittingRoomStore {
    * (or is gone). Either way it leaves the running try-ons (`runningSince`).
    * The units of the renders it never made go back to its day's budget. One
    * that fails for the visitor's photos after pictures were made for it
-   * counts in the room's `failedTries` (free-costume.ts).
+   * counts in the account's failed tries (free-costume.ts `ended`).
    */
   finish(
     uid: string,

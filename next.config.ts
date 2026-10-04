@@ -71,6 +71,7 @@ export const e2eAliases = {
   "@/lib/fitting-room/garment": "./lib/fitting-room/garment.e2e.ts",
   "@/lib/waitlist/store": "./lib/waitlist/store.e2e.ts",
   "@/lib/rate-limit": "./lib/rate-limit.e2e.ts",
+  "@/lib/account/erase": "./lib/account/erase.e2e.ts",
 } as const
 
 type WebpackConfig = { resolve?: { alias?: Record<string, unknown> } }

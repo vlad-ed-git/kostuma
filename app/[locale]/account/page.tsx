@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { getFormatter, getLocale, getTranslations } from "next-intl/server"
 
+import { DeleteData } from "@/components/account/delete-data"
 import { FittingRoomPanel } from "@/components/basket/fitting-room-panel"
 import { SignOutButton } from "@/components/auth/sign-out-button"
 import { redirect } from "@/i18n/navigation"
@@ -16,8 +17,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 /**
  * Your account (spec §11.6): who you are, whether your free costume is
- * still waiting in the Fitting Room, Kostuma Pro, and Sign out. Signed out:
- * sign in first, then back here.
+ * still waiting in the Fitting Room, Kostuma Pro, Sign out, and deleting
+ * the photos and pictures or the whole account. Signed out: sign in first,
+ * then back here.
  */
 export default async function AccountPage() {
   const user = await getUser()
@@ -68,6 +70,7 @@ export default async function AccountPage() {
         </dl>
         <FittingRoomPanel signedIn free={allowance?.free} source="account" />
         <SignOutButton />
+        <DeleteData />
       </div>
     </div>
   )

@@ -3,7 +3,8 @@
 import { makeupGuides } from "@/content/makeup"
 import { getUser } from "@/lib/auth/session"
 import { getCostume, tryOnGarment } from "@/lib/catalog"
-import { type Limit, withinLimit } from "@/lib/rate-limit"
+import { START_LIMIT } from "@/lib/limits"
+import { withinLimit } from "@/lib/rate-limit"
 
 import { PhotoError, preparePhoto, type Prepared } from "./photo"
 import type { PhotoProblem } from "./photo-rules"
@@ -27,16 +28,6 @@ export type StartError =
   | "too_many_starts"
   | "unknown"
   | PhotoProblem
-
-/**
- * Starts per account an hour: far more than anyone trying photos needs,
- * few enough that no account makes the server open photos in a loop.
- */
-export const START_LIMIT: Limit = {
-  name: "try-on-start",
-  max: 10,
-  windowMs: 60 * 60_000,
-}
 
 export type StartResult =
   | { ok: true; tryOn: TryOnView }

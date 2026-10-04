@@ -5,7 +5,7 @@ import { garmentImage } from "@/lib/fitting-room/garment"
 import { renderProvider } from "@/lib/fitting-room/renderer"
 import { fittingRoomStore } from "@/lib/fitting-room/store"
 
-import { type Allowance, allowanceOf } from "./free-costume"
+import type { Allowance } from "./free-costume"
 import type { Deps } from "./steps"
 
 /** What the Fitting Room runs on; null while it's closed (no provider). */
@@ -24,11 +24,7 @@ export async function allowanceFor(uid: string): Promise<Allowance | null> {
   const deps = fittingRoom()
   if (!deps) return null
   try {
-    const [room, tryOns] = await Promise.all([
-      deps.store.room(uid),
-      deps.store.tryOns(uid),
-    ])
-    return allowanceOf(tryOns, room.failedTries, deps.provider.name)
+    return await deps.store.allowance(uid, deps.provider.name)
   } catch (error) {
     console.error("Could not read an account's free costume.", error)
     return null

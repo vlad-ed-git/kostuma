@@ -16,7 +16,7 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:firestore": "firebase emulators:exec --only firestore --project demo-kostuma \"vitest run --config vitest.emulator.config.mts\"",
+    "test:firestore": "firebase emulators:exec --only firestore,storage --project demo-kostuma \"vitest run --config vitest.emulator.config.mts\"",
     "test:e2e": "playwright test",
     "test:emulators": "firebase emulators:exec --only auth,firestore --project demo-kostuma \"playwright test -c playwright.emulators.config.ts\"",
     "check": "npm run lint && npm run typecheck && npm run format:check && npm test",

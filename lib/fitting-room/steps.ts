@@ -4,7 +4,6 @@ import type { MakeupGuide } from "@/lib/makeup"
 
 import { admits, unitsOfGuide } from "./budget"
 import { BUSY_LIMIT_MS, busyDelay, checkEvery } from "./calls"
-import { allowanceOf } from "./free-costume"
 import {
   ProviderError,
   type RenderFailure,
@@ -150,13 +149,11 @@ export async function mayBegin(
   const id = tryOnId(face.id, body?.id ?? null, slug, provider.name, garment)
   const existing = await store.tryOn(uid, id)
   if (existing && existing.status !== "failed") return "ok"
-  const [room, tryOns, capacity] = await Promise.all([
-    store.room(uid),
-    store.tryOns(uid),
+  const [allowance, capacity] = await Promise.all([
+    store.allowance(uid, provider.name),
     store.capacity(now()),
   ])
-  if (!allowanceOf(tryOns, room.failedTries, provider.name).free)
-    return "out_of_units"
+  if (!allowance.free) return "out_of_units"
   const units = unitsOfGuide(fitting.guide)
   return admits(capacity.controls, capacity.reserved, units) ? "ok" : "closed"
 }

@@ -11,7 +11,6 @@ import { getUser } from "@/lib/auth/session"
 import { getCostume, getCostumes, toSummary } from "@/lib/catalog"
 import { admits, unitsOfGuide } from "@/lib/fitting-room/budget"
 import { currentTryOn } from "@/lib/fitting-room/current-try-on"
-import { allowanceOf } from "@/lib/fitting-room/free-costume"
 import { guideFor } from "@/lib/guides"
 import { fittingRoom } from "@/lib/fitting-room/service"
 import { fittingRoomStore } from "@/lib/fitting-room/store"
@@ -107,7 +106,7 @@ export default async function FittingRoomPage({
       })
     tryOn = current ? toView(current) : null
     if (renderer) {
-      const allowance = allowanceOf(tryOns, kept.failedTries, renderer)
+      const allowance = await store.allowance(user.uid, renderer)
       free = allowance.free
       if (!allowance.free && allowance.costume)
         usedOn = getCostume(allowance.costume)?.name ?? null

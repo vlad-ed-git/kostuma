@@ -244,7 +244,23 @@
     "freeWaiting": "Your free costume is waiting.",
     "freeUsed": "You've used your free costume.",
     "signOut": "Sign out",
-    "signingOut": "Signing out…"
+    "signingOut": "Signing out…",
+    "deletePhotos": "Delete my photos and pictures",
+    "deletePhotosTitle": "Delete your photos and pictures?",
+    "deletePhotosLine": "Your photos, every picture made from them and your try-ons will be deleted for good. Your free costume stays as it is.",
+    "keepPhotos": "Keep them",
+    "deletePhotosConfirm": "Delete them",
+    "photosDeleted": "Your photos and pictures are deleted.",
+    "deleteAccount": "Delete my account",
+    "deleteAccountTitle": "Delete your account?",
+    "deleteAccountLine": "Your account, photos, pictures, My Pumpkin Basket and place on Kostuma Pro's waitlist will be deleted for good. This can't be undone.",
+    "keepAccount": "Keep my account",
+    "deleteAccountConfirm": "Delete my account",
+    "deleting": "Deleting…",
+    "deleteErrors": {
+      "signed_out": "Your session ended. Sign in again to continue.",
+      "failed": "Something went wrong. Try again."
+    }
   },
   "Feedback": {
     "metaTitle": "Feedback",
@@ -308,14 +324,14 @@
         "p1": "The Fitting Room puts a costume on your photos, then shows its makeup on your own face, step by step. You give it a photo of your face and, for most costumes, one of you from head to toe. The pictures are made by artificial intelligence: YouCam, a service of Perfect Corp.",
         "list1": {
           "a": "<b>Only photos of you.</b> Upload photos of yourself and of no one else. Never upload photos of children, or photos with nudity.",
-          "b": "<b>One costume free.</b> Every account can try on one costume free. Once its try-on is done, trying on another costume, or the same one with other photos, needs Kostuma Pro. A try-on that fails can be tried again with other photos, within limits that stop abuse.",
+          "b": "<b>One costume free.</b> Every account can try on one costume free. Once its try-on is done, trying on another costume, or the same one with other photos, needs Kostuma Pro; deleting your photos doesn't give it back. A try-on that fails can be tried again with other photos, within limits that stop abuse.",
           "c": "<b>The pictures are previews.</b> They show roughly how a costume and its makeup could look on you. Real clothes and real makeup will look different, and the AI can get things wrong.",
           "d": "<b>Makeup is on you.</b> The makeup guides are ideas, not professional or medical advice. Before you put on any product, read its label, test it on a small patch of skin, keep it away from your eyes unless it's made for them, and stop if your skin reacts. You choose and use the products at your own risk."
         }
       },
       "yours": {
         "title": "Your photos, your pictures, your messages",
-        "p1": "Your photos and the pictures made from them stay yours. You allow us to store them, to send them to YouCam to make your pictures, and to show them to you, only to run the Fitting Room for you. They are shown only to you, signed in to your account. We don't publish them, sell them, or use them to train AI.",
+        "p1": "Your photos and the pictures made from them stay yours. You allow us to store them, for up to 12 months or until you delete them, to send them to YouCam to make your pictures, and to show them to you, only to run the Fitting Room for you. They are shown only to you, signed in to your account. We don't publish them, sell them, or use them to train AI.",
         "p2": "If you send us feedback or an idea, we may use it to improve Kostuma, without owing you anything for it."
       },
       "shops": {
@@ -341,7 +357,7 @@
       },
       "closing": {
         "title": "Closing your account",
-        "p1": "You can stop using Kostuma whenever you like. To delete your account and everything kept with it, email <email>{address}</email> from the address on your account; we'll do it within 30 days.",
+        "p1": "You can stop using Kostuma whenever you like. To delete your account and everything kept with it, use “Delete my account” on your account page, or email <email>{address}</email> from the address on your account and we'll do it within 30 days.",
         "p2": "We may suspend or close an account that breaks these terms, or to protect Kostuma and the people who use it. Where we can, we'll tell you why."
       },
       "warranty": {
@@ -401,7 +417,8 @@
         "list1": {
           "a": "the photos you choose: your face and, for most costumes, you from head to toe. Before keeping them, we shrink them, turn them upright and save them as new pictures, which drops the hidden details a photo file can carry, such as where it was taken;",
           "b": "the color of your skin, measured from your face photo, so the makeup starts from your own shade;",
-          "c": "each try-on: the costume, the pictures made from your photos, and when; and how many of your try-ons failed because of your photos after pictures were made, which limits trying again."
+          "c": "each try-on: the costume, the pictures made from your photos, and when;",
+          "d": "whether your account has used its free costume, on which costume, and how many of its try-ons failed because of your photos after pictures were made, which limits trying again. This stays with your account when your photos are deleted."
         },
         "p2": "To make the pictures, we send your photos, with no name, email or account details, to YouCam, a service of Perfect Corp. As soon as each picture comes back, we ask YouCam to delete the job and its files; YouCam deletes them within 30 days in any case.",
         "p3": "Your photos and pictures are private: stored closed to the public, and shown only to you, signed in. We don't make or keep a faceprint, we don't use your photos to identify you, and we don't use them to train AI or for anything other than your try-ons.",
@@ -449,8 +466,10 @@
       "retention": {
         "title": "How long we keep it",
         "list1": {
-          "a": "Your account, basket, photos and try-ons: until you ask us to delete them, or your account.",
-          "b": "Your place on Kostuma Pro's waitlist: until you ask us to take you off it, or to delete your account.",
+          "a": "Your account and basket: until you delete your account on your account page, or ask us to.",
+          "photos": "Your photos, the pictures made from them and your try-ons: up to 12 months after you add them, or until you delete them, or your account, on your account page.",
+          "free": "Whether your account has used its free costume: as long as your account exists.",
+          "b": "Your place on Kostuma Pro's waitlist: until you ask us to take you off it, or delete your account.",
           "c": "Messages from the feedback form: as long as we need them to act on them, or until you ask us to delete them.",
           "d": "The scrambled codes that limit messages and try-ons: used for an hour, then deleted.",
           "e": "At YouCam: deleted as soon as each picture is made, and within 30 days at most.",
@@ -459,7 +478,7 @@
       },
       "rights": {
         "title": "Your rights",
-        "p1": "Wherever you live, you can ask us for a copy of your information, to correct it, or to delete it, along with your account. Email <email>{address}</email> from the address on your account, so we know it's you. We answer within 30 days.",
+        "p1": "Wherever you live, you can ask us for a copy of your information, to correct it, or to delete it. You can delete your photos and pictures, or your whole account, yourself on your account page. For anything else, email <email>{address}</email> from the address on your account, so we know it's you. We answer within 30 days.",
         "p2": "If you're in the European Economic Area, the United Kingdom or Switzerland, you can also object to or restrict how we use your information, take it elsewhere, and complain to your data protection authority. We use it to provide what you asked for (your account, basket, try-ons, the waitlist and replies), and for our legitimate interests in keeping Kostuma secure, stopping abuse and understanding our visitors (the sign-up place and device details).",
         "p3": "If you're in California: we don't sell or share your personal information, and you won't be treated differently for using your rights."
       },
