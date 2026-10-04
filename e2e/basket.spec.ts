@@ -300,11 +300,15 @@ test.describe("My Pumpkin Basket", () => {
     await expect(spanishRows.first()).toContainText(
       "Pesadilla en la calle del infierno (1984)"
     )
+    // The way in, in Spanish; Kostuma Pro waits until the free costume is
+    // used (todo UX-08).
+    const fittingRoom = page.getByRole("region", { name: "El Probador" })
     await expect(
-      page
-        .getByRole("region", { name: "El Probador" })
-        .getByRole("link", { name: "Consigue Kostuma Pro" })
-    ).toHaveAttribute("href", "/es/sign-in?next=%2Fbasket")
+      fittingRoom.getByRole("link", { name: "Entrar", exact: true })
+    ).toHaveAttribute("href", "/es/basket/fitting-room")
+    await expect(
+      fittingRoom.getByRole("link", { name: "Consigue Kostuma Pro" })
+    ).toHaveCount(0)
   })
 
   test("never scrolls sideways, even at 320 px", async ({ page }) => {
