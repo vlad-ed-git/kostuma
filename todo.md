@@ -87,7 +87,7 @@ OPP-11 and OPP-12.
       image service." The Privacy policy names the team as responsible for the information.
 - [x] **SEC-06** Reject photos over 4096 px a side from metadata, before decoding;
       `limitInputPixels` 25 MP; `startTryOn` at most 10 an hour per account (`withinLimit`).
-- [ ] **SEC-09** reCAPTCHA's `hostname` must be Kostuma's (Google's test hostname only in test
+- [x] **SEC-09** reCAPTCHA's `hostname` must be Kostuma's (Google's test hostname only in test
       builds); waitlist entries record `emailVerified` (true only for the account's own
       verified email); the e2e session stand-in refuses to work unless `E2E=1` and off Vercel.
       Not done: the reset form's robot check (part of SEC-02), preview settings (ENG-10).

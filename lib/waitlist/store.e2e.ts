@@ -26,6 +26,11 @@ export const changeWaitlistEmail: typeof Store.changeWaitlistEmail = async (
   entry
 ) => {
   const existing = entries.get(entry.uid)
-  entries.set(entry.uid, existing ? { ...existing, email: entry.email } : entry)
+  entries.set(
+    entry.uid,
+    existing
+      ? { ...existing, email: entry.email, emailVerified: entry.emailVerified }
+      : entry
+  )
   return entry.email
 }

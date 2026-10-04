@@ -45,6 +45,7 @@ export async function joinWaitlist(
       uid: user.uid,
       email: user.email,
       accountEmail: user.email,
+      emailVerified: user.emailVerified,
       locale: languageOf(locale),
       source: where.data,
     })
@@ -78,6 +79,8 @@ export async function updateWaitlistEmail(
       uid: user.uid,
       email: form.data.email,
       accountEmail: user.email,
+      // Another address than the account's verified one is unconfirmed.
+      emailVerified: user.emailVerified && form.data.email === user.email,
       locale: languageOf(locale),
       source: where.data,
     })

@@ -446,7 +446,7 @@
       },
       "waitlist": {
         "title": "Kostuma Pro's waitlist",
-        "p1": "When you press “Get Kostuma Pro”, we put your account on the waitlist and keep: the email to write to (your account's, unless you give us another), your account's email, the site's language, where you pressed it, and when you joined and last changed the email.",
+        "p1": "When you press “Get Kostuma Pro”, we put your account on the waitlist and keep: the email to write to (your account's, unless you give us another), whether it is your account's verified email, your account's email, the site's language, where you pressed it, and when you joined and last changed the email.",
         "p2": "We use them only to tell you about Kostuma Pro."
       },
       "feedback": {

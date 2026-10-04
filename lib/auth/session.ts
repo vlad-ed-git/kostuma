@@ -11,7 +11,13 @@ const cookieName = "session"
 export const SESSION_SECONDS = 14 * 24 * 60 * 60
 
 /** The signed-in visitor: only what pages need. */
-export type User = { uid: string; name: string; email: string }
+export type User = {
+  uid: string
+  name: string
+  email: string
+  /** Whether Firebase knows the email to be the account holder's. */
+  emailVerified: boolean
+}
 
 // A session that ended the normal way: expired, signed out elsewhere,
 // password changed, account removed or turned off, or a malformed cookie.
@@ -43,6 +49,7 @@ export const getUser = cache(async (): Promise<User | null> => {
       uid: claims.uid,
       name: typeof claims.name === "string" ? claims.name : "",
       email: claims.email ?? "",
+      emailVerified: claims.email_verified === true,
     }
   } catch (error) {
     if (!endedSession.has(codeOf(error))) {

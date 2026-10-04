@@ -18,6 +18,11 @@ export type WaitlistEntry = {
   email: string
   /** The account's email when it joined. */
   accountEmail: string
+  /**
+   * Whether `email` is the account's own, verified by Firebase: only then is
+   * it known to belong to whoever joined (todo SEC-09).
+   */
+  emailVerified: boolean
   /** The site's language when it joined. */
   locale: Locale
   /** Where "Get Kostuma Pro" was pressed first. */
@@ -66,6 +71,7 @@ export async function changeWaitlistEmail(
     } else if (emailOf(existing) !== entry.email) {
       transaction.update(ref, {
         email: entry.email,
+        emailVerified: entry.emailVerified,
         updatedAt: FieldValue.serverTimestamp(),
       })
     }

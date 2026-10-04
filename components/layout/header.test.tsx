@@ -81,6 +81,7 @@ describe("Header", () => {
       uid: "u1",
       name: "Wednesday Addams",
       email: "wednesday@example.com",
+      emailVerified: true,
     }
     renderInEnglish(await Header())
     const account = screen.getByRole("button", { name: "Your account" })

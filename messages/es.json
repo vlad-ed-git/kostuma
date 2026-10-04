@@ -446,7 +446,7 @@
       },
       "waitlist": {
         "title": "La lista de espera de Kostuma Pro",
-        "p1": "Cuando pulsas “Consigue Kostuma Pro”, añadimos tu cuenta a la lista de espera y guardamos: el correo al que escribirte (el de tu cuenta, salvo que nos des otro), el correo de tu cuenta, el idioma del sitio, dónde lo pulsaste y cuándo te uniste y cambiaste el correo por última vez.",
+        "p1": "Cuando pulsas “Consigue Kostuma Pro”, añadimos tu cuenta a la lista de espera y guardamos: el correo al que escribirte (el de tu cuenta, salvo que nos des otro), si es el correo verificado de tu cuenta, el correo de tu cuenta, el idioma del sitio, dónde lo pulsaste y cuándo te uniste y cambiaste el correo por última vez.",
         "p2": "Solo los usamos para contarte novedades de Kostuma Pro."
       },
       "feedback": {

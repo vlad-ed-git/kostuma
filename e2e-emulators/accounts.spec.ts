@@ -168,12 +168,15 @@ test("Get Kostuma Pro puts the account on the waitlist, with the email to write 
   expect(joined?.accountEmail.stringValue).toBe(email)
   expect(joined?.locale.stringValue).toBe("en")
   expect(joined?.source.stringValue).toBe("account")
+  // A new password account's email isn't verified yet.
+  expect(joined?.emailVerified.booleanValue).toBe(false)
   const createdAt = joined?.createdAt.timestampValue
   expect(createdAt).toBeTruthy()
   expect(Object.keys(joined ?? {}).sort()).toEqual([
     "accountEmail",
     "createdAt",
     "email",
+    "emailVerified",
     "locale",
     "source",
     "uid",

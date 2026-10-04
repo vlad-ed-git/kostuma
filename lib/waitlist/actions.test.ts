@@ -19,7 +19,12 @@ vi.mock("@/lib/waitlist/store", () => ({
 
 const { joinWaitlist, updateWaitlistEmail } = await import("./actions")
 
-const user = { uid: "u1", name: "Wednesday", email: "wednesday@example.com" }
+const user = {
+  uid: "u1",
+  name: "Wednesday",
+  email: "wednesday@example.com",
+  emailVerified: true,
+}
 
 beforeEach(() => {
   mocks.getUser.mockResolvedValue(user)
@@ -39,9 +44,18 @@ describe("joinWaitlist", () => {
       uid: "u1",
       email: user.email,
       accountEmail: user.email,
+      emailVerified: true,
       locale: "es",
       source: "basket",
     })
+  })
+
+  it("never marks an unverified account's email verified", async () => {
+    mocks.getUser.mockResolvedValue({ ...user, emailVerified: false })
+    await joinWaitlist("basket", "en")
+    expect(mocks.addToWaitlist).toHaveBeenCalledWith(
+      expect.objectContaining({ emailVerified: false })
+    )
   })
 
   it("gives the email on record when the account is on it already", async () => {
@@ -97,9 +111,18 @@ describe("updateWaitlistEmail", () => {
       uid: "u1",
       email: "morticia@example.com",
       accountEmail: user.email,
+      // Not the account's own: unconfirmed.
+      emailVerified: false,
       locale: "zh",
       source: "account",
     })
+  })
+
+  it("keeps the account's own verified email verified", async () => {
+    await updateWaitlistEmail({ email: user.email }, "account", "en")
+    expect(mocks.changeWaitlistEmail).toHaveBeenCalledWith(
+      expect.objectContaining({ email: user.email, emailVerified: true })
+    )
   })
 
   it.each([
