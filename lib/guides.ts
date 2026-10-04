@@ -7,13 +7,16 @@ import type { MakeupGuide } from "@/lib/makeup"
  * A costume's makeup guide in a language: the renders as they are (YouCam
  * paints the same face in every language), the words translated
  * (content/translations), its products, the shops' search terms, among
- * them.
+ * them. `slug` may come from a visitor: only a costume's own guide is
+ * found ("constructor" or "__proto__" find nothing).
  */
 export function guideFor(
   slug: string,
   locale: Locale = "en"
 ): MakeupGuide | undefined {
-  const guide = makeupGuides[slug]
+  const guide = Object.hasOwn(makeupGuides, slug)
+    ? makeupGuides[slug]
+    : undefined
   if (!guide || locale === "en") return guide
   const text = translations[locale].guides[slug]
   // translations.test.ts makes sure there is one, step for step.

@@ -2,9 +2,9 @@
 
 import { after } from "next/server"
 
-import { makeupGuides } from "@/content/makeup"
 import { getUser } from "@/lib/auth/session"
 import { getCostume, tryOnGarment } from "@/lib/catalog"
+import { guideFor } from "@/lib/guides"
 import { START_LIMIT } from "@/lib/limits"
 
 import { PHOTO_CONSENT_VERSION } from "./consent"
@@ -61,7 +61,8 @@ export async function startTryOn(form: FormData): Promise<StartResult> {
     if (!user) return { ok: false, error: "signed_out" }
 
     const slug = form.get("costume")
-    const guide = typeof slug === "string" ? makeupGuides[slug] : undefined
+    // In English: the renders as they are.
+    const guide = typeof slug === "string" ? guideFor(slug) : undefined
     const costume = typeof slug === "string" ? getCostume(slug) : undefined
     if (typeof slug !== "string" || !guide || !costume?.images[0])
       return { ok: false, error: "unknown_costume" }
