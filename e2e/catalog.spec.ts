@@ -47,7 +47,7 @@ test.describe("browsing the costumes", () => {
     for (const href of hrefs) expect(href).toMatch(/^\/costumes\/[a-z0-9-]+$/)
     expect(new Set(hrefs).size).toBe(82)
     // By year, latest first, with no ranks, badges or headings on screen.
-    await expect(links.first()).toContainText("Nikki 'Freaky Nikki' Freeman")
+    await expect(links.first()).toContainText("Nikki “Freaky Nikki” Freeman")
     await expect(links.last()).toContainText("Count Orlok")
     await expect(costumes(page)).not.toContainText(/No\. ?\d|New blood/)
     expect(errors).toEqual([])
@@ -119,7 +119,7 @@ test.describe("browsing the costumes", () => {
     await expect(more.getByRole("link")).toHaveCount(4)
     await expect(more.getByRole("link")).toContainText([
       "Count Orlok",
-      "Nikki 'Freaky Nikki' Freeman",
+      "Nikki “Freaky Nikki” Freeman",
       "Pirate Clark",
       "Aunt Gladys",
     ])
@@ -463,7 +463,7 @@ test.describe("costumes without JavaScript", () => {
     await expect(
       page.getByRole("heading", { level: 1, name: "Michael Myers" })
     ).toBeVisible()
-    await expect(page.getByText(/Smith's Grove Sanitarium/)).toBeVisible()
+    await expect(page.getByText(/Smith’s Grove Sanitarium/)).toBeVisible()
     await expect(page.getByText("John Carpenter & Debra Hill")).toBeVisible()
   })
 })

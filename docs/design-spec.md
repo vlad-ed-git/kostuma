@@ -208,6 +208,9 @@ stay at 16 px.
 
 - Sentence case in copy; the display face is never uppercased (4.1).
 - Films are set in italics (`Scream (1996)`).
+- Typographic apostrophes and quotes in every message and costume text (’ “ ”; Spanish «»): a
+  straight one looks like a tick mark in Grenze Gotisch. Decades keep their apostrophe (’90s);
+  a name ending in s takes ’s (Curtis’s). A shop's search keeps its words as typed (5).
 - Chinese (`*:lang(zh-Hans)`): no letter spacing, real weights from the system fonts, line
   height 1.8 for body text; the wordmark keeps `lang="en"`.
 

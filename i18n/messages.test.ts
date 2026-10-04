@@ -137,6 +137,18 @@ describe("the words", () => {
       expect(messageAt(messages, key), key).not.toMatch(priced)
     }
   })
+
+  // Typographic apostrophes and quotes, ’ “ ” (todo COPY-07): a straight
+  // one looks like a tick mark in Grenze Gotisch, and ICU never mistakes
+  // ’ for its escape character.
+  it.each([
+    ["en", en],
+    ["es", es],
+    ["zh", zh],
+  ] as const)("%s uses typographic apostrophes and quotes", (_, messages) => {
+    for (const key of keysOf(messages))
+      expect(messageAt(messages, key), key).not.toMatch(/['"]/)
+  })
 })
 
 /** The message at a dotted key. */

@@ -41,6 +41,10 @@ describe("the collection", () => {
         expect(text.trim(), costume.name).toBe(text)
         expect(text, costume.name).not.toBe("")
         expect(text, costume.name).not.toMatch(/\s{2,}|🔥/u)
+        // Typography (todo COPY-07): ’ and “ ”, never a straight one (a
+        // shop's search keeps its words as they are); ’90s, never 90s.
+        expect(text, costume.name).not.toMatch(/['"]/)
+        expect(text, costume.name).not.toMatch(/(?<![’\d])\d0s\b/)
       }
       expect(costume.films.length).toBeGreaterThan(0)
       for (const film of costume.films) {

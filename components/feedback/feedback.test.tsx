@@ -48,7 +48,7 @@ describe("Feedback", () => {
 
   it("asks the question of the kind chosen", async () => {
     renderForm("feedback")
-    expect(screen.getByLabelText("What's on your mind?")).toBeInTheDocument()
+    expect(screen.getByLabelText("What’s on your mind?")).toBeInTheDocument()
     await userEvent.click(screen.getByRole("radio", { name: "Report a bug" }))
     const field = screen.getByLabelText("What went wrong?")
     expect(field).toHaveAccessibleDescription(
@@ -60,7 +60,7 @@ describe("Feedback", () => {
 
   it("counts what is typed, up to 2,000 characters", async () => {
     renderForm()
-    const field = screen.getByLabelText("What's on your mind?")
+    const field = screen.getByLabelText("What’s on your mind?")
     expect(field).toHaveAttribute("maxlength", "2000")
     expect(screen.getByText("0 of 2,000 characters")).toBeInTheDocument()
     await userEvent.type(field, "Boo!")
@@ -75,7 +75,7 @@ describe("Feedback", () => {
     expect(
       screen.getByText("Enter a full email address, like you@example.com.")
     ).toBeInTheDocument()
-    expect(screen.getByLabelText("What's on your mind?")).toHaveFocus()
+    expect(screen.getByLabelText("What’s on your mind?")).toHaveFocus()
     expect(mocks.sendFeedback).not.toHaveBeenCalled()
   })
 
@@ -125,15 +125,15 @@ describe("Feedback", () => {
       error: E.TOO_MANY_MESSAGES,
     })
     renderForm()
-    await userEvent.type(screen.getByLabelText("What's on your mind?"), message)
+    await userEvent.type(screen.getByLabelText("What’s on your mind?"), message)
     await userEvent.click(screen.getByRole("button", { name: "Send" }))
 
     const alert = await screen.findByRole("alert")
     expect(alert).toHaveTextContent(
-      "You've sent several messages in the last hour. Wait a while, then try again."
+      "You’ve sent several messages in the last hour. Wait a while, then try again."
     )
     expect(alert).toHaveFocus()
-    expect(screen.getByLabelText("What's on your mind?")).toHaveValue(message)
+    expect(screen.getByLabelText("What’s on your mind?")).toHaveValue(message)
     expect(mocks.resetRecaptcha).toHaveBeenCalled()
   })
 
@@ -143,11 +143,11 @@ describe("Feedback", () => {
       fieldErrors: { recaptcha: E.ROBOT_CHECK_FAILED },
     })
     renderForm()
-    await userEvent.type(screen.getByLabelText("What's on your mind?"), message)
+    await userEvent.type(screen.getByLabelText("What’s on your mind?"), message)
     await userEvent.click(screen.getByRole("button", { name: "Send" }))
     expect(
       await screen.findByText(
-        "The robot check didn't pass. Tick the box again."
+        "The robot check didn’t pass. Tick the box again."
       )
     ).toBeInTheDocument()
   })

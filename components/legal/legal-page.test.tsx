@@ -122,7 +122,7 @@ describe("LegalPage", () => {
   it("opens other companies' policies in a new tab, and says so", async () => {
     await renderDocument("Privacy")
     const google = screen.getAllByRole("link", {
-      name: newTab("Google's Privacy Policy"),
+      name: newTab("Google’s Privacy Policy"),
     })
     expect(google.length).toBeGreaterThan(0)
     for (const link of [
@@ -131,7 +131,7 @@ describe("LegalPage", () => {
         name: newTab("Terms of Service"),
       }),
       screen.getByRole("link", {
-        name: newTab("Vercel's privacy policy"),
+        name: newTab("Vercel’s privacy policy"),
       }),
     ]) {
       expect(link).toHaveAttribute("target", "_blank")

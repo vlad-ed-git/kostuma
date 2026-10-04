@@ -73,7 +73,7 @@ describe("DeleteData", () => {
     mocks.deleteAccount.mockResolvedValue({ ok: true })
     const popup = await ask("Delete my account", "Delete your account?")
     expect(popup).toHaveAccessibleDescription(
-      "Your account, photos, pictures, My Pumpkin Basket and place on Kostuma Pro's waitlist will be deleted for good. This can't be undone."
+      "Your account, photos, pictures, My Pumpkin Basket and place on Kostuma Pro’s waitlist will be deleted for good. This can’t be undone."
     )
     await waitFor(() =>
       expect(

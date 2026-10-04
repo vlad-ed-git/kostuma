@@ -122,7 +122,7 @@ test.describe("The Fitting Room", () => {
     await enter(page, ["pearl"])
     await page.goto("/basket/fitting-room?costume=ghostface")
     await expect(
-      page.getByText("Ghostface isn't in My Pumpkin Basket yet.")
+      page.getByText("Ghostface isn’t in My Pumpkin Basket yet.")
     ).toBeVisible()
     await page.getByRole("button", { name: "Add to My Pumpkin Basket" }).click()
     await expect(
@@ -148,12 +148,12 @@ test.describe("The Fitting Room", () => {
       page.getByRole("heading", { name: "Ready to try on Beetlejuice?" })
     ).toBeFocused()
     await expect(
-      page.getByText("once the try-on starts, they can't be changed")
+      page.getByText("once the try-on starts, they can’t be changed")
     ).toBeVisible()
     // Starting uses the free costume: said before.
     await expect(
       page.getByText(
-        "This is your free costume. Once it's done, trying on another needs Kostuma Pro."
+        "This is your free costume. Once it’s done, trying on another needs Kostuma Pro."
       )
     ).toBeVisible()
     // Nothing starts without the consent to the photos' processing.
@@ -239,7 +239,7 @@ test.describe("The Fitting Room", () => {
       beetlejuice.getByText("See the photo and note down what to buy.")
     ).toBeVisible()
     await expect(
-      beetlejuice.getByText("Now let's get started on the makeup.")
+      beetlejuice.getByText("Now let’s get started on the makeup.")
     ).toBeVisible()
     // Buy right there, as in the basket: three shops, a menu.
     await expect(
@@ -439,7 +439,7 @@ test.describe("The Fitting Room", () => {
     await expect(page.getByText("Your try-on is ready.")).toBeAttached({
       timeout: 30_000,
     })
-    const nikki = room(page, "Nikki 'Freaky Nikki' Freeman")
+    const nikki = room(page, "Nikki “Freaky Nikki” Freeman")
     await picturesLoaded(nikki)
     await expect(
       nikki.getByRole("img", { name: "Your face after step 7: Black hair" })
@@ -449,7 +449,7 @@ test.describe("The Fitting Room", () => {
     await strip(nikki).getByRole("button", { name: "The outfit" }).click()
     await expect(
       nikki.getByRole("img", {
-        name: "You wearing the Nikki 'Freaky Nikki' Freeman costume",
+        name: "You wearing the Nikki “Freaky Nikki” Freeman costume",
       })
     ).toBeVisible()
     expect(errors).toEqual([])
@@ -492,7 +492,7 @@ test.describe("The Fitting Room", () => {
       buffer: Buffer.from("not a photo"),
     })
     await expect(bodyPicker(page).getByRole("alert")).toHaveText(
-      "This file can't be opened. Choose a JPEG, PNG or WebP photo."
+      "This file can’t be opened. Choose a JPEG, PNG or WebP photo."
     )
   })
 
@@ -510,7 +510,7 @@ test.describe("The Fitting Room", () => {
     await startTryOn(page)
 
     const message =
-      "Your face couldn't be found in the photo. Choose one where you look straight at the camera, in even light."
+      "Your face couldn’t be found in the photo. Choose one where you look straight at the camera, in even light."
     await expect(page.getByRole("main").getByRole("alert")).toHaveText(
       message,
       { timeout: 30_000 }
@@ -527,7 +527,7 @@ test.describe("The Fitting Room", () => {
     await expect(pearl.getByText("Not rendered")).toBeVisible()
     // What it cost: not the free costume, but one of the photos' tries.
     await expect(
-      pearl.getByText("This didn't use your free costume.")
+      pearl.getByText("This didn’t use your free costume.")
     ).toBeVisible()
     await expect(
       pearl.getByText("You have one more try with other photos.")
@@ -636,7 +636,7 @@ test.describe("The Fitting Room", () => {
 
       const again = page.getByRole("button", { name: "Try with other photos" })
       const dialog = page.getByRole("alertdialog", {
-        name: "You've used your free costume.",
+        name: "You’ve used your free costume.",
       })
       await again.click()
       await expect(dialog).toContainText(
@@ -685,7 +685,7 @@ test.describe("The Fitting Room", () => {
         .getByRole("link", { name: "Beetlejuice" })
         .click()
       await expect(
-        page.getByRole("heading", { name: "You've used your free costume." })
+        page.getByRole("heading", { name: "You’ve used your free costume." })
       ).toBeVisible()
       await expect(
         page.getByText(
@@ -695,7 +695,7 @@ test.describe("The Fitting Room", () => {
       // Pearl's name leads back to her try-on: the guide they earned.
       await expect(
         page
-          .getByRole("region", { name: "You've used your free costume." })
+          .getByRole("region", { name: "You’ve used your free costume." })
           .getByRole("link", { name: "Pearl" })
       ).toHaveAttribute("href", "/basket/fitting-room?costume=pearl")
       // No photos to give: nothing could start.
@@ -704,7 +704,7 @@ test.describe("The Fitting Room", () => {
       ).toHaveCount(0)
       await page.reload()
       await expect(
-        page.getByRole("heading", { name: "You've used your free costume." })
+        page.getByRole("heading", { name: "You’ve used your free costume." })
       ).toBeVisible()
 
       const pro = page.getByRole("button", { name: "Get Kostuma Pro" })

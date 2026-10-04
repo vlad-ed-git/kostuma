@@ -46,7 +46,7 @@ describe("Recaptcha", () => {
     renderInEnglish(<Recaptcha siteKey="key" locale="en" />)
     await act(async () => script()?.onerror?.(new Event("error")))
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "The robot check couldn't load. Check your connection, then reload the page."
+      "The robot check couldn’t load. Check your connection, then reload the page."
     )
   })
 

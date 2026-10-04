@@ -41,7 +41,7 @@ describe("BasketProvider", () => {
     await userEvent.click(screen.getByRole("button"))
     await vi.waitFor(() =>
       expect(announced()).toBe(
-        "Your account didn't take that change, so it was undone. Try again."
+        "Your account didn’t take that change, so it was undone. Try again."
       )
     )
     expect(
@@ -59,7 +59,7 @@ describe("BasketProvider", () => {
     )
     renderWithBasket(<BasketSummary />, { account: "alice" })
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Your account can't be reached right now, so changes here may not be saved. Reload the page to try again."
+      "Your account can’t be reached right now, so changes here may not be saved. Reload the page to try again."
     )
     expect(document.body).not.toHaveTextContent("Firebase")
   })

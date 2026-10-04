@@ -177,8 +177,12 @@ describe("the makeup guides", () => {
     ]) {
       expect(text.trim()).toBe(text)
       expect(text).not.toMatch(/\s{2,}/)
+      // Typography (todo COPY-07): ’ and “ ”, never a straight one; a
+      // decade keeps its apostrophe (’90s), a year needs none (1990s).
+      expect(text).not.toMatch(/['"]/)
+      expect(text).not.toMatch(/(?<![’\d])\d0s\b/)
     }
-    for (const sentence of sentences) expect(sentence).toMatch(/[.!?'"]$/)
+    for (const sentence of sentences) expect(sentence).toMatch(/[.!?”]$/)
     expect(guide.look.length).toBeLessThanOrEqual(160)
     expect(new Set(guide.steps.map((step) => step.title)).size).toBe(
       guide.steps.length

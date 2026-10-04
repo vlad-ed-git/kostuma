@@ -106,13 +106,13 @@ test.describe("registering", () => {
       )
     ).toBeVisible()
     await expect(
-      page.getByText("Tick the “I'm not a robot” box.")
+      page.getByText("Tick the “I’m not a robot” box.")
     ).toBeVisible()
     await expect(page.getByLabel("Email")).toBeFocused()
 
     await page.getByLabel("Password", { exact: true }).fill("long enough")
     await page.getByRole("button", { name: "Create account" }).click()
-    await expect(page.getByText("The two passwords don't match.")).toBeVisible()
+    await expect(page.getByText("The two passwords don’t match.")).toBeVisible()
   })
 
   test("asks to agree to the terms, which open in a new tab", async ({
@@ -153,7 +153,7 @@ test.describe("registering", () => {
     )
     await page.goto("/register")
     await expect(page.getByRole("main").getByRole("alert")).toHaveText(
-      "The robot check couldn't load. Check your connection, then reload the page."
+      "The robot check couldn’t load. Check your connection, then reload the page."
     )
   })
 })

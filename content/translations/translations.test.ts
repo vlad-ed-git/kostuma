@@ -36,14 +36,14 @@ const notNames = new Set([
 const leading = /^(?:Earlier|Spin-off|Unauthorized|The)\s+/
 function peopleIn(credit: string): string[] {
   const runs =
-    credit.match(/[A-Z][\w'.-]*(?:\s+(?:[A-Z][\w'.-]*|&))*\s+[A-Z][\w'.-]*/g) ??
+    credit.match(/[A-Z][\w’.-]*(?:\s+(?:[A-Z][\w’.-]*|&))*\s+[A-Z][\w’.-]*/g) ??
     []
   return runs
     .flatMap((run) => run.split(/\s*&\s*/))
     .map((name) =>
       name
         .replace(leading, "")
-        .replace(/'s?$/, "")
+        .replace(/’s?$/, "")
         .replace(/\s+YouTube$/, "")
         .trim()
     )
@@ -76,7 +76,11 @@ describe.each(languages)("the costumes in %s", (language, translation) => {
         ...text.look.pieces,
         text.look.alternative ?? "-",
       ]
-      for (const word of words) expect(word.trim(), slug).not.toBe("")
+      for (const word of words) {
+        expect(word.trim(), slug).not.toBe("")
+        // Typography, as in English (todo COPY-07).
+        expect(word, slug).not.toMatch(/['"]/)
+      }
 
       for (const [field, english] of Object.entries(textsOf(costume))) {
         const translated = text[field as keyof ReturnType<typeof textsOf>]
@@ -136,6 +140,13 @@ describe.each(languages)("the makeup guides in %s", (language, translation) => {
         ])
           expect(word, `${slug} ${index + 1}`).toMatch(han)
     })
+    // Typography, as in English (todo COPY-07).
+    for (const word of [
+      text.look,
+      text.finish ?? "",
+      ...text.steps.flatMap((step) => [step.title, step.howTo]),
+    ])
+      expect(word, slug).not.toMatch(/['"]/)
     if (language === "zh") {
       expect(text.look, slug).toMatch(han)
       if (text.finish) expect(text.finish, slug).toMatch(han)

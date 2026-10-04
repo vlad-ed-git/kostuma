@@ -20,7 +20,7 @@
         "Nick Castle 饰演 The Shape",
         "Tony Moran 是摘下面具后的那张脸"
       ],
-      "lore": "1963 年万圣节，六岁的他在伊利诺伊州的 Haddonfield 刺死了姐姐 Judith。十五年后，他逃出 Smith's Grove 疗养院，开始跟踪保姆 Laurie Strode。",
+      "lore": "1963 年万圣节，六岁的他在伊利诺伊州的 Haddonfield 刺死了姐姐 Judith。十五年后，他逃出 Smith’s Grove 疗养院，开始跟踪保姆 Laurie Strode。",
       "funFact": "那张著名的空白面孔其实是一张廉价的 Kirk 舰长（William Shatner）面具，用喷漆涂白，并把眼孔挖大。影片成本约 30 万美元，票房约 7000 万美元。Carpenter 的这个名字借自一位英国电影发行商。",
       "look": {
         "pieces": ["海军蓝机修工连体服", "白色面具", "菜刀"]
@@ -187,7 +187,7 @@
       "createdBy": ["Michael Dougherty"],
       "broughtToLifeBy": [
         "穿戏服的表演者",
-        "这个角色最早出现在 Dougherty 1996 年的动画短片《Season's Greetings》中"
+        "这个角色最早出现在 Dougherty 1996 年的动画短片《Season’s Greetings》中"
       ],
       "lore": "一个穿着橙色连脚睡衣的小不点讨糖小孩，他捍卫万圣节的传统，惩罚每一个破坏传统的人。",
       "funFact": "华纳兄弟一度将这部电影束之高阁，2009 年直接发行 DVD。尽管如此，它还是成了万圣节的邪典仪式。",
@@ -345,7 +345,7 @@
         "Scott Cawthon（游戏创作者，2014 年）",
         "Emma Tammi（导演）"
       ],
-      "broughtToLifeBy": ["电子动画玩偶由 Jim Henson's Creature Shop 打造"],
+      "broughtToLifeBy": ["电子动画玩偶由 Jim Henson’s Creature Shop 打造"],
       "lore": "一家倒闭披萨店的吉祥物电子玩偶，每到夜里就会围着一名保安活过来。",
       "funFact": "影片以约 2000 万美元的成本拿下近 3 亿美元票房，续集于 2025 年 12 月上映。",
       "look": {
@@ -367,7 +367,7 @@
       "createdBy": ["Stephen King（小说）", "Stanley Kubrick（导演）"],
       "broughtToLifeBy": ["Jack Nicholson"],
       "lore": "一位穷困潦倒的作家，在与世隔绝的 Overlook 酒店接下冬季看守的工作，然后一点点崩溃。",
-      "funFact": "据说用斧头劈开门的那场戏拍了好几天；曾当过志愿消防督察的 Nicholson 劈门太快，剧组只好换成更结实的门。那句“Here's Johnny!”（约翰尼来了！）是他即兴发挥的。",
+      "funFact": "据说用斧头劈开门的那场戏拍了好几天；曾当过志愿消防督察的 Nicholson 劈门太快，剧组只好换成更结实的门。那句“Here’s Johnny!”（约翰尼来了！）是他即兴发挥的。",
       "look": {
         "pieces": ["格子法兰绒衬衫", "工作夹克", "道具斧头", "冰霜或血迹"]
       }
@@ -489,11 +489,11 @@
       "films": ["我们"],
       "createdBy": ["Jordan Peele"],
       "broughtToLifeBy": [
-        "Lupita Nyong'o（Adelaide/Red）",
+        "Lupita Nyong’o（Adelaide/Red）",
         "服装：Kym Barrett"
       ],
       "lore": "生活在地下的分身们揭竿而起，要取代地面上的世界；每一个都和地上的某个人相连。",
-      "funFact": "Nyong'o 参考痉挛性发音障碍设计了 Red 的声音。片中“手牵手横跨美国”（Hands Across America）的意象，致敬的是 1986 年的一场慈善活动。",
+      "funFact": "Nyong’o 参考痉挛性发音障碍设计了 Red 的声音。片中“手牵手横跨美国”（Hands Across America）的意象，致敬的是 1986 年的一场慈善活动。",
       "look": {
         "pieces": ["红色连体服", "一只金色手套", "金色剪刀"]
       }
@@ -680,7 +680,7 @@
       "films": ["罪人"],
       "createdBy": ["Ryan Coogler（编剧兼导演）"],
       "broughtToLifeBy": [
-        "Jack O'Connell",
+        "Jack O’Connell",
         "Michael B. Jordan 饰演双胞胎 Smoke 与 Stack"
       ],
       "lore": "1932 年，一个爱尔兰吸血鬼来到密西西比州的一家布鲁斯酒馆，黑人音乐社群的命运落入他手中。",
@@ -691,7 +691,7 @@
     },
     "longlegs": {
       "films": ["长腿"],
-      "createdBy": ["Osgood 'Oz' Perkins（编剧兼导演）"],
+      "createdBy": ["Osgood “Oz” Perkins（编剧兼导演）"],
       "broughtToLifeBy": ["Nicolas Cage", "假体：Harlow MacFarlane"],
       "lore": "一个信奉撒旦的连环杀手，在一桩桩灭门案现场留下密码信件；还有追查他的年轻 FBI 探员。",
       "funFact": "Perkins 是 Anthony Perkins（Norman Bates 的扮演者）的儿子。影片成本约 1000 万美元，票房超过 1.2 亿美元。",
@@ -737,7 +737,7 @@
     },
     "dr-frank-n-furter": {
       "films": ["洛基恐怖秀"],
-      "createdBy": ["Richard O'Brien（编剧）", "Jim Sharman（导演）"],
+      "createdBy": ["Richard O’Brien（编剧）", "Jim Sharman（导演）"],
       "broughtToLifeBy": ["Tim Curry"],
       "lore": "一位张扬夸张的外星科学家，在自己的城堡里收留了一对困在半路的天真情侣，并向他们展示了自己那个肌肉发达的造物。",
       "funFact": "它是电影史上院线放映时间最长的电影，也是一部恶搞 B 级恐怖片和科幻片的歌舞片。Curry 后来在 1990 年扮演了 Pennywise。",
@@ -767,10 +767,10 @@
     },
     "tarman": {
       "films": ["活死人归来"],
-      "createdBy": ["Dan O'Bannon（编剧兼导演）"],
+      "createdBy": ["Dan O’Bannon（编剧兼导演）"],
       "broughtToLifeBy": ["Allan Trautman"],
       "lore": "一具被沥青保存下来的僵尸，是片中几个活死人之一，也是最早开口说话的那几个之一。",
-      "funFact": "正是这部电影提出了“僵尸渴望吃脑子”的设定。O'Bannon 还写了《异形》。",
+      "funFact": "正是这部电影提出了“僵尸渴望吃脑子”的设定。O’Bannon 还写了《异形》。",
       "look": {
         "pieces": ["滴着沥青的黑色紧身衣", "僵尸妆"]
       }
@@ -797,7 +797,7 @@
     },
     "eric-draven": {
       "films": ["乌鸦"],
-      "createdBy": ["James O'Barr（漫画）", "Alex Proyas（导演）"],
+      "createdBy": ["James O’Barr（漫画）", "Alex Proyas（导演）"],
       "broughtToLifeBy": ["Brandon Lee"],
       "lore": "一位被谋杀的音乐人死而复生，为自己和未婚妻复仇。",
       "funFact": "Lee 在拍摄期间死于一场道具枪事故，影片最后靠替身和特效才得以完成。",
@@ -881,7 +881,7 @@
     "ellen-ripley": {
       "films": ["异形"],
       "createdBy": [
-        "Dan O'Bannon 与 Ronald Shusett（编剧）",
+        "Dan O’Bannon 与 Ronald Shusett（编剧）",
         "Ridley Scott（导演）"
       ],
       "broughtToLifeBy": ["Sigourney Weaver"],

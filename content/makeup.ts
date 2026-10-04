@@ -88,7 +88,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Mask folds",
         howTo:
-          "Sponge cool gray into the hollows of the cheeks down to the jaw and in half-moons under the eyes, like the mask's sagging folds.",
+          "Sponge cool gray into the hollows of the cheeks down to the jaw and in half-moons under the eyes, like the mask’s sagging folds.",
         products: ["gray cream face paint"],
         render: makeup(
           contour("#8A8A88", 100, "TriangleFace5"),
@@ -136,7 +136,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Eyes lost in shadow",
         howTo:
-          "Pack a brown-black eyeshadow all around each eye, lid to brow and under, until the eyes sink into the dark like the mask's eyeholes.",
+          "Pack a brown-black eyeshadow all around each eye, lid to brow and under, until the eyes sink into the dark like the mask’s eyeholes.",
         products: ["black eyeshadow", "black kohl eyeliner"],
         render: makeup(
           shadow("1color30", matte("#1C1714")),
@@ -525,7 +525,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       "The red-and-green striped sweater, a brown fedora and the bladed glove.",
   },
   "jason-voorhees": {
-    look: "Jason's hockey mask as face paint: a dirty ivory face, black eye holes, red chevrons on the cheeks and lips gone pale.",
+    look: "Jason’s hockey mask as face paint: a dirty ivory face, black eye holes, red chevrons on the cheeks and lips gone pale.",
     steps: [
       {
         title: "Ivory mask base",
@@ -538,7 +538,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Black eye holes",
         howTo:
-          "Pack black eyeshadow all around each eye and paint a thick black almond around it with liquid liner, the mask's dark eye holes.",
+          "Pack black eyeshadow all around each eye and paint a thick black almond around it with liquid liner, the mask’s dark eye holes.",
         products: ["black eyeshadow", "black liquid eyeliner"],
         render: makeup(
           shadow("1color30", matte("#0E0C0A")),
@@ -571,7 +571,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       },
     ],
     finish:
-      "Dot the mask's breathing holes over your forehead and cheeks with a black pencil. A worn work jacket and a machete.",
+      "Dot the mask’s breathing holes over your forehead and cheeks with a black pencil. A worn work jacket and a machete.",
   },
   beetlejuice: {
     look: "Beetlejuice: gray-green corpse skin, rotting hollows, bruised black sockets, moldy cheeks, gray lips and wild moss-green hair.",
@@ -703,7 +703,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Slick black hair",
         howTo:
-          "Color your hair glossy black and slick it straight back with gel into a widow's peak.",
+          "Color your hair glossy black and slick it straight back with gel into a widow’s peak.",
         products: ["black hair color spray", "strong hair gel"],
         render: hair(BLACK, 100, 60),
       },
@@ -711,7 +711,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
     finish: "A high-collared black cape, a medallion and plastic fangs.",
   },
   "frankensteins-monster": {
-    look: "Frankenstein's Monster: dead green-gray skin, gaunt hollows, heavy sunken eyes, thick flat brows, gray-black lips and black hair.",
+    look: "Frankenstein’s Monster: dead green-gray skin, gaunt hollows, heavy sunken eyes, thick flat brows, gray-black lips and black hair.",
     steps: [
       {
         title: "Green-gray base",
@@ -819,7 +819,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Oxblood lips",
         howTo:
-          "Paint the lips a deep oxblood, with a sharp, pointed cupid's bow.",
+          "Paint the lips a deep oxblood, with a sharp, pointed cupid’s bow.",
         products: ["oxblood lipstick", "dark red lip liner"],
         render: makeup(
           lips(matte("#4A0E16"), "heart-shaped"),
@@ -837,7 +837,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       "Backcomb your hair up into a tall cone and spray a white streak up each side. A long white gown.",
   },
   sam: {
-    look: "Sam's sack mask as face paint: burlap brown skin, stitched shadows, round black button eyes and a dark stitched mouth.",
+    look: "Sam’s sack mask as face paint: burlap brown skin, stitched shadows, round black button eyes and a dark stitched mouth.",
     steps: [
       {
         title: "Burlap base",
@@ -879,7 +879,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       "Draw stitches across your lips with a brown pencil. The orange hooded pajamas, and a lollipop.",
   },
   leatherface: {
-    look: "Leatherface's skin mask: sallow leathery skin, dried-out shadows, sunken eyes, smeared blue lids, pink rouge, smudged red lips and dark hair.",
+    look: "Leatherface’s skin mask: sallow leathery skin, dried-out shadows, sunken eyes, smeared blue lids, pink rouge, smudged red lips and dark hair.",
     steps: [
       {
         title: "Leathery base",
@@ -938,7 +938,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         render: hair("#2A1E16", 100, 10),
       },
     ],
-    finish: "A butcher's apron over a shirt and tie, and a toy chainsaw.",
+    finish: "A butcher’s apron over a shirt and tie, and a toy chainsaw.",
   },
   pinhead: {
     look: "Pinhead: bloodless blue-white skin, blue-gray hollows, black-ringed eyes, no brows and black lips.",
@@ -1002,7 +1002,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Puppet eyes",
         howTo:
-          "Paint a round black ring close around each eye, lid and under, filled in solid, like a puppet's painted eyes.",
+          "Paint a round black ring close around each eye, lid and under, filled in solid, like a puppet’s painted eyes.",
         products: ["black cream face paint", "black liquid eyeliner"],
         render: makeup(
           shadow("1color23", matte("#0E0E0E")),
@@ -1196,7 +1196,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
     finish: "A black veil with a white band, pulled over your hair.",
   },
   annabelle: {
-    look: "Annabelle: a porcelain doll's face, sallow sunken shading, dark eyes with painted lashes, thin brows, red cheeks, a small dark red mouth and auburn hair.",
+    look: "Annabelle: a porcelain doll’s face, sallow sunken shading, dark eyes with painted lashes, thin brows, red cheeks, a small dark red mouth and auburn hair.",
     steps: [
       {
         title: "Porcelain base",
@@ -1252,7 +1252,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Small red mouth",
         howTo:
-          "Paint a small, dark red mouth inside your lips, like a doll's painted smile.",
+          "Paint a small, dark red mouth inside your lips, like a doll’s painted smile.",
         products: ["dark red lipstick", "red lip liner"],
         render: makeup(
           lips(matte("#8A1E24"), "petal"),
@@ -1393,7 +1393,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
     finish: "A pink satin prom dress, soaked through as well, and a tiara.",
   },
   "count-orlok": {
-    look: "Count Orlok: bloodless gray-white skin, a skull's hollows, deep black sockets, heavy black brows and thin dark lips.",
+    look: "Count Orlok: bloodless gray-white skin, a skull’s hollows, deep black sockets, heavy black brows and thin dark lips.",
     steps: [
       {
         title: "Bloodless base",
@@ -1506,7 +1506,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Tan muzzle",
         howTo:
-          "Sponge a light tan under the eyes, down the nose and over the chin for the bear's lighter muzzle.",
+          "Sponge a light tan under the eyes, down the nose and over the chin for the bear’s lighter muzzle.",
         products: ["tan cream face paint"],
         render: makeup(highlight("#C8A07A")),
       },
@@ -1547,7 +1547,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       },
       {
         title: "Brown hair",
-        howTo: "Color your hair a warm brown, the fur's color.",
+        howTo: "Color your hair a warm brown, the fur’s color.",
         products: ["brown hair color spray"],
         render: hair("#6B4423", 100, 20),
       },
@@ -1671,7 +1671,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Prison-pale base",
         howTo:
-          "Pat on a foundation three shades lighter than your skin and powder it matte, a face that hasn't seen the sun.",
+          "Pat on a foundation three shades lighter than your skin and powder it matte, a face that hasn’t seen the sun.",
         products: ["light foundation", "translucent setting powder"],
         render: makeup(paler(3)),
       },
@@ -1892,7 +1892,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       },
     ],
     finish:
-      "Sharp plastic fangs, a black cape and a jack-o'-lantern under your arm.",
+      "Sharp plastic fangs, a black cape and a jack-o’-lantern under your arm.",
   },
   candyman: {
     look: "Candyman: a honey-gold glow, deep bronze sculpting, burnished gold lids, strong brows and deep plum-brown lips.",
@@ -2202,7 +2202,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       },
       {
         title: "Deep red lips",
-        howTo: "Paint the lips a deep red, the jumpsuit's red, matte.",
+        howTo: "Paint the lips a deep red, the jumpsuit’s red, matte.",
         products: ["deep red lipstick"],
         render: makeup(lips(matte("#7A0E16")), lipLine("Natural1", "#5A0A10")),
       },
@@ -2352,7 +2352,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       },
       {
         title: "Thin brows",
-        howTo: "Draw thin, arched 90s brows.",
+        howTo: "Draw thin, arched ’90s brows.",
         products: ["brown brow pencil"],
         render: makeup(
           brows("#6A4A38", 100, {
@@ -2388,10 +2388,10 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       "Dot a beauty mark above your lip and draw a stitched scar on one cheek. A black leather jacket and a wedding veil.",
   },
   "the-craft-coven": {
-    look: "Nancy from The Craft: pale skin, a gaunt 90s contour, black kohl smudged around plum eyes, thin dark brows, vampy berry lips and dark hair.",
+    look: "Nancy from The Craft: pale skin, a gaunt ’90s contour, black kohl smudged around plum eyes, thin dark brows, vampy berry lips and dark hair.",
     steps: [
       {
-        title: "Pale 90s base",
+        title: "Pale ’90s base",
         howTo:
           "Pat on a foundation three shades lighter than your skin and powder it matte.",
         products: ["light foundation", "translucent setting powder"],
@@ -2501,7 +2501,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       "For the demon, let fake blood run from both corners of your mouth down the chin. A cheerleader uniform.",
   },
   "frank-the-rabbit": {
-    look: "Frank the Rabbit's mask as face paint: a metallic silver-gray skull, dark hollows, sunken black eyes and gray lips.",
+    look: "Frank the Rabbit’s mask as face paint: a metallic silver-gray skull, dark hollows, sunken black eyes and gray lips.",
     steps: [
       {
         title: "Silver-gray base",
@@ -2628,7 +2628,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       },
       {
         title: "Dark nostrils",
-        howTo: "Paint the tip of the nose dark, like a skull's nose.",
+        howTo: "Paint the tip of the nose dark, like a skull’s nose.",
         products: ["black cream face paint"],
         render: makeup(noseTip("#2A2624")),
       },
@@ -2944,7 +2944,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       "Round glasses, a gray jacket and a toy shotgun, and a little fake blood for the last fight.",
   },
   dollface: {
-    look: "Dollface's mask as makeup: porcelain skin, black painted doll eyes, thin painted brows, rosy cheeks, a small red mouth and blonde hair.",
+    look: "Dollface’s mask as makeup: porcelain skin, black painted doll eyes, thin painted brows, rosy cheeks, a small red mouth and blonde hair.",
     steps: [
       {
         title: "Porcelain base",
@@ -2986,7 +2986,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       },
       {
         title: "Small red mouth",
-        howTo: "Paint a small red doll's mouth inside your lips.",
+        howTo: "Paint a small red doll’s mouth inside your lips.",
         products: ["red lipstick"],
         render: makeup(
           lips(matte("#B0101E"), "petal"),
@@ -3125,7 +3125,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
     finish: "Plastic fangs, a pointed party hat and a toy ray gun.",
   },
   remmick: {
-    look: "Remmick: a vampire's 1930s pallor, hungry hollows, red-rimmed eyes, brushed brows, bloodless lips and light-brown hair.",
+    look: "Remmick: a vampire’s 1930s pallor, hungry hollows, red-rimmed eyes, brushed brows, bloodless lips and light-brown hair.",
     steps: [
       {
         title: "Vampire pallor",
@@ -3769,7 +3769,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
     look: "Pamela Voorhees, 1980: a soft natural base, powder-blue lids, light brows, coral cheeks, coral lips and light-brown hair.",
     steps: [
       {
-        title: "Natural 80s base",
+        title: "Natural ’80s base",
         howTo: "Pat on a foundation one shade lighter than your skin.",
         products: ["light foundation"],
         render: makeup(paler(1)),
@@ -4222,10 +4222,10 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       },
     ],
     finish:
-      "Draw a black line from each corner of the mouth down to the chin, a dummy's jaw. A gray suit, a red bow tie and a stiff, jerky walk.",
+      "Draw a black line from each corner of the mouth down to the chin, a dummy’s jaw. A gray suit, a red bow tie and a stiff, jerky walk.",
   },
   "john-carver": {
-    look: "John Carver's pilgrim mask as makeup: waxy tan skin, carved shadows, dark eye holes, arched painted brows and small pursed lips.",
+    look: "John Carver’s pilgrim mask as makeup: waxy tan skin, carved shadows, dark eye holes, arched painted brows and small pursed lips.",
     steps: [
       {
         title: "Waxy mask base",
@@ -4376,13 +4376,13 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         render: hair("#6B4A30", 100, 30),
       },
     ],
-    finish: "A red rocket sweater, and one raised finger: 'Redrum.'",
+    finish: "A red rocket sweater, and one raised finger: “Redrum.”",
   },
   "sidney-prescott": {
-    look: "Sidney Prescott, 1996: a matte 90s base, brown contour, brown-lined eyes, groomed brows, brown-lined lips and dark-brown hair.",
+    look: "Sidney Prescott, 1996: a matte ’90s base, brown contour, brown-lined eyes, groomed brows, brown-lined lips and dark-brown hair.",
     steps: [
       {
-        title: "Matte 90s base",
+        title: "Matte ’90s base",
         howTo: "Pat on a matte foundation one shade lighter than your skin.",
         products: ["matte foundation"],
         render: makeup(paler(1)),
@@ -4418,7 +4418,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Brown-lined lips",
         howTo:
-          "Line the lips past their edges in dark brown and fill them with a peachy brown, the 90s way.",
+          "Line the lips past their edges in dark brown and fill them with a peachy brown, the ’90s way.",
         products: ["brown lip liner", "peach brown lipstick"],
         render: makeup(
           lips(matte("#A06A5A")),

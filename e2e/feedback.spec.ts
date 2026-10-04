@@ -52,7 +52,7 @@ test.describe("the feedback form", () => {
       page.getByText("Enter a full email address, like you@example.com.")
     ).toBeVisible()
     await expect(
-      page.getByText("Tick the “I'm not a robot” box.")
+      page.getByText("Tick the “I’m not a robot” box.")
     ).toBeVisible()
     await expect(page.getByLabel("What went wrong?")).toBeFocused()
 
@@ -63,7 +63,7 @@ test.describe("the feedback form", () => {
 
   test("counts the characters, and stops at 2,000", async ({ page }) => {
     await page.goto("/feedback")
-    const message = page.getByLabel("What's on your mind?")
+    const message = page.getByLabel("What’s on your mind?")
     await expect(page.getByText("0 of 2,000 characters")).toBeVisible()
     await message.fill("Boo!")
     await expect(page.getByText("4 of 2,000 characters")).toBeVisible()
@@ -79,7 +79,7 @@ test.describe("the feedback form", () => {
     await expect(
       page.getByRole("radio", { name: "Share feedback" })
     ).toBeChecked()
-    await expect(page.getByLabel("What's on your mind?")).toBeVisible()
+    await expect(page.getByLabel("What’s on your mind?")).toBeVisible()
   })
 
   test("speaks the page's language", async ({ page }) => {
