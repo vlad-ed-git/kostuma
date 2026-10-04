@@ -51,7 +51,7 @@ describe("Tagline", () => {
   it("comes for Halloween until its night", () => {
     clockAt("2026-10-31T23:59:58Z")
     renderInEnglish(<Tagline holiday="halloween" />)
-    expect(title()).toHaveTextContent("The darkest day is coming.")
+    expect(title()).toHaveTextContent("The darkest night is coming.")
     expect(screen.getByText("Transform into a monster.")).toBeVisible()
   })
 
@@ -78,7 +78,7 @@ describe("Tagline", () => {
     renderInEnglish(<Tagline holiday="christmas" />)
     expect(title()).toHaveTextContent("The darkest night has passed.")
     act(() => vi.advanceTimersByTime(1_000))
-    expect(title()).toHaveTextContent("The darkest day is coming.")
+    expect(title()).toHaveTextContent("The darkest night is coming.")
   })
 
   it("stops its clock when it leaves the page", () => {

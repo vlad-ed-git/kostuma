@@ -36,7 +36,7 @@ a grid of identical cards).
 
 | Cinema                           | Kostuma                                          |
 | -------------------------------- | ------------------------------------------------ |
-| Title card                       | Home hero ("The darkest day is coming.")         |
+| Title card                       | Home hero ("The darkest night is coming.")       |
 | Film leader countdown            | Countdown to Halloween                           |
 | The cast                         | The collection: 82 characters, latest film first |
 | One-sheet poster + billing block | Costume page (image, name, credits)              |
@@ -555,7 +555,7 @@ every other page is indexed, in every language (14b).
    the window stands between the columns, empty. Phones: the window with the figure in it as a
    small tableau on top, then one column (tagline, transformation, countdown, the three lines).
    - H1 `display-xl`, flickering (7.2) and split into the red and bone ghosts (8.9): "The
-     darkest day is coming." (`App.taglineLead`). The VHS band rolls over the whole title (8.9).
+     darkest night is coming." (`App.taglineLead`; owner, todo COPY-10: Halloween is a night). The VHS band rolls over the whole title (8.9).
    - Under it, in `--blood-text` with a red glow: "Transform into a monster." (`App.taglineTail`).
    - **After Halloween** (owner, 2026-10-04): from November 1 until Christmas, in the visitor's
      own time zone, the H1 reads "The darkest night has passed." (`App.taglineAfterLead`) and
@@ -570,7 +570,7 @@ every other page is indexed, in every language (14b).
      small-capital units, the digits in **decaying ink** (owner, 2026-10-04: an SVG filter, `#decaying-ink`, bites their edges ragged, flakes pits out of them, fades them unevenly and bleeds them a little; seeded, so always the same; the units stay clean), four equal columns on one left edge; the seconds in `--blood-text`,
      beating on every tick. Counts to midnight of October 31 **in the visitor's time zone**,
      real time left (no jump at daylight-saving changes); all of October 31 shows "Tonight."
-     and "The darkest day is here." in the same three rows (no shift at midnight); from
+     and "The darkest night is here." in the same three rows (no shift at midnight); from
      November 1 it counts to Christmas, December 25 at the visitor's midnight ("Until
      Christmas · **Friday, December 25**", "Time until Christmas"), then to the next Halloween.
      The server renders dashes at the final size, under its guess of the season's line; the

@@ -1,8 +1,8 @@
 {
   "App": {
     "name": "Kostuma",
-    "tagline": "最黑暗的一天即将来临。化身为怪物吧。",
-    "taglineLead": "最黑暗的<wbr></wbr>一天<wbr></wbr>即将来临。",
+    "tagline": "最黑暗的夜晚即将来临。化身为怪物吧。",
+    "taglineLead": "最黑暗的<wbr></wbr>夜晚<wbr></wbr>即将来临。",
     "taglineTail": "化身为<wbr></wbr>怪物吧。",
     "taglineAfterLead": "最黑暗的<wbr></wbr>夜晚<wbr></wbr>已经过去。",
     "taglineAfterTail": "但在<wbr></wbr>圣诞老人<wbr></wbr>到来之前，你仍将是个<wbr></wbr>怪物。哈哈哈。"
@@ -25,7 +25,7 @@
     "untilChristmas": "距离圣诞节 · <b>{date}</b>",
     "leftChristmas": "距离圣诞节还有 {days} 天 {hours} 小时 {minutes} 分钟。",
     "tonight": "就在今夜。",
-    "tonightLine": "最黑暗的一天已经到来。"
+    "tonightLine": "最黑暗的夜晚已经到来。"
   },
   "Nav": {
     "label": "主导航",

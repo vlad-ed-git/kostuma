@@ -7,7 +7,7 @@ import { breaks } from "@/components/ui/breaks"
 import { countdownTo, type Holiday } from "@/lib/countdown"
 
 /**
- * The title card's tagline (spec §11.1): "The darkest day is coming." and
+ * The title card's tagline (spec §11.1): "The darkest night is coming." and
  * "Transform into a monster." until Halloween; then, its night past (owner,
  * 2026-10-04), "The darkest night has passed." and "But you shall stay a
  * monster until Santa comes. Hahaha." until Christmas, as the countdown

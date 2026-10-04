@@ -94,7 +94,7 @@ describe("Countdown", () => {
     expect(digits()).toEqual(["00", "00", "00", "01"])
     act(() => vi.advanceTimersByTime(1000))
     expect(screen.getByText("Tonight.")).toBeInTheDocument()
-    expect(screen.getByText("The darkest day is here.")).toBeInTheDocument()
+    expect(screen.getByText("The darkest night is here.")).toBeInTheDocument()
     expect(screen.getByText("Saturday, October 31")).toBeInTheDocument()
     expect(screen.queryByRole("timer")).not.toBeInTheDocument()
   })

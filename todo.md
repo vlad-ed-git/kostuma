@@ -136,7 +136,7 @@ OPP-11 and OPP-12.
 - [x] **COPY-08** Rephrase dated statements so they stay true.
 - [x] **COPY-09** "You're on the Kostuma Pro waitlist. We'll write to you at this email as soon as
       it opens."
-- [ ] **COPY-10** "The darkest night is coming." and "The darkest night is here."
+- [x] **COPY-10** "The darkest night is coming." and "The darkest night is here."
 - [ ] **COPY-11** "…until Santa comes. Ho. Ho. Ho."
 - [ ] **COPY-12** Before step 1: "Use cosmetic-grade products only, patch-test 24 hours before,
       and keep paint and fake blood out of your eyes."

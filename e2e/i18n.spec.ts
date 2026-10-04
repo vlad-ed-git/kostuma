@@ -32,11 +32,11 @@ test.describe("languages", () => {
     for (const [path, title, choose, date] of [
       [
         "/es",
-        "Se acerca el día más oscuro.",
+        "Se acerca la noche más oscura.",
         "Elige tu disfraz",
         "sábado, 31 de octubre",
       ],
-      ["/zh", "最黑暗的一天即将来临。", "挑选你的装扮", "10月31日星期六"],
+      ["/zh", "最黑暗的夜晚即将来临。", "挑选你的装扮", "10月31日星期六"],
     ]) {
       await page.goto(path)
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(title)

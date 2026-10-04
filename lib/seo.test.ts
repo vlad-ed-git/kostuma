@@ -101,7 +101,7 @@ describe("a shared link", () => {
     const { openGraph, twitter } = seoFor("en", {
       path: "/terms",
       title: "Terms of service",
-      homeCard: { alt: "The darkest day is coming." },
+      homeCard: { alt: "The darkest night is coming." },
     })
     const card = {
       // Under its language, English too: proxy.ts lets the cards be.
@@ -109,7 +109,7 @@ describe("a shared link", () => {
       width: 1200,
       height: 630,
       type: "image/png",
-      alt: "The darkest day is coming.",
+      alt: "The darkest night is coming.",
     }
     expect(openGraph).toMatchObject({ images: [card] })
     expect(twitter).toMatchObject({ images: [card] })
@@ -134,7 +134,7 @@ function addressesIn(value: unknown): string[] {
 
 describe("structured data", () => {
   it("names Kostuma once, for every language's site to point at", () => {
-    expect(website("zh", "最黑暗的一天即将来临。")).toMatchObject({
+    expect(website("zh", "最黑暗的夜晚即将来临。")).toMatchObject({
       "@type": "WebSite",
       url: `${site}/zh`,
       inLanguage: "zh-Hans",

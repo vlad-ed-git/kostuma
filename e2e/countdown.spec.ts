@@ -27,7 +27,7 @@ test.describe("the countdown", () => {
 
     await page.clock.runFor(3_000)
     await expect(page.getByText("Tonight.")).toBeVisible()
-    await expect(page.getByText("The darkest day is here.")).toBeVisible()
+    await expect(page.getByText("The darkest night is here.")).toBeVisible()
     expect(errors).toEqual([])
   })
 
@@ -40,7 +40,7 @@ test.describe("the countdown", () => {
     await page.clock.pauseAt(new Date("2026-10-31T23:59:58-04:00"))
     const title = page.getByRole("heading", { level: 1 })
     await expect(page.getByText("Tonight.")).toBeVisible()
-    await expect(title).toHaveText("The darkest day is coming.")
+    await expect(title).toHaveText("The darkest night is coming.")
 
     await page.clock.runFor(3_000)
     await expect(title).toHaveText("The darkest night has passed.")
@@ -68,7 +68,7 @@ test.describe("the countdown", () => {
     await expect(cells(page)).toHaveText(["00", "00", "00", "02"])
 
     await page.clock.runFor(3_000)
-    await expect(title).toHaveText("The darkest day is coming.")
+    await expect(title).toHaveText("The darkest night is coming.")
     await expect(
       page.getByText("Until Halloween · Sunday, October 31")
     ).toBeVisible()

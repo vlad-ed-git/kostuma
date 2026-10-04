@@ -1,8 +1,8 @@
 {
   "App": {
     "name": "Kostuma",
-    "tagline": "Se acerca el día más oscuro. Transfórmate en un monstruo.",
-    "taglineLead": "Se acerca el día más oscuro.",
+    "tagline": "Se acerca la noche más oscura. Transfórmate en un monstruo.",
+    "taglineLead": "Se acerca la noche más oscura.",
     "taglineTail": "Transfórmate en un monstruo.",
     "taglineAfterLead": "La noche más oscura ha pasado.",
     "taglineAfterTail": "Pero seguirás siendo un monstruo hasta que llegue Santa Claus. Jajaja."
@@ -25,7 +25,7 @@
     "untilChristmas": "Hasta Navidad · <b>{date}</b>",
     "leftChristmas": "{days, plural, one {# día} other {# días}}, {hours, plural, one {# hora} other {# horas}} y {minutes, plural, one {# minuto} other {# minutos}} para Navidad.",
     "tonight": "Esta noche.",
-    "tonightLine": "El día más oscuro ha llegado."
+    "tonightLine": "La noche más oscura ha llegado."
   },
   "Nav": {
     "label": "Principal",
