@@ -81,8 +81,9 @@ export default async function HomePage() {
         <NightScene />
         {/* Desktop: the tagline on the left with the film strip under it;
             on the right the countdown, its bottom on the tagline's, and
-            "Choose your costume", "Try it on", "Apply makeup" beside the
-            strip. Small screens: one column. */}
+            the way through ("Choose your costume", "Try it on yourself",
+            "Do the makeup, step by step") beside the strip. Small screens:
+            one column. */}
         <div className="mx-auto grid w-full max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end lg:gap-x-16 lg:px-8">
           <div>
             <Tagline holiday={season.holiday} />
@@ -93,26 +94,34 @@ export default async function HomePage() {
             <Countdown season={season} />
           </div>
           {/* The way through, as the strip shows it. Wide screens: beside
-              the strip, their tops level. */}
-          <ol className="flex flex-col gap-2 font-heading text-[clamp(1.9rem,3.2vw,2.9rem)] leading-none font-semibold lg:col-start-2 lg:row-start-2 lg:mt-[calc(4rem-0.2em)] lg:self-start lg:pl-4">
-            <li>
-              <Link
-                href={costumesHref}
-                className="inline-flex min-h-11 items-center gap-3.5 whitespace-nowrap transition-colors hover:text-blood-text"
-              >
-                {/* The site's link underline, in blood: the one of the three
-                    lines that goes somewhere (todo UX-06). */}
-                <span className="underline decoration-blood decoration-[0.06em] underline-offset-[0.16em]">
-                  {home.rich("chooseCostume", breaks)}
-                </span>
-                <BloodDrip />
-              </Link>
-            </li>
-            <li className="flex min-h-11 items-center">{home("tryItOn")}</li>
-            <li className="flex min-h-11 items-center">
-              {home("applyMakeup")}
-            </li>
-          </ol>
+              the strip, their tops level. Blood runs from the end of "Choose
+              your costume" down past the lines, which keep to its width: a
+              longer line wraps under it, never into the blood (todo COPY-15). */}
+          <div className="grid w-max max-w-full grid-cols-[minmax(0,max-content)_auto] gap-x-3.5 font-heading text-[clamp(1.9rem,3.2vw,2.9rem)] leading-none font-semibold lg:col-start-2 lg:row-start-2 lg:mt-[calc(4rem-0.2em)] lg:self-start lg:pl-4">
+            <ol className="flex flex-col gap-2">
+              <li>
+                <Link
+                  href={costumesHref}
+                  className="inline-flex min-h-11 items-center whitespace-nowrap transition-colors hover:text-blood-text"
+                >
+                  {/* The site's link underline, in blood: the one of the three
+                      lines that goes somewhere (todo UX-06). */}
+                  <span className="underline decoration-blood decoration-[0.06em] underline-offset-[0.16em]">
+                    {home.rich("chooseCostume", breaks)}
+                  </span>
+                </Link>
+              </li>
+              {/* No width of their own: the first line's is theirs. Their
+                  words in one span, so they wrap as one text. */}
+              <li className="flex min-h-11 items-center [contain:inline-size]">
+                <span>{home.rich("tryItOn", breaks)}</span>
+              </li>
+              <li className="flex min-h-11 items-center [contain:inline-size]">
+                <span>{home.rich("applyMakeup", breaks)}</span>
+              </li>
+            </ol>
+            <BloodDrip />
+          </div>
         </div>
         {/* The tape rolls up over the whole title, as on the 404. */}
         <div aria-hidden="true" className="vhs-tracking vhs-tracking-fade" />

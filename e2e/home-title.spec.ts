@@ -78,8 +78,8 @@ test.describe("the home title", () => {
   }) => {
     await page.goto("/")
     const link = page.getByRole("link", { name: "Choose your costume" })
-    const drip = (await link.locator(".blood-drip svg").boundingBox())!
-    // The words alone, not the link (which holds the drip too).
+    const drip = (await page.locator(".blood-drip svg").boundingBox())!
+    // The words alone, not the link's whole box.
     const word = await link.evaluate((element) => {
       const range = document.createRange()
       range.selectNodeContents(element.firstChild!)
@@ -92,16 +92,42 @@ test.describe("the home title", () => {
     expect(drip.y + drip.height).toBeGreaterThan(last.y + last.height)
 
     const motion = () =>
-      link
+      page
         .locator(".blood-drip-stream, .blood-drip-fall")
         .evaluateAll((all) =>
           all.map((el) => getComputedStyle(el).animationName)
         )
     // Reduced motion: it hangs still, no drop falling.
     expect(await motion()).toEqual(["none", "none"])
-    await expect(link.locator(".blood-drip-fall")).toHaveCSS("opacity", "0")
+    await expect(page.locator(".blood-drip-fall")).toHaveCSS("opacity", "0")
     await page.emulateMedia({ reducedMotion: "no-preference" })
     expect(await motion()).toEqual(["blood-pour", "blood-fall"])
+  })
+
+  test("no line runs into the blood, in any language", async ({ page }) => {
+    for (const path of ["/", "/es", "/zh"]) {
+      await page.goto(path)
+      const lines = page
+        .locator("[data-title-card] ol", {
+          has: page.locator('a[href$="#costumes"]'),
+        })
+        .locator("li")
+      await expect(lines).toHaveCount(3)
+      const drip = (await page.locator(".blood-drip svg").boundingBox())!
+      // Each line's words keep to the first line's width, left of the
+      // stream: a longer one wraps under it (todo COPY-15).
+      const rights = await lines.evaluateAll((all) =>
+        all.map((line) => {
+          const range = document.createRange()
+          range.selectNodeContents(line)
+          return range.getBoundingClientRect().right
+        })
+      )
+      for (const right of rights)
+        expect(right, path).toBeLessThanOrEqual(drip.x)
+      const last = (await lines.nth(2).boundingBox())!
+      expect(drip.y + drip.height, path).toBeGreaterThan(last.y + last.height)
+    }
   })
 
   test("the countdown's numbers are in decaying ink, its units clean", async ({

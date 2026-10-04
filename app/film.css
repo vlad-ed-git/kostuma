@@ -393,11 +393,11 @@
 
 /* ── "Choose your costume": blood drips toward the costumes ───────────── */
 
-/* Room for the pool at the word's end; the stream hangs from it past the
-   lines below (components/home/blood-drip.tsx), sized in the line's em. */
+/* A column beside the lines, as tall as they are: the pool at the end of
+   the first line's word, the stream hanging from it past the last line
+   (components/home/blood-drip.tsx), sized in the lines' em. */
 .blood-drip {
   position: relative;
-  flex: none;
   align-self: stretch;
   width: 0.8em;
 }
@@ -405,9 +405,9 @@
   position: absolute;
   top: 0.28em;
   left: 0;
-  /* Past the third line whatever the lines' height: three touch-sized
-     lines and their gaps (9.25rem), and a drop beyond. */
-  height: max(4em, 10.25rem);
+  /* Past the last line, however many the lines wrap to: the stream's tip
+     (85 % down) clears it, the drop beyond. */
+  height: calc(100% + 1em);
   aspect-ratio: 60 / 300;
   pointer-events: none;
   filter: drop-shadow(

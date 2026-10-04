@@ -211,7 +211,9 @@
     /* Lines break at the <wbr> a heading's message marks, never inside
        a word; only a part too long for its line breaks anywhere. */
     word-break: keep-all;
-    overflow-wrap: anywhere;
+    /* Not "anywhere": that would let a box shrink to one glyph (the
+       countdown's digits, one under the other). */
+    overflow-wrap: break-word;
   }
   body:lang(zh-Hans) {
     line-height: 1.8;

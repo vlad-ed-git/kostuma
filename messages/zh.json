@@ -10,7 +10,7 @@
   "Home": {
     "chooseCostume": "挑选<wbr></wbr>你的装扮",
     "tryItOn": "亲自穿上试试",
-    "applyMakeup": "一步步画上妆容",
+    "applyMakeup": "一步步<wbr></wbr><nowrap>画上妆容</nowrap>",
     "reel": "一次真实的{name}变身，逐帧呈现：原始照片、试穿的服装，然后是妆容的第一步、中间一步和最后一步。",
     "metaTitle": "恐怖片角色装扮，穿在你身上，附分步妆容教程",
     "metaDescription": "从 {count} 个恐怖片角色中挑一个，万圣节就扮成它。免费用你自己的照片试穿一套装扮，再一步步画出它的妆容。"

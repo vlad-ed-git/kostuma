@@ -52,6 +52,20 @@ test.describe("languages", () => {
       "font-family",
       /--font-cjk-heading|Ma Shan Zheng|cjk/i
     )
+    // Only a part that overflows breaks: the countdown's numbers stay
+    // whole, never one digit under the other.
+    const numbers = await page
+      .getByRole("timer")
+      .locator("li > span:first-child")
+      .evaluateAll((all) =>
+        all.map((number) => ({
+          height: number.getBoundingClientRect().height,
+          size: parseFloat(getComputedStyle(number).fontSize),
+        }))
+      )
+    expect(numbers).toHaveLength(4)
+    for (const { height, size } of numbers)
+      expect(height).toBeLessThan(size * 1.6)
   })
 
   test("every costume speaks the visitor's language, names and people as they are", async ({

@@ -583,7 +583,11 @@ every other page is indexed, in every language (14b).
      dripping from its end down past the three lines (owner: it points down;
      `components/home/blood-drip.tsx`: a pool at the word, two short runs, one long stream with
      a drop at its tip; it pours down once, then a drop swells and falls every 2.4 s); then "Try it on yourself" (`Home.tryItOn`) and "Do the makeup, step by step"
-     (`Home.applyMakeup`), words, not links (the Fitting Room lives in the basket).
+     (`Home.applyMakeup`), words, not links (the Fitting Room lives in the basket). The
+     blood is a column of its own beside the list, as tall as the lines, and the lines keep
+     to the first one's width: a longer line wraps under it ("Do the makeup, / step by step";
+     a phrase marked `<nowrap>` stays whole, Chinese breaks at its `<wbr>`), never into the
+     blood, which always runs past the last line.
    - **The transformation** (owner, 2026-10-04: what to expect, no words), right under "Transform
      into a monster.", as wide as the tagline's column: the owner's red, burnt strip of film
      (`public/images/film-strip.webp`, drawn by `scripts/film-strip.mjs` from
