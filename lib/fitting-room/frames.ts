@@ -49,3 +49,25 @@ export function shownFrame(frames: readonly Frame[], tryOn: TryOnView) {
       : frames.findIndex((frame) => frame.step?.status === "failed")
   return Math.max(0, waiting)
 }
+
+/** What a try-on's picture is: the outfit, the dressed face, or a step's. */
+export type PictureOf = "outfit" | "dressed" | number
+
+/** The picture at a step's index, by the try-on's shape. */
+export function pictureAt(
+  tryOn: Pick<TryOnView, "outfit" | "dressed">,
+  index: number
+): PictureOf {
+  if (tryOn.outfit && index === 0) return "outfit"
+  const first = tryOn.dressed ? 2 : tryOn.outfit ? 1 : 0
+  return index < first ? "dressed" : index - first + 1
+}
+
+/**
+ * A saved picture's file name (todo OPP-11): `kostuma-<costume>-<step>.jpg`,
+ * the step as the film strip has it ("outfit", "step-3").
+ */
+export function pictureName(slug: string, picture: PictureOf): string {
+  const step = typeof picture === "number" ? `step-${picture}` : picture
+  return `kostuma-${slug}-${step}.jpg`
+}

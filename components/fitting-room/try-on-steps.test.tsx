@@ -1,6 +1,6 @@
-import { screen, within } from "@testing-library/react"
+import { screen, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { beforeEach, describe, expect, it, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import type { StepView, TryOnView } from "@/lib/fitting-room/try-on"
 import { renderInEnglish } from "@/test/intl"
@@ -80,6 +80,28 @@ beforeEach(() => {
   // jsdom lays nothing out: the strip's scrolling has nowhere to go.
   Element.prototype.scrollTo = vi.fn()
 })
+afterEach(() => {
+  vi.unstubAllGlobals()
+  vi.restoreAllMocks()
+})
+
+/** A phone that can share files: a coarse pointer, the Web Share API. */
+function phone(share: (data: ShareData) => Promise<void>) {
+  const coarse = window.matchMedia
+  vi.stubGlobal("matchMedia", (query: string) => ({
+    ...coarse(query),
+    matches: query === "(pointer: coarse)",
+  }))
+  Object.assign(navigator, {
+    canShare: (data: ShareData) => (data.files?.length ?? 0) > 0,
+    share: vi.fn(share),
+  })
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async () => new Response(new Blob(["jpeg"], { type: "image/jpeg" })))
+  )
+  return navigator.share as ReturnType<typeof vi.fn>
+}
 
 describe("TryOnSteps", () => {
   it("says what the makeup asks before step 1, on the outfit's card", async () => {
@@ -107,5 +129,98 @@ describe("TryOnSteps", () => {
     expect(screen.getByText(SAFETY)).toBeVisible()
     await userEvent.click(screen.getByRole("button", { name: "Next step" }))
     expect(screen.queryByText(SAFETY)).not.toBeInTheDocument()
+  })
+
+  it("saves the picture in the mirror, the same JPEG as a named file", async () => {
+    show(dressed)
+    const save = screen.getByRole("link", { name: "Save this picture" })
+    expect(save).toHaveTextContent("Save")
+    expect(save).toHaveAttribute(
+      "href",
+      "/api/fitting-room/try-ons/t/3?v=1&download=1"
+    )
+    expect(save).toHaveAttribute("download", "kostuma-beetlejuice-step-2.jpg")
+
+    await frame("The outfit")
+    expect(
+      screen.getByRole("link", { name: "Save this picture" })
+    ).toHaveAttribute("download", "kostuma-beetlejuice-outfit.jpg")
+  })
+
+  it("offers to save only a picture that is out", () => {
+    const { unmount } = show({
+      ...dressed,
+      status: "running",
+      steps: [done(0), done(1), done(2)],
+    })
+    // The mirror follows the newest picture: step 1's.
+    expect(
+      screen.getByRole("link", { name: "Save this picture" })
+    ).toHaveAttribute("download", "kostuma-beetlejuice-step-1.jpg")
+    unmount()
+
+    show({
+      ...dressed,
+      status: "running",
+      steps: [{ status: "working", image: null }],
+    })
+    expect(
+      screen.queryByRole("link", { name: "Save this picture" })
+    ).not.toBeInTheDocument()
+  })
+
+  it("hands the file to a phone's share sheet, from the tap itself", async () => {
+    const share = phone(async () => {})
+    show(dressed)
+    // The file is fetched before the tap.
+    await waitFor(() =>
+      expect(fetch).toHaveBeenCalledWith("/api/fitting-room/try-ons/t/3?v=1")
+    )
+    const save = screen.getByRole("link", { name: "Save this picture" })
+    await waitFor(async () => {
+      share.mockClear()
+      await userEvent.click(save)
+      expect(share).toHaveBeenCalledTimes(1)
+    })
+    const [{ files }] = share.mock.calls[0] as [ShareData]
+    expect(files).toHaveLength(1)
+    expect(files![0].name).toBe("kostuma-beetlejuice-step-2.jpg")
+    expect(files![0].type).toBe("image/jpeg")
+  })
+
+  it("downloads instead when the share fails, but not when it is closed", async () => {
+    let refusal = new DOMException("closed", "AbortError")
+    const share = phone(async () => {
+      throw refusal
+    })
+    const clicks = vi.spyOn(HTMLAnchorElement.prototype, "click")
+    // jsdom can't download: the default is stopped once it would happen.
+    const downloads: string[] = []
+    const stop = (event: MouseEvent) => {
+      if (event.defaultPrevented) return
+      downloads.push((event.target as HTMLAnchorElement).href)
+      event.preventDefault()
+    }
+    window.addEventListener("click", stop)
+    try {
+      show(dressed)
+      const save = screen.getByRole("link", { name: "Save this picture" })
+      await waitFor(async () => {
+        share.mockClear()
+        await userEvent.click(save)
+        expect(share).toHaveBeenCalledTimes(1)
+      })
+      expect(clicks).not.toHaveBeenCalled()
+      expect(downloads).toEqual([])
+
+      refusal = new DOMException("not now", "NotAllowedError")
+      await userEvent.click(save)
+      await waitFor(() => expect(clicks).toHaveBeenCalledTimes(1))
+      expect(downloads).toEqual([
+        "http://localhost:3000/api/fitting-room/try-ons/t/3?v=1&download=1",
+      ])
+    } finally {
+      window.removeEventListener("click", stop)
+    }
   })
 })

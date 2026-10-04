@@ -150,6 +150,8 @@
     "outfitNote": "See the photo and note down what to buy.",
     "outfitThen": "Now let’s get started on the makeup.",
     "safety": "Use cosmetic-grade products only, patch-test 24 hours before, and keep paint and fake blood out of your eyes.",
+    "save": "Save",
+    "saveLabel": "Save this picture",
     "frames": "Your pictures",
     "stepNamed": "Step {number}: {title}",
     "stepOf": "Step {number} of {count}",
@@ -349,7 +351,7 @@
       },
       "yours": {
         "title": "Your photos, your pictures, your messages",
-        "p1": "Your photos and the pictures made from them stay yours. You allow us to store them, for up to 12 months or until you delete them, to send them to YouCam to make your pictures, and to show them to you, only to run the Fitting Room for you. They are shown only to you, signed in to your account. We don’t publish them, sell them, or use them to train AI.",
+        "p1": "Your photos and the pictures made from them stay yours. You allow us to store them, for up to 12 months or until you delete them, to send them to YouCam to make your pictures, and to show them to you, only to run the Fitting Room for you. They are shown only to you, signed in to your account. We don’t publish them, sell them, or use them to train AI. You can save your pictures to your device and share them yourself: we never share them for you.",
         "p2": "If you send us feedback or an idea, we may use it to improve Kostuma, without owing you anything for it."
       },
       "shops": {

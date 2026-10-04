@@ -150,6 +150,8 @@
     "outfitNote": "Mira la foto y apunta lo que tienes que comprar.",
     "outfitThen": "Ahora, vamos con el maquillaje.",
     "safety": "Usa solo productos de uso cosmético, pruébalos en un trocito de piel 24 horas antes y mantén la pintura y la sangre falsa lejos de los ojos.",
+    "save": "Guardar",
+    "saveLabel": "Guardar esta imagen",
     "frames": "Tus imágenes",
     "stepNamed": "Paso {number}: {title}",
     "stepOf": "Paso {number} de {count}",
@@ -349,7 +351,7 @@
       },
       "yours": {
         "title": "Tus fotos, tus imágenes, tus mensajes",
-        "p1": "Tus fotos y las imágenes creadas a partir de ellas siguen siendo tuyas. Nos permites guardarlas, hasta 12 meses o hasta que las borres, enviarlas a YouCam para crear tus imágenes y mostrártelas, solo para que el Probador funcione para ti. Solo se te muestran a ti, con tu sesión iniciada. No las publicamos, no las vendemos ni las usamos para entrenar IA.",
+        "p1": "Tus fotos y las imágenes creadas a partir de ellas siguen siendo tuyas. Nos permites guardarlas, hasta 12 meses o hasta que las borres, enviarlas a YouCam para crear tus imágenes y mostrártelas, solo para que el Probador funcione para ti. Solo se te muestran a ti, con tu sesión iniciada. No las publicamos, no las vendemos ni las usamos para entrenar IA. Puedes guardar tus imágenes en tu dispositivo y compartirlas tú: nosotros nunca las compartimos por ti.",
         "p2": "Si nos envías comentarios o una idea, podemos usarla para mejorar Kostuma sin deberte nada por ella."
       },
       "shops": {

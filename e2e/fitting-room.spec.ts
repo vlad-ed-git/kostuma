@@ -277,10 +277,68 @@ test.describe("The Fitting Room", () => {
     await expect(product).toHaveAttribute("target", "_blank")
     await expect(product).toHaveAttribute("rel", /noopener/)
 
+    // Save (todo OPP-11): the picture in the mirror, the same JPEG,
+    // unaltered, as a file named after the costume and the step.
+    const save = beetlejuice.getByRole("link", { name: "Save this picture" })
+    await expect(save).toHaveAttribute(
+      "download",
+      "kostuma-beetlejuice-step-1.jpg"
+    )
+    const saving = (await save.getAttribute("href"))!
+    expect(saving).toMatch(/&download=1$/)
+    const [shown, saved] = await Promise.all([
+      page.request.get(saving.replace("&download=1", "")),
+      page.request.get(saving),
+    ])
+    expect(saved.headers()["content-disposition"]).toBe(
+      'attachment; filename="kostuma-beetlejuice-step-1.jpg"'
+    )
+    expect(await saved.body()).toEqual(await shown.body())
+
+    // On a phone that can share files, Save hands the file to the share
+    // sheet (stood in for here: the real one is the system's).
+    if (test.info().project.name === "mobile") {
+      await page.addInitScript(() => {
+        const shared: { name: string; type: string; size: number }[] = []
+        Object.assign(window, { shared })
+        Object.assign(navigator, {
+          canShare: (data: ShareData) => (data.files?.length ?? 0) > 0,
+          share: async ({ files = [] }: ShareData) => {
+            for (const { name, type, size } of files)
+              shared.push({ name, type, size })
+          },
+        })
+      })
+    }
+
     // Coming back shows the same try-on, made once.
     await page.reload()
     await expect(page.getByText("Your try-on is ready.")).toBeAttached()
     await picturesLoaded(room(page, "Beetlejuice"))
+    if (test.info().project.name === "mobile") {
+      const shared = () =>
+        page.evaluate(
+          () =>
+            (
+              window as unknown as {
+                shared: { name: string; type: string; size: number }[]
+              }
+            ).shared
+        )
+      // The file is fetched before the tap: tap until it is in hand.
+      await expect(async () => {
+        await room(page, "Beetlejuice")
+          .getByRole("link", { name: "Save this picture" })
+          .click()
+        expect((await shared()).length).toBeGreaterThan(0)
+      }).toPass()
+      const [file] = await shared()
+      expect(file).toMatchObject({
+        name: "kostuma-beetlejuice-step-7.jpg",
+        type: "image/jpeg",
+      })
+      expect(file.size).toBeGreaterThan(0)
+    }
     expect(errors).toEqual([])
   })
 

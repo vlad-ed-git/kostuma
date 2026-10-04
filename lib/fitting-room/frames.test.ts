@@ -1,7 +1,13 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest"
 
-import { framesOf, renderingFrame, shownFrame } from "./frames"
+import {
+  framesOf,
+  pictureAt,
+  pictureName,
+  renderingFrame,
+  shownFrame,
+} from "./frames"
 import type { StepView, TryOnView } from "./try-on"
 
 const done = (index: number): StepView => ({
@@ -142,5 +148,26 @@ describe("shownFrame", () => {
   it("falls back on the first frame when none can be told apart", () => {
     for (const view of [tryOn("failed", [], false), tryOn("done", [], false)])
       expect(shownFrame(framesOf(view, 0), view)).toBe(0)
+  })
+})
+
+describe("a saved picture's name", () => {
+  it("names the outfit and each step as the film strip does", () => {
+    const dressed = tryOn("done", [], true, true)
+    expect(pictureAt(dressed, 0)).toBe("outfit")
+    expect(pictureAt(dressed, 1)).toBe("dressed")
+    expect(pictureAt(dressed, 2)).toBe(1)
+    expect(pictureAt(dressed, 7)).toBe(6)
+    // Before the dressed face: the makeup right after the outfit.
+    expect(pictureAt(tryOn("done", []), 1)).toBe(1)
+    // All makeup: the guide starts on the face photo.
+    expect(pictureAt(tryOn("done", [], false), 0)).toBe(1)
+  })
+
+  it("is kostuma-<costume>-<step>.jpg", () => {
+    expect(pictureName("pennywise", "outfit")).toBe(
+      "kostuma-pennywise-outfit.jpg"
+    )
+    expect(pictureName("pennywise", 3)).toBe("kostuma-pennywise-step-3.jpg")
   })
 })

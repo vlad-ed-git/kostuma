@@ -149,7 +149,7 @@ OPP-11 and OPP-12.
 
 ## Features (`06-missed-opportunities.md`)
 
-- [ ] **OPP-11** "Save" on each picture: the same JPEG, unaltered, from the owner-only route with
+- [x] **OPP-11** "Save" on each picture: the same JPEG, unaltered, from the owner-only route with
       `?download=1` (`Content-Disposition: attachment`, `kostuma-<costume>-<step>.jpg`); on
       phones, the Web Share API with the file when available. Nothing published, nothing
       composited.

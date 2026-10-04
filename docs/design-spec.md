@@ -755,7 +755,11 @@ words beside them; on phones the words come first.
     it is. Until the visitor picks one, it
     follows the newest picture out (with none yet, the frame rendering now) and, once done, shows
     the last step: the whole transformation. A picture it shows by itself comes "into the light";
-    one the visitor picks fades up.
+    one the visitor picks fades up. Under it, once the picture is out, "Save" (`ui` small
+    capitals with a download icon, named "Save this picture"; todo OPP-11): the same JPEG,
+    unaltered, from the owner-only route with `?download=1`, as `kostuma-<costume>-<step>.jpg`
+    (`outfit`, `step-3`); on a phone that can share files, the share sheet with that file
+    (fetched before the tap, which must start the share). Nothing is published or composited.
   - **The step card**, the main thing: "Step n of N" (`label` small capitals, `--blood-text`),
     the step's title (`h2` size), the how-to (`lead`), its products as links to a shop's search
     (new tab, 10.3 external links; named in the visitor's language, searched in English), on the last step "To finish" and the guide's last line; then
@@ -763,7 +767,10 @@ words beside them; on phones the words come first.
     focus); at the last frame of a finished try-on, "Next step" reads "Start with step 1" and
     goes to the guide's first step. For the outfit (owner, 2026-10-03): its name, "See the photo and note down what
     to buy.", the costume's Buy (10.3, as in the basket), "Now let's get started on the
-    makeup." (`lead`), and the next step's button reads "Apply makeup".
+    makeup." (`lead`), then, before step 1 (todo COPY-12), "Use cosmetic-grade products only,
+    patch-test 24 hours before, and keep paint and fake blood out of your eyes." (`body-lg`,
+    muted; on step 1's card when a try-on has no outfit), and the next step's button reads
+    "Apply makeup".
   - **The film strip** ("Your pictures"): every picture as a frame between sprocket holes,
     labelled "Outfit", 1, 2, …; the one in the mirror ringed in `--blood-text`; a frame not done
     yet is the costume photo as a black silhouette rimmed in red (as the photos wait on the home

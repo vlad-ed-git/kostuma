@@ -5,6 +5,7 @@ import {
   RiArrowRightSLine,
   RiArrowRightUpLine,
   RiCloseLine,
+  RiDownload2Line,
 } from "@remixicon/react"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
@@ -16,6 +17,7 @@ import type { Photo, ShopLink } from "@/lib/catalog/types"
 import {
   type Frame,
   framesOf,
+  pictureName,
   renderingFrame,
   shownFrame,
 } from "@/lib/fitting-room/frames"
@@ -194,6 +196,16 @@ export function TryOnSteps({
             />
           )}
         </Mirror>
+        {frame?.step?.status === "done" && frame.step.image && (
+          <SavePicture
+            key={frame.step.image}
+            src={frame.step.image}
+            name={pictureName(
+              tryOn.slug,
+              frame.kind === "outfit" ? "outfit" : frame.number
+            )}
+          />
+        )}
         {tryOn.status === "running" && (
           // How long, and that leaving is fine: it goes on (todo UX-07).
           <p className="mt-6 max-w-[44ch] text-muted-foreground">
@@ -334,6 +346,64 @@ export function TryOnSteps({
 
       {after && <div className="[grid-area:after]">{after}</div>}
     </div>
+  )
+}
+
+/**
+ * "Save" under the mirror (todo OPP-11): the picture it shows, the same
+ * JPEG, unaltered, as the visitor's own file. On a phone that can share
+ * files, the share sheet, to keep it or send it on (Kostuma publishes
+ * nothing); elsewhere, the download.
+ */
+function SavePicture({ src, name }: { src: string; name: string }) {
+  const t = useTranslations("FittingRoom")
+  const href = `${src}${src.includes("?") ? "&" : "?"}download=1`
+  const link = useRef<HTMLAnchorElement>(null)
+  // The share failed: the link downloads, as it does without one.
+  const unshared = useRef(false)
+  // Fetched before the tap (the browser has it already): a share must
+  // start from the tap itself, with nothing awaited first.
+  const [file, setFile] = useState<File | null>(null)
+  useEffect(() => {
+    if (!matchMedia("(pointer: coarse)").matches) return
+    if (!("canShare" in navigator)) return
+    let current = true
+    fetch(src)
+      .then((response) => (response.ok ? response.blob() : null))
+      .then((blob) => {
+        if (!current || !blob) return
+        const ready = new File([blob], name, { type: "image/jpeg" })
+        if (navigator.canShare({ files: [ready] })) setFile(ready)
+      })
+      // Not shareable: the download it is.
+      .catch(() => {})
+    return () => {
+      current = false
+    }
+  }, [src, name])
+
+  return (
+    <a
+      ref={link}
+      href={href}
+      download={name}
+      aria-label={t("saveLabel")}
+      onClick={(event) => {
+        if (!file || unshared.current) return
+        event.preventDefault()
+        navigator.share({ files: [file] }).catch((error: unknown) => {
+          // Closing the sheet is a choice; anything else, the download.
+          if (error instanceof DOMException && error.name === "AbortError")
+            return
+          unshared.current = true
+          link.current?.click()
+        })
+      }}
+      className="mt-4 inline-flex h-10 items-center gap-2 text-ui caps text-foreground transition-colors hover:text-blood-text"
+    >
+      <RiDownload2Line aria-hidden="true" className="size-5" />
+      {t("save")}
+    </a>
   )
 }
 
