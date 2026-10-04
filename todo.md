@@ -155,8 +155,9 @@ OPP-11 and OPP-12.
       composited.
 - [x] **OPP-12** "What you need" before step 1: every product of the guide once, with its shop
       link; "about N minutes" (8 per step, rounded to 5); a print stylesheet for the guide.
-- [ ] **OPP-03** YouCam AI Skin Tone Analysis measures the face photo's skin (once per photo, kept
-      on it), falling back to today's measurement; the base step names the shade when the
+- [x] ~~**OPP-03** YouCam AI Skin Tone Analysis measures the face photo's skin (once per photo,
+      kept on it), falling back to today's measurement; the base step names the shade when the
       API gives one; its units count in ENG-02's budget; a fake in test builds; bump
-      `PIPELINE_VERSION`. The calibration run spends units: the owner approves it first.
-      Skipped by the owner (2026-10-05): not built.
+      `PIPELINE_VERSION`. The calibration run spends units: the owner approves it first.~~
+      **Won't do** (owner, 2026-10-05): no skin tone analysis, and never YouCam's Skin Tone
+      Analysis API. Nothing of it was built.
