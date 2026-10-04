@@ -62,6 +62,7 @@
     "label": "Mi cesta de calabaza, {count, plural, one {# disfraz} other {# disfraces}}",
     "unreachable": "No podemos conectar con tu cuenta en este momento, así que es posible que los cambios aquí no se guarden. Vuelve a cargar la página para intentarlo de nuevo.",
     "add": "Añadir a Mi cesta de calabaza",
+    "removeFrom": "Quitar de Mi cesta de calabaza",
     "addNamed": "Añadir {name} a Mi cesta de calabaza",
     "removeNamed": "Quitar {name} de Mi cesta de calabaza",
     "inBasket": "En Mi cesta de calabaza",

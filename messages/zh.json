@@ -62,6 +62,7 @@
     "label": "我的南瓜篮，{count, plural, other {# 套装扮}}",
     "unreachable": "暂时无法连接你的账户，这里的更改可能不会保存。请刷新页面重试。",
     "add": "加入我的南瓜篮",
+    "removeFrom": "移出我的南瓜篮",
     "addNamed": "将 {name} 加入我的南瓜篮",
     "removeNamed": "将 {name} 移出我的南瓜篮",
     "inBasket": "已在我的南瓜篮中",

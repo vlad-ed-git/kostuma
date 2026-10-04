@@ -113,7 +113,7 @@ OPP-11 and OPP-12.
 - [ ] **UX-12** zh: `<wbr>` break points in display strings and `word-break: keep-all` on
       headings; a local CJK display font (Ma Shan Zheng, OFL) subset to the characters zh
       headings use, through `unicode-range`.
-- [ ] **UX-13** The pumpkin toggle is brighter at rest and shows its name ("Add to / Remove from
+- [x] **UX-13** The pumpkin toggle is brighter at rest and shows its name ("Add to / Remove from
       My Pumpkin Basket") as a tooltip on hover and focus.
 - [x] **UX-16** The basket badge off its label; "Press again to clear"; the outfit card shows the
       costume's Buy; the global 404 adds a "Costumes" link.

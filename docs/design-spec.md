@@ -494,10 +494,13 @@ Client components are marked (C). Everything else renders on the server.
   - Hover and focus per 7.2; prefetches on intent only (15). At the row's end, outside the
     link, the basket toggle.
 - **Basket toggle** (C, `components/basket/basket-toggle.tsx`): a 48 px button, outline pumpkin
-  (ash, ember on hover) ↔ lit pumpkin; it ignites on add (7.2). Named "Add {name} to My Pumpkin
-  Basket" / "Remove {name} from My Pumpkin Basket"; announces "{name} added to My Pumpkin
-  Basket." / "{name} removed from My Pumpkin Basket." through the polite live region (12).
-  Hidden without JavaScript.
+  (bone at 80 %, ember on hover) ↔ lit pumpkin; it ignites on add (7.2). Named "Add {name} to My
+  Pumpkin Basket" / "Remove {name} from My Pumpkin Basket"; on hover (pointers) and keyboard
+  focus its words show over it, right-aligned: "Add to My Pumpkin Basket" / "Remove from My
+  Pumpkin Basket" (`micro` small capitals on `--card`, a `--blood` hairline; hidden from screen
+  readers, who hear the button's name). Announces "{name} added to My Pumpkin Basket." /
+  "{name} removed from My Pumpkin Basket." through the polite live region (12). Hidden without
+  JavaScript.
 
 - **Billing block**: the credits of a costume page: centered between hairlines, role words in
   small `micro` capitals, names in `billing` small capitals ("Created by", "Brought to life

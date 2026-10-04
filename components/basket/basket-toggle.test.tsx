@@ -56,6 +56,26 @@ describe("BasketToggle", () => {
     expect(announced()).toBe("Pearl added to My Pumpkin Basket.")
   })
 
+  it("shows its name over the pumpkin, for eyes only: screen readers hear the button's", async () => {
+    const { container } = renderWithBasket(
+      <BasketToggle slug="ghostface" name="Ghostface" />
+    )
+    const tip = () => container.querySelector('span[aria-hidden="true"]')!
+    expect(tip()).toHaveTextContent("Add to My Pumpkin Basket")
+    expect(tip().className).toContain("group-hover/toggle:opacity-100")
+    expect(tip().className).toContain("group-focus-visible/toggle:opacity-100")
+    await userEvent.click(
+      screen.getByRole("button", { name: "Add Ghostface to My Pumpkin Basket" })
+    )
+    expect(tip()).toHaveTextContent("Remove from My Pumpkin Basket")
+    // Brighter at rest than the muted text around it.
+    expect(
+      screen.getByRole("button", {
+        name: "Remove Ghostface from My Pumpkin Basket",
+      }).className
+    ).toContain("text-foreground/80")
+  })
+
   it("is hidden without JavaScript, where it could do nothing", () => {
     renderWithBasket(<BasketToggle slug="pearl" name="Pearl" />)
     expect(screen.getByRole("button")).toHaveClass(

@@ -62,6 +62,7 @@
     "label": "My Pumpkin Basket, {count, plural, one {# costume} other {# costumes}}",
     "unreachable": "Your account can't be reached right now, so changes here may not be saved. Reload the page to try again.",
     "add": "Add to My Pumpkin Basket",
+    "removeFrom": "Remove from My Pumpkin Basket",
     "addNamed": "Add {name} to My Pumpkin Basket",
     "removeNamed": "Remove {name} from My Pumpkin Basket",
     "inBasket": "In My Pumpkin Basket",
