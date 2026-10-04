@@ -235,8 +235,8 @@ and function and Firebase costs that grow with traffic in the busiest week of th
 
 All 87 images on the home page use `loading="lazy"`, including the film strip that sits in the
 first screen on phones, and the costume page's main photo. That delays the Largest Contentful
-Paint. Mark those as preloaded / eager with `fetchPriority="high"` (in Next 16, `preload` on
-`next/image`).
+Paint. Give those `loading="eager"` and `fetchPriority="high"` on `next/image` (Next 16's docs
+prefer these to the new `preload` prop; `priority` is deprecated).
 
 ### ENG-10 · Production is 51 commits behind, and the deploy config doesn't do what it says — P0, S
 
