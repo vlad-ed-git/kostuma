@@ -1107,7 +1107,7 @@ export const costumes: Costume[] = [
     funFact:
       "Hopkins won Best Actor with roughly 16 minutes on screen. The film swept the 'Big Five' Oscars: Picture, Director, Actor, Actress, and Adapted Screenplay.",
     look: {
-      pieces: ["Orange jumpsuit and restraint mask"],
+      pieces: ["White prison jumpsuit", "Restraint mask"],
       alternative: "Or a sharp suit.",
     },
     images: [
@@ -1462,7 +1462,12 @@ export const costumes: Costume[] = [
     funFact:
       "Radio Silence (Matt Bettinelli-Olpin and Tyler Gillett) later took over the Scream franchise.",
     look: {
-      pieces: ["Torn", "Bloodied wedding dress", "Sneakers", "Revolver"],
+      pieces: [
+        "Torn, bloodied wedding dress",
+        "Yellow sneakers",
+        "Bandolier of shotgun shells",
+        "Shotgun",
+      ],
     },
     images: [
       {
@@ -2399,7 +2404,7 @@ export const costumes: Costume[] = [
     funFact:
       "Palmer reportedly took the role because she needed money to buy a car.",
     look: {
-      pieces: ["Green cardigan", "50s-style hair", "Hunting knife"],
+      pieces: ["Blue cable-knit sweater", "Hunting knife"],
     },
     images: [
       {

@@ -1725,7 +1725,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       },
     ],
     finish:
-      "Smear a little fake blood around the mouth. A blue prison jumpsuit, or the white restraint mask.",
+      "Smear a little fake blood around the mouth. A white prison jumpsuit and the restraint mask.",
   },
   "norman-bates": {
     look: "Norman as Mother: powdery pale skin, the shadows of age, sunken eyes, thin gray brows, faded rouge, faded rose lips and gray hair.",
@@ -2269,7 +2269,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       },
     ],
     finish:
-      "Smear fake blood across one cheek and the forehead. A torn wedding dress, sneakers and a bandolier.",
+      "Smear fake blood across one cheek and the forehead. A torn wedding dress, yellow sneakers, a bandolier of shells and a shotgun.",
   },
   "lydia-deetz": {
     look: "Lydia Deetz: goth-pale skin, gray hollows, dark smudged eyes, strong black brows, dark plum lips and jet-black hair.",
@@ -3816,7 +3816,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         render: hair("#8A6A4A", 100, 30),
       },
     ],
-    finish: "Pull your hair back. A cable-knit sweater, and a hunting knife.",
+    finish: "A blue cable-knit sweater and a hunting knife.",
   },
   "the-invisible-man": {
     look: "The Invisible Man fading out: washed-out white skin, gray edges, dark goggle eyes and colorless lips.",

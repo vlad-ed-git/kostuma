@@ -490,7 +490,7 @@
       "lore": "Un psiquiatra brillante y caníbal, encerrado en un hospital psiquiátrico, que ayuda a una joven aprendiz del FBI a atrapar a otro asesino.",
       "funFact": "Hopkins ganó el Óscar a mejor actor con unos 16 minutos en pantalla. La película arrasó con los «cinco grandes» Óscar: película, dirección, actor, actriz y guion adaptado.",
       "look": {
-        "pieces": ["Overol naranja y máscara de contención"],
+        "pieces": ["Overol blanco de prisión", "Máscara de contención"],
         "alternative": "O un traje impecable."
       }
     },
@@ -652,10 +652,10 @@
       "funFact": "Radio Silence (Matt Bettinelli-Olpin y Tyler Gillett) tomó después las riendas de la saga Scream.",
       "look": {
         "pieces": [
-          "Rasgado",
-          "Vestido de novia ensangrentado",
-          "Tenis",
-          "Revólver"
+          "Vestido de novia rasgado y ensangrentado",
+          "Tenis amarillos",
+          "Cartuchera cruzada de cartuchos de escopeta",
+          "Escopeta"
         ]
       }
     },
@@ -1055,11 +1055,7 @@
       "lore": "Una cocinera de campamento en duelo, cuya venganza por la muerte de su hijo Jason, ahogado, desata los asesinatos originales.",
       "funFact": "Según se cuenta, Palmer aceptó el papel porque necesitaba dinero para comprarse un coche.",
       "look": {
-        "pieces": [
-          "Cárdigan verde",
-          "Peinado de los años 50",
-          "Cuchillo de caza"
-        ]
+        "pieces": ["Suéter azul de punto trenzado", "Cuchillo de caza"]
       }
     },
     "the-invisible-man": {
@@ -2444,7 +2440,7 @@
           ]
         }
       ],
-      "finish": "Embarra un poco de sangre falsa alrededor de la boca. Un overol azul de prisión, o la máscara blanca de contención."
+      "finish": "Embarra un poco de sangre falsa alrededor de la boca. Un overol blanco de prisión y la máscara de contención."
     },
     "norman-bates": {
       "look": "Norman como Madre: piel pálida y empolvada, las sombras de la edad, ojos hundidos, cejas grises y finas, colorete desvaído, labios rosa desvaído y pelo gris.",
@@ -2839,7 +2835,7 @@
           "products": ["spray de color rubio para el cabello"]
         }
       ],
-      "finish": "Embarra sangre falsa sobre una mejilla y la frente. Un vestido de novia rasgado, tenis y una cartuchera cruzada."
+      "finish": "Embarra sangre falsa sobre una mejilla y la frente. Un vestido de novia rasgado, tenis amarillos, una cartuchera cruzada de cartuchos y una escopeta."
     },
     "lydia-deetz": {
       "look": "Lydia Deetz: piel pálida gótica, huecos grises, ojos oscuros y ahumados, cejas negras marcadas, labios ciruela oscuro y pelo negro azabache.",
@@ -3980,7 +3976,7 @@
           "products": ["spray de color marrón claro para el cabello"]
         }
       ],
-      "finish": "Recógete el pelo hacia atrás. Un suéter de punto trenzado y un cuchillo de caza."
+      "finish": "Un suéter azul de punto trenzado y un cuchillo de caza."
     },
     "the-invisible-man": {
       "look": "El hombre invisible desvaneciéndose: piel blanca deslavada, bordes grises, ojos oscuros como gafas y labios sin color.",
