@@ -38,6 +38,38 @@ async function documentAt(path: string) {
     : null
 }
 
+/** The account's free costume, used on Pearl (allowances/{uid}). */
+async function useFreeCostume(uid: string) {
+  const response = await fetch(`${firestore}/allowances/${uid}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: "Bearer owner",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      fields: {
+        held: {
+          mapValue: {
+            fields: {
+              youcam: {
+                mapValue: {
+                  fields: {
+                    tryOn: { stringValue: "0".repeat(32) },
+                    costume: { stringValue: "pearl" },
+                    done: { booleanValue: true },
+                  },
+                },
+              },
+            },
+          },
+        },
+        failedTries: { integerValue: "0" },
+      },
+    }),
+  })
+  expect(response.ok).toBe(true)
+}
+
 /** The uid of the account with this email (the Auth emulator's own API). */
 async function uidOf(email: string) {
   const response = await fetch(`${authEmulator}/accounts:lookup`, {
@@ -147,6 +179,8 @@ test("Get Kostuma Pro puts the account on the waitlist, with the email to write 
   await register(page, email)
   await expect(page).toHaveURL(/\/$/, { timeout: 20_000 })
   const uid = await uidOf(email)
+  // Kostuma Pro is offered once the free costume is used.
+  await useFreeCostume(uid)
 
   await page.goto("/account")
   const pro = page

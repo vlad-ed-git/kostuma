@@ -24,6 +24,7 @@ import {
 } from "@/lib/fitting-room/actions"
 import { fitsOneSend, type PhotoProblem } from "@/lib/fitting-room/photo-rules"
 import { PHOTO_CONSENT_VERSION } from "@/lib/fitting-room/consent"
+import { FAILED_TRIES } from "@/lib/fitting-room/free-costume"
 import type { RenderFailure } from "@/lib/fitting-room/provider"
 import type { PhotoKind, TryOnView } from "@/lib/fitting-room/try-on"
 import type { CostumeSummary, ShopLink } from "@/lib/catalog/types"
@@ -49,6 +50,9 @@ export type FittingCostume = CostumeSummary & {
   /** Where to buy it: the outfit's card offers Buy (todo UX-16). */
   shops: readonly [ShopLink, ...ShopLink[]]
 }
+
+/** The costume the free costume went to: a link while its try-on is kept. */
+export type UsedOn = { name: string; slug: string; linked: boolean }
 
 type ErrorCode = Exclude<StartError | RenderFailure, PhotoProblem>
 
@@ -102,6 +106,7 @@ export function FittingRoom({
   tryOn,
   open,
   free,
+  triesLeft,
   usedOn,
 }: {
   /** Every costume that can be tried on. */
@@ -116,8 +121,10 @@ export function FittingRoom({
   open: boolean
   /** Whether the account's free costume is still there. */
   free: boolean
+  /** While it is: the failures of their photos it still allows. */
+  triesLeft: number
   /** The costume tried on with it, once used. */
-  usedOn: string | null
+  usedOn: UsedOn | null
 }) {
   const t = useTranslations("FittingRoom")
   const { ready, slugs, has } = useBasket()
@@ -158,6 +165,7 @@ export function FittingRoom({
             initial={tryOn}
             open={open}
             free={free}
+            triesLeft={triesLeft}
             usedOn={usedOn}
           />
         ) : (
@@ -201,6 +209,7 @@ function Fitting({
   initial,
   open,
   free: freeHere,
+  triesLeft,
   usedOn,
 }: {
   costume: FittingCostume
@@ -208,7 +217,8 @@ function Fitting({
   initial: TryOnView | null
   open: boolean
   free: boolean
-  usedOn: string | null
+  triesLeft: number
+  usedOn: UsedOn | null
 }) {
   const t = useTranslations("FittingRoom")
   const router = useRouter()
@@ -453,9 +463,18 @@ function Fitting({
                 </p>
                 {open &&
                   (free ? (
-                    <Button size="lg" onClick={retry}>
-                      {t("retry")}
-                    </Button>
+                    <>
+                      {/* What the failure cost (todo UX-10). */}
+                      <div className="flex max-w-[60ch] flex-col gap-1 text-lead">
+                        <p>{t("failedFree")}</p>
+                        {triesLeft < FAILED_TRIES && (
+                          <p>{t("triesLeft", { count: triesLeft })}</p>
+                        )}
+                      </div>
+                      <Button size="lg" onClick={retry}>
+                        {t("retry")}
+                      </Button>
+                    </>
                   ) : (
                     <>
                       <p className="max-w-[60ch] text-lead">{t("used.line")}</p>
@@ -503,7 +522,23 @@ function Fitting({
         <div className="flex max-w-[50ch] flex-col items-start gap-4">
           {heading(t("used.title"))}
           <p className="text-lead text-muted-foreground">
-            {usedOn ? t("used.named", { name: usedOn }) : t("used.line")}
+            {usedOn
+              ? t.rich("used.named", {
+                  name: usedOn.name,
+                  // Its try-on, the guide they earned (todo UX-09).
+                  costume: (chunks) =>
+                    usedOn.linked ? (
+                      <Link
+                        href={`/basket/fitting-room?costume=${usedOn.slug}`}
+                        className="text-foreground underline decoration-blood underline-offset-4 transition-colors hover:text-blood-text"
+                      >
+                        {chunks}
+                      </Link>
+                    ) : (
+                      chunks
+                    ),
+                })
+              : t("used.line")}
           </p>
           <GetPro source="fitting-room" className="mt-2" />
         </div>

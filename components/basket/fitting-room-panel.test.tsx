@@ -20,20 +20,29 @@ describe("FittingRoomPanel", () => {
     )
     expect(panel).toHaveTextContent("One costume is free with every account.")
     expect(panel).not.toHaveTextContent(/\$|premium|per costume/i)
-    expect(screen.getByRole("link", { name: "Step inside" })).toHaveAttribute(
-      "href",
-      "/basket/fitting-room"
+    const enter = screen.getByRole("link", { name: "Step inside" })
+    expect(enter).toHaveAttribute("href", "/basket/fitting-room")
+    // The way in, filled: nothing competes with the free costume.
+    expect(enter.className).toContain("bg-primary")
+    expect(
+      screen.queryByRole("button", { name: "Get Kostuma Pro" })
+    ).not.toBeInTheDocument()
+  })
+
+  it("offers Kostuma Pro only once the free costume is used, keeping the basket's line", () => {
+    const { rerender } = renderInEnglish(
+      <FittingRoomPanel signedIn free source="basket" />
     )
+    expect(
+      screen.queryByRole("button", { name: "Get Kostuma Pro" })
+    ).not.toBeInTheDocument()
+    rerender(<FittingRoomPanel signedIn free={false} source="basket" />)
     expect(
       screen.getByRole("button", { name: "Get Kostuma Pro" })
     ).toBeInTheDocument()
-  })
-
-  it("asks a visitor signed out to sign in for Kostuma Pro, then come back", () => {
-    renderInEnglish(<FittingRoomPanel signedIn={false} source="basket" />)
     expect(
-      screen.getByRole("link", { name: "Get Kostuma Pro" })
-    ).toHaveAttribute("href", "/sign-in?next=%2Fbasket")
+      screen.getByText("One costume is free with every account.")
+    ).toBeVisible()
   })
 
   it("tells an account whether its free costume is still waiting", () => {
@@ -43,5 +52,8 @@ describe("FittingRoomPanel", () => {
     expect(screen.getByText("Your free costume is waiting.")).toBeVisible()
     rerender(<FittingRoomPanel signedIn free={false} source="account" />)
     expect(screen.getByText("You've used your free costume.")).toBeVisible()
+    expect(
+      screen.getByRole("button", { name: "Get Kostuma Pro" })
+    ).toBeInTheDocument()
   })
 })

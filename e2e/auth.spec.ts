@@ -241,9 +241,10 @@ test.describe("signed in", () => {
     ])
     const fittingRoom = page.getByRole("region", { name: "The Fitting Room" })
     await expect(fittingRoom).toContainText("Your free costume is waiting.")
+    // Kostuma Pro once the free costume is used, not before.
     await expect(
       fittingRoom.getByRole("button", { name: "Get Kostuma Pro" })
-    ).toBeVisible()
+    ).toHaveCount(0)
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
       "content",
       /noindex/

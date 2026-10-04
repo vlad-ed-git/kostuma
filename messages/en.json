@@ -100,7 +100,7 @@
     "closed": "The Fitting Room is closed right now. Try again later.",
     "used": {
       "title": "You've used your free costume.",
-      "named": "You tried on {name}. Get Kostuma Pro to try on more costumes.",
+      "named": "You tried on <costume>{name}</costume>. Get Kostuma Pro to try on more costumes.",
       "line": "Get Kostuma Pro to try on more costumes."
     },
     "photos": {
@@ -139,6 +139,7 @@
       "done": "Your try-on is ready."
     },
     "busy": "The mirror is busy. Your try-on starts in a moment.",
+    "takesTime": "This takes about two minutes. You can leave and come back.",
     "outfit": "The outfit",
     "outfitAlt": "You wearing the {name} costume",
     "outfitShort": "Outfit",
@@ -159,6 +160,8 @@
     "finish": "To finish",
     "again": "Try with other photos",
     "retry": "Choose other photos",
+    "failedFree": "This didn't use your free costume.",
+    "triesLeft": "{count, plural, one {You have one more try with other photos.} other {You have # more tries with other photos.}}",
     "replace": {
       "title": "Replace your photos?",
       "line": "New photos make a new try-on of {name}, in place of this one. Nothing changes until you start it.",

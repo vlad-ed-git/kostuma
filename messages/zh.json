@@ -100,7 +100,7 @@
     "closed": "试衣间暂时关闭，请稍后再试。",
     "used": {
       "title": "你已用完免费装扮。",
-      "named": "你已试穿过 {name}。获取 Kostuma Pro，试穿更多装扮。",
+      "named": "你已试穿过 <costume>{name}</costume>。获取 Kostuma Pro，试穿更多装扮。",
       "line": "获取 Kostuma Pro，试穿更多装扮。"
     },
     "photos": {
@@ -139,6 +139,7 @@
       "done": "你的试穿已完成。"
     },
     "busy": "镜子正忙。你的试穿马上开始。",
+    "takesTime": "大约需要两分钟。你可以先离开，稍后再回来。",
     "outfit": "服装",
     "outfitAlt": "穿着 {name} 装扮的你",
     "outfitShort": "服装",
@@ -159,6 +160,8 @@
     "finish": "收尾",
     "again": "换照片再试",
     "retry": "选择其他照片",
+    "failedFree": "这次没有用掉你的免费装扮。",
+    "triesLeft": "{count, plural, other {你还可以换照片再试 # 次。}}",
     "replace": {
       "title": "要更换照片吗？",
       "line": "新照片会生成一次新的 {name} 试穿，替换当前这次。在你开始之前，一切都不会改变。",

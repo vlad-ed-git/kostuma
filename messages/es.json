@@ -100,7 +100,7 @@
     "closed": "El Probador está cerrado ahora mismo. Vuelve a intentarlo más tarde.",
     "used": {
       "title": "Ya usaste tu disfraz gratis.",
-      "named": "Te probaste el disfraz de {name}. Consigue Kostuma Pro para probarte más disfraces.",
+      "named": "Te probaste el disfraz de <costume>{name}</costume>. Consigue Kostuma Pro para probarte más disfraces.",
       "line": "Consigue Kostuma Pro para probarte más disfraces."
     },
     "photos": {
@@ -139,6 +139,7 @@
       "done": "Tu prueba está lista."
     },
     "busy": "El espejo está ocupado. Tu prueba empieza en un momento.",
+    "takesTime": "Esto tarda unos dos minutos. Puedes irte y volver.",
     "outfit": "El disfraz",
     "outfitAlt": "Tú con el disfraz de {name}",
     "outfitShort": "Disfraz",
@@ -159,6 +160,8 @@
     "finish": "Para terminar",
     "again": "Probar con otras fotos",
     "retry": "Elegir otras fotos",
+    "failedFree": "Esto no gastó tu disfraz gratis.",
+    "triesLeft": "{count, plural, one {Te queda un intento más con otras fotos.} other {Te quedan # intentos más con otras fotos.}}",
     "replace": {
       "title": "¿Cambiar tus fotos?",
       "line": "Con fotos nuevas se hace una prueba nueva de {name}, en lugar de esta. Nada cambia hasta que la empieces.",

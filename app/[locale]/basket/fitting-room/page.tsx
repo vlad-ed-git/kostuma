@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from "next-intl/server"
 import {
   type FittingCostume,
   FittingRoom,
+  type UsedOn,
 } from "@/components/fitting-room/fitting-room"
 import { redirect } from "@/i18n/navigation"
 import { withNext } from "@/lib/auth/next-path"
@@ -11,6 +12,7 @@ import { getUser } from "@/lib/auth/session"
 import { getCostume, getCostumes, toSummary } from "@/lib/catalog"
 import { admits, unitsOfGuide } from "@/lib/fitting-room/budget"
 import { currentTryOn } from "@/lib/fitting-room/current-try-on"
+import { FAILED_TRIES } from "@/lib/fitting-room/free-costume"
 import { guideFor } from "@/lib/guides"
 import { fittingRoom } from "@/lib/fitting-room/service"
 import { fittingRoomStore } from "@/lib/fitting-room/store"
@@ -79,7 +81,8 @@ export default async function FittingRoomPage({
   let tryOn: TryOnView | null = null
   // Unknown, the page lets the visitor on: starting a try-on decides.
   let free = true
-  let usedOn: string | null = null
+  let triesLeft = FAILED_TRIES
+  let usedOn: UsedOn | null = null
   const renderer = fittingRoom()?.provider.name
   // Closed without a renderer, by the owner's switch, or once the day's
   // budget can't take this costume's try-on (lib/fitting-room/budget.ts).
@@ -110,8 +113,14 @@ export default async function FittingRoomPage({
     if (renderer) {
       const allowance = await store.allowance(user.uid, renderer)
       free = allowance.free
-      if (!allowance.free && allowance.costume)
-        usedOn = getCostume(allowance.costume)?.name ?? null
+      if (allowance.free) triesLeft = allowance.triesLeft
+      const used = !allowance.free && allowance.costume
+      const name = used ? getCostume(used, locale)?.name : undefined
+      if (used && name) {
+        // Its try-on, while there is one to see (its photos not deleted).
+        const kept = tryOns.some((each) => each.id === allowance.tryOn)
+        usedOn = { name, slug: used, linked: kept }
+      }
     }
   } catch (error) {
     // The page still offers the photos; starting says if it can't.
@@ -152,6 +161,7 @@ export default async function FittingRoomPage({
           tryOn={tryOn}
           open={open}
           free={free}
+          triesLeft={triesLeft}
           usedOn={usedOn}
         />
       </div>

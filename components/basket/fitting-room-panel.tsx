@@ -10,8 +10,9 @@ import { cn } from "@/lib/utils"
 /**
  * The Fitting Room, at the top of My Pumpkin Basket, which it is part of
  * (spec §11.4): what it does, the costume every account tries on free, and
- * Kostuma Pro for more. On the account page (spec §11.6), whether the
- * account's free costume is still waiting instead.
+ * the way in. On the account page (spec §11.6), whether the account's free
+ * costume is still waiting instead. Kostuma Pro only once the free costume
+ * is used (todo UX-08): before, nothing should compete with trying it.
  */
 export function FittingRoomPanel({
   signedIn,
@@ -42,24 +43,26 @@ export function FittingRoomPanel({
       </h2>
       <p className="max-w-[60ch] text-body-lg">{t("line")}</p>
       <p className="text-lead font-semibold">
-        {free === undefined
-          ? t("free")
-          : account(free ? "freeWaiting" : "freeUsed")}
+        {source === "account" && free !== undefined
+          ? account(free ? "freeWaiting" : "freeUsed")
+          : t("free")}
       </p>
       <div className="mt-2 flex flex-wrap items-start gap-4">
         <Link
           href="/basket/fitting-room"
-          className={buttonVariants({ variant: "outline", size: "lg" })}
+          className={buttonVariants({ size: "lg" })}
         >
           {t("enter")}
           <RiArrowRightLine aria-hidden="true" />
         </Link>
-        <GetPro
-          source={source}
-          signedIn={signedIn}
-          back="/basket"
-          variant="outline"
-        />
+        {free === false && (
+          <GetPro
+            source={source}
+            signedIn={signedIn}
+            back="/basket"
+            variant="outline"
+          />
+        )}
       </div>
     </section>
   )

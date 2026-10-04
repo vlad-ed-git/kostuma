@@ -194,6 +194,12 @@ export function TryOnSteps({
             />
           )}
         </Mirror>
+        {tryOn.status === "running" && (
+          // How long, and that leaving is fine: it goes on (todo UX-07).
+          <p className="mt-6 max-w-[44ch] text-muted-foreground">
+            {t("takesTime")}
+          </p>
+        )}
       </figure>
 
       <div className="flex flex-col items-start gap-5 [grid-area:card] lg:pt-2">

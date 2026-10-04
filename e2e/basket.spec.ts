@@ -107,10 +107,10 @@ test.describe("My Pumpkin Basket", () => {
     await expect(fittingRoom).toContainText(
       "One costume is free with every account."
     )
-    // Signed out, Kostuma Pro's waitlist asks to sign in first.
+    // Kostuma Pro only once an account has used its free costume.
     await expect(
       fittingRoom.getByRole("link", { name: "Get Kostuma Pro" })
-    ).toHaveAttribute("href", "/sign-in?next=%2Fbasket")
+    ).toHaveCount(0)
 
     // The last added first.
     await expect(rows(page)).toHaveCount(2)

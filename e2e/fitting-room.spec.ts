@@ -176,13 +176,18 @@ test.describe("The Fitting Room", () => {
     await startTryOn(page)
 
     // Locked while it runs: no way to change the photos.
-    // How it is going is told to screen readers.
+    // How it is going is told to screen readers; how long, to everyone.
     await expect(page.getByText("Trying on the outfit…")).toBeAttached()
     await expect(page.getByRole("button", { name: /photos/ })).toHaveCount(0)
+    const takesTime = page.getByText(
+      "This takes about two minutes. You can leave and come back."
+    )
+    await expect(takesTime).toBeVisible()
 
     await expect(page.getByText("Your try-on is ready.")).toBeAttached({
       timeout: 30_000,
     })
+    await expect(takesTime).toHaveCount(0)
     await expect(
       page.getByText("Transform into Beetlejuice. Step by step.")
     ).toBeVisible()
@@ -519,6 +524,13 @@ test.describe("The Fitting Room", () => {
       .getByRole("button", { name: /^Step 1:/ })
       .click()
     await expect(pearl.getByText("Not rendered")).toBeVisible()
+    // What it cost: not the free costume, but one of the photos' tries.
+    await expect(
+      pearl.getByText("This didn't use your free costume.")
+    ).toBeVisible()
+    await expect(
+      pearl.getByText("You have one more try with other photos.")
+    ).toBeVisible()
 
     await page.getByRole("button", { name: "Choose other photos" }).click()
     await expect(facePicker(page).getByRole("alert")).toHaveText(message)
@@ -679,6 +691,12 @@ test.describe("The Fitting Room", () => {
           "You tried on Pearl. Get Kostuma Pro to try on more costumes."
         )
       ).toBeVisible()
+      // Pearl's name leads back to her try-on: the guide they earned.
+      await expect(
+        page
+          .getByRole("region", { name: "You've used your free costume." })
+          .getByRole("link", { name: "Pearl" })
+      ).toHaveAttribute("href", "/basket/fitting-room?costume=pearl")
       // No photos to give: nothing could start.
       await expect(
         page.getByRole("heading", { name: "Your photos" })
@@ -705,6 +723,17 @@ test.describe("The Fitting Room", () => {
       await expect(field).toHaveValue("morticia@example.com")
       await waitlist(page).getByRole("button", { name: "Update" }).click()
       await expect(waitlist(page).getByRole("status")).toHaveText("")
+      await waitlist(page).getByRole("button", { name: "Close" }).click()
+
+      // Used, the basket's and the account's panels offer Kostuma Pro too.
+      for (const path of ["/basket", "/account"]) {
+        await page.goto(path)
+        await expect(
+          page
+            .getByRole("region", { name: "The Fitting Room" })
+            .getByRole("button", { name: "Get Kostuma Pro" })
+        ).toBeVisible()
+      }
       expect(errors).toEqual([])
     })
   })

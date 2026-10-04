@@ -637,8 +637,9 @@ title, toolbar or empty state for one.
   `--blood` hairline at 40 % and a faint red glow; `h2` "The Fitting Room", one line ("Try on
   the outfits in your basket, then see the character's makeup on your own face, step by
   step."), "One costume is free with
-  every account." (`lead`, semibold), then link "Step inside" → `/basket/fitting-room` (11.4b)
-  and "Get Kostuma Pro" (10.3), both outline.
+  every account." (`lead`, semibold), then link "Step inside" → `/basket/fitting-room` (11.4b,
+  primary: nothing competes with the free costume), and "Get Kostuma Pro" (10.3, outline) only
+  once the account's free costume is used (here and on the account page).
 - Rows, the last added first, separated by space (no lines): thumbnail (4:5, 72 px wide, no
   reveal), name + film (a link to the costume), actions: **Buy** (10.3), "Try on"
   (→ `/basket/fitting-room?costume={slug}`, in `--foreground`: the basket's reason to exist),
@@ -721,7 +722,8 @@ words beside them; on phones the words come first.
   each try-on keeps the consent's time and wording version (`lib/fitting-room/consent.ts`).
 - **Used** (the free costume gone, no try-on of this costume to show): the vanity dark (every
   bulb out) beside `h2` "You've used your free costume.", "You tried on {name}. Get Kostuma Pro
-  to try on more costumes." (without a costume to name: "Get Kostuma Pro to try on more
+  to try on more costumes." ({name} a link to that costume's try-on, the guide they earned,
+  while its pictures are kept; without a costume to name: "Get Kostuma Pro to try on more
   costumes.") and "Get Kostuma Pro" (10.3). No photos are asked for.
 - **The try-on** (owner, 2026-10-03: the steps are the main thing): the vanity and, beside it,
   the step card; under them the film strip; at the bottom "Try with other photos". Nothing else:
@@ -730,8 +732,10 @@ words beside them; on phones the words come first.
   ready…", "Your try-on is ready.") is told to screen readers only (a polite live region), and
   the try-on's `h2`, the character's name, is for them too. One exception, seen by all: while
   YouCam is too busy to take the first render (`lib/fitting-room/calls.ts`), the card opens
-  with "The mirror is busy. Your try-on starts in a moment." (`lead`, `--blood-text`). A try-on
-  goes on with its page closed (YouCam's webhook moves it); coming back shows it as it stands.
+  with "The mirror is busy. Your try-on starts in a moment." (`lead`, `--blood-text`); and
+  under the mirror while it runs, muted, "This takes about two minutes. You can leave and come
+  back." A try-on goes on with its page closed (YouCam's webhook moves it); coming back shows
+  it as it stands.
   - **The vanity** shows one picture at a time, large (its glass as tall as the screen allows,
     at most 42 rem): the outfit (the visitor in the costume), then their face after each step.
     Never the face before (owner: "they know how they look"). The face wears the costume: the
@@ -769,8 +773,10 @@ words beside them; on phones the words come first.
   so instead: "You've used your free costume.", "New photos would make a new try-on of {name}.
   Get Kostuma Pro for more try-ons.", "Keep current photos" (focused first) and "Get Kostuma
   Pro", whose pop-up opens over it. Failed: an alert saying what to do ("Your face couldn't be
-  found in the photo…") and "Choose other photos" (primary; the free costume used up by failed
-  tries: "Get Kostuma Pro to try on more costumes." and the button) heading the card,
+  found in the photo…"), what it cost ("This didn't use your free costume.", and once a photo
+  failure has counted, "You have one more try with other photos.") and "Choose other photos"
+  (primary; the free costume used up by failed tries: "Get Kostuma Pro to try on more
+  costumes." and the button) heading the card,
   which opens the photos with the message under the one at fault, without asking (nothing to
   keep); "Continue" holds until that photo is changed (it would fail again, after the outfit was
   paid for once more). A frame not rendered shows "Not rendered" in the mirror (a ✕ on the

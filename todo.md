@@ -103,11 +103,11 @@ OPP-11 and OPP-12.
       Once it's done, trying on another needs Kostuma Pro."
 - [x] **UX-05** Basket: "Try on" in the foreground color, "Remove" muted.
 - [x] **UX-06** "Choose your costume" gets the site's red link underline.
-- [ ] **UX-07** While a try-on runs, one line under the mirror: "This takes about two minutes. You
+- [x] **UX-07** While a try-on runs, one line under the mirror: "This takes about two minutes. You
       can leave and come back."
-- [ ] **UX-08** "Step inside" filled; "Get Kostuma Pro" only once the free costume is used.
-- [ ] **UX-09** The used state's costume name links to its try-on.
-- [ ] **UX-10** The failure card says whether the free costume is still theirs and how many tries
+- [x] **UX-08** "Step inside" filled; "Get Kostuma Pro" only once the free costume is used.
+- [x] **UX-09** The used state's costume name links to its try-on.
+- [x] **UX-10** The failure card says whether the free costume is still theirs and how many tries
       are left.
 - [ ] **UX-11** Product links search with the English product name, showing the translated one.
 - [ ] **UX-12** zh: `<wbr>` break points in display strings and `word-break: keep-all` on
