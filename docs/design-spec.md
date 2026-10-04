@@ -566,7 +566,9 @@ every other page is indexed, in every language (14b).
      browser fills in the count. `role="timer"`, and a visually hidden sentence updated once a
      minute ("29 days, 10 hours and 14 minutes until Halloween.").
    - **The way through** (owner, 2026-10-04), one list in the display face: **"Choose your
-     costume"** (`Home.chooseCostume`), a link to the costumes below (`/#costumes`), blood
+     costume"** (`Home.chooseCostume`), a link to the costumes below (`/#costumes`),
+     underlined in `--blood` like the site's other links (0.06 em, 0.16 em under: on a touch
+     screen nothing else tells it from the two lines of words), blood
      dripping from its end down past the three lines (owner: it points down;
      `components/home/blood-drip.tsx`: a pool at the word, two short runs, one long stream with
      a drop at its tip; it pours down once, then a drop swells and falls every 2.4 s); then "Try it on" (`Home.tryItOn`) and "Apply makeup"

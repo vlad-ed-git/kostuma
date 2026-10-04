@@ -20,9 +20,15 @@ test.describe("the home title", () => {
       "Try it on",
       "Apply makeup",
     ])
-    await expect(
-      steps(page).first().getByRole("link", { name: "Choose your costume" })
-    ).toHaveAttribute("href", "/#costumes")
+    const choose = steps(page)
+      .first()
+      .getByRole("link", { name: "Choose your costume" })
+    await expect(choose).toHaveAttribute("href", "/#costumes")
+    // The one line that goes somewhere looks it: underlined in blood.
+    await expect(choose.getByText("Choose your costume")).toHaveCSS(
+      "text-decoration-line",
+      "underline"
+    )
     // Words, not links: the Fitting Room lives in the basket.
     await expect(steps(page).nth(1).getByRole("link")).toHaveCount(0)
     await expect(steps(page).nth(2).getByRole("link")).toHaveCount(0)

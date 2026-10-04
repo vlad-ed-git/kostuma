@@ -91,7 +91,11 @@ export default async function HomePage() {
                 href={costumesHref}
                 className="inline-flex min-h-11 items-center gap-3.5 whitespace-nowrap transition-colors hover:text-blood-text"
               >
-                {home("chooseCostume")}
+                {/* The site's link underline, in blood: the one of the three
+                    lines that goes somewhere (todo UX-06). */}
+                <span className="underline decoration-blood decoration-[0.06em] underline-offset-[0.16em]">
+                  {home("chooseCostume")}
+                </span>
                 <BloodDrip />
               </Link>
             </li>
