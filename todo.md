@@ -51,7 +51,7 @@ OPP-11 and OPP-12.
       try-ons stuck over 24 h, as Kostuma's failure, not the visitor's.
 - [x] **ENG-06** The browser sends the face at ≤ 1024 px and the body at ≤ 1440 px (long side),
       JPEG 0.85; a translated message if both together pass 4 MB.
-- [ ] **ENG-07** Client components get only the message namespaces they use (no legal text on
+- [x] **ENG-07** Client components get only the message namespaces they use (no legal text on
       other pages); `content-visibility: auto` on costume rows. Leave image URLs as they are
       (gzip absorbs the repetition).
 - [x] **ENG-08** Picture routes verify the session cookie without the revocation round trip;

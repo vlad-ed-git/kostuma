@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next"
 import { hasLocale, NextIntlClientProvider } from "next-intl"
-import { getTranslations } from "next-intl/server"
+import { getMessages, getTranslations } from "next-intl/server"
 import { notFound } from "next/navigation"
 import { connection } from "next/server"
 
@@ -11,6 +11,7 @@ import { CueMark } from "@/components/horror/cue-mark"
 import { Footer } from "@/components/layout/footer"
 import { Header } from "@/components/layout/header"
 import { SkipLink } from "@/components/layout/skip-link"
+import { clientMessages } from "@/i18n/client-messages"
 import { languageTags, routing } from "@/i18n/routing"
 import { getUser } from "@/lib/auth/session"
 import { getCostumes } from "@/lib/catalog"
@@ -63,13 +64,14 @@ export default async function RootLayout({
   await connection()
   const { locale } = await params
   if (!hasLocale(routing.locales, locale)) notFound()
-  const user = await getUser()
+  const [user, messages] = await Promise.all([getUser(), getMessages()])
 
   return (
     <html lang={languageTags[locale]} className={documentClassName}>
       <body className="flex min-h-svh flex-col">
-        {/* Gives Client Components the locale and messages of this request. */}
-        <NextIntlClientProvider>
+        {/* Gives Client Components the locale and the messages they use (the
+            legal documents stay on the server). */}
+        <NextIntlClientProvider messages={clientMessages(messages)}>
           {/* My Pumpkin Basket on every page. Signed in, it follows the
               session's account live. */}
           <BasketProvider
