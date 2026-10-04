@@ -141,7 +141,7 @@ export const costumes: Costume[] = [
     ],
     lore: "A mute, silently gleeful killer clown with a bag of tricks, who first appeared in Leone's low-budget shorts (2008, 2011) and the anthology All Hallows' Eve (2013).",
     funFact:
-      "Leone is a practical-effects makeup artist who built the character on shoestring budgets. Terrifier 3 landed Halloween week 2024 and earned roughly $90M on about a $2M budget.",
+      "Leone is a practical-effects makeup artist who built the character on shoestring budgets. Terrifier 3 opened on October 11, 2024 and earned roughly $90M on about a $2M budget.",
     look: {
       pieces: [
         "Black hat",
@@ -176,10 +176,10 @@ export const costumes: Costume[] = [
       },
     ],
     createdBy: ["Stephen King (1986 novel)", "Andy Muschietti (2017 director)"],
-    broughtToLifeBy: ["Bill Skarsgard (2017)", "Tim Curry (1990 miniseries)"],
+    broughtToLifeBy: ["Bill Skarsgård (2017)", "Tim Curry (1990 miniseries)"],
     lore: "An ancient shapeshifting cosmic entity that wakes roughly every 27 years in Derry, Maine, favoring a clown form to hunt children.",
     funFact:
-      "Skarsgard can point his eyes in different directions, a trick used on screen. His Victorian-flavored costume was designed by Janie Bryant. It Chapter One became the highest-grossing horror film ever at the time, about $700M.",
+      "Skarsgård can point his eyes in different directions, a trick used on screen. His Victorian-flavored costume was designed by Janie Bryant. It Chapter One became the highest-grossing horror film ever, about $700M.",
     look: {
       pieces: [
         "Cream ruffled jumpsuit",
@@ -218,7 +218,7 @@ export const costumes: Costume[] = [
       "Amy Madigan",
       "Wig by Melizah Anguiano Wheat, costumes by Trish Somerville",
     ],
-    lore: "After an entire classroom of children vanishes at 2:17 a.m., the odd, sickly aunt who moves in with one surviving boy turns out to be a parasitic witch.",
+    lore: "After all but one of a classroom's children vanish at 2:17 a.m., the odd, sickly aunt who moves in with the one boy left behind turns out to be a parasitic witch.",
     funFact:
       "Madigan won the Best Supporting Actress Oscar on March 15, 2026, 40 years after her first nomination. A prequel titled Gladys is in the works. Her look includes elongated earlobe prosthetics.",
     look: {
@@ -911,7 +911,7 @@ export const costumes: Costume[] = [
     createdBy: ["F. W. Murnau (director)", "Unauthorized Dracula adaptation"],
     broughtToLifeBy: [
       "Max Schreck (1922)",
-      "Bill Skarsgard in Robert Eggers' 2024 remake",
+      "Bill Skarsgård in Robert Eggers' 2024 remake",
     ],
     lore: "A rat-like vampire who brings plague and death to the German port of Wisborg.",
     funFact:
@@ -1070,7 +1070,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Jack Nicholson"],
     lore: "A struggling writer who takes a winter caretaker job at the isolated Overlook Hotel and slowly unravels.",
     funFact:
-      "The axe-through-the-door scene reportedly took days; Nicholson, a former volunteer firefighter, smashed through the doors so fast they had to be replaced with sturdier ones. He improvised the 'Here's Johnny!' line.",
+      "The axe-through-the-door scene reportedly took days; Nicholson, a former volunteer fire marshal, smashed through the doors so fast they had to be replaced with sturdier ones. He improvised the 'Here's Johnny!' line.",
     look: {
       pieces: ["Plaid flannel", "Work jacket", "Prop axe", "Frost or blood"],
     },
@@ -1210,7 +1210,7 @@ export const costumes: Costume[] = [
     ],
     lore: "A Hessian soldier who lost his head in battle and rides through Sleepy Hollow to claim victims.",
     funFact:
-      "The film won the Oscar for Art Direction. Walken had his teeth sharpened for his brief head-on appearances.",
+      "The film won the Oscar for Art Direction. Walken wore sharpened false teeth for his brief head-on appearances.",
     look: {
       pieces: ["Black cape", "Hidden head", "Jack-o'-lantern or sword"],
     },
@@ -1766,7 +1766,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Harvey Stephens"],
     lore: "A five-year-old adopted by a US ambassador who turns out to be the Antichrist. Everyone around him meets a grisly end.",
     funFact:
-      "Jerry Goldsmith won his only Oscar for the score. The 666 birthmark is one of horror's most famous props.",
+      "Jerry Goldsmith won his only Oscar for the score. The 666 birthmark is one of horror's most famous details.",
     look: {
       pieces: ["School uniform", "Tricycle", "'666' mark on scalp"],
     },
@@ -1822,7 +1822,7 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Adam Green"],
     broughtToLifeBy: ["Kane Hodder"],
-    lore: "The deformed ghost of a man accidentally killed by his father's hatchet, who haunts Honey Island Swamp in Louisiana.",
+    lore: "The deformed ghost of a boy accidentally killed by his father's hatchet, who haunts Honey Island Swamp in Louisiana.",
     funFact:
       "Hodder also played Jason Voorhees four times. Green pitched it as 'old-school American horror'.",
     look: {
@@ -2434,7 +2434,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Claude Rains", "Effects by John P. Fulton"],
     lore: "A scientist who turns himself invisible and descends into megalomania.",
     funFact:
-      "This was Rains' film debut, and his face is not shown until the final scene.",
+      "This was Rains's Hollywood debut, and his face is not shown until the final scene.",
     look: {
       pieces: ["Bandages", "Dark goggles", "Hat", "Overcoat"],
     },
@@ -2592,7 +2592,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Nick King"],
     lore: "A Babylonian entity who consumes children after they are made to murder their families on film.",
     funFact:
-      "Derrickson has said the film was inspired by a nightmare after watching The Ring.",
+      "The film was inspired by a nightmare co-writer C. Robert Cargill had after watching The Ring.",
     look: {
       pieces: ["Long black hair and coat", "White face"],
     },
@@ -2728,7 +2728,7 @@ export const costumes: Costume[] = [
       "Marv Wolfman & Gene Colan (creators of Blade in Marvel comics, 1973)",
     ],
     broughtToLifeBy: ["Wesley Snipes"],
-    lore: "A half-vampire vampire hunter who fights the blood cult.",
+    lore: "A half-vampire vampire hunter at war with the vampires who secretly run the city's nightlife.",
     funFact:
       "It was one of the first successful Marvel movies, before the MCU.",
     look: {
@@ -2760,7 +2760,7 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Stephen King (novel)", "Stanley Kubrick (director)"],
     broughtToLifeBy: ["Danny Lloyd"],
-    lore: "A psychic boy who sees terrifying visions in the Overlook Hotel and communicates with a chef.",
+    lore: "A psychic boy who sees terrifying visions in the Overlook Hotel and shares “the shining” with the hotel's cook, Dick Hallorann.",
     funFact:
       "Lloyd retired from acting and became a biology professor. 'REDRUM' is murder reversed.",
     look: {
