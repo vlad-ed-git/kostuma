@@ -241,12 +241,40 @@ test.describe("The Fitting Room", () => {
     await expect(
       beetlejuice.getByText("Now let’s get started on the makeup.")
     ).toBeVisible()
-    // Before step 1, the makeup's safety (todo COPY-12).
+    // Before step 1 (todo OPP-12, COPY-12): how long, every product once
+    // with its shop, and the makeup's safety.
+    await expect(
+      beetlejuice.getByText("The makeup takes about 55 minutes.")
+    ).toBeVisible()
+    const needs = beetlejuice.getByRole("list", { name: "What you need" })
+    await expect(needs.getByRole("link")).toHaveCount(12)
+    await expect(
+      needs.getByRole("link", {
+        name: "Find gray cream face paint on Amazon (opens in a new tab)",
+      })
+    ).toHaveAttribute(
+      "href",
+      "https://www.amazon.com/s?k=gray%20cream%20face%20paint"
+    )
     await expect(
       beetlejuice.getByText(
         "Use cosmetic-grade products only, patch-test 24 hours before, and keep paint and fake blood out of your eyes."
       )
     ).toBeVisible()
+    // On paper, the guide alone: every step, black on white.
+    const paper = page.locator("body > .print-guide")
+    await expect(paper).toBeHidden()
+    await page.emulateMedia({ media: "print" })
+    await expect(paper).toBeVisible()
+    await expect(paper.getByRole("heading", { level: 1 })).toHaveText(
+      "Beetlejuice"
+    )
+    await expect(paper.getByRole("listitem")).toHaveCount(12 + 7)
+    await expect(paper).toHaveCSS("color", "rgb(0, 0, 0)")
+    await expect(beetlejuice).toBeHidden()
+    await page.emulateMedia({ media: "screen" })
+    await expect(paper).toBeHidden()
+    await expect(beetlejuice).toBeVisible()
     // Buy right there, as in the basket: three shops, a menu.
     await expect(
       beetlejuice.getByRole("button", {

@@ -226,3 +226,64 @@
   letter-spacing: 0.09em;
   font-weight: 600;
 }
+
+/* The makeup guide on paper (todo OPP-12; components/fitting-room/
+   try-on-steps.tsx): never on screen. Printing a page that holds one
+   prints the guide alone, black on white, a page to prop against the
+   mirror; every other page prints as it is. */
+.print-guide {
+  display: none;
+}
+
+@media print {
+  @page {
+    margin: 16mm;
+  }
+  html:has(body > .print-guide) {
+    color-scheme: light;
+    background: #fff;
+  }
+  body:has(> .print-guide) {
+    display: block;
+    background: #fff;
+    color: #000;
+  }
+  body:has(> .print-guide) > :not(.print-guide) {
+    display: none !important;
+  }
+  .print-guide {
+    display: block;
+    color: #000;
+    font-family: var(--font-sans);
+    font-size: 11pt;
+    line-height: 1.45;
+  }
+  .print-guide h1 {
+    font-family: var(--font-heading);
+    font-size: 26pt;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .print-guide h2 {
+    margin-top: 14pt;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.09em;
+    font-weight: 600;
+  }
+  .print-guide h3 {
+    font-family: var(--font-heading);
+    font-size: 15pt;
+    font-weight: 500;
+  }
+  .print-guide p {
+    margin-top: 4pt;
+  }
+  .print-guide-needs {
+    columns: 2;
+    column-gap: 24pt;
+    margin-top: 4pt;
+  }
+  .print-guide li {
+    break-inside: avoid;
+  }
+}

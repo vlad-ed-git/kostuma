@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from "@testing-library/react"
+import { waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
@@ -57,8 +57,15 @@ const allMakeup: TryOnView = {
   steps: [done(0), done(1)],
 }
 
-const show = (tryOn: TryOnView) =>
-  renderInEnglish(
+/**
+ * The try-on as the page shows it. Queries stay inside it: the guide on
+ * paper hangs off <body>, where only print shows it (globals.css, which
+ * jsdom doesn't load).
+ */
+let ui: ReturnType<typeof within>
+
+const show = (tryOn: TryOnView) => {
+  const view = renderInEnglish(
     <TryOnSteps
       tryOn={tryOn}
       name="Beetlejuice"
@@ -66,11 +73,14 @@ const show = (tryOn: TryOnView) =>
       title={<h2>Beetlejuice</h2>}
     />
   )
+  ui = within(view.container)
+  return view
+}
 
 /** Picks a frame on the film strip. */
 const frame = (name: string) =>
   userEvent.click(
-    within(screen.getByRole("list", { name: "Your pictures" })).getByRole(
+    within(ui.getByRole("list", { name: "Your pictures" })).getByRole(
       "button",
       { name }
     )
@@ -107,33 +117,69 @@ describe("TryOnSteps", () => {
   it("says what the makeup asks before step 1, on the outfit's card", async () => {
     show(dressed)
     // Done: the mirror shows the whole transformation, the last step.
-    expect(screen.getByText("Step 2 of 2")).toBeVisible()
-    expect(screen.queryByText(SAFETY)).not.toBeInTheDocument()
+    expect(ui.getByText("Step 2 of 2")).toBeVisible()
+    expect(ui.queryByText(SAFETY)).not.toBeInTheDocument()
 
     await frame("The outfit")
+    expect(ui.getByText("Now let’s get started on the makeup.")).toBeVisible()
+    // How long (two steps: 16 minutes, about 15), every product once.
+    expect(ui.getByText("The makeup takes about 15 minutes.")).toBeVisible()
+    const needs = ui.getByRole("list", { name: "What you need" })
     expect(
-      screen.getByText("Now let’s get started on the makeup.")
-    ).toBeVisible()
-    expect(screen.getByText(SAFETY)).toBeVisible()
+      within(needs)
+        .getAllByRole("link")
+        .map((link) => link.textContent)
+    ).toEqual(["gray cream face paint", "setting powder", "black eyeshadow"])
+    expect(
+      within(needs).getByRole("link", {
+        name: "Find black eyeshadow on Amazon (opens in a new tab)",
+      })
+    ).toHaveAttribute("href", "https://www.amazon.com/s?k=black%20eyeshadow")
+    expect(ui.getByText(SAFETY)).toBeVisible()
 
-    await userEvent.click(screen.getByRole("button", { name: "Apply makeup" }))
-    expect(screen.getByText("Step 1 of 2")).toBeVisible()
-    expect(screen.queryByText(SAFETY)).not.toBeInTheDocument()
+    await userEvent.click(ui.getByRole("button", { name: "Apply makeup" }))
+    expect(ui.getByText("Step 1 of 2")).toBeVisible()
+    expect(ui.queryByText(SAFETY)).not.toBeInTheDocument()
+    expect(
+      ui.queryByRole("list", { name: "What you need" })
+    ).not.toBeInTheDocument()
+  })
+
+  it("prints the whole guide, and only on paper", () => {
+    const { container } = show(dressed)
+    // Beside the page, where print shows it alone (globals.css).
+    const paper = document.body.querySelector(":scope > .print-guide")
+    expect(paper).not.toBeNull()
+    expect(container.contains(paper)).toBe(false)
+    expect(paper).toHaveTextContent("Beetlejuice")
+    expect(paper).toHaveTextContent("The makeup takes about 15 minutes.")
+    expect(paper).toHaveTextContent(SAFETY)
+    for (const text of [
+      "Step 1 of 2",
+      "Corpse base",
+      "Pat gray cream paint over the whole face.",
+      "gray cream face paint · setting powder",
+      "Step 2 of 2",
+      "Sunken eyes",
+      "To finish",
+      "A striped suit.",
+    ])
+      expect(paper).toHaveTextContent(text)
   })
 
   it("says it on step 1 when there is no outfit, and only there", async () => {
     show(allMakeup)
-    expect(screen.queryByText(SAFETY)).not.toBeInTheDocument()
+    expect(ui.queryByText(SAFETY)).not.toBeInTheDocument()
     await frame("Step 1: Corpse base")
-    expect(screen.getByText("Step 1 of 2")).toBeVisible()
-    expect(screen.getByText(SAFETY)).toBeVisible()
-    await userEvent.click(screen.getByRole("button", { name: "Next step" }))
-    expect(screen.queryByText(SAFETY)).not.toBeInTheDocument()
+    expect(ui.getByText("Step 1 of 2")).toBeVisible()
+    expect(ui.getByText(SAFETY)).toBeVisible()
+    await userEvent.click(ui.getByRole("button", { name: "Next step" }))
+    expect(ui.queryByText(SAFETY)).not.toBeInTheDocument()
   })
 
   it("saves the picture in the mirror, the same JPEG as a named file", async () => {
     show(dressed)
-    const save = screen.getByRole("link", { name: "Save this picture" })
+    const save = ui.getByRole("link", { name: "Save this picture" })
     expect(save).toHaveTextContent("Save")
     expect(save).toHaveAttribute(
       "href",
@@ -142,9 +188,10 @@ describe("TryOnSteps", () => {
     expect(save).toHaveAttribute("download", "kostuma-beetlejuice-step-2.jpg")
 
     await frame("The outfit")
-    expect(
-      screen.getByRole("link", { name: "Save this picture" })
-    ).toHaveAttribute("download", "kostuma-beetlejuice-outfit.jpg")
+    expect(ui.getByRole("link", { name: "Save this picture" })).toHaveAttribute(
+      "download",
+      "kostuma-beetlejuice-outfit.jpg"
+    )
   })
 
   it("offers to save only a picture that is out", () => {
@@ -154,9 +201,10 @@ describe("TryOnSteps", () => {
       steps: [done(0), done(1), done(2)],
     })
     // The mirror follows the newest picture: step 1's.
-    expect(
-      screen.getByRole("link", { name: "Save this picture" })
-    ).toHaveAttribute("download", "kostuma-beetlejuice-step-1.jpg")
+    expect(ui.getByRole("link", { name: "Save this picture" })).toHaveAttribute(
+      "download",
+      "kostuma-beetlejuice-step-1.jpg"
+    )
     unmount()
 
     show({
@@ -165,7 +213,7 @@ describe("TryOnSteps", () => {
       steps: [{ status: "working", image: null }],
     })
     expect(
-      screen.queryByRole("link", { name: "Save this picture" })
+      ui.queryByRole("link", { name: "Save this picture" })
     ).not.toBeInTheDocument()
   })
 
@@ -176,7 +224,7 @@ describe("TryOnSteps", () => {
     await waitFor(() =>
       expect(fetch).toHaveBeenCalledWith("/api/fitting-room/try-ons/t/3?v=1")
     )
-    const save = screen.getByRole("link", { name: "Save this picture" })
+    const save = ui.getByRole("link", { name: "Save this picture" })
     await waitFor(async () => {
       share.mockClear()
       await userEvent.click(save)
@@ -204,7 +252,7 @@ describe("TryOnSteps", () => {
     window.addEventListener("click", stop)
     try {
       show(dressed)
-      const save = screen.getByRole("link", { name: "Save this picture" })
+      const save = ui.getByRole("link", { name: "Save this picture" })
       await waitFor(async () => {
         share.mockClear()
         await userEvent.click(save)

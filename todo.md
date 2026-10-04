@@ -153,7 +153,7 @@ OPP-11 and OPP-12.
       `?download=1` (`Content-Disposition: attachment`, `kostuma-<costume>-<step>.jpg`); on
       phones, the Web Share API with the file when available. Nothing published, nothing
       composited.
-- [ ] **OPP-12** "What you need" before step 1: every product of the guide once, with its shop
+- [x] **OPP-12** "What you need" before step 1: every product of the guide once, with its shop
       link; "about N minutes" (8 per step, rounded to 5); a print stylesheet for the guide.
 - [ ] **OPP-03** YouCam AI Skin Tone Analysis measures the face photo's skin (once per photo, kept
       on it), falling back to today's measurement; the base step names the shade when the

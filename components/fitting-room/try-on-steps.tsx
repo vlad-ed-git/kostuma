@@ -9,7 +9,15 @@ import {
 } from "@remixicon/react"
 import Image from "next/image"
 import { useTranslations } from "next-intl"
-import { type ReactNode, useEffect, useRef, useState } from "react"
+import {
+  type ReactNode,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react"
+import { createPortal } from "react-dom"
 
 import { Buy } from "@/components/basket/buy"
 import { Button } from "@/components/ui/button"
@@ -22,7 +30,8 @@ import {
   shownFrame,
 } from "@/lib/fitting-room/frames"
 import type { TryOnView } from "@/lib/fitting-room/try-on"
-import type { GuideText } from "@/lib/guides"
+import { minutesOf, productsOf } from "@/lib/guide-kit"
+import type { GuideText, Product } from "@/lib/guides"
 import { cn } from "@/lib/utils"
 
 import { Mirror } from "./dressing-room"
@@ -220,7 +229,9 @@ export function TryOnSteps({
           // YouCam is busy: the try-on waits its turn (calls.ts).
           <p className="max-w-[60ch] text-lead text-blood-text">{t("busy")}</p>
         )}
-        {beforeMakeup && frame?.kind === "step" && <BeforeMakeup />}
+        {beforeMakeup && frame?.kind === "step" && (
+          <BeforeMakeup guide={guide} />
+        )}
         {frame?.kind === "step" && (
           <p className="text-label caps text-blood-text">
             {t("stepOf", { number: frame.number, count: makeup.length })}
@@ -238,7 +249,9 @@ export function TryOnSteps({
             <p>{t("outfitNote")}</p>
             {shops && <Buy name={name} shops={shops} />}
             <p>{t("outfitThen")}</p>
-            {beforeMakeup && makeup.length > 0 && <BeforeMakeup />}
+            {beforeMakeup && makeup.length > 0 && (
+              <BeforeMakeup guide={guide} />
+            )}
           </div>
         )}
         {step && (
@@ -248,16 +261,7 @@ export function TryOnSteps({
             <ul className="flex flex-col gap-1.5">
               {step.products.map((product) => (
                 <li key={product.name}>
-                  <a
-                    href={shopSearch(product.search)}
-                    target="_blank"
-                    rel="noopener noreferrer nofollow"
-                    aria-label={t("shopNamed", { product: product.name })}
-                    className="inline-flex min-h-6 items-center gap-1 text-lg text-blood-text underline decoration-blood/60 underline-offset-4 transition-colors hover:text-foreground"
-                  >
-                    {product.name}
-                    <RiArrowRightUpLine aria-hidden="true" className="size-4" />
-                  </a>
+                  <ProductLink product={product} />
                 </li>
               ))}
             </ul>
@@ -345,6 +349,7 @@ export function TryOnSteps({
       </ol>
 
       {after && <div className="[grid-area:after]">{after}</div>}
+      {makeup.length > 0 && <PrintGuide name={name} guide={guide} />}
     </div>
   )
 }
@@ -407,17 +412,104 @@ function SavePicture({ src, name }: { src: string; name: string }) {
   )
 }
 
-/**
- * What the whole makeup asks before step 1: products made for skin, a
- * patch test, and paint and fake blood kept out of the eyes (todo COPY-12;
- * the Terms say it at length).
- */
-function BeforeMakeup() {
+/** A product, as a link to a shop's search for it (new tab). */
+function ProductLink({ product }: { product: Product }) {
   const t = useTranslations("FittingRoom")
   return (
-    <p className="max-w-[60ch] text-body-lg text-muted-foreground">
-      {t("safety")}
-    </p>
+    <a
+      href={shopSearch(product.search)}
+      target="_blank"
+      rel="noopener noreferrer nofollow"
+      aria-label={t("shopNamed", { product: product.name })}
+      className="inline-flex min-h-6 items-center gap-1 text-lg text-blood-text underline decoration-blood/60 underline-offset-4 transition-colors hover:text-foreground"
+    >
+      {product.name}
+      <RiArrowRightUpLine aria-hidden="true" className="size-4" />
+    </a>
+  )
+}
+
+/**
+ * What the whole makeup asks before step 1: about how long it takes (todo
+ * OPP-12: to plan Halloween night), every product once with its shop link
+ * (one shopping trip), and its safety: products made for skin, a patch
+ * test, paint and fake blood kept out of the eyes (todo COPY-12; the Terms
+ * say it at length).
+ */
+function BeforeMakeup({ guide }: { guide: GuideText }) {
+  const t = useTranslations("FittingRoom")
+  const needs = useId()
+  return (
+    <div className="flex max-w-[60ch] flex-col gap-4">
+      <p className="text-body-lg">{t("time", { minutes: minutesOf(guide) })}</p>
+      <div className="flex flex-col gap-2">
+        <p id={needs} className="text-micro caps text-blood-text">
+          {t("whatYouNeed")}
+        </p>
+        <ul
+          aria-labelledby={needs}
+          className="grid gap-x-8 gap-y-1.5 sm:grid-cols-2"
+        >
+          {productsOf(guide).map((product) => (
+            <li key={product.search}>
+              <ProductLink product={product} />
+            </li>
+          ))}
+        </ul>
+      </div>
+      <p className="text-body-lg text-muted-foreground">{t("safety")}</p>
+    </div>
+  )
+}
+
+const noChange = () => () => {}
+
+/**
+ * The makeup guide on paper (todo OPP-12): printing a try-on prints the
+ * guide alone, black on white (globals.css), a page to prop against the
+ * mirror: the character, how long, what you need, the safety, every step
+ * with its products, and the finish. Never on screen. It hangs off <body>,
+ * in the browser only, so print can show it and nothing else.
+ */
+function PrintGuide({ name, guide }: { name: string; guide: GuideText }) {
+  const t = useTranslations("FittingRoom")
+  const browser = useSyncExternalStore(
+    noChange,
+    () => true,
+    () => false
+  )
+  if (!browser) return null
+  return createPortal(
+    <article className="print-guide">
+      <h1>{name}</h1>
+      <p>{t("time", { minutes: minutesOf(guide) })}</p>
+      <h2>{t("whatYouNeed")}</h2>
+      <ul className="print-guide-needs">
+        {productsOf(guide).map((product) => (
+          <li key={product.search}>{product.name}</li>
+        ))}
+      </ul>
+      <p>{t("safety")}</p>
+      <ol>
+        {guide.steps.map((step, index) => (
+          <li key={index}>
+            <h2>
+              {t("stepOf", { number: index + 1, count: guide.steps.length })}
+            </h2>
+            <h3>{step.title}</h3>
+            <p>{step.howTo}</p>
+            <p>{step.products.map((product) => product.name).join(" · ")}</p>
+          </li>
+        ))}
+      </ol>
+      {guide.finish && (
+        <section>
+          <h2>{t("finish")}</h2>
+          <p>{guide.finish}</p>
+        </section>
+      )}
+    </article>,
+    document.body
   )
 }
 

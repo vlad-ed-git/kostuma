@@ -767,10 +767,17 @@ words beside them; on phones the words come first.
     focus); at the last frame of a finished try-on, "Next step" reads "Start with step 1" and
     goes to the guide's first step. For the outfit (owner, 2026-10-03): its name, "See the photo and note down what
     to buy.", the costume's Buy (10.3, as in the basket), "Now let's get started on the
-    makeup." (`lead`), then, before step 1 (todo COPY-12), "Use cosmetic-grade products only,
-    patch-test 24 hours before, and keep paint and fake blood out of your eyes." (`body-lg`,
-    muted; on step 1's card when a try-on has no outfit), and the next step's button reads
-    "Apply makeup".
+    makeup." (`lead`), then what the whole makeup asks before step 1 (on step 1's card when a
+    try-on has no outfit): "The makeup takes about {minutes} minutes." (8 a step, to the nearest
+    5; todo OPP-12), "What you need" (`micro` small capitals, `--blood-text`) over every product
+    of the guide once, in the order its steps need them, each a shop link like a step's (two
+    columns from `sm`), and "Use cosmetic-grade products only, patch-test 24 hours before, and
+    keep paint and fake blood out of your eyes." (`body-lg`, muted; todo COPY-12); the next
+    step's button reads "Apply makeup".
+  - **On paper** (todo OPP-12): printing a try-on prints its guide alone, black on white, a
+    page to prop against the mirror: the character's name (the title face), the time, "What you
+    need" in two columns, the safety line, every step ("Step n of N", its title, how-to and
+    products) and "To finish". Never on screen; every other page prints as it is.
   - **The film strip** ("Your pictures"): every picture as a frame between sprocket holes,
     labelled "Outfit", 1, 2, …; the one in the mirror ringed in `--blood-text`; a frame not done
     yet is the costume photo as a black silhouette rimmed in red (as the photos wait on the home
