@@ -107,6 +107,8 @@ Makeup guides (`content/makeup.ts`, held to them by `content/makeup.test.ts`):
   one hair color, last. No cuts, wigs, lenses or props in a step.
 - What makeup can't draw (blood, stitches, fangs, a line through the eye) goes
   in the guide's closing words (`finish`), never into a render.
+- No skin tone analysis: never YouCam's Skin Tone Analysis API. Kostuma measures
+  the skin itself, from the face photo (`lib/fitting-room/photo.ts`).
 
 Content and copy:
 
