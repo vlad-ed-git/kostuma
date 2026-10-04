@@ -375,9 +375,10 @@ test.describe("The Fitting Room", () => {
     const product = freddy.getByRole("link", {
       name: "Buscar labial rojo ladrillo en Amazon (se abre en una pestaña nueva)",
     })
+    // Shown in Spanish, searched in English: the shop finds it.
     await expect(product).toHaveAttribute(
       "href",
-      "https://www.amazon.com/s?k=labial%20rojo%20ladrillo"
+      "https://www.amazon.com/s?k=brick%20red%20lipstick"
     )
     await expect(
       freddy

@@ -31,3 +31,37 @@ export function guideFor(
     ...(guide.finish !== undefined && { finish: text.finish ?? guide.finish }),
   }
 }
+
+/**
+ * A product of a guide's step as the page shows it: its name in the
+ * visitor's language, and the English words a shop is searched with (todo
+ * UX-11: a translated name finds little on amazon.com).
+ */
+export type Product = { name: string; search: string }
+
+/** A costume's makeup guide as the Fitting Room reads it: words only. */
+export type GuideText = {
+  steps: { title: string; howTo: string; products: Product[] }[]
+  finish?: string
+}
+
+/** A costume's guide in a language, for the page; undefined if none. */
+export function guideText(
+  slug: string,
+  locale: Locale = "en"
+): GuideText | undefined {
+  const guide = guideFor(slug, locale)
+  const english = guideFor(slug)
+  if (!guide || !english) return undefined
+  return {
+    steps: guide.steps.map(({ title, howTo, products }, step) => ({
+      title,
+      howTo,
+      products: products.map((name, index) => ({
+        name,
+        search: english.steps[step]?.products[index] ?? name,
+      })),
+    })),
+    ...(guide.finish !== undefined && { finish: guide.finish }),
+  }
+}

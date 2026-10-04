@@ -13,7 +13,7 @@ import { getCostume, getCostumes, toSummary } from "@/lib/catalog"
 import { admits, unitsOfGuide } from "@/lib/fitting-room/budget"
 import { currentTryOn } from "@/lib/fitting-room/current-try-on"
 import { FAILED_TRIES } from "@/lib/fitting-room/free-costume"
-import { guideFor } from "@/lib/guides"
+import { guideFor, guideText } from "@/lib/guides"
 import { fittingRoom } from "@/lib/fitting-room/service"
 import { fittingRoomStore } from "@/lib/fitting-room/store"
 import { shopLinks } from "@/lib/shops"
@@ -57,18 +57,13 @@ export default async function FittingRoomPage({
   const costume = slug ? getCostume(slug, locale) : undefined
   // The guide's words in the visitor's language; the renders are the same.
   const guide = costume ? guideFor(costume.slug, locale) : undefined
+  // Its words for the page: its products searched in English.
+  const text = costume ? guideText(costume.slug, locale) : undefined
   const selected: FittingCostume | null =
-    costume && guide && costume.images[0]
+    costume && guide && text && costume.images[0]
       ? {
           ...toSummary(costume),
-          guide: {
-            steps: guide.steps.map(({ title, howTo, products }) => ({
-              title,
-              howTo,
-              products,
-            })),
-            finish: guide.finish,
-          },
+          guide: text,
           allMakeup: guide.allMakeup === true,
           shops: shopLinks(costume.shops),
         }

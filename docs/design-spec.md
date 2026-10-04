@@ -747,7 +747,7 @@ words beside them; on phones the words come first.
     one the visitor picks fades up.
   - **The step card**, the main thing: "Step n of N" (`label` small capitals, `--blood-text`),
     the step's title (`h2` size), the how-to (`lead`), its products as links to a shop's search
-    (new tab, 10.3 external links), on the last step "To finish" and the guide's last line; then
+    (new tab, 10.3 external links; named in the visitor's language, searched in English), on the last step "To finish" and the guide's last line; then
     "Previous step" (outline) and "Next step" (primary), each hidden at its end (the other keeps
     focus); at the last frame of a finished try-on, "Next step" reads "Start with step 1" and
     goes to the guide's first step. For the outfit (owner, 2026-10-03): its name, "See the photo and note down what

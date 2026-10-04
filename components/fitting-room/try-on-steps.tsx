@@ -20,15 +20,12 @@ import {
   shownFrame,
 } from "@/lib/fitting-room/frames"
 import type { TryOnView } from "@/lib/fitting-room/try-on"
+import type { GuideText } from "@/lib/guides"
 import { cn } from "@/lib/utils"
 
 import { Mirror } from "./dressing-room"
 
-/** A costume's makeup guide, as the page reads it (content/makeup.ts). */
-export type GuideText = {
-  steps: { title: string; howTo: string; products: string[] }[]
-  finish?: string
-}
+export type { GuideText } from "@/lib/guides"
 
 /** Where a product is looked for: a shop's search (owner: shops are links). */
 export const shopSearch = (product: string) =>
@@ -233,15 +230,15 @@ export function TryOnSteps({
             <p className="sr-only">{t("youNeed")}</p>
             <ul className="flex flex-col gap-1.5">
               {step.products.map((product) => (
-                <li key={product}>
+                <li key={product.name}>
                   <a
-                    href={shopSearch(product)}
+                    href={shopSearch(product.search)}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
-                    aria-label={t("shopNamed", { product })}
+                    aria-label={t("shopNamed", { product: product.name })}
                     className="inline-flex min-h-6 items-center gap-1 text-lg text-blood-text underline decoration-blood/60 underline-offset-4 transition-colors hover:text-foreground"
                   >
-                    {product}
+                    {product.name}
                     <RiArrowRightUpLine aria-hidden="true" className="size-4" />
                   </a>
                 </li>
