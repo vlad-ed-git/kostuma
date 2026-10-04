@@ -15,7 +15,7 @@ import { JsonLd } from "@/components/seo/json-ld"
 import { Link } from "@/i18n/navigation"
 import { getCostume, getNeighbors, getRelated, toSummary } from "@/lib/catalog"
 import type { Costume } from "@/lib/catalog/types"
-import { breadcrumbs, jsonLd, seoFor, urlIn } from "@/lib/seo"
+import { breadcrumbs, firstSentence, jsonLd, seoFor, urlIn } from "@/lib/seo"
 
 export async function generateMetadata({
   params,
@@ -25,15 +25,20 @@ export async function generateMetadata({
   const costume = getCostume(slug, locale)
   if (!costume) return {}
   const t = await getTranslations("Costume")
+  // What a search result says (todo COPY-13): the costume and its makeup
+  // guide, a line of its lore, and that it is seen on one's own face.
   const title = t("metaTitle", { name: costume.name })
+  const description = t("metaDescription", {
+    lore: firstSentence(costume.lore),
+  })
   return {
     title,
-    description: costume.lore,
+    description,
     // The card itself: opengraph-image.tsx beside this page.
     ...seoFor(locale, {
       path: `/costumes/${costume.slug}`,
       title,
-      description: costume.lore,
+      description,
     }),
   }
 }

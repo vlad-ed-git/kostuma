@@ -116,6 +116,24 @@ export function openGraphFor(
   }
 }
 
+/** Words whose period never ends a sentence: St. Nicholas, EE. UU. */
+const ABBREVIATIONS = /(?:^|[\s(])(?:St|Mr|Mrs|Ms|Dr|Jr|Sr|Sra|EE|UU)\.$/
+
+/**
+ * A text's first sentence (todo COPY-13): a costume's lore, cut to what a
+ * search result shows before it trails off. Chinese ends a sentence with
+ * its own full stop; the others with a stop, then a capital.
+ */
+export function firstSentence(text: string): string {
+  const chinese = /^(.+?[。！？])./u.exec(text)
+  if (chinese) return chinese[1]
+  for (const end of text.matchAll(/[.!?](?=\s+[\p{Lu}“«¿¡])/gu)) {
+    const sentence = text.slice(0, end.index + 1)
+    if (!ABBREVIATIONS.test(sentence)) return sentence
+  }
+  return text
+}
+
 /** A page's metadata for search and sharing, in one. */
 export function seoFor(
   locale: Locale,

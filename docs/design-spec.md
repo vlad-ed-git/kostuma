@@ -1007,8 +1007,11 @@ Every page a visitor can read without an account is indexed in all three languag
   reset password, account, the basket and the Fitting Room (`noindex`, not in the sitemap).
 - **`/sitemap.xml`:** every indexed page in every language, each with its versions; the legal
   pages dated by their last change. **`/robots.txt`:** all open but `/api/`; names the sitemap.
-- **Titles and descriptions:** each page's own, in its language (`%s · Kostuma`): the tagline at
-  home, a costume's lore, a page's lead.
+- **Titles and descriptions:** each page's own, in its language (`%s · Kostuma`), saying what a
+  searcher gets (todo COPY-13): home "Kostuma · Horror movie costumes, tried on you, with
+  step-by-step makeup" and how many characters, the free try-on and the makeup; a costume "{name}
+  costume and makeup guide", the first sentence of its lore and "See it on your own face, step
+  by step."; another page its lead. Titles are not on the page: the design stays as it is.
 - **Shared links:** Open Graph and X (`summary_large_image`) in the page's language
   (`og:locale` `en_US`, `es_LA`, `zh_CN`, the others as alternates). The cards, 1200 × 630 PNG
   drawn by `next/og` in the night's colors and the title face (`lib/og.tsx`):

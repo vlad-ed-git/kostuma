@@ -11,7 +11,9 @@
     "chooseCostume": "Choose your costume",
     "tryItOn": "Try it on",
     "applyMakeup": "Apply makeup",
-    "reel": "A real transformation into {name}, frame by frame: the photo, the outfit tried on, then the first, middle and last steps of the makeup."
+    "reel": "A real transformation into {name}, frame by frame: the photo, the outfit tried on, then the first, middle and last steps of the makeup.",
+    "metaTitle": "Horror movie costumes, tried on you, with step-by-step makeup",
+    "metaDescription": "Dress as one of {count} horror movie characters for Halloween. Try one costume on your own photos for free, then do its makeup step by step."
   },
   "Countdown": {
     "label": "Time until Halloween",
@@ -37,7 +39,8 @@
     "closeMenu": "Close the menu"
   },
   "Costume": {
-    "metaTitle": "{name} costume",
+    "metaTitle": "{name} costume and makeup guide",
+    "metaDescription": "{lore} See it on your own face, step by step.",
     "photoAlt": "{name} costume",
     "film": "{title} ({year})",
     "photos": "Photos",

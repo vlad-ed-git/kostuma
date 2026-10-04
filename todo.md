@@ -140,7 +140,7 @@ OPP-11 and OPP-12.
 - [x] **COPY-11** "…until Santa comes. Ho. Ho. Ho."
 - [x] **COPY-12** Before step 1: "Use cosmetic-grade products only, patch-test 24 hours before,
       and keep paint and fake blood out of your eyes."
-- [ ] **COPY-13** The page titles and descriptions as suggested.
+- [x] **COPY-13** The page titles and descriptions as suggested.
 - [ ] **COPY-14** Owner: one native read of the Spanish and the Chinese (not code).
 - [ ] **COPY-15** The listed voice tweaks (error, closed, the home's three lines).
 - Keep "Pat": it is the correct makeup verb.

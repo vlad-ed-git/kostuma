@@ -24,14 +24,22 @@ import {
 } from "@/lib/seo"
 import { visitorFrom } from "@/lib/visitor"
 
+/**
+ * What a search result says of the home page (todo COPY-13): what Kostuma
+ * is, how many characters, the free try-on and the makeup.
+ */
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale()
-  const t = await getTranslations("App")
-  return seoFor(locale, {
-    path: "/",
-    title: SITE_NAME,
-    description: t("tagline"),
+  const t = await getTranslations("Home")
+  const title = `${SITE_NAME} · ${t("metaTitle")}`
+  const description = t("metaDescription", {
+    count: getCostumes(locale).length,
   })
+  return {
+    title: { absolute: title },
+    description,
+    ...seoFor(locale, { path: "/", title, description }),
+  }
 }
 
 /**

@@ -58,7 +58,9 @@ test.describe("browsing the costumes", () => {
     await page.goto("/")
     await costumes(page).getByRole("link", { name: "Ghostface" }).click()
     await expect(page).toHaveURL(/\/costumes\/ghostface$/)
-    await expect(page).toHaveTitle("Ghostface costume · Kostuma")
+    await expect(page).toHaveTitle(
+      "Ghostface costume and makeup guide · Kostuma"
+    )
     await expect(
       page.getByRole("heading", { level: 1, name: "Ghostface" })
     ).toBeVisible()

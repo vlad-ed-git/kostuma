@@ -2,13 +2,16 @@
  * The characters Chinese headings use (todo UX-12): every message of the
  * App and Home groups, every title, every message short enough to be a
  * heading or a label (24 characters), and every makeup guide's step
- * titles. Only Chinese and its punctuation: Latin stays Grenze Gotisch's.
+ * titles; never a page's metadata (`meta…`: the browser's tab and search
+ * results, in their own fonts). Only Chinese and its punctuation: Latin
+ * stays Grenze Gotisch's.
  */
 export function headingChars(messages, translations) {
   const texts = []
   const walk = (node, keys) => {
     if (typeof node === "string") {
       const text = node.replace(/<\/?wbr>/g, "")
+      if (keys.at(-1).startsWith("meta")) return
       if (
         keys[0] === "App" ||
         keys[0] === "Home" ||

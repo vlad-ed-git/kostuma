@@ -92,6 +92,47 @@ test.describe("every language's pages, indexed", () => {
     })
   }
 
+  test("a search result says what the page offers", async ({ page }) => {
+    const said = async () => {
+      const head = page.locator("head")
+      const content = (selector: string) =>
+        head.locator(selector).getAttribute("content")
+      return {
+        title: await page.title(),
+        description: await content('meta[name="description"]'),
+        ogTitle: await content('meta[property="og:title"]'),
+        ogDescription: await content('meta[property="og:description"]'),
+      }
+    }
+
+    // Home: what Kostuma is, how many characters, the free try-on.
+    await page.goto("/")
+    const home = await said()
+    expect(home.title).toBe(
+      "Kostuma · Horror movie costumes, tried on you, with step-by-step makeup"
+    )
+    expect(home.description).toMatch(
+      /^Dress as one of \d+ horror movie characters for Halloween\. Try one costume on your own photos for free, then do its makeup step by step\.$/
+    )
+    expect(home.ogTitle).toBe(home.title)
+    expect(home.ogDescription).toBe(home.description)
+
+    // A costume: its makeup guide, a line of lore, on your own face.
+    await page.goto("/costumes/jason-voorhees")
+    const jason = await said()
+    expect(jason.title).toBe(
+      "Jason Voorhees costume and makeup guide · Kostuma"
+    )
+    expect(jason.description).toBe(
+      "A boy who drowned at Camp Crystal Lake. See it on your own face, step by step."
+    )
+    expect(jason.ogTitle).toBe("Jason Voorhees costume and makeup guide")
+    expect(jason.ogDescription).toBe(jason.description)
+
+    await page.goto("/zh/costumes/jason-voorhees")
+    expect((await said()).title).toBe("Jason Voorhees 装扮与妆容教程 · Kostuma")
+  })
+
   test("the pages that are each visitor's own stay out of search", async ({
     page,
   }) => {

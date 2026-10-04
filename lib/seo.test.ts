@@ -9,6 +9,7 @@ import {
   alternatesFor,
   breadcrumbs,
   costumeList,
+  firstSentence,
   homeCardIn,
   jsonLd,
   openGraphFor,
@@ -44,6 +45,50 @@ describe("a page's address", () => {
     expect(urlIn("/terms", "es")).toBe(`${site}/es/terms`)
     vi.stubEnv("SITE_URL", "http://localhost:3100")
     expect(urlIn("/", "zh")).toBe("http://localhost:3100/zh")
+  })
+})
+
+describe("a search result's line of lore", () => {
+  it("is the lore's first sentence, or the whole of a single one", () => {
+    expect(
+      firstSentence(
+        "A boy who drowned at Camp Crystal Lake. In the original film his mother did the killing."
+      )
+    ).toBe("A boy who drowned at Camp Crystal Lake.")
+    expect(firstSentence("A demon who lurks in “the Further”.")).toBe(
+      "A demon who lurks in “the Further”."
+    )
+  })
+
+  it("reads through a title's period, and the hours", () => {
+    expect(
+      firstSentence(
+        "A horned demon, the companion of St. Nicholas in Central Europe. More."
+      )
+    ).toBe("A horned demon, the companion of St. Nicholas in Central Europe.")
+    expect(
+      firstSentence(
+        "After all but one child vanish at 2:17 a.m., the aunt moves in. Then."
+      )
+    ).toBe("After all but one child vanish at 2:17 a.m., the aunt moves in.")
+    expect(
+      firstSentence(
+        "Un niño adoptado por un embajador de EE. UU. que resulta ser el Anticristo. Todos mueren."
+      )
+    ).toBe(
+      "Un niño adoptado por un embajador de EE. UU. que resulta ser el Anticristo."
+    )
+  })
+
+  it("ends Chinese at its own full stop", () => {
+    expect(
+      firstSentence(
+        "一个在水晶湖营地溺亡的男孩。在第一部电影里，杀人的是他的母亲。"
+      )
+    ).toBe("一个在水晶湖营地溺亡的男孩。")
+    expect(firstSentence("一个潜伏在“更远之地”的红脸恶魔。")).toBe(
+      "一个潜伏在“更远之地”的红脸恶魔。"
+    )
   })
 })
 
