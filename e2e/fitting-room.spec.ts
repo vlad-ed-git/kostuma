@@ -241,6 +241,12 @@ test.describe("The Fitting Room", () => {
     await expect(
       beetlejuice.getByText("Now let’s get started on the makeup.")
     ).toBeVisible()
+    // Before step 1, the makeup's safety (todo COPY-12).
+    await expect(
+      beetlejuice.getByText(
+        "Use cosmetic-grade products only, patch-test 24 hours before, and keep paint and fake blood out of your eyes."
+      )
+    ).toBeVisible()
     // Buy right there, as in the basket: three shops, a menu.
     await expect(
       beetlejuice.getByRole("button", {

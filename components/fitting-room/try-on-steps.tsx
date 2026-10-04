@@ -114,6 +114,9 @@ export function TryOnSteps({
 
   // The first makeup step: where a finished try-on's guide starts.
   const firstStep = frames.findIndex((each) => each.kind === "step")
+  // Before step 1, what the whole makeup asks (todo COPY-12): on the
+  // outfit's card, the makeup's way in; without an outfit, on step 1's.
+  const beforeMakeup = shown === Math.max(0, firstStep - 1)
   /**
    * At the last frame of a finished try-on, the way on is back to step 1:
    * the visitor's next job is to sit at the vanity and follow it (todo
@@ -205,6 +208,7 @@ export function TryOnSteps({
           // YouCam is busy: the try-on waits its turn (calls.ts).
           <p className="max-w-[60ch] text-lead text-blood-text">{t("busy")}</p>
         )}
+        {beforeMakeup && frame?.kind === "step" && <BeforeMakeup />}
         {frame?.kind === "step" && (
           <p className="text-label caps text-blood-text">
             {t("stepOf", { number: frame.number, count: makeup.length })}
@@ -222,6 +226,7 @@ export function TryOnSteps({
             <p>{t("outfitNote")}</p>
             {shops && <Buy name={name} shops={shops} />}
             <p>{t("outfitThen")}</p>
+            {beforeMakeup && makeup.length > 0 && <BeforeMakeup />}
           </div>
         )}
         {step && (
@@ -329,6 +334,20 @@ export function TryOnSteps({
 
       {after && <div className="[grid-area:after]">{after}</div>}
     </div>
+  )
+}
+
+/**
+ * What the whole makeup asks before step 1: products made for skin, a
+ * patch test, and paint and fake blood kept out of the eyes (todo COPY-12;
+ * the Terms say it at length).
+ */
+function BeforeMakeup() {
+  const t = useTranslations("FittingRoom")
+  return (
+    <p className="max-w-[60ch] text-body-lg text-muted-foreground">
+      {t("safety")}
+    </p>
   )
 }
 
