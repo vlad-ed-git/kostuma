@@ -188,10 +188,10 @@ test("Get Kostuma Pro puts the account on the waitlist, with the email to write 
     .getByRole("button", { name: "Get Kostuma Pro" })
   await pro.click()
   const popup = page.getByRole("dialog", {
-    name: "You have been added to the premium feature waitlist.",
+    name: "You’re on the Kostuma Pro waitlist.",
   })
   await expect(popup).toContainText(
-    "We will get back to you in 24 hours with an awesome deal."
+    "We’ll write to you at this email as soon as it opens."
   )
   const field = popup.getByLabel("Email")
   await expect(field).toHaveValue(email)

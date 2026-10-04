@@ -161,7 +161,7 @@ function Joined({
         {t("added")}
       </Dialog.Title>
       <Dialog.Description className="text-body-lg text-muted-foreground">
-        {t("deal")}
+        {t("write")}
       </Dialog.Description>
       <form noValidate onSubmit={update} className="mt-2 flex flex-col gap-5">
         <div className="flex flex-col gap-2">

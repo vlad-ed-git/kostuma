@@ -529,9 +529,9 @@ Client components are marked (C). Everything else renders on the server.
 - **Get Kostuma Pro** (owner, 2026-10-04; `components/pro/get-pro.tsx`): a button (outline in
   the Fitting Room panel, primary elsewhere; pending: spinner + "Joining the waitlist…") that
   puts the signed-in account on Kostuma Pro's waitlist (`waitlist/{uid}`, once), then opens a
-  pop-up (the alert dialog's card, 11.4b) in the owner's words: "You have been added to the
-  premium feature waitlist." (title) and "We will get back to you in 24 hours with an awesome
-  deal."; under them "Email", filled with the address the waitlist will write to (the
+  pop-up (the alert dialog's card, 11.4b): "You’re on the Kostuma Pro waitlist." (title) and
+  "We’ll write to you at this email as soon as it opens." (owner, todo COPY-09: no promise
+  of a time or a deal); under them "Email", filled with the address the waitlist will write to (the
   account's, until the visitor gives another), "Update" (outline; the same address sends
   nothing; done: "Email updated.", announced) and "Close" (primary). Pressed again later, the
   same pop-up with the email on record. Signed out, it is a link to sign in, then back. A

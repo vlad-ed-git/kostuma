@@ -199,8 +199,8 @@
   "Pro": {
     "get": "Consigue Kostuma Pro",
     "joining": "Uniéndote a la lista de espera…",
-    "added": "Te hemos añadido a la lista de espera de las funciones premium.",
-    "deal": "Te escribiremos en 24 horas con una oferta increíble.",
+    "added": "Estás en la lista de espera de Kostuma Pro.",
+    "write": "Te escribiremos a este correo en cuanto abra.",
     "email": "Correo",
     "update": "Actualizar",
     "updating": "Actualizando…",

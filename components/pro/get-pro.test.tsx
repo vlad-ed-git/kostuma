@@ -33,7 +33,7 @@ async function press() {
   renderInEnglish(<GetPro source="fitting-room" />)
   await userEvent.click(screen.getByRole("button", { name: "Get Kostuma Pro" }))
   return screen.findByRole("dialog", {
-    name: "You have been added to the premium feature waitlist.",
+    name: "You’re on the Kostuma Pro waitlist.",
   })
 }
 
@@ -42,7 +42,7 @@ describe("GetPro", () => {
     const popup = await press()
     expect(mocks.joinWaitlist).toHaveBeenCalledWith("fitting-room", "en")
     expect(popup).toHaveAccessibleDescription(
-      "We will get back to you in 24 hours with an awesome deal."
+      "We’ll write to you at this email as soon as it opens."
     )
     expect(within(popup).getByLabelText("Email")).toHaveValue(EMAIL)
   })

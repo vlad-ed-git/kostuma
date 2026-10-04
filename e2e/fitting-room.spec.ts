@@ -624,7 +624,7 @@ test.describe("The Fitting Room", () => {
 
     const waitlist = (page: Page) =>
       page.getByRole("dialog", {
-        name: "You have been added to the premium feature waitlist.",
+        name: "You’re on the Kostuma Pro waitlist.",
       })
 
     test("Try with other photos asks first, and offers Kostuma Pro", async ({
@@ -661,7 +661,7 @@ test.describe("The Fitting Room", () => {
       const pro = dialog.getByRole("button", { name: "Get Kostuma Pro" })
       await pro.click()
       await expect(waitlist(page)).toContainText(
-        "We will get back to you in 24 hours with an awesome deal."
+        "We’ll write to you at this email as soon as it opens."
       )
       await expect(waitlist(page).getByLabel("Email")).toHaveValue(
         "wednesday@example.com"
