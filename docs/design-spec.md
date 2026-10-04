@@ -94,6 +94,13 @@ Basket, nothing else. The Fitting Room and Buy live inside the basket; a costume
 - Accessible name `Kostuma` (the letters are `aria-hidden`, the mark is `role="img"`).
 - Hover (fine pointer): the o beats once (7.2 heartbeat). Reduced motion: no beat.
 - In the header and at the top of the footer.
+- **Icon** (owner, 2026-10-04: "our logo should be K in bloody gritty ink"): the wordmark's K
+  in blood (`#EE2531` to `#7A0812`, top to bottom) on the night's black, printed in gritty ink:
+  its edges bitten, the ink chipped, specked and dragged dry by the brush, bled a little; blood
+  runs off its feet in three drops that catch the light, a few spatters around them, a dim red
+  glow behind. `design/icon.svg` (the K's outline from the font, seeded noise: the same every
+  time); every size the site serves is drawn from it (14b). At 16 and 32 px, the K and its blood
+  without the grit, which is only noise there.
 
 ### 2.2 Voice
 
@@ -969,10 +976,11 @@ Every page a visitor can read without an account is indexed in all three languag
 - **Structured data (JSON-LD):** home names Kostuma (`Organization`, `WebSite` in its language)
   and its collection (`ItemList`, every costume in order); a costume page its breadcrumb
   (`BreadcrumbList`). A data block, never run; nothing in it can close its script.
-- **Icons:** a drop of blood on the night (`design/icon.svg`, drawn by `npm run images`): the
-  tab's (`app/icon.svg`, `favicon.ico` at 16 and 32 px), an iPhone's (`apple-icon.png`,
+- **Icons:** the K in bloody, gritty ink (2.1; `design/icon.svg`, drawn by `npm run images`):
+  the tab's (`app/icon.svg`, `favicon.ico` at 16 and 32 px), an iPhone's (`apple-icon.png`,
   180 px, its corners left to iOS) and the manifest's (`/manifest.webmanifest`: 192 and 512 px
-  and a maskable 512; the night's colors).
+  and a maskable 512, the mark at 75 % inside the safe zone; the night's colors). Also the
+  logo search engines show for Kostuma (`Organization.logo`).
 
 ---
 

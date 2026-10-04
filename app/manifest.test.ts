@@ -30,7 +30,7 @@ describe("the manifest", () => {
     }
   )
 
-  it("has one maskable icon, the drop full bleed", async () => {
+  it("has one maskable icon, full bleed", async () => {
     const maskable = manifest().icons!.filter(
       ({ purpose }) => purpose === "maskable"
     )
@@ -46,10 +46,19 @@ describe("the manifest", () => {
 })
 
 describe("the icons a browser asks for", () => {
+  const design = readFileSync("design/icon.svg", "utf8")
+
   it("draws the tab's icon as designed", () => {
-    expect(readFileSync("app/icon.svg", "utf8")).toBe(
-      readFileSync("design/icon.svg", "utf8")
-    )
+    expect(readFileSync("app/icon.svg", "utf8")).toBe(design)
+  })
+
+  it("keeps in the design what scripts/icons.mjs draws the sizes by", () => {
+    // Its corners (squared for iOS and Android), its mark (scaled into the
+    // maskable safe zone) and its grit (left off the favicons).
+    expect(design).toContain('viewBox="0 0 512 512"')
+    expect(design).toContain('rx="112"')
+    expect(design).toContain('<g id="mark">')
+    expect(design).toContain(' filter="url(#grit)"')
   })
 
   it("gives an iPhone a 180 px square, its corners left to iOS", async () => {
