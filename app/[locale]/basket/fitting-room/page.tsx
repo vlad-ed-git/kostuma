@@ -1,0 +1,165 @@
+import type { Metadata } from "next"
+import { getLocale, getTranslations } from "next-intl/server"
+
+import {
+  type FittingCostume,
+  FittingRoom,
+  type UsedOn,
+} from "@/components/fitting-room/fitting-room"
+import { redirect } from "@/i18n/navigation"
+import { withNext } from "@/lib/auth/next-path"
+import { getUser } from "@/lib/auth/session"
+import { getCostume, getCostumes, toSummary } from "@/lib/catalog"
+import { admits, unitsOfGuide } from "@/lib/fitting-room/budget"
+import { currentTryOn } from "@/lib/fitting-room/current-try-on"
+import { FAILED_TRIES } from "@/lib/fitting-room/free-costume"
+import { guideFor, guideText } from "@/lib/guides"
+import { fittingRoom } from "@/lib/fitting-room/service"
+import { fittingRoomStore } from "@/lib/fitting-room/store"
+import { shopLinks } from "@/lib/shops"
+import { toView, type TryOnView } from "@/lib/fitting-room/try-on"
+
+/**
+ * The platform's limit, explicit, for the page and its server action
+ * (starting a try-on: photos checked and kept, the first render's start
+ * gives up at 40 s).
+ */
+export const maxDuration = 60
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("FittingRoom")
+  // Each visitor's own photos: never indexed.
+  return { title: t("title"), robots: { index: false } }
+}
+
+/**
+ * The Fitting Room (owner, 2026-10-03), part of My Pumpkin Basket: a costume
+ * from the basket (`?costume=`) tried on the visitor's own photos, the
+ * outfit then its makeup, step by step. Signed in only: signed out, sign in
+ * first, then back here. Every account tries one costume on free; then the
+ * page offers Kostuma Pro (lib/fitting-room/free-costume.ts).
+ */
+export default async function FittingRoomPage({
+  searchParams,
+}: PageProps<"/[locale]/basket/fitting-room">) {
+  const { costume: wanted } = await searchParams
+  const slug = typeof wanted === "string" ? wanted : undefined
+  const here = slug
+    ? `/basket/fitting-room?costume=${encodeURIComponent(slug)}`
+    : "/basket/fitting-room"
+  const locale = await getLocale()
+  const user = await getUser()
+  if (!user) {
+    return redirect({ href: withNext("/sign-in", here), locale })
+  }
+
+  const t = await getTranslations("FittingRoom")
+  const costume = slug ? getCostume(slug, locale) : undefined
+  // The guide's words in the visitor's language; the renders are the same.
+  const guide = costume ? guideFor(costume.slug, locale) : undefined
+  // Its words for the page: its products searched in English.
+  const text = costume ? guideText(costume.slug, locale) : undefined
+  const selected: FittingCostume | null =
+    costume && guide && text && costume.images[0]
+      ? {
+          ...toSummary(costume),
+          guide: text,
+          allMakeup: guide.allMakeup === true,
+          shops: shopLinks(costume.shops),
+        }
+      : null
+
+  let room: { face: string | null; body: string | null } = {
+    face: null,
+    body: null,
+  }
+  let tryOn: TryOnView | null = null
+  // Unknown, the page lets the visitor on: starting a try-on decides.
+  let free = true
+  let triesLeft = FAILED_TRIES
+  let usedOn: UsedOn | null = null
+  const renderer = fittingRoom()?.provider.name
+  // Closed without a renderer, by the owner's switch, or once the day's
+  // budget can't take this costume's try-on (lib/fitting-room/budget.ts).
+  let open = renderer !== undefined
+  try {
+    const store = fittingRoomStore()
+    const [kept, tryOns, capacity] = await Promise.all([
+      store.room(user.uid),
+      store.tryOns(user.uid),
+      store.capacity(),
+    ])
+    if (open && guide) {
+      open = admits(capacity.controls, capacity.reserved, unitsOfGuide(guide))
+    }
+    room = { face: kept.face?.id ?? null, body: kept.body?.id ?? null }
+    // The try-on of the photos in use, else the newest, by the renderer in
+    // use: never a fake one standing in for real renders.
+    const current =
+      selected &&
+      costume &&
+      currentTryOn(tryOns, {
+        costume,
+        renderer,
+        room: kept,
+        allMakeup: selected.allMakeup,
+      })
+    tryOn = current ? toView(current) : null
+    if (renderer) {
+      const allowance = await store.allowance(user.uid, renderer)
+      free = allowance.free
+      if (allowance.free) triesLeft = allowance.triesLeft
+      const used = !allowance.free && allowance.costume
+      const name = used ? getCostume(used, locale)?.name : undefined
+      if (used && name) {
+        // Its try-on, while there is one to see (its photos not deleted).
+        const kept = tryOns.some((each) => each.id === allowance.tryOn)
+        usedOn = { name, slug: used, linked: kept }
+      }
+    }
+  } catch (error) {
+    // The page still offers the photos; starting says if it can't.
+    console.error("Could not read the Fitting Room.", error)
+  }
+
+  const costumes = getCostumes(locale)
+    .filter((each) => guideFor(each.slug) && each.images[0])
+    .map(toSummary)
+
+  // The dressing room (spec §11.4b): a red light behind the mirrors and
+  // moonlight from above, fading out before the page ends; the title card
+  // split into its red and bone ghosts, the tape rolling through it from
+  // one edge of the screen to the other (clipped there: no sideways scroll).
+  return (
+    <div className="relative isolate overflow-x-clip">
+      <div
+        aria-hidden="true"
+        className="dressing-light pointer-events-none absolute inset-0 -z-10"
+      />
+      <div className="mx-auto max-w-7xl px-4 pt-10 pb-28 sm:px-6 lg:px-8 lg:pt-14">
+        <header className="relative">
+          <h1 className="vhs-ghost-title font-heading text-display font-semibold text-balance">
+            {t("title")}
+          </h1>
+          <p className="mt-4 max-w-[60ch] text-lead text-muted-foreground">
+            {selected ? t("transform", { name: selected.name }) : t("lead")}
+          </p>
+          <div
+            aria-hidden="true"
+            className="vhs-tracking vhs-tracking-fade dressing-tape"
+          />
+        </header>
+        <FittingRoom
+          costumes={costumes}
+          selected={selected}
+          room={room}
+          tryOn={tryOn}
+          open={open}
+          free={free}
+          triesLeft={triesLeft}
+          usedOn={usedOn}
+        />
+      </div>
+    </div>
+  )
+}

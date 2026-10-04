@@ -1,9 +1,12 @@
 import type { Metadata } from "next"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 
 import { BasketList, BasketSummary } from "@/components/basket/basket-list"
 import { FittingRoomPanel } from "@/components/basket/fitting-room-panel"
+import { getUser } from "@/lib/auth/session"
 import { getCostumes, toSummary } from "@/lib/catalog"
+import { allowanceFor } from "@/lib/fitting-room/service"
+import { shopLinks } from "@/lib/shops"
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Basket")
@@ -17,10 +20,14 @@ export async function generateMetadata(): Promise<Metadata> {
  */
 export default async function BasketPage() {
   const t = await getTranslations("Basket")
+  const locale = await getLocale()
+  const user = await getUser()
+  // Kostuma Pro is offered once the account's free costume is used.
+  const allowance = user ? await allowanceFor(user.uid) : null
   // Only what the rows show: the basket itself is read in the browser.
-  const costumes = getCostumes().map((costume) => ({
+  const costumes = getCostumes(locale).map((costume) => ({
     ...toSummary(costume),
-    stores: costume.stores,
+    shops: shopLinks(costume.shops),
   }))
 
   return (
@@ -30,7 +37,12 @@ export default async function BasketPage() {
           {t("title")}
         </h1>
         <BasketSummary />
-        <FittingRoomPanel className="mt-10" />
+        <FittingRoomPanel
+          signedIn={user !== null}
+          free={allowance?.free}
+          source="basket"
+          className="mt-10"
+        />
         <BasketList costumes={costumes} />
       </div>
     </div>

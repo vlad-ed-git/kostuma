@@ -1,7 +1,8 @@
 // The collection: Kostuma's most wanted costumes, in rank order.
 // Imported from the owner's list (scripts/import-catalog.mjs), then curated
 // by hand: this file is the source of truth. Facts about 2025–2026 releases
-// reflect the owner's list as of 2026-09-30; box-office figures are
+// reflect the owner's list as of 2026-09-30, told as what happened (never
+// "now" or "in the works") so they stay true; box-office figures are
 // approximate. content/costumes.test.ts checks every entry.
 import type { Costume } from "@/lib/catalog/types"
 
@@ -24,7 +25,7 @@ export const costumes: Costume[] = [
     ],
     lore: "A prank-calling, horror-trivia-obsessed slasher who is never the same person twice: every film reveals a new killer (or two) under the robe.",
     funFact:
-      "The mask was spotted in a house during location scouting and Craven picked it over custom designs. Its melting face echoes Edvard Munch's painting The Scream. Scream 7 (Feb 2026) opened to $63.6M in the US, the franchise's biggest opening.",
+      "The mask was spotted in a house during location scouting and Craven picked it over custom designs. Its melting face echoes Edvard Munch’s painting The Scream. Scream 7 opened to $63.6M in the US in February 2026, a franchise record.",
     look: {
       pieces: ["Black hooded robe", "White mask", "Prop knife"],
     },
@@ -36,7 +37,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Ghostface" },
+      { shop: "spirithalloween", search: "Ghost Face" },
+      { shop: "amazon", search: "Ghostface costume" },
+    ],
   },
   {
     rank: 2,
@@ -51,10 +56,10 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["John Carpenter & Debra Hill"],
     broughtToLifeBy: [
-      "Nick Castle played 'The Shape'",
+      "Nick Castle played “The Shape”",
       "Tony Moran was the unmasked face",
     ],
-    lore: "At age six he stabbed his sister Judith on Halloween 1963 in Haddonfield, Illinois. Fifteen years later he escapes Smith's Grove Sanitarium and stalks babysitter Laurie Strode.",
+    lore: "At age six he stabbed his sister Judith on Halloween 1963 in Haddonfield, Illinois. Fifteen years later he escapes Smith’s Grove Sanitarium and stalks babysitter Laurie Strode.",
     funFact:
       "The famous blank face is a cheap Captain Kirk (William Shatner) mask, spray-painted white with the eyeholes widened. The film cost roughly $300K and earned about $70M. Carpenter borrowed the name from a British film distributor.",
     look: {
@@ -68,12 +73,16 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Michael Myers" },
+      { shop: "spirithalloween", search: "Michael Myers" },
+      { shop: "amazon", search: "Michael Myers costume" },
+    ],
   },
   {
     rank: 3,
     slug: "nikki-freaky-nikki-freeman",
-    name: "Nikki 'Freaky Nikki' Freeman",
+    name: "Nikki “Freaky Nikki” Freeman",
     trending: true,
     films: [
       {
@@ -83,9 +92,9 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Curry Barker (writer-director)"],
     broughtToLifeBy: ["Inde Navarrette", "Costume design by Blair James"],
-    lore: "Bear makes a selfish wish on a toy called the One Wish Willow: that his friend Nikki will love him more than anyone. Nikki's personality is overwritten by violent, possessive devotion.",
+    lore: "Bear makes a selfish wish on a toy called the One Wish Willow: that his friend Nikki will love him more than anyone. Nikki’s personality is overwritten by violent, possessive devotion.",
     funFact:
-      "The year's breakout horror hit (Focus Features, May 2026), made by a YouTube-native filmmaker. Universal put Nikki in Halloween Horror Nights Hollywood 2026 and sells licensed costumes. Navarrette hosts SNL on Oct 31, 2026.",
+      "A breakout horror hit of 2026 (Focus Features, May), made by a YouTube-native filmmaker. Universal put Nikki in Halloween Horror Nights Hollywood 2026, and licensed costumes went on sale. Navarrette was announced to host SNL on Halloween 2026.",
     look: {
       pieces: [
         "Red-and-black animal-print top",
@@ -96,6 +105,12 @@ export const costumes: Costume[] = [
       ],
       alternative: "Or the purple floral dress from the finale.",
     },
+    garment: {
+      file: "nikki-freaky-nikki-freeman-costume.png",
+      url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fnikki-freaky-nikki-freeman-costume.e04ca6dd25.webp?alt=media",
+      width: 504,
+      height: 999,
+    },
     images: [
       {
         file: "nikki-freaky-nikki-freeman.png",
@@ -104,7 +119,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Freaky Nikki costume" },
+      { shop: "etsy", search: "Nikki Freeman Obsession costume" },
+    ],
   },
   {
     rank: 4,
@@ -122,9 +140,9 @@ export const costumes: Costume[] = [
       "David Howard Thornton (2016 onward)",
       "Earlier Mike Giannelli in the shorts",
     ],
-    lore: "A mute, silently gleeful killer clown with a bag of tricks, who first appeared in Leone's low-budget shorts (2008, 2011) and the anthology All Hallows' Eve (2013).",
+    lore: "A mute, silently gleeful killer clown with a bag of tricks, who first appeared in Leone’s low-budget shorts (2008, 2011) and the anthology All Hallows’ Eve (2013).",
     funFact:
-      "Leone is a practical-effects makeup artist who built the character on shoestring budgets. Terrifier 3 landed Halloween week 2024 and earned roughly $90M on about a $2M budget.",
+      "Leone is a practical-effects makeup artist who built the character on shoestring budgets. Terrifier 3 opened on October 11, 2024 and earned roughly $90M on about a $2M budget.",
     look: {
       pieces: [
         "Black hat",
@@ -141,7 +159,11 @@ export const costumes: Costume[] = [
         height: 1020,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Art the Clown" },
+      { shop: "spirithalloween", search: "Art the Clown" },
+      { shop: "amazon", search: "Art the Clown costume" },
+    ],
   },
   {
     rank: 5,
@@ -155,15 +177,15 @@ export const costumes: Costume[] = [
       },
     ],
     createdBy: ["Stephen King (1986 novel)", "Andy Muschietti (2017 director)"],
-    broughtToLifeBy: ["Bill Skarsgard (2017)", "Tim Curry (1990 miniseries)"],
+    broughtToLifeBy: ["Bill Skarsgård (2017)", "Tim Curry (1990 miniseries)"],
     lore: "An ancient shapeshifting cosmic entity that wakes roughly every 27 years in Derry, Maine, favoring a clown form to hunt children.",
     funFact:
-      "Skarsgard can point his eyes in different directions, a trick used on screen. His Victorian-flavored costume was designed by Janie Bryant. It Chapter One became the highest-grossing horror film ever at the time, about $700M.",
+      "Skarsgård can point his eyes in different directions, a trick used on screen. His Victorian-flavored costume was designed by Janie Bryant. It Chapter One became the highest-grossing horror film ever, about $700M.",
     look: {
       pieces: [
         "Cream ruffled jumpsuit",
         "Orange pom-poms",
-        "Forehead-heavy wig",
+        "Receding red clown wig",
         "Red lip streaks",
       ],
     },
@@ -175,7 +197,11 @@ export const costumes: Costume[] = [
         height: 1080,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Pennywise" },
+      { shop: "spirithalloween", search: "Pennywise" },
+      { shop: "amazon", search: "Pennywise costume" },
+    ],
   },
   {
     rank: 6,
@@ -193,17 +219,23 @@ export const costumes: Costume[] = [
       "Amy Madigan",
       "Wig by Melizah Anguiano Wheat, costumes by Trish Somerville",
     ],
-    lore: "After an entire classroom of children vanishes at 2:17 a.m., the odd, sickly aunt who moves in with one surviving boy turns out to be a parasitic witch.",
+    lore: "After all but one of a classroom’s children vanish at 2:17 a.m., the odd, sickly aunt who moves in with the one boy left behind turns out to be a parasitic witch.",
     funFact:
-      "Madigan won the Best Supporting Actress Oscar on March 15, 2026, 40 years after her first nomination. A prequel titled Gladys is in the works. Her look includes elongated earlobe prosthetics.",
+      "Madigan won the Best Supporting Actress Oscar on March 15, 2026, 40 years after her first nomination. A prequel titled Gladys was announced, with Madigan returning. Her look includes elongated earlobe prosthetics.",
     look: {
       pieces: [
         "Red bob with blunt bangs",
         "Thick white makeup",
         "Big glasses",
         "Dangly earrings",
-        "90s track suit",
+        "’90s tracksuit",
       ],
+    },
+    garment: {
+      file: "aunt-gladys-costume.png",
+      url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Faunt-gladys-costume.8f03f62e66.webp?alt=media",
+      width: 367,
+      height: 1001,
     },
     images: [
       {
@@ -213,7 +245,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Aunt Gladys costume" },
+      { shop: "etsy", search: "Aunt Gladys costume" },
+    ],
   },
   {
     rank: 7,
@@ -222,15 +257,15 @@ export const costumes: Costume[] = [
     trending: false,
     films: [
       {
-        title: "Child's Play",
+        title: "Child’s Play",
         year: 1988,
       },
     ],
     createdBy: ["Don Mancini (writer)", "Tom Holland (director)"],
     broughtToLifeBy: ["Brad Dourif (voice)", "Doll effects by Kevin Yagher"],
-    lore: "Serial killer Charles Lee Ray (the Lakeshore Strangler) uses voodoo to move his soul into a Good Guys doll, and ends up in a six-year-old boy's toy box.",
+    lore: "Serial killer Charles Lee Ray (the Lakeshore Strangler) uses voodoo to move his soul into a Good Guys doll, and ends up in a six-year-old boy’s toy box.",
     funFact:
-      "Dourif has voiced Chucky in every entry except the 2019 remake, where Mark Hamill took over. Mancini's script was originally titled Blood Buddy.",
+      "Dourif has voiced Chucky in every entry except the 2019 remake, where Mark Hamill took over. Mancini’s script was originally titled Blood Buddy.",
     look: {
       pieces: [
         "Overalls",
@@ -248,7 +283,11 @@ export const costumes: Costume[] = [
         height: 1080,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Chucky" },
+      { shop: "spirithalloween", search: "Chucky" },
+      { shop: "amazon", search: "Chucky costume" },
+    ],
   },
   {
     rank: 8,
@@ -263,9 +302,9 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Wes Craven"],
     broughtToLifeBy: ["Robert Englund"],
-    lore: "A child killer burned alive by Springwood parents returns in their kids' dreams, where he is the one in control.",
+    lore: "A child killer burned alive by Springwood parents returns in their kids’ dreams, where he is the one in control.",
     funFact:
-      "Craven drew on news stories about young men who died after refusing to sleep, and named Freddy after a childhood bully. The sweater's red and green were reportedly chosen because the colors clash for the eye. The film's success built New Line Cinema.",
+      "Craven drew on news stories about young men who died after refusing to sleep, and named Freddy after a childhood bully. The sweater’s red and green were reportedly chosen because the colors clash for the eye. The film’s success built New Line Cinema.",
     look: {
       pieces: [
         "Red-and-green striped sweater",
@@ -282,7 +321,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Freddy Krueger" },
+      { shop: "spirithalloween", search: "Freddy Krueger" },
+      { shop: "amazon", search: "Freddy Krueger costume" },
+    ],
   },
   {
     rank: 9,
@@ -315,7 +358,11 @@ export const costumes: Costume[] = [
         height: 1066,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Jason Voorhees" },
+      { shop: "spirithalloween", search: "Jason Voorhees" },
+      { shop: "amazon", search: "Jason Voorhees costume" },
+    ],
   },
   {
     rank: 10,
@@ -334,9 +381,9 @@ export const costumes: Costume[] = [
     ],
     broughtToLifeBy: [
       "Michael Keaton",
-      "Oscar-winning makeup by Ve Neill's team",
+      "Oscar-winning makeup by Ve Neill’s team",
     ],
-    lore: "A vulgar 'bio-exorcist' ghost summoned by saying his name three times, hired by dead newlyweds to scare the living out of their house.",
+    lore: "A vulgar “bio-exorcist” ghost summoned by saying his name three times, hired by dead newlyweds to scare the living out of their house.",
     funFact:
       "Keaton is on screen for only about 17 minutes and improvised much of the role. The 2024 sequel earned roughly $450M.",
     look: {
@@ -354,7 +401,11 @@ export const costumes: Costume[] = [
         height: 1112,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Beetlejuice" },
+      { shop: "spirithalloween", search: "Beetlejuice" },
+      { shop: "amazon", search: "Beetlejuice costume" },
+    ],
   },
   {
     rank: 11,
@@ -369,13 +420,13 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Bram Stoker (1897 novel)", "Tod Browning (director)"],
     broughtToLifeBy: ["Bela Lugosi", "Universal Pictures"],
-    lore: "The aristocratic Transylvanian vampire who moves to England to feed. Lugosi's accent and slow, hypnotic delivery defined the look and sound of movie vampires.",
+    lore: "The aristocratic Transylvanian vampire who moves to England to feed. Lugosi’s accent and slow, hypnotic delivery defined the look and sound of movie vampires.",
     funFact:
-      "Lugosi was reportedly buried in one of his Dracula capes. Christopher Lee (Hammer, 1958) and Gary Oldman (Coppola, 1992) built on the legend.",
+      "Lugosi never bared fangs on screen: Christopher Lee’s Dracula (Hammer, 1958) made them famous, and Gary Oldman (Coppola, 1992) built on the legend. Lugosi was reportedly buried in one of his Dracula capes.",
     look: {
       pieces: [
         "Black cape with tall collar",
-        "Widow's-peak slicked hair",
+        "Widow’s-peak slicked hair",
         "Medallion",
         "Fangs",
       ],
@@ -388,12 +439,15 @@ export const costumes: Costume[] = [
         height: 1393,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Dracula" },
+      { shop: "amazon", search: "Dracula costume" },
+    ],
   },
   {
     rank: 12,
     slug: "frankensteins-monster",
-    name: "Frankenstein's Monster",
+    name: "Frankenstein’s Monster",
     trending: false,
     films: [
       {
@@ -405,7 +459,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Boris Karloff", "Makeup by Jack Pierce"],
     lore: "A creature stitched together and reanimated by Victor Frankenstein, then abandoned by his creator.",
     funFact:
-      "Pierce's flat head and neck bolts took hours to apply each day. In Shelley's novel the creature is articulate and unnamed. Guillermo del Toro's Netflix version (2025) starred Jacob Elordi.",
+      "Pierce’s flat head and neck bolts took hours to apply each day. In Shelley’s novel the creature is articulate and unnamed. Guillermo del Toro’s Netflix version (2025) starred Jacob Elordi.",
     look: {
       pieces: [
         "Green skin",
@@ -423,7 +477,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Frankenstein" },
+      { shop: "spirithalloween", search: "Frankenstein" },
+      { shop: "amazon", search: "Frankenstein costume" },
+    ],
   },
   {
     rank: 13,
@@ -455,7 +513,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Bride of Frankenstein" },
+      { shop: "spirithalloween", search: "Bride of Frankenstein" },
+      { shop: "amazon", search: "Bride of Frankenstein costume" },
+    ],
   },
   {
     rank: 14,
@@ -464,16 +526,16 @@ export const costumes: Costume[] = [
     trending: false,
     films: [
       {
-        title: "Trick 'r Treat",
+        title: "Trick ’r Treat",
         year: 2007,
       },
     ],
     createdBy: ["Michael Dougherty"],
     broughtToLifeBy: [
       "Costumed performer",
-      "The character first appeared in Dougherty's 1996 animated short Season's Greetings",
+      "The character first appeared in Dougherty’s 1996 animated short Season’s Greetings",
     ],
-    lore: "A pint-sized trick-or-treater in orange footie pajamas who enforces Halloween's traditions, and punishes anyone who breaks them.",
+    lore: "A pint-sized trick-or-treater in orange footie pajamas who enforces Halloween’s traditions, and punishes anyone who breaks them.",
     funFact:
       "Warner Bros. shelved the film and released it direct-to-DVD in 2009. It became a cult Halloween ritual anyway.",
     look: {
@@ -491,7 +553,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Trick r Treat Sam" },
+      { shop: "spirithalloween", search: "Trick r Treat Sam" },
+      { shop: "amazon", search: "Trick r Treat Sam costume" },
+    ],
   },
   {
     rank: 15,
@@ -510,7 +576,7 @@ export const costumes: Costume[] = [
     funFact:
       "Hooper reportedly got the chainsaw idea while stuck in a crowded hardware store at Christmas. Hansen, born in Iceland, filmed through a brutal Texas summer in the same costume.",
     look: {
-      pieces: ["Skin-mask", "Blood-stained butcher's apron", "Chainsaw"],
+      pieces: ["Skin mask", "Blood-stained butcher’s apron", "Chainsaw"],
     },
     images: [
       {
@@ -520,7 +586,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Leatherface" },
+      { shop: "spirithalloween", search: "Leatherface" },
+      { shop: "amazon", search: "Leatherface costume" },
+    ],
   },
   {
     rank: 16,
@@ -542,7 +612,7 @@ export const costumes: Costume[] = [
     ],
     lore: "Leader of the Cenobites, extradimensional beings summoned by solving the Lament Configuration puzzle box, who blur pain and pleasure.",
     funFact:
-      "Barker called the character the Hell Priest; 'Pinhead' was a crew nickname he disliked. The character has only a few minutes of screen time in the first film.",
+      "Barker called the character the Hell Priest; “Pinhead” was a crew nickname he disliked. The character has only a few minutes of screen time in the first film.",
     look: {
       pieces: [
         "Black leather cassock",
@@ -558,7 +628,11 @@ export const costumes: Costume[] = [
         height: 1080,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Pinhead" },
+      { shop: "spirithalloween", search: "Pinhead" },
+      { shop: "amazon", search: "Pinhead costume" },
+    ],
   },
   {
     rank: 17,
@@ -573,13 +647,19 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["James Wan & Leigh Whannell"],
     broughtToLifeBy: ["Tobin Bell as John Kramer"],
-    lore: "A terminally ill engineer who tests people's will to live with elaborate traps, and communicates through a tricycle-riding puppet named Billy.",
+    lore: "A terminally ill engineer who tests people’s will to live with elaborate traps, and communicates through a tricycle-riding puppet named Billy.",
     funFact:
       "Saw was shot in about 18 days for roughly $1.2M and earned over $100M. Billy started as a puppet built for the short film that got the feature funded.",
     look: {
       pieces: ["Red robe and black cape (Jigsaw)"],
       alternative:
         "Or Billy: white face, red spiral cheeks, black suit and bow tie.",
+    },
+    garment: {
+      file: "jigsaw-and-billy-the-puppet-costume.png",
+      url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fjigsaw-and-billy-the-puppet-costume.ffea03a351.webp?alt=media",
+      width: 933,
+      height: 1400,
     },
     images: [
       {
@@ -589,7 +669,11 @@ export const costumes: Costume[] = [
         height: 1188,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Billy the Puppet" },
+      { shop: "spirithalloween", search: "Billy the Puppet" },
+      { shop: "amazon", search: "Billy the Puppet costume" },
+    ],
   },
   {
     rank: 18,
@@ -616,7 +700,7 @@ export const costumes: Costume[] = [
     funFact:
       "Her stiff hallway dance went viral before release. The film cost about $12M and earned roughly $180M; M3GAN 2.0 followed in 2025.",
     look: {
-      pieces: ["Bob wig", "Pale porcelain makeup", "Plaid dress", "Mary janes"],
+      pieces: ["Bob wig", "Pale porcelain makeup", "Plaid dress", "Mary Janes"],
     },
     images: [
       {
@@ -626,7 +710,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "M3GAN" },
+      { shop: "spirithalloween", search: "M3GAN" },
+      { shop: "amazon", search: "M3GAN costume" },
+    ],
   },
   {
     rank: 19,
@@ -643,7 +731,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Daveigh Chase"],
     lore: "A girl with a terrifying psychic gift who was thrown down a well. Anyone who watches her cursed videotape dies in seven days.",
     funFact:
-      "The Ring earned about $249M worldwide and kicked off Hollywood's remakes of J-horror. Samara crawling out of the TV is one of the most imitated scares ever.",
+      "The Ring earned about $249M worldwide and kicked off Hollywood’s remakes of J-horror. Samara crawling out of the TV is one of the most imitated scares ever.",
     look: {
       pieces: [
         "White nightgown",
@@ -659,7 +747,10 @@ export const costumes: Costume[] = [
         height: 1080,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "spirithalloween", search: "Lady of the Ring" },
+      { shop: "amazon", search: "Samara costume" },
+    ],
   },
   {
     rank: 20,
@@ -678,10 +769,10 @@ export const costumes: Costume[] = [
     ],
     createdBy: [
       "James Wan (Conjuring universe)",
-      "Inspired by Lorraine Warren's case files",
+      "Inspired by Lorraine Warren’s case files",
     ],
     broughtToLifeBy: ["Bonnie Aarons"],
-    lore: "The demon Valak, who appears in a nun's habit and stalks the Warrens, and whose backstory leads to a Romanian abbey.",
+    lore: "The demon Valak, who appears in a nun’s habit and stalks the Warrens, and whose backstory leads to a Romanian abbey.",
     funFact:
       "The Nun earned about $365M, then the biggest Conjuring-universe hit. Aarons also played the unforgettable man behind the diner in Mulholland Drive.",
     look: {
@@ -695,7 +786,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "horror nun" },
+      { shop: "spirithalloween", search: "Valak" },
+      { shop: "amazon", search: "The Nun costume" },
+    ],
   },
   {
     rank: 21,
@@ -710,7 +805,7 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["James Wan (Conjuring)", "Gary Dauberman (spin-off writer)"],
     broughtToLifeBy: ["Porcelain doll prop", "Spin-off Annabelle (2014)"],
-    lore: "A doll said to be a conduit for demonic entities, based on a real object in Ed and Lorraine Warren's occult museum.",
+    lore: "A doll said to be a conduit for demonic entities, based on a real object in Ed and Lorraine Warren’s occult museum.",
     funFact:
       "The real Annabelle is a Raggedy Ann doll, not the porcelain doll from the films. Wan and the team made a creepier version for the screen.",
     look: {
@@ -724,7 +819,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Annabelle" },
+      { shop: "spirithalloween", search: "Annabelle" },
+      { shop: "amazon", search: "Annabelle costume" },
+    ],
   },
   {
     rank: 22,
@@ -765,7 +864,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "spirithalloween", search: "Regan" },
+      { shop: "amazon", search: "Exorcist Regan costume" },
+    ],
   },
   {
     rank: 23,
@@ -780,7 +882,7 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Stephen King (1974 debut novel)", "Brian De Palma (director)"],
     broughtToLifeBy: ["Sissy Spacek", "Piper Laurie as her mother"],
-    lore: "A bullied, telekinetic teen with a fanatically religious mother whose prom night ends in fire after a bucket of pig's blood.",
+    lore: "A bullied, telekinetic teen with a fanatically religious mother whose prom night ends in fire after a bucket of pig’s blood.",
     funFact:
       "King threw the first pages in the trash and his wife Tabitha rescued them. Spacek got an Oscar nomination.",
     look: {
@@ -794,7 +896,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "Carrie White costume" }],
   },
   {
     rank: 24,
@@ -810,11 +912,11 @@ export const costumes: Costume[] = [
     createdBy: ["F. W. Murnau (director)", "Unauthorized Dracula adaptation"],
     broughtToLifeBy: [
       "Max Schreck (1922)",
-      "Bill Skarsgard in Robert Eggers' 2024 remake",
+      "Bill Skarsgård in Robert Eggers’s 2024 remake",
     ],
     lore: "A rat-like vampire who brings plague and death to the German port of Wisborg.",
     funFact:
-      "Stoker's widow sued and a court ordered every print destroyed, but some survived. Schreck's surname means 'fright' in German.",
+      "Stoker’s widow sued and a court ordered every print destroyed, but some survived. Schreck’s surname means “fright” in German.",
     look: {
       pieces: [
         "Bald head",
@@ -832,7 +934,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Nosferatu" },
+      { shop: "amazon", search: "Nosferatu costume" },
+      { shop: "trickortreatstudios", search: "Nosferatu" },
+    ],
   },
   {
     rank: 25,
@@ -858,7 +964,7 @@ export const costumes: Costume[] = [
       pieces: [
         "Blue 1910s farm dress",
         "Blonde braided pin curls",
-        "Pitchfork or ax",
+        "Pitchfork or axe",
       ],
     },
     images: [
@@ -869,7 +975,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Pearl X costume" },
+      { shop: "etsy", search: "Pearl Mia Goth costume" },
+    ],
   },
   {
     rank: 26,
@@ -878,17 +987,23 @@ export const costumes: Costume[] = [
     trending: true,
     films: [
       {
-        title: "Five Nights at Freddy's",
+        title: "Five Nights at Freddy’s",
         year: 2023,
       },
     ],
     createdBy: ["Scott Cawthon (game creator, 2014)", "Emma Tammi (director)"],
-    broughtToLifeBy: ["Animatronics built by Jim Henson's Creature Shop"],
+    broughtToLifeBy: ["Animatronics built by Jim Henson’s Creature Shop"],
     lore: "The mascot animatronics of a shuttered pizza restaurant, which come alive at night around a security guard.",
     funFact:
       "The film earned nearly $300M on about a $20M budget, and a sequel followed in December 2025.",
     look: {
       pieces: ["Brown bear costume with top hat and bow tie"],
+    },
+    garment: {
+      file: "freddy-fazbear-costume.png",
+      url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Ffreddy-fazbear-costume.3eadb7239d.webp?alt=media",
+      width: 1065,
+      height: 1400,
     },
     images: [
       {
@@ -898,7 +1013,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Freddy Fazbear" },
+      { shop: "spirithalloween", search: "Freddy Fazbear" },
+      { shop: "amazon", search: "Freddy Fazbear costume" },
+    ],
   },
   {
     rank: 27,
@@ -915,7 +1034,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Lisa and Louise Burns"],
     lore: "Ghosts of the Overlook Hotel who appear in a corridor and invite young Danny to play forever.",
     funFact:
-      "Kubrick was inspired by Diane Arbus's 1967 photograph Identical Twins. In King's novel the Grady girls aren't twins.",
+      "Kubrick was inspired by Diane Arbus’s 1967 photograph Identical Twins. In King’s novel the Grady girls aren’t twins.",
     look: {
       pieces: [
         "Matching pale-blue dresses",
@@ -932,7 +1051,10 @@ export const costumes: Costume[] = [
         height: 1000,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Grady Twins" },
+      { shop: "amazon", search: "Grady Twins costume" },
+    ],
   },
   {
     rank: 28,
@@ -949,7 +1071,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Jack Nicholson"],
     lore: "A struggling writer who takes a winter caretaker job at the isolated Overlook Hotel and slowly unravels.",
     funFact:
-      "The axe-through-the-door scene reportedly took days; Nicholson, a former volunteer firefighter, smashed through the doors so fast they had to be replaced with sturdier ones. He improvised the 'Here's Johnny!' line.",
+      "The axe-through-the-door scene reportedly took days; Nicholson, a former volunteer fire marshal, smashed through the doors so fast they had to be replaced with sturdier ones. He improvised the “Here’s Johnny!” line.",
     look: {
       pieces: ["Plaid flannel", "Work jacket", "Prop axe", "Frost or blood"],
     },
@@ -961,7 +1083,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Jack Torrance costume" },
+      { shop: "etsy", search: "Jack Torrance costume" },
+    ],
   },
   {
     rank: 29,
@@ -981,9 +1106,9 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Anthony Hopkins"],
     lore: "A brilliant, cannibalistic psychiatrist imprisoned in a psychiatric hospital who helps a young FBI trainee catch another killer.",
     funFact:
-      "Hopkins won Best Actor with roughly 16 minutes on screen. The film swept the 'Big Five' Oscars: Picture, Director, Actor, Actress, and Adapted Screenplay.",
+      "Hopkins won Best Actor with roughly 16 minutes on screen. The film swept the “Big Five” Oscars: Picture, Director, Actor, Actress, and Adapted Screenplay.",
     look: {
-      pieces: ["Orange jumpsuit and restraint mask"],
+      pieces: ["White prison jumpsuit", "Restraint mask"],
       alternative: "Or a sharp suit.",
     },
     images: [
@@ -994,7 +1119,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Hannibal Lecter" },
+      { shop: "spirithalloween", search: "Hannibal Lecter" },
+      { shop: "amazon", search: "Hannibal Lecter costume" },
+    ],
   },
   {
     rank: 30,
@@ -1011,10 +1140,10 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Anthony Perkins"],
     lore: "The shy, boyish manager of the Bates Motel whose relationship with his mother is not what it seems.",
     funFact:
-      "Bloch's novel was loosely inspired by Ed Gein. The shower-scene score by Bernard Herrmann is all strings, and the 'blood' was reportedly chocolate syrup.",
+      "Bloch’s novel was loosely inspired by Ed Gein. The shower-scene score by Bernard Herrmann is all strings, and the “blood” was reportedly chocolate syrup.",
     look: {
       pieces: ["Cardigan", "White shirt", "Boyish hair"],
-      alternative: "Or 'Mother' in wig and shawl.",
+      alternative: "Or “Mother” in wig and shawl.",
     },
     images: [
       {
@@ -1024,7 +1153,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "ebay", search: "Norman Bates Psycho costume" }],
   },
   {
     rank: 31,
@@ -1058,7 +1187,11 @@ export const costumes: Costume[] = [
         height: 789,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Captain Spaulding" },
+      { shop: "spirithalloween", search: "Captain Spaulding" },
+      { shop: "amazon", search: "Captain Spaulding costume" },
+    ],
   },
   {
     rank: 32,
@@ -1078,9 +1211,9 @@ export const costumes: Costume[] = [
     ],
     lore: "A Hessian soldier who lost his head in battle and rides through Sleepy Hollow to claim victims.",
     funFact:
-      "The film won the Oscar for Art Direction. Walken had his teeth sharpened for his brief head-on appearances.",
+      "The film won the Oscar for Art Direction. Walken wore sharpened false teeth for his brief head-on appearances.",
     look: {
-      pieces: ["Black cape", "Hidden head", "Jack-o'-lantern or sword"],
+      pieces: ["Black cape", "Hidden head", "Jack-o’-lantern or sword"],
     },
     images: [
       {
@@ -1090,7 +1223,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Headless Horseman" },
+      { shop: "spirithalloween", search: "Headless Horseman" },
+      { shop: "amazon", search: "Headless Horseman costume" },
+    ],
   },
   {
     rank: 33,
@@ -1125,7 +1262,10 @@ export const costumes: Costume[] = [
         height: 861,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "etsy", search: "Candyman costume" },
+      { shop: "ebay", search: "Candyman costume" },
+    ],
   },
   {
     rank: 34,
@@ -1143,7 +1283,7 @@ export const costumes: Costume[] = [
       "Tim Purcell (performer)",
       "Essie Davis and Noah Wiseman as lead cast",
     ],
-    lore: "A pop-up children's book character who invades the home of a grieving mother and her son, feeding on their grief.",
+    lore: "A pop-up children’s book character who invades the home of a grieving mother and her son, feeding on their grief.",
     funFact:
       "In 2017 the internet adopted Mister Babadook as an LGBTQ+ icon after a Netflix categorization glitch and memes.",
     look: {
@@ -1157,7 +1297,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Babadook" },
+      { shop: "etsy", search: "Babadook costume" },
+    ],
   },
   {
     rank: 35,
@@ -1175,11 +1318,17 @@ export const costumes: Costume[] = [
       "Robert Bobroczkyi (performer)",
       "Creature FX by Amazing Ape Productions",
     ],
-    lore: "A towering, distorted copy of a furniture-store owner in his own pirate-mascot outfit, roaming a dimension of endless yellow rooms. Mild spoiler.",
+    lore: "Mild spoiler: a towering, distorted copy of a furniture-store owner in his own pirate-mascot outfit, roaming a dimension of endless yellow rooms.",
     funFact:
-      "The film cost about $10M and earned $402.5M worldwide, making it A24's highest-grossing release. Parsons is the youngest director to top the box office.",
+      "The film cost about $10M and earned $402.5M worldwide, making it A24’s highest-grossing release. Parsons is the youngest director to top the box office.",
     look: {
       pieces: ["Pirate hat and coat", "Eyepatch", "Stretched proportions"],
+    },
+    garment: {
+      file: "pirate-clark-costume.png",
+      url: "https://firebasestorage.googleapis.com/v0/b/kostuma-73f77.firebasestorage.app/o/costumes%2Fpirate-clark-costume.f52c32c50c.webp?alt=media",
+      width: 710,
+      height: 1254,
     },
     images: [
       {
@@ -1189,7 +1338,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "spirithalloween", search: "Captain Clark" },
+      { shop: "amazon", search: "Pirate Clark costume" },
+    ],
   },
   {
     rank: 36,
@@ -1208,9 +1360,9 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Sam Raimi"],
     broughtToLifeBy: ["Bruce Campbell"],
-    lore: "A cheerful S-Mart housewares clerk turned demon-hunter who replaces his possessed hand with a chainsaw and wields a 'boomstick'.",
+    lore: "A cheerful S-Mart housewares clerk turned demon-hunter who replaces his possessed hand with a chainsaw and wields a “boomstick”.",
     funFact:
-      "The first film was shot in a Tennessee cabin for a few hundred thousand dollars. Stephen King's rave review helped it find distribution.",
+      "The first film was shot in a Tennessee cabin for a few hundred thousand dollars. Stephen King’s rave review helped it find distribution.",
     look: {
       pieces: ["Blue button-up shirt", "Chainsaw hand", "Sawed-off shotgun"],
     },
@@ -1222,7 +1374,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Evil Dead Ash" },
+      { shop: "amazon", search: "Evil Dead Ash costume" },
+    ],
   },
   {
     rank: 37,
@@ -1251,7 +1406,7 @@ export const costumes: Costume[] = [
         height: 1330,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "Midsommar May Queen costume" }],
   },
   {
     rank: 38,
@@ -1266,12 +1421,12 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Jordan Peele"],
     broughtToLifeBy: [
-      "Lupita Nyong'o (Adelaide/Red)",
+      "Lupita Nyong’o (Adelaide/Red)",
       "Costumes by Kym Barrett",
     ],
     lore: "Underground doppelgangers who rise up to replace the surface world, each tethered to a person above.",
     funFact:
-      "Nyong'o based Red's voice on spasmodic dysphonia. The film's Hands Across America imagery nods to a 1986 charity event.",
+      "Nyong’o based Red’s voice on spasmodic dysphonia. The film’s Hands Across America imagery nods to a 1986 charity event.",
     look: {
       pieces: ["Red jumpsuit", "Single golden glove", "Gold scissors"],
     },
@@ -1283,7 +1438,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Us Red jumpsuit costume" },
+      { shop: "etsy", search: "Us Tethered costume" },
+    ],
   },
   {
     rank: 39,
@@ -1305,7 +1463,12 @@ export const costumes: Costume[] = [
     funFact:
       "Radio Silence (Matt Bettinelli-Olpin and Tyler Gillett) later took over the Scream franchise.",
     look: {
-      pieces: ["Torn", "Bloodied wedding dress", "Sneakers", "Revolver"],
+      pieces: [
+        "Torn, bloodied wedding dress",
+        "Yellow sneakers",
+        "Bandolier of shotgun shells",
+        "Shotgun",
+      ],
     },
     images: [
       {
@@ -1315,7 +1478,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "bloody bride" },
+      { shop: "amazon", search: "bloody bride costume" },
+    ],
   },
   {
     rank: 40,
@@ -1345,7 +1511,11 @@ export const costumes: Costume[] = [
         height: 1184,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Lydia Deetz" },
+      { shop: "spirithalloween", search: "Lydia Deetz" },
+      { shop: "amazon", search: "Lydia Deetz costume" },
+    ],
   },
   {
     rank: 41,
@@ -1360,7 +1530,7 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Don Mancini (writer)", "Ronny Yu (director)"],
     broughtToLifeBy: ["Jennifer Tilly (voice and physical role)"],
-    lore: "Chucky's ex-girlfriend Tiffany resurrects him and becomes his doll bride.",
+    lore: "Chucky’s ex-girlfriend Tiffany resurrects him and becomes his doll bride.",
     funFact: "Tilly plays both Tiffany and herself in Seed of Chucky (2004).",
     look: {
       pieces: ["Black leather jacket", "Blonde wig", "Stitched face"],
@@ -1374,7 +1544,11 @@ export const costumes: Costume[] = [
         height: 1080,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Tiffany Bride of Chucky" },
+      { shop: "spirithalloween", search: "Tiffany Bride of Chucky" },
+      { shop: "amazon", search: "Tiffany Bride of Chucky costume" },
+    ],
   },
   {
     rank: 42,
@@ -1411,7 +1585,7 @@ export const costumes: Costume[] = [
         height: 803,
       },
     ],
-    stores: [],
+    shops: [{ shop: "amazon", search: "The Craft costume" }],
   },
   {
     rank: 43,
@@ -1420,7 +1594,7 @@ export const costumes: Costume[] = [
     trending: false,
     films: [
       {
-        title: "Jennifer's Body",
+        title: "Jennifer’s Body",
         year: 2009,
       },
     ],
@@ -1440,7 +1614,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Jennifer's Body" },
+      { shop: "amazon", search: "Jennifer's Body costume" },
+    ],
   },
   {
     rank: 44,
@@ -1469,7 +1646,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Donnie Darko" },
+      { shop: "amazon", search: "Donnie Darko costume" },
+    ],
   },
   {
     rank: 45,
@@ -1488,7 +1668,7 @@ export const costumes: Costume[] = [
       "Ricou Browning (water)",
       "Designed by Milicent Patrick",
     ],
-    lore: "The last of an amphibious species found in the Amazon, who becomes obsessed with the expedition's female scientist.",
+    lore: "The last of an amphibious species found in the Amazon, who becomes obsessed with the expedition’s female scientist.",
     funFact:
       "The design was credited to Bud Westmore for decades, but the actual creator was Milicent Patrick, a former Disney animator.",
     look: {
@@ -1502,7 +1682,10 @@ export const costumes: Costume[] = [
         height: 882,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "spirithalloween", search: "Creature from the Black Lagoon" },
+      { shop: "amazon", search: "Creature from the Black Lagoon costume" },
+    ],
   },
   {
     rank: 46,
@@ -1531,7 +1714,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Phantom of the Opera costume" },
+      { shop: "etsy", search: "Phantom of the Opera costume" },
+    ],
   },
   {
     rank: 47,
@@ -1548,7 +1734,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Practical creature effects"],
     lore: "A horned demon who punishes naughty kids at Christmas, based on the companion of St. Nicholas in Central Europe.",
     funFact:
-      "In Alpine countries, Krampus parades take place around December 5. Dougherty also made Trick 'r Treat.",
+      "In Alpine countries, Krampus parades take place around December 5. Dougherty also made Trick ’r Treat.",
     look: {
       pieces: ["Horned goat mask", "Fur", "Chains", "Bell"],
     },
@@ -1560,7 +1746,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Krampus" },
+      { shop: "spirithalloween", search: "Krampus" },
+      { shop: "amazon", search: "Krampus costume" },
+    ],
   },
   {
     rank: 48,
@@ -1577,9 +1767,9 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Harvey Stephens"],
     lore: "A five-year-old adopted by a US ambassador who turns out to be the Antichrist. Everyone around him meets a grisly end.",
     funFact:
-      "Jerry Goldsmith won his only Oscar for the score. The 666 birthmark is one of horror's most famous props.",
+      "Jerry Goldsmith won his only Oscar for the score. The 666 birthmark is one of horror’s most famous details.",
     look: {
-      pieces: ["School uniform", "Tricycle", "'666' mark on scalp"],
+      pieces: ["School uniform", "Tricycle", "“666” mark on scalp"],
     },
     images: [
       {
@@ -1589,7 +1779,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "The Omen costume" }],
   },
   {
     rank: 49,
@@ -1618,7 +1808,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "amazon", search: "The Grudge costume" }],
   },
   {
     rank: 50,
@@ -1633,9 +1823,9 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Adam Green"],
     broughtToLifeBy: ["Kane Hodder"],
-    lore: "The deformed ghost of a man accidentally killed by his father's hatchet, who haunts Honey Island Swamp in Louisiana.",
+    lore: "The deformed ghost of a boy accidentally killed by his father’s hatchet, who haunts Honey Island Swamp in Louisiana.",
     funFact:
-      "Hodder also played Jason Voorhees four times. Green pitched it as 'old-school American horror'.",
+      "Hodder also played Jason Voorhees four times. Green pitched it as “old-school American horror”.",
     look: {
       pieces: ["Burlap mask or scarred face", "Torn clothes", "Hatchet"],
     },
@@ -1647,7 +1837,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "ebay", search: "Victor Crowley mask" }],
   },
   {
     rank: 51,
@@ -1662,11 +1852,11 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["John Carpenter & Debra Hill"],
     broughtToLifeBy: ["Jamie Lee Curtis"],
-    lore: "A bookish babysitter who becomes Michael Myers' target and the archetype of the 'final girl'.",
+    lore: "A bookish babysitter who becomes Michael Myers’s target and the archetype of the “final girl”.",
     funFact:
-      "Curtis' film debut; she is the daughter of Psycho star Janet Leigh. She returned for Halloween (2018) and the sequels.",
+      "Curtis’s film debut; she is the daughter of Psycho star Janet Leigh. She returned for Halloween (2018) and the sequels.",
     look: {
-      pieces: ["Plaid shirt", "Jeans", "Kitchen knife", "70s hair"],
+      pieces: ["Plaid shirt", "Jeans", "Kitchen knife", "’70s hair"],
     },
     images: [
       {
@@ -1676,7 +1866,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "etsy", search: "Laurie Strode costume" },
+      { shop: "trickortreatstudios", search: "Laurie Strode" },
+    ],
   },
   {
     rank: 52,
@@ -1721,7 +1914,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "The Strangers costume" },
+      { shop: "etsy", search: "The Strangers Dollface mask" },
+    ],
   },
   {
     rank: 53,
@@ -1741,7 +1937,7 @@ export const costumes: Costume[] = [
     createdBy: ["James DeMonaco"],
     broughtToLifeBy: ["Various masked performers"],
     lore: "In a near-future America, all crime is legal for one night each year, and masked killers roam the streets.",
-    funFact: "The franchise now spans five films and a TV series.",
+    funFact: "By 2021 the franchise had grown to five films and a TV series.",
     look: {
       pieces: ["Creepy grinning or police-style mask", "Dark hooded clothes"],
     },
@@ -1759,7 +1955,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "The Purge" },
+      { shop: "spirithalloween", search: "Purge" },
+      { shop: "amazon", search: "The Purge costume" },
+    ],
   },
   {
     rank: 54,
@@ -1793,7 +1993,11 @@ export const costumes: Costume[] = [
         height: 964,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Killer Klowns" },
+      { shop: "spirithalloween", search: "Killer Klowns" },
+      { shop: "amazon", search: "Killer Klowns costume" },
+    ],
   },
   {
     rank: 55,
@@ -1808,12 +2012,12 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Ryan Coogler (writer-director)"],
     broughtToLifeBy: [
-      "Jack O'Connell",
+      "Jack O’Connell",
       "Michael B. Jordan as twins Smoke and Stack",
     ],
     lore: "An Irish vampire who arrives at a Mississippi juke joint in 1932, with the Black musical community at his mercy.",
     funFact:
-      "Wunmi Mosaku received an Oscar nomination for the film. Universal's Halloween Horror Nights Hollywood 2026 has a Sinners house. Smoke and Stack are the easier costume.",
+      "Wunmi Mosaku received an Oscar nomination for the film. Sinners got its own house at Universal’s Halloween Horror Nights Hollywood 2026. Smoke and Stack are the easier costume.",
     look: {
       pieces: ["1930s period wear", "Vampire makeup and fangs"],
     },
@@ -1825,7 +2029,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "Remmick Sinners" }],
   },
   {
     rank: 56,
@@ -1838,7 +2042,7 @@ export const costumes: Costume[] = [
         year: 2024,
       },
     ],
-    createdBy: ["Osgood 'Oz' Perkins (writer-director)"],
+    createdBy: ["Osgood “Oz” Perkins (writer-director)"],
     broughtToLifeBy: ["Nicolas Cage", "Prosthetics by Harlow MacFarlane"],
     lore: "A satanic serial killer who leaves coded letters at the scenes of family murders, and the young FBI agent who tracks him.",
     funFact:
@@ -1858,7 +2062,7 @@ export const costumes: Costume[] = [
         height: 1254,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "Longlegs costume" }],
   },
   {
     rank: 57,
@@ -1878,7 +2082,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Kiefer Sutherland"],
     lore: "The leader of a vampire biker gang in the fictional town of Santa Carla, a stand-in for Santa Cruz.",
     funFact:
-      "Sutherland bleached his hair for the role. The film's 'Sleep all day' tagline is famous.",
+      "Sutherland bleached his hair for the role. The film’s “Sleep all day” tagline is famous.",
     look: {
       pieces: ["Long blond mullet", "Leather duster", "Fangs", "Earring"],
     },
@@ -1890,7 +2094,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "spirithalloween", search: "Lost Boys" },
+      { shop: "amazon", search: "Lost Boys David costume" },
+    ],
   },
   {
     rank: 58,
@@ -1907,7 +2114,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Jonathan Breck"],
     lore: "A winged, ancient predator that feeds for 23 days every 23rd spring.",
     funFact:
-      "It became one of the most popular horror monsters of the 2000s despite the film's modest budget.",
+      "It became one of the most popular horror monsters of the 2000s despite the film’s modest budget.",
     look: {
       pieces: ["Wide-brim hat", "Long trench coat", "Wings", "Monster mask"],
     },
@@ -1919,7 +2126,11 @@ export const costumes: Costume[] = [
         height: 1239,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Jeepers Creepers" },
+      { shop: "spirithalloween", search: "Jeepers Creepers" },
+      { shop: "amazon", search: "Jeepers Creepers costume" },
+    ],
   },
   {
     rank: 59,
@@ -1951,7 +2162,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Gremlins" },
+      { shop: "spirithalloween", search: "Gremlins" },
+      { shop: "amazon", search: "Gremlins costume" },
+    ],
   },
   {
     rank: 60,
@@ -1964,7 +2179,7 @@ export const costumes: Costume[] = [
         year: 1975,
       },
     ],
-    createdBy: ["Richard O'Brien (writer)", "Jim Sharman (director)"],
+    createdBy: ["Richard O’Brien (writer)", "Jim Sharman (director)"],
     broughtToLifeBy: ["Tim Curry"],
     lore: "A flamboyant alien scientist who hosts a stranded, naive couple in his castle and unveils his muscle-bound creation.",
     funFact:
@@ -1980,7 +2195,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Rocky Horror" },
+      { shop: "amazon", search: "Rocky Horror costume" },
+    ],
   },
   {
     rank: 61,
@@ -1997,7 +2215,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Kathy Bates"],
     lore: "A former nurse who rescues a novelist after a car crash and then holds him hostage to write a new book.",
     funFact:
-      "Bates won the Best Actress Oscar. The 'hobbling' scene is among cinema's most feared.",
+      "Bates won the Best Actress Oscar. The “hobbling” scene is among cinema’s most feared.",
     look: {
       pieces: ["Cardigan", "Bun hairstyle", "Sledgehammer"],
     },
@@ -2009,7 +2227,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "amazon", search: "Annie Wilkes costume" }],
   },
   {
     rank: 62,
@@ -2024,9 +2242,9 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Bret Easton Ellis (novel)", "Mary Harron (director)"],
     broughtToLifeBy: ["Christian Bale"],
-    lore: "A Wall Street yuppie with a morning routine, a killer's hobby, and a business card obsession.",
+    lore: "A Wall Street yuppie with a morning routine, a killer’s hobby, and a business card obsession.",
     funFact:
-      "Bale reportedly modeled Bateman on Tom Cruise's intense friendliness after watching a talk-show interview.",
+      "Bale reportedly modeled Bateman on Tom Cruise’s intense friendliness after watching a talk-show interview.",
     look: {
       pieces: ["Sharp suit", "Slicked hair", "Business card", "Axe"],
     },
@@ -2038,7 +2256,10 @@ export const costumes: Costume[] = [
         height: 1000,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Yuppie Psycho" },
+      { shop: "amazon", search: "American Psycho Patrick Bateman costume" },
+    ],
   },
   {
     rank: 63,
@@ -2051,11 +2272,11 @@ export const costumes: Costume[] = [
         year: 1985,
       },
     ],
-    createdBy: ["Dan O'Bannon (writer-director)"],
+    createdBy: ["Dan O’Bannon (writer-director)"],
     broughtToLifeBy: ["Allan Trautman"],
     lore: "A zombie preserved in tar who is one of several undead in the film, and one of the first to speak.",
     funFact:
-      "This film introduced the idea of zombies craving brains. O'Bannon also wrote Alien.",
+      "This film introduced the idea of zombies craving brains. O’Bannon also wrote Alien.",
     look: {
       pieces: ["Black tar-dripping body suit", "Zombie makeup"],
     },
@@ -2067,7 +2288,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Tarman costume" },
+      { shop: "etsy", search: "Tarman mask" },
+      { shop: "trickortreatstudios", search: "Tarman" },
+    ],
   },
   {
     rank: 64,
@@ -2084,7 +2309,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Duane Jones as Ben", "Countless extras"],
     lore: "The dead rise in rural Pennsylvania and trap a group in a farmhouse.",
     funFact:
-      "The film never uses the word 'zombie'; it calls them ghouls. It cost about $114K and fell into the public domain due to a missing copyright notice.",
+      "The film never uses the word “zombie”; it calls them ghouls. It cost about $114K and fell into the public domain due to a missing copyright notice.",
     look: {
       pieces: ["Torn clothes", "Gray makeup", "Fake blood"],
     },
@@ -2096,7 +2321,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Zombie" },
+      { shop: "spirithalloween", search: "Zombie" },
+      { shop: "amazon", search: "Zombie costume" },
+    ],
   },
   {
     rank: 65,
@@ -2111,7 +2340,7 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Leigh Whannell (writer)", "James Wan (director)"],
     broughtToLifeBy: ["Joseph Bishara (also composer)"],
-    lore: "A red-faced demon who lurks in 'the Further' and covets the body of a comatose boy.",
+    lore: "A red-faced demon who lurks in “the Further” and covets the body of a comatose boy.",
     funFact:
       "The design was reportedly inspired by Darth Maul. The film cost about $1.5M and earned over $100M.",
     look: {
@@ -2125,7 +2354,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "Insidious Lipstick Demon mask" }],
   },
   {
     rank: 66,
@@ -2138,7 +2367,7 @@ export const costumes: Costume[] = [
         year: 1994,
       },
     ],
-    createdBy: ["James O'Barr (comic)", "Alex Proyas (director)"],
+    createdBy: ["James O’Barr (comic)", "Alex Proyas (director)"],
     broughtToLifeBy: ["Brandon Lee"],
     lore: "A murdered musician who returns from the dead to avenge himself and his fiancée.",
     funFact:
@@ -2154,7 +2383,10 @@ export const costumes: Costume[] = [
         height: 1230,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "The Crow" },
+      { shop: "amazon", search: "The Crow costume" },
+    ],
   },
   {
     rank: 67,
@@ -2169,11 +2401,11 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Victor Miller & Sean S. Cunningham"],
     broughtToLifeBy: ["Betsy Palmer"],
-    lore: "A grieving camp cook whose revenge for her son Jason's drowning drives the original murders.",
+    lore: "A grieving camp cook whose revenge for her son Jason’s drowning drives the original murders.",
     funFact:
       "Palmer reportedly took the role because she needed money to buy a car.",
     look: {
-      pieces: ["Green cardigan", "50s-style hair", "Hunting knife"],
+      pieces: ["Blue cable-knit sweater", "Hunting knife"],
     },
     images: [
       {
@@ -2183,7 +2415,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "etsy", search: "Pamela Voorhees costume" },
+      { shop: "ebay", search: "Pamela Voorhees sweater" },
+    ],
   },
   {
     rank: 68,
@@ -2200,7 +2435,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Claude Rains", "Effects by John P. Fulton"],
     lore: "A scientist who turns himself invisible and descends into megalomania.",
     funFact:
-      "This was Rains' film debut, and his face is not shown until the final scene.",
+      "This was Rains’s Hollywood debut, and his face is not shown until the final scene.",
     look: {
       pieces: ["Bandages", "Dark goggles", "Hat", "Overcoat"],
     },
@@ -2212,7 +2447,7 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "Invisible Man costume" }],
   },
   {
     rank: 69,
@@ -2227,7 +2462,7 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Stephen Sondheim (1979 musical)", "Tim Burton (director)"],
     broughtToLifeBy: ["Johnny Depp", "Helena Bonham Carter as Mrs. Lovett"],
-    lore: "A vengeful barber who slits customers' throats, whose partner turns them into meat pies.",
+    lore: "A vengeful barber who slits customers’ throats, whose partner turns them into meat pies.",
     funFact:
       "The film won the Oscar for Art Direction. The story dates to an 1846 penny dreadful.",
     look: {
@@ -2241,7 +2476,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Sweeney Todd" },
+      { shop: "amazon", search: "Sweeney Todd costume" },
+    ],
   },
   {
     rank: 70,
@@ -2258,7 +2496,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Tom Cruise"],
     lore: "A charismatic, cruel vampire who turns Louis in 18th-century New Orleans.",
     funFact:
-      "Rice initially objected to Cruise's casting but later praised his performance.",
+      "Rice initially objected to Cruise’s casting but later praised his performance.",
     look: {
       pieces: ["Frock coat", "Ruffled cravat", "Blond hair", "Fangs"],
     },
@@ -2270,7 +2508,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "etsy", search: "Lestat costume" },
+      { shop: "ebay", search: "Lestat costume coat" },
+    ],
   },
   {
     rank: 71,
@@ -2285,11 +2526,11 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Stephen King (1986 novel)"],
     broughtToLifeBy: ["Jackson Robert Scott"],
-    lore: "Bill's younger brother who follows a paper boat into a storm drain and meets Pennywise.",
+    lore: "Bill’s younger brother who follows a paper boat into a storm drain and meets Pennywise.",
     funFact:
       "The yellow raincoat and paper boat became an instantly recognizable image.",
     look: {
-      pieces: ["Yellow raincoat", "Paper boat", "Storm drain"],
+      pieces: ["Yellow raincoat", "Paper boat", "Rubber boots"],
     },
     images: [
       {
@@ -2299,7 +2540,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "spirithalloween", search: "Georgie" },
+      { shop: "amazon", search: "Georgie costume" },
+    ],
   },
   {
     rank: 72,
@@ -2316,7 +2560,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Warwick Davis"],
     lore: "A murderous leprechaun who hunts down anyone who steals his gold.",
     funFact:
-      "It was Jennifer Aniston's film debut. The series runs to eight films.",
+      "It was Jennifer Aniston’s film debut. The series runs to eight films.",
     look: {
       pieces: ["Green suit and hat", "Red beard", "Gold coins"],
     },
@@ -2328,7 +2572,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Leprechaun" },
+      { shop: "amazon", search: "Leprechaun costume" },
+      { shop: "trickortreatstudios", search: "Leprechaun" },
+    ],
   },
   {
     rank: 73,
@@ -2345,7 +2593,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Nick King"],
     lore: "A Babylonian entity who consumes children after they are made to murder their families on film.",
     funFact:
-      "Derrickson has said the film was inspired by a nightmare after watching The Ring.",
+      "The film was inspired by a nightmare co-writer C. Robert Cargill had after watching The Ring.",
     look: {
       pieces: ["Long black hair and coat", "White face"],
     },
@@ -2357,7 +2605,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Sinister Bughuul costume" },
+      { shop: "etsy", search: "Bughuul mask" },
+    ],
   },
   {
     rank: 74,
@@ -2371,13 +2622,13 @@ export const costumes: Costume[] = [
       },
     ],
     createdBy: [
-      "Dan O'Bannon & Ronald Shusett (writers)",
+      "Dan O’Bannon & Ronald Shusett (writers)",
       "Ridley Scott (director)",
     ],
     broughtToLifeBy: ["Sigourney Weaver"],
     lore: "The last survivor of the Nostromo who outsmarts the Xenomorph.",
     funFact:
-      "The role was written without a specified gender and became a genre benchmark for the 'final girl'.",
+      "The role was written without a specified gender and became a genre benchmark for the “final girl”.",
     look: {
       pieces: ["Nostromo jumpsuit", "Short hair", "Cat carrier"],
     },
@@ -2389,7 +2640,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Ellen Ripley" },
+      { shop: "amazon", search: "Ellen Ripley costume" },
+    ],
   },
   {
     rank: 75,
@@ -2407,7 +2661,7 @@ export const costumes: Costume[] = [
       "Rob Letterman (director)",
     ],
     broughtToLifeBy: ["Jack Black (voice)"],
-    lore: "A ventriloquist's dummy who comes to life and terrorizes a town.",
+    lore: "A ventriloquist’s dummy who comes to life and terrorizes a town.",
     funFact: "Jack Black also plays R. L. Stine in the film.",
     look: {
       pieces: ["Ventriloquist dummy outfit and mask"],
@@ -2420,7 +2674,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "halloweencostumes", search: "Slappy" },
+      { shop: "spirithalloween", search: "Slappy" },
+      { shop: "amazon", search: "Slappy costume" },
+    ],
   },
   {
     rank: 76,
@@ -2435,7 +2693,7 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Eli Roth (director)", "Jeff Rendell"],
     broughtToLifeBy: ["Pilgrim-masked performer"],
-    lore: "A killer wearing the mask of the first governor of Plymouth colony hunts down the residents of a Massachusetts town.",
+    lore: "A killer wearing the mask of the first governor of Plymouth Colony hunts down the residents of a Massachusetts town.",
     funFact:
       "The film grew out of a fake trailer Roth made for Grindhouse (2007).",
     look: {
@@ -2449,7 +2707,11 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Thanksgiving John Carver costume" },
+      { shop: "etsy", search: "John Carver Thanksgiving costume" },
+      { shop: "trickortreatstudios", search: "John Carver" },
+    ],
   },
   {
     rank: 77,
@@ -2467,7 +2729,7 @@ export const costumes: Costume[] = [
       "Marv Wolfman & Gene Colan (creators of Blade in Marvel comics, 1973)",
     ],
     broughtToLifeBy: ["Wesley Snipes"],
-    lore: "A half-vampire vampire hunter who fights the blood cult.",
+    lore: "A half-vampire vampire hunter at war with the vampires who secretly run the city’s nightlife.",
     funFact:
       "It was one of the first successful Marvel movies, before the MCU.",
     look: {
@@ -2481,7 +2743,10 @@ export const costumes: Costume[] = [
         height: 1315,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Blade costume" },
+      { shop: "etsy", search: "Blade Wesley Snipes costume" },
+    ],
   },
   {
     rank: 78,
@@ -2496,9 +2761,9 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Stephen King (novel)", "Stanley Kubrick (director)"],
     broughtToLifeBy: ["Danny Lloyd"],
-    lore: "A psychic boy who sees terrifying visions in the Overlook Hotel and communicates with a chef.",
+    lore: "A psychic boy who sees terrifying visions in the Overlook Hotel and shares “the shining” with the hotel’s cook, Dick Hallorann.",
     funFact:
-      "Lloyd retired from acting and became a biology professor. 'REDRUM' is murder reversed.",
+      "Lloyd retired from acting and became a biology professor. “REDRUM” is murder reversed.",
     look: {
       pieces: ["Red sweater with Apollo 11 rocket", "Tricycle"],
     },
@@ -2510,7 +2775,10 @@ export const costumes: Costume[] = [
         height: 1085,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Danny Torrance costume" },
+      { shop: "etsy", search: "Danny Torrance Apollo sweater" },
+    ],
   },
   {
     rank: 79,
@@ -2525,11 +2793,11 @@ export const costumes: Costume[] = [
     ],
     createdBy: ["Kevin Williamson & Wes Craven"],
     broughtToLifeBy: ["Neve Campbell"],
-    lore: "A high-school student who survives the Woodsboro killings and becomes Ghostface's recurring target.",
+    lore: "A high-school student who survives the Woodsboro killings and becomes Ghostface’s recurring target.",
     funFact:
       "Campbell returned for Scream 7 (2026) after sitting out Scream VI over a pay dispute.",
     look: {
-      pieces: ["Casual 90s outfit", "Denim jacket", "Phone"],
+      pieces: ["Casual ’90s outfit", "Denim jacket", "Phone"],
     },
     images: [
       {
@@ -2539,7 +2807,10 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "Sidney Prescott costume" },
+      { shop: "etsy", search: "Sidney Prescott costume" },
+    ],
   },
   {
     rank: 80,
@@ -2568,7 +2839,7 @@ export const costumes: Costume[] = [
         height: 1300,
       },
     ],
-    stores: [],
+    shops: [{ shop: "etsy", search: "Ellen Hutter Nosferatu dress" }],
   },
   {
     rank: 81,
@@ -2597,7 +2868,10 @@ export const costumes: Costume[] = [
         height: 1200,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "amazon", search: "bloody killer santa costume" },
+      { shop: "etsy", search: "Silent Night Deadly Night costume" },
+    ],
   },
   {
     rank: 82,
@@ -2629,6 +2903,9 @@ export const costumes: Costume[] = [
         height: 1400,
       },
     ],
-    stores: [],
+    shops: [
+      { shop: "etsy", search: "Resident Evil Alice costume" },
+      { shop: "ebay", search: "Resident Evil Alice costume" },
+    ],
   },
 ]

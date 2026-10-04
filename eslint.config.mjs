@@ -7,22 +7,22 @@ const eslintConfig = defineConfig([
   ...nextTs,
   {
     rules: {
-      // Components the shadcn CLI adds import `cn` from the package, whose
-      // defaults take Kostuma's font sizes (`text-label`) for colors.
+      // Components the shadcn CLI adds may import `cn` from a package,
+      // whose defaults take Kostuma's font sizes (`text-label`) for colors.
       "no-restricted-imports": [
         "error",
         {
-          paths: [
-            {
-              name: "cn",
-              message:
-                'Import { cn } from "@/lib/utils": it knows Kostuma\'s type scale.',
-            },
-          ],
+          paths: ["cn", "tailwind-merge"].map((name) => ({
+            name,
+            message:
+              'Import { cn } from "@/lib/utils": it knows Kostuma\'s type scale.',
+          })),
         },
       ],
     },
   },
+  // Where `cn` is made.
+  { files: ["lib/utils.ts"], rules: { "no-restricted-imports": "off" } },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

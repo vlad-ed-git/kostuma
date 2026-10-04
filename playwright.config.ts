@@ -44,6 +44,10 @@ export default defineConfig({
     env: {
       E2E: "1",
       SITE_URL: `http://localhost:${port}`,
+      // The Fitting Room's fake renders, quick, each announced by a signed
+      // webhook, as YouCam does (lib/fitting-room/fake-provider.ts).
+      FAKE_RENDER_MS: "400",
+      YOUCAM_WEBHOOK_SECRET: `whsec_${Buffer.from("kostuma e2e webhooks only").toString("base64")}`,
       // Google's public test key: its box always passes, on any domain.
       RECAPTCHA_SITE_KEY: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
     },

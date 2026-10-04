@@ -32,17 +32,79 @@ test.describe("languages", () => {
     for (const [path, title, choose, date] of [
       [
         "/es",
-        "Se acerca el día más oscuro.",
+        "Se acerca la noche más oscura.",
         "Elige tu disfraz",
         "sábado, 31 de octubre",
       ],
-      ["/zh", "最黑暗的一天即将来临。", "挑选你的装扮", "10月31日星期六"],
+      ["/zh", "最黑暗的夜晚即将来临。", "挑选你的装扮", "10月31日星期六"],
     ]) {
       await page.goto(path)
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(title)
       await expect(page.getByRole("link", { name: choose })).toBeVisible()
       await expect(page.getByText(date)).toBeVisible()
     }
+    // Chinese headlines break where their messages say (<wbr>), never
+    // inside a word, in the brush face kept for Chinese headings.
+    const headline = page.getByRole("heading", { level: 1 })
+    await expect(headline.locator("wbr")).toHaveCount(2)
+    await expect(headline).toHaveCSS("word-break", "keep-all")
+    await expect(headline).toHaveCSS(
+      "font-family",
+      /--font-cjk-heading|Ma Shan Zheng|cjk/i
+    )
+    // Only a part that overflows breaks: the countdown's numbers stay
+    // whole, never one digit under the other.
+    const numbers = await page
+      .getByRole("timer")
+      .locator("li > span:first-child")
+      .evaluateAll((all) =>
+        all.map((number) => ({
+          height: number.getBoundingClientRect().height,
+          size: parseFloat(getComputedStyle(number).fontSize),
+        }))
+      )
+    expect(numbers).toHaveLength(4)
+    for (const { height, size } of numbers)
+      expect(height).toBeLessThan(size * 1.6)
+  })
+
+  test("every costume speaks the visitor's language, names and people as they are", async ({
+    page,
+  }) => {
+    const errors = collectErrors(page)
+    for (const [path, film, lore, piece] of [
+      [
+        "/es/costumes/freddy-krueger",
+        "Pesadilla en la calle del infierno (1984)",
+        "Un asesino de niños al que los padres de Springwood quemaron vivo",
+        "Suéter a rayas rojas y verdes",
+      ],
+      [
+        "/zh/costumes/freddy-krueger",
+        "《猛鬼街》（1984）",
+        "一个被 Springwood 的家长们活活烧死的儿童杀手",
+        "红绿条纹毛衣",
+      ],
+    ]) {
+      await page.goto(path)
+      const main = page.getByRole("main")
+      await expect(
+        main.getByRole("heading", { level: 1, name: "Freddy Krueger" })
+      ).toBeVisible()
+      await expect(main.getByText(film)).toBeVisible()
+      await expect(main.getByText(lore, { exact: false })).toBeVisible()
+      await expect(main.getByText(piece)).toBeVisible()
+      // The people credited stay as they are.
+      await expect(main.getByText("Robert Englund")).toBeVisible()
+    }
+    // The list, too: each film under its local title.
+    await page.goto("/zh")
+    await expect(
+      page
+        .getByRole("region", { name: "装扮" })
+        .getByRole("link", { name: /Freddy Krueger/ })
+    ).toContainText("《猛鬼街》（1984）")
+    expect(errors).toEqual([])
   })
 
   test("the default locale's prefix redirects to the root", async ({
@@ -52,11 +114,29 @@ test.describe("languages", () => {
     await expect(page).toHaveURL(/\/$/)
   })
 
-  test("sends alternate links for search engines", async ({ request }) => {
-    const response = await request.get("/", { maxRedirects: 0 })
-    const links = response.headers()["link"] ?? ""
-    expect(links).toContain('hreflang="es"')
-    expect(links).toContain('hreflang="x-default"')
+  test("names each page's versions in every language for search engines", async ({
+    request,
+    baseURL,
+  }) => {
+    // In the page's head, on the site's own address (lib/seo.ts), never in
+    // a header built from whatever host served the request.
+    const response = await request.get("/es", { maxRedirects: 0 })
+    expect(response.headers()["link"] ?? "").not.toContain("hreflang")
+    const alternates = (await response.text()).matchAll(
+      /<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/gi
+    )
+    const at = (path: string) => new URL(path, baseURL).href
+    // Compared as addresses: Next writes the root without its slash.
+    expect(
+      Object.fromEntries(
+        alternates.map(([, tag, href]) => [tag, new URL(href).href])
+      )
+    ).toEqual({
+      en: at("/"),
+      es: at("/es"),
+      "zh-Hans": at("/zh"),
+      "x-default": at("/"),
+    })
   })
 
   test("language links are never prefetched", async ({ page }) => {
@@ -108,11 +188,16 @@ test.describe("languages", () => {
 })
 
 test.describe("unknown pages", () => {
-  for (const [path, tag, title] of [
-    ["/no-such-page", "en", "Lost in the dark"],
-    ["/es/no-such-page", "es", "Perdido en la oscuridad"],
-    ["/zh/a/b", "zh-Hans", "迷失在黑暗中"],
-    ["/missing.txt", "en", "Lost in the dark"],
+  for (const [path, tag, title, costumes] of [
+    ["/no-such-page", "en", "Lost in the dark", 'href="/#costumes"'],
+    [
+      "/es/no-such-page",
+      "es",
+      "Perdido en la oscuridad",
+      'href="/es#costumes"',
+    ],
+    ["/zh/a/b", "zh-Hans", "迷失在黑暗中", 'href="/zh#costumes"'],
+    ["/missing.txt", "en", "Lost in the dark", 'href="/#costumes"'],
   ]) {
     test(`${path} is a server-rendered 404 in ${tag}`, async ({ request }) => {
       const response = await request.get(path)
@@ -122,6 +207,8 @@ test.describe("unknown pages", () => {
       expect(html).toContain(`<html lang="${tag}"`)
       expect(html).not.toContain("__next_error__")
       expect(html).toContain(title)
+      // A mistyped costume address: the costumes, one press away.
+      expect(html).toContain(costumes)
     })
   }
 })

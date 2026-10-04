@@ -31,7 +31,7 @@ describe("Footer", () => {
     ])
   })
 
-  it("links what to explore and the fine print, still to come", () => {
+  it("links what to explore and the fine print", () => {
     renderInEnglish(<Footer />)
     expect(hrefs("Explore")).toEqual(["/#costumes", "/basket"])
     expect(
@@ -39,7 +39,7 @@ describe("Footer", () => {
     ).toHaveAttribute("href", "/basket")
     expect(hrefs("Fine print")).toEqual(["/terms", "/privacy"])
     const finePrint = screen.getByRole("navigation", { name: "Fine print" })
-    expect(within(finePrint).getAllByText("Soon")).toHaveLength(2)
+    expect(within(finePrint).queryByText("Soon")).not.toBeInTheDocument()
   })
 
   it("offers every language as a plain link", () => {

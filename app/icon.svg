@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Kostuma's icon: the wordmark's K (Grenze Gotisch, semibold, as an
+       outline) in bloody, gritty ink on the night's black (spec §2.1).
+       Its edges bitten, the ink chipped, specked and dragged dry, bled a
+       little; blood running off its feet in drops that catch the light.
+       The noise is seeded: the same every time. `npm run images` renders
+       it (scripts/icons.mjs), the 16 and 32 px favicons without #grit. -->
+  <defs>
+    <radialGradient id="glow" cx="256" cy="262" r="236" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#C80F1F" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#C80F1F" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="blood" x1="0" y1="72" x2="0" y2="480" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#EE2531"/>
+      <stop offset="0.5" stop-color="#C20F1D"/>
+      <stop offset="1" stop-color="#7A0812"/>
+    </linearGradient>
+    <!-- The edges, bitten and ragged. -->
+    <filter id="bite" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="3" seed="4" result="warp"/>
+      <feDisplacementMap in="SourceGraphic" in2="warp" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- The ink's grit: a rough tooth, specks, chips, streaks where the
+         brush ran dry, an uneven density, a little bleed into the night. -->
+    <filter id="grit" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.3" numOctaves="2" seed="7" result="tooth"/>
+      <feDisplacementMap in="SourceGraphic" in2="tooth" scale="7" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="1" seed="9" result="grain"/>
+      <feColorMatrix in="grain" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -14 10.4" result="specks"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="13" result="flake"/>
+      <feColorMatrix in="flake" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -20 15.1" result="chips"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.5 0.01" numOctaves="2" seed="21" result="drag"/>
+      <feColorMatrix in="drag" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -20 15.6" result="streaks"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="2" seed="2" result="wash"/>
+      <feColorMatrix in="wash" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.5 0.2" result="density"/>
+      <feComposite in="rough" in2="specks" operator="in"/>
+      <feComposite in2="chips" operator="in"/>
+      <feComposite in2="streaks" operator="in"/>
+      <feComposite in2="density" operator="in" result="ink"/>
+      <feGaussianBlur in="ink" stdDeviation="3"/>
+      <feComponentTransfer result="bleed"><feFuncA type="linear" slope="0.55"/></feComponentTransfer>
+      <feMerge><feMergeNode in="bleed"/><feMergeNode in="ink"/></feMerge>
+    </filter>
+    <!-- The blood: running, swaying a little, bled at its edges. -->
+    <filter id="wet" x="-30%" y="-15%" width="160%" height="130%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" seed="5" result="sway"/>
+      <feDisplacementMap in="SourceGraphic" in2="sway" scale="6" xChannelSelector="R" yChannelSelector="G" result="run"/>
+      <feGaussianBlur in="run" stdDeviation="2.5"/>
+      <feComponentTransfer result="bleed"><feFuncA type="linear" slope="0.5"/></feComponentTransfer>
+      <feMerge><feMergeNode in="bleed"/><feMergeNode in="run"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#07080B"/>
+  <g id="mark">
+    <circle cx="256" cy="262" r="236" fill="url(#glow)"/>
+    <g fill="url(#blood)" filter="url(#wet)">
+      <path d="M148 390C148 415.4 154 427 153.4 439.2C144.6 449 146 460.2 150.2 466.5C155.1 472.1 164.9 472.1 169.8 466.5C174 460.2 175.4 449 166.6 439.2C166 427 172 415.4 172 390Z"/>
+      <path d="M204.5 386C204.5 403 208.3 409 207.9 413.2C202.1 419.5 203 426.7 205.7 430.8C208.8 434.4 215.2 434.4 218.3 430.8C221 426.7 221.9 419.5 216.1 413.2C215.8 409 219.5 403 219.5 386Z"/>
+      <path d="M357 390C357 420.8 363.5 436 362.9 456C353.5 466.5 355 478.5 359.5 485.3C364.8 491.3 375.3 491.3 380.5 485.3C385 478.5 386.5 466.5 377.1 456C376.5 436 383 420.8 383 390Z"/>
+      <circle cx="120" cy="428" r="6"/>
+      <circle cx="247" cy="418" r="4"/>
+      <circle cx="424" cy="410" r="5"/>
+      <circle cx="404" cy="440" r="3.5"/>
+      <circle cx="336" cy="434" r="3.5"/>
+      <circle cx="96" cy="386" r="3"/>
+    </g>
+    <g filter="url(#grit)">
+      <path fill="url(#blood)" filter="url(#bite)" d="M317.0 388.1Q308.1 370.3 298.6 346.3Q289.1 322.4 279.9 296.1Q270.7 269.8 262.3 246.2L272.3 226.2L306.5 113.2L281.2 105.8L281.2 80.0Q292.3 78.5 308.6 76.4Q324.9 74.3 338.8 72.9Q352.7 71.6 355.4 72.2Q359.1 73.2 363.8 77.7Q368.5 82.1 371.9 87.1Q375.3 92.1 375.9 94.8L320.1 225.1Q325.9 240.9 333.6 259.6Q341.2 278.2 349.3 296.6Q357.5 315.0 365.6 331.6Q373.8 348.2 380.6 359.7L409.0 370.8L402.2 400.7Q390.6 401.3 376.4 400.7Q362.2 400.2 349.3 398.4Q336.4 396.5 327.5 393.9Q318.6 391.3 317.0 388.1ZM133.0 115.3L103.0 105.8L103.0 80.0Q110.9 79.0 122.5 77.4Q134.0 75.8 145.9 74.5Q157.7 73.2 166.4 72.7Q175.0 72.2 177.1 72.7Q180.8 73.2 185.6 77.7Q190.3 82.1 193.7 86.9Q197.1 91.6 197.6 93.7L197.6 359.2L238.7 368.7L225.5 393.9Q218.2 395.0 206.6 396.5Q195.0 398.1 183.7 399.4Q172.4 400.7 164 401.5Q155.6 402.3 154.0 401.8Q150.3 401.3 145.9 396.8Q141.4 392.3 137.4 387.6Q133.5 382.9 133.0 380.8ZM235.0 77.9L250.7 77.9L250.7 338.7Q250.7 341.9 247.6 350Q244.4 358.1 238.7 368.7L222.9 368.7L222.9 118.4Q222.9 113.2 226.6 101.8Q230.2 90.5 235.0 77.9ZM227.1 216.7L299.1 215.2L299.1 260.4L227.1 246.2Z"/>
+    </g>
+    <g fill="#ECE6DA" fill-opacity="0.35">
+      <ellipse cx="154.7" cy="455.3" rx="3.1" ry="5.9" transform="rotate(-18 154.7 455.3)"/>
+      <ellipse cx="208.6" cy="423.6" rx="2" ry="3.8" transform="rotate(-18 208.6 423.6)"/>
+      <ellipse cx="364.3" cy="473.3" rx="3.3" ry="6.3" transform="rotate(-18 364.3 473.3)"/>
+    </g>
+  </g>
+</svg>

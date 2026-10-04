@@ -209,6 +209,83 @@
   mask-repeat: no-repeat;
 }
 
+/* ── The scrollbars: a clot of blood in a grimy gutter (spec §6) ──────── */
+
+/* Chromium and Safari: the gutter is old, rotten film (the window's grime,
+   darkened); the thumb a clot of blood, dark at its edges, wet down the
+   middle, rounder at the bottom like a drop, brighter while held. Boxes
+   that hide their scrollbar on purpose (the Fitting Room's film strip)
+   still do. */
+::-webkit-scrollbar {
+  width: 13px;
+  height: 13px;
+}
+/* The gutter: blotches of dark rot (seamless fractal noise, like the
+   grain's) on near-black, darkest at its sides. */
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background:
+    linear-gradient(
+      to right,
+      rgb(5 2 3 / 0.7),
+      transparent 50%,
+      rgb(5 2 3 / 0.7)
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.06' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.03 0 0 0 0 0.06 1.8 0 0 0 -0.75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23r)'/%3E%3C/svg%3E")
+      0 0 / 160px 160px,
+    #070304;
+}
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 6px 6px 9px 9px / 6px 6px 14px 14px;
+  background:
+    linear-gradient(
+        to right,
+        transparent 30%,
+        rgb(236 230 218 / 0.22) 40%,
+        transparent 52%
+      )
+      padding-box,
+    linear-gradient(
+        to right,
+        rgb(52 2 7 / 0.88),
+        rgb(185 14 26 / 0.5) 50%,
+        rgb(52 2 7 / 0.88)
+      )
+      padding-box,
+    url("/images/window-glass.webp") center / cover padding-box;
+  box-shadow:
+    inset 0 0 0 1px rgb(0 0 0 / 0.45),
+    inset 0 -6px 8px rgb(0 0 0 / 0.4);
+}
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background:
+    linear-gradient(
+        to right,
+        transparent 30%,
+        rgb(236 230 218 / 0.3) 40%,
+        transparent 52%
+      )
+      padding-box,
+    linear-gradient(
+        to right,
+        rgb(70 3 9 / 0.85),
+        rgb(200 16 29 / 0.6) 50%,
+        rgb(70 3 9 / 0.85)
+      )
+      padding-box,
+    url("/images/window-glass.webp") center / cover padding-box;
+}
+/* Firefox takes colors only: blood on near-black. (Chromium ignores the
+   rules above wherever `scrollbar-color` is set, so it is set only where
+   they don't exist.) */
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: #8a0c15 #070304;
+  }
+}
+
 /* ── The night scene over the home title (components/home/night-scene) ── */
 
 /* Moonlight from the upper left; the red window's light in the middle. */
@@ -280,10 +357,17 @@
   translate: -50% 0;
   pointer-events: none;
   filter: drop-shadow(
-    0 0 22px color-mix(in oklch, var(--blood) 55%, transparent)
+    0 0 22px color-mix(in oklch, var(--blood) 35%, transparent)
   );
   mask-image: linear-gradient(to bottom, #000 55%, transparent 96%);
   mask-repeat: no-repeat;
+}
+/* The hooded figure stands in the window on phones only (owner): on
+   wider screens the window is empty. */
+@media (width >= 40rem) {
+  .apparition .figure {
+    display: none;
+  }
 }
 @media (width < 64rem) {
   /* Small screens: a small tableau above the title, nothing behind words. */
@@ -302,11 +386,97 @@
 .heartbeat {
   transform-origin: 50% 60%;
 }
+/* The numbers in decaying ink (the filter is in the countdown). */
+.decaying-ink {
+  filter: url("#decaying-ink");
+}
 
-/* ── "Choose your costume": the arrow drips toward the costumes ────────── */
+/* ── "Choose your costume": blood drips toward the costumes ───────────── */
 
-.drip {
-  display: inline-block;
+/* A column beside the lines, as tall as they are: the pool at the end of
+   the first line's word, the stream hanging from it past the last line
+   (components/home/blood-drip.tsx), sized in the lines' em. */
+.blood-drip {
+  position: relative;
+  align-self: stretch;
+  width: 0.8em;
+}
+.blood-drip > svg {
+  position: absolute;
+  top: 0.28em;
+  left: 0;
+  /* Past the last line, however many the lines wrap to: the stream's tip
+     (85 % down) clears it, the drop beyond. */
+  height: calc(100% + 1em);
+  aspect-ratio: 60 / 300;
+  pointer-events: none;
+  filter: drop-shadow(
+    0 0 0.12em color-mix(in oklch, var(--blood) 45%, transparent)
+  );
+}
+.blood-drip-stream,
+.blood-drip-fall {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+}
+/* Still: the stream has run; no drop falls. */
+.blood-drip-fall {
+  opacity: 0;
+}
+
+/* ── The home film strip (components/home/transformation-reel.tsx) ───── */
+
+/* The owner's red, burnt strip (public/images/film-strip.webp, one frame
+   per picture), the pictures standing in its windows. Everything is sized
+   in parts of the strip's width (`cqw`), so it fits whatever column holds
+   it. */
+.home-reel {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: repeat(var(--frames), minmax(0, 1fr));
+  background: url("/images/film-strip.webp") 0 0 / 100% 100% no-repeat;
+}
+.home-reel-frame {
+  position: relative;
+}
+/* The window, inside the frame lines and the bands of holes. */
+.home-reel-window {
+  position: absolute;
+  inset: 13.5% 6% 14%;
+}
+/* The frame's number, printed on the film's edge between two holes. */
+.home-reel-number {
+  position: absolute;
+  top: 7.4%;
+  left: 50%;
+  translate: -50% -50%;
+  font-size: max(0.625rem, calc(13cqw / var(--frames)));
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--foreground);
+  text-shadow: 0 0 0.4em rgb(0 0 0 / 0.9);
+}
+/* A cue mark burnt into the window's upper right: a bone hole with an
+   ember edge and a ring of char, which shows on the light and the dark
+   alike. Still (reduced motion), it stays. */
+.home-reel-burn {
+  position: absolute;
+  top: 5%;
+  right: 6%;
+  width: clamp(0.75rem, calc(14cqw / var(--frames)), 2rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    var(--foreground) 0 36%,
+    color-mix(in oklch, var(--foreground) 60%, var(--ember)) 46%,
+    #1a0605 58% 70%,
+    transparent 76%
+  );
+  filter: drop-shadow(
+    0 0 4px color-mix(in oklch, var(--ember) 50%, transparent)
+  );
 }
 
 /* ── Reel changes between pages (app/[locale]/template.tsx) ────────────── */
@@ -416,6 +586,218 @@
   background-position: 100% 0;
 }
 
+/* ── The Fitting Room: a dressing room backstage (components/fitting-room,
+   spec §11.4b) ─────────────────────────────────────────────────────────── */
+
+/* A step not done yet: the character's silhouette in the dark, rimmed in
+   red, as a costume photo waits on the home page. The one rendering now
+   breathes (motion rules below); the ones waiting on it stay dim. A done
+   step's picture comes in with `.photo-reveal`. */
+.step-silhouette {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  filter: brightness(0) drop-shadow(0 0 1.5px var(--blood))
+    drop-shadow(0 0 10px color-mix(in oklch, var(--blood) 75%, transparent));
+}
+.step-silhouette[data-current] {
+  opacity: 1;
+}
+
+/* The clothes rail the costumes hang from: a bar of cold metal that fades
+   out at both ends, at the height of the hooks' curl. */
+.rail {
+  position: relative;
+}
+.rail::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0.3125rem;
+  height: 3px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in oklch, var(--moon) 45%, transparent) 4rem,
+    color-mix(in oklch, var(--foreground) 55%, transparent) 50%,
+    color-mix(in oklch, var(--moon) 45%, transparent) calc(100% - 4rem),
+    transparent
+  );
+  background-repeat: no-repeat;
+  box-shadow: 0 0 12px color-mix(in oklch, var(--moon) 30%, transparent);
+}
+
+/* A costume on its hanger: it swings from the hook on the rail. Pushed
+   (hover, focus), it tilts; the chosen one sways by itself. */
+.hanger {
+  display: block;
+  transform-origin: 50% 0.4rem;
+  transition: rotate 1.1s var(--ease-dread);
+}
+.hanger-frame {
+  transition:
+    opacity var(--duration-base) ease,
+    filter var(--duration-base) ease,
+    box-shadow var(--duration-base) ease;
+}
+/* The costumes not chosen wait in the dark until the light finds them. */
+.hanger:not([aria-current]) .hanger-frame {
+  opacity: 0.5;
+  filter: saturate(0.4);
+}
+.hanger:hover .hanger-frame,
+.hanger:focus-visible .hanger-frame {
+  opacity: 1;
+  filter: none;
+}
+
+/* The mirrors: a dark frame lit red from behind, a bone edge round the
+   glass. Nothing is ever drawn over the glass: the visitor's pictures show
+   as they came. `--glass-h` sets the glass's height, `--ratio` its shape;
+   a narrow screen shrinks it to fit. */
+.mirror {
+  --band: 1.25rem;
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  padding: var(--band);
+  background: linear-gradient(
+    160deg,
+    color-mix(in oklch, var(--moon) 10%, var(--card)),
+    var(--card) 40%,
+    color-mix(in oklch, var(--blood) 7%, var(--background))
+  );
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklch, var(--foreground) 10%, transparent),
+    0 0 60px -8px color-mix(in oklch, var(--blood) 45%, transparent),
+    0 36px 120px -24px color-mix(in oklch, var(--blood) 55%, transparent);
+}
+.mirror[data-error] {
+  box-shadow:
+    inset 0 0 0 1px var(--destructive),
+    0 0 60px -8px color-mix(in oklch, var(--destructive) 40%, transparent);
+}
+/* Lights out: the Fitting Room is closed. */
+.mirror[data-off] {
+  box-shadow: inset 0 0 0 1px
+    color-mix(in oklch, var(--foreground) 8%, transparent);
+}
+.mirror-glass {
+  position: relative;
+  overflow: hidden;
+  width: calc(var(--glass-h, 20rem) * var(--ratio, 0.75));
+  max-width: 100%;
+  aspect-ratio: var(--ratio, 0.75);
+  background: radial-gradient(
+    ellipse 90% 70% at 30% 20%,
+    color-mix(in oklch, var(--moon) 9%, #000),
+    #000 70%
+  );
+  background-repeat: no-repeat;
+  box-shadow: 0 0 0 1px color-mix(in oklch, var(--foreground) 24%, transparent);
+}
+
+/* The vanity's bulbs, round the top and down both sides (each placed by
+   `--x` and `--y`, fractions along the band). Two flicker, one is dead
+   and sputters now and then (motion rules below). */
+.mirror-bulb {
+  position: absolute;
+  left: calc(var(--band) / 2 + (100% - var(--band)) * var(--x));
+  top: calc(var(--band) / 2 + (100% - var(--band)) * var(--y));
+  width: calc(var(--band) * 0.5);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 40% 35%,
+    var(--foreground),
+    color-mix(in oklch, var(--foreground) 75%, var(--card))
+  );
+  box-shadow:
+    0 0 6px 1px color-mix(in oklch, var(--foreground) 65%, transparent),
+    0 0 20px 6px color-mix(in oklch, var(--foreground) 20%, transparent);
+}
+.mirror-bulb[data-dead],
+.mirror[data-off] .mirror-bulb {
+  background: color-mix(in oklch, var(--foreground) 16%, var(--card));
+  box-shadow: none;
+}
+
+/* Fog rolling at the mirror's feet, behind it, thicker than the night's,
+   fading out on every side before it reaches any words. */
+.mirror-fog {
+  position: absolute;
+  inset: auto -20% -16% -20%;
+  z-index: -1;
+  height: 70%;
+  pointer-events: none;
+  mask-image: radial-gradient(
+    ellipse 50% 50% at 50% 55%,
+    #000 40%,
+    transparent 100%
+  );
+  mask-repeat: no-repeat;
+}
+.mirror-fog .fog > span:first-child {
+  opacity: 0.8;
+}
+.mirror-fog .fog > span:last-child {
+  opacity: 0.55;
+}
+
+/* The film strip under the mirror: every picture of the try-on as a frame
+   between sprocket holes, with light coming through them. It scrolls when
+   the frames outrun it, fading out at its far end. */
+.film-strip {
+  --hole: color-mix(in oklch, var(--foreground) 22%, transparent);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  padding-block: 1.375rem;
+  background:
+    linear-gradient(to right, var(--hole) 0 0.5rem, transparent 0.5rem) 0
+      0.5rem / 1.125rem 0.375rem repeat-x local,
+    linear-gradient(to right, var(--hole) 0 0.5rem, transparent 0.5rem) 0
+      calc(100% - 0.5rem) / 1.125rem 0.375rem repeat-x local,
+    color-mix(in oklch, var(--blood) 5%, #030304);
+  mask-image: linear-gradient(to right, #000 calc(100% - 4rem), transparent);
+  mask-repeat: no-repeat;
+}
+.film-strip::-webkit-scrollbar {
+  display: none;
+}
+.film-frame {
+  transition: box-shadow var(--duration-base) ease;
+}
+[aria-current] > .film-frame {
+  box-shadow:
+    0 0 0 2px var(--blood-text),
+    0 0 22px color-mix(in oklch, var(--blood) 70%, transparent);
+}
+
+/* A red light from behind the mirrors and moonlight from the upper right,
+   fading out before every edge (no line where the page ends). */
+.dressing-light {
+  background:
+    radial-gradient(
+      ellipse 55% 40% at 25% 55%,
+      color-mix(in oklch, var(--blood) 16%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 45% 30% at 90% 8%,
+      color-mix(in oklch, var(--moon) 9%, transparent),
+      transparent 70%
+    );
+  background-repeat: no-repeat;
+}
+/* The tape rolls through the title card across the whole screen. */
+.dressing-tape,
+.title-tape {
+  inset-inline: calc(50% - 50vw);
+  inset-block: -1.5rem;
+}
+
 /* ── Lit by scroll: the costume rows (`.lit`, spec §7.2), below ──────── */
 /* No JavaScript: browsers without scroll-driven animations show every row. */
 
@@ -424,6 +806,31 @@
 @media (prefers-reduced-motion: no-preference) {
   .film-grain::before {
     animation: grain 330ms steps(1) infinite;
+  }
+  .step-silhouette[data-current] {
+    animation: breathe 2.4s ease-in-out infinite alternate;
+  }
+  /* The dressing room (spec §11.4b): the chosen costume sways on its
+     hanger, a pushed one tilts; two of the vanity's bulbs flicker and the
+     dead one sputters; a picture chosen from the strip fades up in the
+     mirror. */
+  .hanger[aria-current],
+  .hanger[data-sway] {
+    animation: sway 5s ease-in-out var(--sway-delay, 0s) infinite alternate;
+  }
+  @media (hover: hover) {
+    .hanger:not([aria-current]):hover {
+      rotate: 4deg;
+    }
+  }
+  .mirror-bulb[data-flicker] {
+    animation: bulb-flicker var(--flicker, 6s) steps(1) infinite;
+  }
+  .mirror-bulb[data-dead] {
+    animation: bulb-sputter 9s steps(1) infinite;
+  }
+  .mirror-swap {
+    animation: mirror-swap 0.6s var(--ease-dread) backwards;
   }
   /* Only while a view transition runs: the reel change, never at rest. */
   html:active-view-transition .film-scratches {
@@ -436,6 +843,16 @@
   }
   .vhs-tracking::before {
     animation: vhs-roll 7s linear 1.5s infinite;
+  }
+  /* The home film strip's cue marks: the motor cue blinks twice, then
+     the changeover cue twice, as on the last seconds of a reel; then the
+     reel starts over. Four frames each, a second apart (spec §7.3). */
+  .home-reel-burn {
+    animation: home-reel-cue 6s steps(1, end) infinite;
+  }
+  /* Half a cycle on, from the first frame: never a still burn waiting. */
+  .home-reel-burn[data-cue="changeover"] {
+    animation-delay: -3.5s;
   }
   .fog > span:first-child {
     animation: roll 70s linear infinite;
@@ -452,6 +869,13 @@
   .apparition .lamp {
     animation: lamp 5s steps(1) infinite;
   }
+  /* Without the figure in front, the whole window is a red field larger
+     than a card: it never flickers (spec §7.3). */
+  @media (width >= 40rem) {
+    .apparition .lamp {
+      animation: none;
+    }
+  }
   .apparition .glint {
     transform-box: fill-box;
     transform-origin: center;
@@ -465,8 +889,13 @@
   .heartbeat {
     animation: pulse 1s var(--ease-heavy);
   }
-  .drip {
-    animation: drip 2.4s var(--ease-heavy) infinite;
+  /* The blood pours down past the lines once, then a drop swells at the
+     tip and falls, every 2.4 s. */
+  .blood-drip-stream {
+    animation: blood-pour 1.4s var(--ease-dread) backwards;
+  }
+  .blood-drip-fall {
+    animation: blood-fall 2.4s 1.4s infinite;
   }
   /* A costume goes into My Pumpkin Basket: the pumpkin catches fire,
      flickers and beats once (spec §7.2, Ignite), and the count rolls. */
@@ -608,6 +1037,23 @@
 @keyframes cue-appear {
   to {
     opacity: 1;
+  }
+}
+
+/* Two blinks of four frames, a second apart, in six seconds. */
+@keyframes home-reel-cue {
+  0% {
+    opacity: 1;
+  }
+  2.78% {
+    opacity: 0;
+  }
+  16.67% {
+    opacity: 1;
+  }
+  19.44%,
+  100% {
+    opacity: 0;
   }
 }
 
@@ -820,19 +1266,34 @@
   }
 }
 
-/* A small fall and fade, centered on the line's words. */
-@keyframes drip {
-  0% {
-    translate: 0 -0.1em;
-    opacity: 0;
+/* The stream runs down from the pool. */
+@keyframes blood-pour {
+  from {
+    scale: 1 0.04;
   }
-  30%,
-  70% {
+}
+
+/* A drop gathers at the tip, swells, then falls away, faster as it goes. */
+@keyframes blood-fall {
+  0% {
+    opacity: 0;
+    scale: 0.3;
+    translate: 0 -10px;
+    animation-timing-function: ease-out;
+  }
+  12% {
     opacity: 1;
   }
+  55% {
+    opacity: 1;
+    scale: 1;
+    translate: 0 0;
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
   100% {
-    translate: 0 0.12em;
     opacity: 0;
+    scale: 0.8 1.15;
+    translate: 0 60px;
   }
 }
 
@@ -845,6 +1306,78 @@
 @keyframes reel-in {
   from {
     opacity: 0;
+  }
+}
+
+/* A costume left swinging on its hanger. */
+@keyframes sway {
+  from {
+    rotate: -1.6deg;
+  }
+  to {
+    rotate: 1.6deg;
+  }
+}
+
+/* A bulb that catches a bad contact: two dips in a third of a second, a
+   longer drop later (never more than three flashes a second, spec §7.3). */
+@keyframes bulb-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  42% {
+    opacity: 0.2;
+  }
+  44% {
+    opacity: 1;
+  }
+  46% {
+    opacity: 0.35;
+  }
+  48% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.12;
+  }
+  86% {
+    opacity: 1;
+  }
+}
+
+/* The dead bulb: it tries to come on, once in a while, and fails. */
+@keyframes bulb-sputter {
+  61%,
+  67% {
+    background: var(--foreground);
+    box-shadow: 0 0 10px 2px
+      color-mix(in oklch, var(--foreground) 55%, transparent);
+  }
+  63%,
+  68% {
+    background: color-mix(in oklch, var(--foreground) 16%, var(--card));
+    box-shadow: none;
+  }
+}
+
+/* A picture chosen from the strip surfaces in the mirror. */
+@keyframes mirror-swap {
+  from {
+    opacity: 0;
+    filter: brightness(0.3);
+  }
+}
+
+/* The red light behind a silhouette swells and ebbs. */
+@keyframes breathe {
+  from {
+    filter: brightness(0) drop-shadow(0 0 1px var(--blood))
+      drop-shadow(0 0 4px color-mix(in oklch, var(--blood) 45%, transparent));
+  }
+  to {
+    filter: brightness(0) drop-shadow(0 0 2px var(--blood))
+      drop-shadow(0 0 24px var(--blood));
   }
 }
 

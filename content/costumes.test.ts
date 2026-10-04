@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest"
 
+import { SHOP_ORDER } from "@/lib/shops"
 import { WEB_SIDE } from "@/scripts/photos/web.mjs"
 
 import { costumes } from "./costumes"
@@ -40,6 +41,10 @@ describe("the collection", () => {
         expect(text.trim(), costume.name).toBe(text)
         expect(text, costume.name).not.toBe("")
         expect(text, costume.name).not.toMatch(/\s{2,}|🔥/u)
+        // Typography (todo COPY-07): ’ and “ ”, never a straight one (a
+        // shop's search keeps its words as they are); ’90s, never 90s.
+        expect(text, costume.name).not.toMatch(/['"]/)
+        expect(text, costume.name).not.toMatch(/(?<![’\d])\d0s\b/)
       }
       expect(costume.films.length).toBeGreaterThan(0)
       for (const film of costume.films) {
@@ -57,8 +62,17 @@ describe("the collection", () => {
         expect(new Set(list).size, costume.name).toBe(list.length)
       }
       expect(costume.look.pieces.length).toBeGreaterThan(0)
-      for (const store of costume.stores) {
-        expect(store.url).toMatch(/^https:\/\//)
+      // Where to buy it: the shops that have it, each once, up to three, in
+      // Buy's order, each searched for something.
+      const shops = costume.shops.map(({ shop }) => shop)
+      expect(shops.length, costume.name).toBeLessThanOrEqual(3)
+      expect(new Set(shops).size, costume.name).toBe(shops.length)
+      expect(shops, costume.name).toEqual(
+        shops.toSorted((a, b) => SHOP_ORDER.indexOf(a) - SHOP_ORDER.indexOf(b))
+      )
+      for (const { search } of costume.shops) {
+        expect(search.trim(), costume.name).toBe(search)
+        expect(search, costume.name).not.toBe("")
       }
     }
   )
@@ -66,8 +80,8 @@ describe("the collection", () => {
   it("gives each photo its cut-out file, its web copy's public URL and size", () => {
     const url =
       /^https:\/\/firebasestorage\.googleapis\.com\/v0\/b\/kostuma-73f77\.firebasestorage\.app\/o\/costumes%2F[a-z0-9_-]+\.[a-f0-9]{10}\.webp\?alt=media$/
-    for (const { name, images } of costumes) {
-      for (const photo of images) {
+    for (const { name, images, garment } of costumes) {
+      for (const photo of [...images, ...(garment ? [garment] : [])]) {
         expect(photo.file, name).toMatch(/^[a-z0-9]+([-_][a-z0-9]+)*\.png$/)
         expect(photo.url, name).toMatch(url)
         // The object is named after its file (plus a hash of its content).
@@ -85,10 +99,30 @@ describe("the collection", () => {
     }
   })
 
-  it("never gives two costumes the same photo", () => {
-    const photos = costumes.flatMap((costume) => costume.images)
+  it("never gives two costumes the same photo, nor a garment a photo shown", () => {
+    const photos = costumes.flatMap((costume) => [
+      ...costume.images,
+      ...(costume.garment ? [costume.garment] : []),
+    ])
     expect(new Set(photos.map((photo) => photo.file)).size).toBe(photos.length)
     expect(new Set(photos.map((photo) => photo.url)).size).toBe(photos.length)
+  })
+
+  it("gives the try-on its own garment where the owner made one (2026-10-03)", () => {
+    expect(
+      costumes
+        .filter((costume) => costume.garment)
+        .map((costume) => costume.slug)
+        .sort()
+    ).toEqual([
+      "aunt-gladys",
+      "freddy-fazbear",
+      "jigsaw-and-billy-the-puppet",
+      "nikki-freaky-nikki-freeman",
+      "pirate-clark",
+    ])
+    for (const costume of costumes.filter((each) => each.garment))
+      expect(costume.garment?.file).toBe(`${costume.slug}-costume.png`)
   })
 
   it("has a photo for every costume", () => {

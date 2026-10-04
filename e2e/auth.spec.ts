@@ -106,13 +106,13 @@ test.describe("registering", () => {
       )
     ).toBeVisible()
     await expect(
-      page.getByText("Tick the “I'm not a robot” box.")
+      page.getByText("Tick the “I’m not a robot” box.")
     ).toBeVisible()
     await expect(page.getByLabel("Email")).toBeFocused()
 
     await page.getByLabel("Password", { exact: true }).fill("long enough")
     await page.getByRole("button", { name: "Create account" }).click()
-    await expect(page.getByText("The two passwords don't match.")).toBeVisible()
+    await expect(page.getByText("The two passwords don’t match.")).toBeVisible()
   })
 
   test("asks to agree to the terms, which open in a new tab", async ({
@@ -153,7 +153,7 @@ test.describe("registering", () => {
     )
     await page.goto("/register")
     await expect(page.getByRole("main").getByRole("alert")).toHaveText(
-      "The robot check couldn't load. Check your connection, then reload the page."
+      "The robot check couldn’t load. Check your connection, then reload the page."
     )
   })
 })
@@ -225,7 +225,7 @@ test.describe("signed in", () => {
     expect(errors).toEqual([])
   })
 
-  test("the account page: who, since when, the try-ons waiting", async ({
+  test("the account page: who, since when, the free costume", async ({
     page,
   }) => {
     await page.goto("/account")
@@ -240,8 +240,11 @@ test.describe("signed in", () => {
       "September 13, 2026",
     ])
     const fittingRoom = page.getByRole("region", { name: "The Fitting Room" })
-    await expect(fittingRoom).toContainText("2 free try-ons waiting")
-    await expect(fittingRoom).toContainText("Soon")
+    await expect(fittingRoom).toContainText("Your free costume is waiting.")
+    // Kostuma Pro once the free costume is used, not before.
+    await expect(
+      fittingRoom.getByRole("button", { name: "Get Kostuma Pro" })
+    ).toHaveCount(0)
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
       "content",
       /noindex/

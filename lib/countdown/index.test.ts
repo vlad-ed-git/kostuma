@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { afterEach, describe, expect, it } from "vitest"
 
-import { countdownTo, pad } from "./index"
+import { countdownTo, pad, seasonIn, seasonOn } from "./index"
 
 // Node reads TZ afresh whenever it changes, so each test can live in its
 // own time zone.
@@ -20,10 +20,11 @@ function at(
   return new Date(year, month - 1, day, hours, minutes, seconds)
 }
 
-describe("the countdown to Halloween", () => {
+describe("the countdown", () => {
   it("counts days, hours, minutes and seconds to local midnight", () => {
     expect(countdownTo(at("UTC", 2026, 10, 1, 13, 45, 30))).toEqual({
       kind: "counting",
+      holiday: "halloween",
       year: 2026,
       days: 29,
       hours: 10,
@@ -45,22 +46,45 @@ describe("the countdown to Halloween", () => {
   it("is tonight for the whole of October 31, from midnight", () => {
     expect(countdownTo(at("UTC", 2026, 10, 31))).toEqual({
       kind: "tonight",
+      holiday: "halloween",
       year: 2026,
     })
     expect(countdownTo(at("UTC", 2026, 10, 31, 23, 59, 59))).toEqual({
       kind: "tonight",
+      holiday: "halloween",
       year: 2026,
     })
   })
 
-  it("counts to next year from November 1", () => {
-    expect(countdownTo(at("UTC", 2026, 11, 1))).toMatchObject({
+  it("counts to Christmas from November 1, once Halloween's night has passed", () => {
+    expect(countdownTo(at("UTC", 2026, 11, 1))).toEqual({
       kind: "counting",
+      holiday: "christmas",
+      year: 2026,
+      days: 54,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+    })
+    expect(countdownTo(at("UTC", 2026, 12, 24, 23, 59, 59))).toMatchObject({
+      holiday: "christmas",
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 1,
+    })
+  })
+
+  it("counts to next year's Halloween from Christmas, the stroke of midnight", () => {
+    expect(countdownTo(at("UTC", 2026, 12, 25))).toMatchObject({
+      kind: "counting",
+      holiday: "halloween",
       year: 2027,
-      days: 364,
+      days: 310,
       hours: 0,
     })
     expect(countdownTo(at("UTC", 2026, 12, 31, 23, 59, 59))).toMatchObject({
+      holiday: "halloween",
       year: 2027,
       days: 303,
     })
@@ -68,6 +92,7 @@ describe("the countdown to Halloween", () => {
 
   it("counts to this year's Halloween from January 1", () => {
     expect(countdownTo(at("UTC", 2027, 1, 1))).toMatchObject({
+      holiday: "halloween",
       year: 2027,
       days: 303,
     })
@@ -79,6 +104,7 @@ describe("the countdown to Halloween", () => {
     process.env.TZ = "Asia/Tokyo"
     expect(countdownTo(new Date(instant))).toEqual({
       kind: "tonight",
+      holiday: "halloween",
       year: 2026,
     })
     process.env.TZ = "America/New_York"
@@ -105,12 +131,47 @@ describe("the countdown to Halloween", () => {
   })
 
   it("handles a leap year's extra day", () => {
-    // 2028 is a leap year: November 1, 2027 → October 31, 2028 is 366 days.
-    expect(countdownTo(at("UTC", 2027, 11, 1))).toMatchObject({
+    // 2028 is a leap year: December 25, 2027 → October 31, 2028 is 311 days.
+    expect(countdownTo(at("UTC", 2027, 12, 25))).toMatchObject({
+      holiday: "halloween",
       year: 2028,
-      days: 365,
+      days: 311,
       hours: 0,
     })
+  })
+})
+
+describe("the season", () => {
+  it("is Halloween until its night, then Christmas until December 25", () => {
+    expect(seasonOn(2026, 9, 30)).toEqual({ holiday: "halloween", year: 2026 })
+    expect(seasonOn(2026, 9, 31)).toEqual({ holiday: "halloween", year: 2026 })
+    expect(seasonOn(2026, 10, 1)).toEqual({ holiday: "christmas", year: 2026 })
+    expect(seasonOn(2026, 11, 24)).toEqual({ holiday: "christmas", year: 2026 })
+    expect(seasonOn(2026, 11, 25)).toEqual({ holiday: "halloween", year: 2027 })
+    expect(seasonOn(2027, 0, 1)).toEqual({ holiday: "halloween", year: 2027 })
+  })
+
+  it("is guessed on the day it is in the visitor's time zone", () => {
+    // October 31, 16:30 in London: already November in Tokyo.
+    const instant = new Date(Date.UTC(2026, 9, 31, 16, 30))
+    expect(seasonIn(instant, "Asia/Tokyo")).toEqual({
+      holiday: "christmas",
+      year: 2026,
+    })
+    expect(seasonIn(instant, "America/New_York")).toEqual({
+      holiday: "halloween",
+      year: 2026,
+    })
+  })
+
+  it("falls back on the server's own zone without one, or with one unknown", () => {
+    process.env.TZ = "UTC"
+    const instant = new Date(Date.UTC(2026, 11, 24, 23, 30))
+    for (const zone of [undefined, null, "Mars/Olympus_Mons"])
+      expect(seasonIn(instant, zone)).toEqual({
+        holiday: "christmas",
+        year: 2026,
+      })
   })
 })
 

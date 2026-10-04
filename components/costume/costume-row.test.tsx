@@ -96,4 +96,10 @@ describe("CostumeRow", () => {
     const { container } = render(<CostumeRow costume={ghostface} />)
     expect(container.querySelector("img")).toHaveAttribute("loading", "lazy")
   })
+
+  it("skips rendering its picture off screen, in a frame that keeps its size", () => {
+    const { container } = render(<CostumeRow costume={ghostface} />)
+    const frame = container.querySelector("img")?.closest(".aspect-4\\/5")
+    expect(frame?.className).toContain("[content-visibility:auto]")
+  })
 })

@@ -7,13 +7,24 @@ export type Film = { title: string; year: number }
  */
 export type Look = { pieces: string[]; alternative?: string }
 
-/** A shop that sells the costume: where "Buy" in the basket leads. */
-export type Store = {
-  name: string
-  url: string
-  /** Marks the link `sponsored` (spec §10.3). */
-  affiliate?: boolean
-}
+/** The shops Buy can lead to (lib/shops.ts), in the order it lists them. */
+export type ShopId =
+  | "halloweencostumes"
+  | "spirithalloween"
+  | "amazon"
+  | "etsy"
+  | "trickortreatstudios"
+  | "ebay"
+
+/**
+ * Where to buy a costume: a shop, and what its own search is asked for,
+ * checked to find the costume there (owner, 2026-10-04: "see if there are
+ * results for each costume").
+ */
+export type ShopSearch = { shop: ShopId; search: string }
+
+/** A shop's search for a costume, ready to open: where Buy leads. */
+export type ShopLink = { name: string; url: string }
 
 /** A costume photo: a cut-out on a transparent background. */
 export type Photo = {
@@ -49,11 +60,22 @@ export type Costume = {
   funFact: string
   look: Look
   /**
+   * The outfit alone, stripped of everything else, for the try-on only
+   * (owner, 2026-10-03): YouCam reads it better than the photos shown.
+   * Never shown, never sent to the page. Without one, the try-on uses
+   * `images[0]`. Set by `npm run photos:upload`.
+   */
+  garment?: Photo
+  /**
    * The costume's photos, in the order to show them. Usually one; The
    * Strangers has three, The Purge two. Set by `npm run photos:upload`.
    */
   images: Photo[]
-  stores: Store[]
+  /**
+   * The shops that have it, in Buy's order (`ShopId`): up to three, and one
+   * is enough (owner, 2026-10-04) where only one has it.
+   */
+  shops: [ShopSearch, ...ShopSearch[]]
 }
 
 /** What a list shows of a costume, and nothing more: its first photo. */

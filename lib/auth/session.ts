@@ -11,7 +11,13 @@ const cookieName = "session"
 export const SESSION_SECONDS = 14 * 24 * 60 * 60
 
 /** The signed-in visitor: only what pages need. */
-export type User = { uid: string; name: string; email: string }
+export type User = {
+  uid: string
+  name: string
+  email: string
+  /** Whether Firebase knows the email to be the account holder's. */
+  emailVerified: boolean
+}
 
 // A session that ended the normal way: expired, signed out elsewhere,
 // password changed, account removed or turned off, or a malformed cookie.
@@ -33,16 +39,27 @@ function codeOf(error: unknown) {
  * The signed-in visitor, or null. Verified once per request, including
  * whether Firebase has revoked the session since the cookie was made.
  */
-export const getUser = cache(async (): Promise<User | null> => {
+export const getUser = cache(() => verified(true))
+
+/**
+ * The signed-in visitor from the session cookie alone: its signature and
+ * expiry, checked here, without asking Firebase whether it was revoked
+ * (todo ENG-08). For the Fitting Room's pictures only, a dozen to a page,
+ * each its owner's; pages and actions keep `getUser`.
+ */
+export const getPictureViewer = cache(() => verified(false))
+
+async function verified(checkRevoked: boolean): Promise<User | null> {
   const cookie = (await cookies()).get(cookieName)?.value
   if (!cookie) return null
 
   try {
-    const claims = await adminAuth().verifySessionCookie(cookie, true)
+    const claims = await adminAuth().verifySessionCookie(cookie, checkRevoked)
     return {
       uid: claims.uid,
       name: typeof claims.name === "string" ? claims.name : "",
       email: claims.email ?? "",
+      emailVerified: claims.email_verified === true,
     }
   } catch (error) {
     if (!endedSession.has(codeOf(error))) {
@@ -50,7 +67,7 @@ export const getUser = cache(async (): Promise<User | null> => {
     }
     return null
   }
-})
+}
 
 export async function saveSession(sessionCookie: string) {
   ;(await cookies()).set(cookieName, sessionCookie, {

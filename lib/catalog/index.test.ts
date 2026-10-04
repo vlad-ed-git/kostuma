@@ -8,6 +8,7 @@ import {
   getNeighbors,
   getRelated,
   toSummary,
+  tryOnGarment,
 } from "./index"
 import type { Costume } from "./types"
 
@@ -117,5 +118,20 @@ describe("the catalog", () => {
     expect(toSummary({ ...costume("ghostface"), images: [] }).photo).toBe(
       undefined
     )
+  })
+})
+
+describe("tryOnGarment", () => {
+  it("dresses the visitor in the costume's garment, never shown", () => {
+    const pirate = costume("pirate-clark")
+    expect(tryOnGarment(pirate)).toBe(pirate.garment)
+    expect(tryOnGarment(pirate)).not.toBe(pirate.images[0])
+    expect(toSummary(pirate)).not.toHaveProperty("garment")
+  })
+
+  it("dresses them in the first photo of a costume without one", () => {
+    const ghostface = costume("ghostface")
+    expect(ghostface.garment).toBeUndefined()
+    expect(tryOnGarment(ghostface)).toBe(ghostface.images[0])
   })
 })

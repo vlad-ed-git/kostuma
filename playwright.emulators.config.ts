@@ -39,6 +39,9 @@ export default defineConfig({
       NEXT_PUBLIC_apiKey: "demo-key",
       NEXT_PUBLIC_authDomain: "demo-kostuma.firebaseapp.com",
       NEXT_PUBLIC_appId: "demo-app",
+      // The Fitting Room open, so the pages read the free costume; nothing
+      // here starts a try-on, so YouCam is never called.
+      YOUCAM_API_GENERATED_KEY: "emulators-never-called",
       // Google's public test keys: the box always passes, on any domain.
       RECAPTCHA_SITE_KEY: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
       RECAPTCHA_SECRET_KEY: "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe",

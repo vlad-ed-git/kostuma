@@ -43,7 +43,9 @@ export function BasketLink({ className }: { className?: string }) {
       href="/basket"
       aria-label={count > 0 ? t("label", { count }) : t("title")}
       className={cn(
-        "inline-flex min-h-11 min-w-11 items-center justify-center gap-2.5 text-ui caps text-muted-foreground transition-colors hover:text-ember",
+        // Room for the count's badge, which juts out of the pumpkin, before
+        // the label (todo UX-16).
+        "inline-flex min-h-11 min-w-11 items-center justify-center gap-4 text-ui caps text-muted-foreground transition-colors hover:text-ember",
         className
       )}
     >

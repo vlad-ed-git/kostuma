@@ -30,7 +30,7 @@ const costume = (slug: string, name: string, year: number): BasketCostume => ({
   slug,
   name,
   films: [{ title: `${name}: the film`, year }],
-  stores: [],
+  shops: [{ name: "Etsy", url: `https://www.etsy.com/search?q=${slug}` }],
 })
 
 const costumes = [
@@ -69,7 +69,7 @@ describe("BasketList", () => {
     expect(screen.getByText("2 costumes")).toBeInTheDocument()
   })
 
-  it("gives each costume its page, Buy, Try on (soon) and Remove", () => {
+  it("gives each costume its page, Buy, Try on and Remove", () => {
     renderBasket(["ghostface"])
     const [row] = rows()
     const scope = within(row)
@@ -77,16 +77,30 @@ describe("BasketList", () => {
       "href",
       "/costumes/ghostface"
     )
-    // No shop yet: it says so, rather than a button that goes nowhere.
-    expect(scope.getByText("Buy")).toHaveTextContent("BuySoon")
     expect(
-      scope.getByRole("link", { name: "Try on Ghostface (soon)" })
+      scope.getByRole("link", { name: "Buy Ghostface (opens in a new tab)" })
+    ).toHaveAttribute("href", "https://www.etsy.com/search?q=ghostface")
+    expect(
+      scope.getByRole("link", { name: "Try on Ghostface" })
     ).toHaveAttribute("href", "/basket/fitting-room?costume=ghostface")
     expect(
       scope.getByRole("button", {
         name: "Remove Ghostface from My Pumpkin Basket",
       })
     ).toBeInTheDocument()
+  })
+
+  it("puts Try on before the eye, and keeps Remove quiet", () => {
+    renderBasket(["ghostface"])
+    const scope = within(rows()[0])
+    expect(
+      scope.getByRole("link", { name: "Try on Ghostface" }).className
+    ).toContain("text-foreground")
+    expect(
+      scope.getByRole("button", {
+        name: "Remove Ghostface from My Pumpkin Basket",
+      }).className
+    ).toContain("text-muted-foreground")
   })
 
   it("removes a costume and keeps the visitor's place on the next one", async () => {
@@ -139,10 +153,10 @@ describe("BasketList", () => {
     renderBasket(["pearl", "ghostface"])
     await userEvent.click(screen.getByRole("button", { name: "Clear basket" }))
     expect(storedSlugs()).toEqual(["pearl", "ghostface"])
-    expect(announced()).toBe("Click again to clear")
+    expect(announced()).toBe("Press again to clear")
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Click again to clear" })
+      screen.getByRole("button", { name: "Press again to clear" })
     )
     expect(storedSlugs()).toEqual([])
     expect(announced()).toBe("My Pumpkin Basket is empty.")

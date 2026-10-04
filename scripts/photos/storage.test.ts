@@ -3,7 +3,13 @@ import { readFileSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
 
-import { listedImages, objectPath, publicUrl, withPhotos } from "./storage.mjs"
+import {
+  listedGarments,
+  listedImages,
+  objectPath,
+  publicUrl,
+  withPhotos,
+} from "./storage.mjs"
 
 const data = `export const costumes: Costume[] = [
   {
@@ -108,5 +114,60 @@ describe("listedImages and withPhotos", () => {
 
   it("fails when a listed file has no photo", () => {
     expect(() => withPhotos(data, new Map())).toThrow(/ghostface\.png/)
+  })
+})
+
+describe("listedGarments and withPhotos", () => {
+  const withGarment = `export const costumes: Costume[] = [
+  {
+    slug: "pirate-clark",
+    garment: "pirate-clark-costume.png",
+    images: ["pirate-clark.png"],
+    stores: [],
+  },
+  {
+    slug: "ghostface",
+    images: ["ghostface.png"],
+    stores: [],
+  },
+]
+`
+  const photos = new Map(
+    ["pirate-clark-costume.png", "pirate-clark.png", "ghostface.png"].map(
+      (file) => [file, photo(file)]
+    )
+  )
+
+  it("lists the garments, apart from the photos shown", () => {
+    expect(listedGarments(withGarment)).toEqual(["pirate-clark-costume.png"])
+    expect(listedImages(withGarment)).toEqual([
+      ["pirate-clark.png"],
+      ["ghostface.png"],
+    ])
+    expect(listedGarments(data)).toEqual([])
+  })
+
+  it("writes the garment's photo in place of its name, and reads it back", () => {
+    const written = withPhotos(withGarment, photos)
+    expect(written).toContain(
+      `garment: { file: "pirate-clark-costume.png", url: "https://example.com/pirate-clark-costume.png?alt=media&token=t", width: 1000, height: 1500 },\n    images: [{ file: "pirate-clark.png"`
+    )
+    expect(listedGarments(written)).toEqual(["pirate-clark-costume.png"])
+    // Written again (as Prettier spreads it over lines): the same.
+    const spread = written.replace(
+      /garment: \{ (.*?) \},/,
+      (_, inner: string) =>
+        `garment: {\n      ${inner.split(", ").join(",\n      ")},\n    },`
+    )
+    expect(withPhotos(spread, photos)).toBe(written)
+  })
+
+  it("fails when a garment has no photo", () => {
+    const shown = new Map(
+      ["pirate-clark.png", "ghostface.png"].map((file) => [file, photo(file)])
+    )
+    expect(() => withPhotos(withGarment, shown)).toThrow(
+      "No uploaded photo for pirate-clark-costume.png"
+    )
   })
 })

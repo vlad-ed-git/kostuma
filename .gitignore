@@ -52,4 +52,6 @@ checkpoint.md
 # costume photos found by get_images.md: the owner clears their rights first
 /photos/
 /photos-alt/
+# the owner's sample photos for the Fitting Room (people's faces: never in git)
+/sample_photos/
 halloween_horror_top_100.md

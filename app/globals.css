@@ -71,7 +71,9 @@
   /* The families come from app/fonts.ts (next/font sets the variables). */
   --font-sans:
     var(--font-crimson-pro), var(--font-cjk), "Iowan Old Style", Georgia, serif;
-  --font-heading: var(--font-grenze-gotisch), var(--font-cjk), Georgia, serif;
+  --font-heading:
+    var(--font-grenze-gotisch), var(--font-cjk-heading), var(--font-cjk),
+    Georgia, serif;
   --font-mono: var(--font-sans);
 
   --color-blood: var(--blood);
@@ -123,7 +125,7 @@
 /* The type scale (spec §4.2): size, line height and tracking together. The
    gothic display face runs wide, the book serif runs small: sizes follow. */
 @theme {
-  --text-display-xl: clamp(3.25rem, 7.2vw, 7rem);
+  --text-display-xl: clamp(2.875rem, 6.2vw, 5.5rem);
   --text-display-xl--line-height: 0.92;
   --text-display-xl--letter-spacing: -0.005em;
   --text-display: clamp(2.75rem, 6vw, 5.5rem);
@@ -136,6 +138,9 @@
   --text-h2--line-height: 1;
   --text-h3: clamp(1.75rem, 3vw, 2.75rem);
   --text-h3--line-height: 1.02;
+  /* Step titles and the like: clearly under a section title (owner). */
+  --text-h4: clamp(1.5rem, 1.1rem + 1vw, 2rem);
+  --text-h4--line-height: 1.05;
   /* Small capitals for the interface: 1.2 times their first size on
      desktop (owner), their first size on phones. */
   --text-billing: clamp(1.1875rem, 0.85rem + 0.65vw, 1.425rem);
@@ -203,6 +208,12 @@
   .font-heading:lang(zh-Hans) {
     font-weight: 600 !important;
     line-height: 1.2 !important;
+    /* Lines break at the <wbr> a heading's message marks, never inside
+       a word; only a part too long for its line breaks anywhere. */
+    word-break: keep-all;
+    /* Not "anywhere": that would let a box shrink to one glyph (the
+       countdown's digits, one under the other). */
+    overflow-wrap: break-word;
   }
   body:lang(zh-Hans) {
     line-height: 1.8;
@@ -216,4 +227,65 @@
   font-variant-caps: all-small-caps;
   letter-spacing: 0.09em;
   font-weight: 600;
+}
+
+/* The makeup guide on paper (todo OPP-12; components/fitting-room/
+   try-on-steps.tsx): never on screen. Printing a page that holds one
+   prints the guide alone, black on white, a page to prop against the
+   mirror; every other page prints as it is. */
+.print-guide {
+  display: none;
+}
+
+@media print {
+  @page {
+    margin: 16mm;
+  }
+  html:has(body > .print-guide) {
+    color-scheme: light;
+    background: #fff;
+  }
+  body:has(> .print-guide) {
+    display: block;
+    background: #fff;
+    color: #000;
+  }
+  body:has(> .print-guide) > :not(.print-guide) {
+    display: none !important;
+  }
+  .print-guide {
+    display: block;
+    color: #000;
+    font-family: var(--font-sans);
+    font-size: 11pt;
+    line-height: 1.45;
+  }
+  .print-guide h1 {
+    font-family: var(--font-heading);
+    font-size: 26pt;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .print-guide h2 {
+    margin-top: 14pt;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.09em;
+    font-weight: 600;
+  }
+  .print-guide h3 {
+    font-family: var(--font-heading);
+    font-size: 15pt;
+    font-weight: 500;
+  }
+  .print-guide p {
+    margin-top: 4pt;
+  }
+  .print-guide-needs {
+    columns: 2;
+    column-gap: 24pt;
+    margin-top: 4pt;
+  }
+  .print-guide li {
+    break-inside: avoid;
+  }
 }

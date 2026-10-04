@@ -77,7 +77,7 @@ export function Recaptcha({
   locale: string
   ref?: Ref<RecaptchaHandle>
 }) {
-  const t = useTranslations("Auth")
+  const t = useTranslations("Recaptcha")
   const container = useRef<HTMLDivElement>(null)
   const widget = useRef<number | null>(null)
   const [state, setState] = useState<"loading" | "ready" | "failed">("loading")
@@ -136,7 +136,7 @@ export function Recaptcha({
       />
       {state === "failed" && (
         <p role="alert" className="text-destructive">
-          {t("robotCheckUnavailable")}
+          {t("unavailable")}
         </p>
       )}
     </>

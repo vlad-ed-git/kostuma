@@ -7,8 +7,9 @@ only. The owner approved this design as a live prototype
 badges.
 
 Scope: the public site (home with the costumes, costume pages, My Pumpkin Basket, feedback),
-accounts (register, sign in, reset password, account) and polished "coming soon" pages for the
-Fitting Room (virtual try-on, part of My Pumpkin Basket), terms and privacy. Every costume shows
+accounts (register, sign in, reset password, account), the Fitting Room (virtual try-on and
+step-by-step makeup, part of My Pumpkin Basket, 11.4b), the Terms of service and the Privacy
+policy (11.9). Every costume shows
 its own photo, a cut-out (9.2).
 
 ---
@@ -33,19 +34,18 @@ a grid of identical cards).
 
 ### 1.2 Vocabulary
 
-| Cinema                           | Kostuma                                           |
-| -------------------------------- | ------------------------------------------------- |
-| Title card                       | Home hero ("The darkest day is coming.")          |
-| Film leader countdown            | Countdown to Halloween                            |
-| The cast                         | The collection: 82 characters, latest film first  |
-| One-sheet poster + billing block | Costume page (image, name, credits)               |
-| Behind the scenes                | Fun facts ("Behind the screams")                  |
-| Wardrobe department notes        | "The look": what the costume needs                |
-| Cue mark ("cigarette burn")      | Loading and page-change indicator                 |
-| Reel change                      | Moving between pages                              |
-| Wardrobe fitting                 | The Fitting Room: try on what's in your basket    |
-| Coming soon trailer              | Features not open yet (Fitting Room, legal pages) |
-| Admission ticket                 | The premium badge (paid try-ons)                  |
+| Cinema                           | Kostuma                                          |
+| -------------------------------- | ------------------------------------------------ |
+| Title card                       | Home hero ("The darkest night is coming.")       |
+| Film leader countdown            | Countdown to Halloween                           |
+| The cast                         | The collection: 82 characters, latest film first |
+| One-sheet poster + billing block | Costume page (image, name, credits)              |
+| Behind the scenes                | Fun facts ("Behind the screams")                 |
+| Wardrobe department notes        | "The look": what the costume needs               |
+| Cue mark ("cigarette burn")      | Loading and page-change indicator                |
+| Reel change                      | Moving between pages                             |
+| Wardrobe fitting                 | The Fitting Room: try on what's in your basket   |
+| The fine print                   | Terms of service and Privacy policy              |
 
 ### 1.3 The flow (owner, 2026-09-30)
 
@@ -55,9 +55,10 @@ a grid of identical cards).
 2. **Add** the ones you like to **My Pumpkin Basket**, the cart (no sign-in, kept on the
    device).
 3. **Try them on** in the **Fitting Room**, which is part of the basket: it shows exactly the
-   outfits in your basket (virtual try-on: sign in, 2 free try-ons, then {price} per costume).
-   Coming soon.
-4. **Buy**: an action on each outfit in the basket, opening its shop in a new tab.
+   outfits in your basket (sign in): the outfit on your photo, then the costume's makeup on
+   your own face, step by step (11.4b). Every account tries one costume on free; for more,
+   Kostuma Pro's waitlist (owner, 2026-10-04: no prices, no payments).
+4. **Buy**: an action on each outfit in the basket, opening a shop that has it in a new tab.
 
 Menus hold places, never actions: the header and the mobile menu offer Costumes and My Pumpkin
 Basket, nothing else. The Fitting Room and Buy live inside the basket; a costume's page offers
@@ -70,7 +71,7 @@ Basket, nothing else. The Fitting Room and Buy live inside the basket; a costume
 2. **Visible, not subtle.** Every effect must be noticeable at a glance on an ordinary screen.
    Minimal structure (no extra titles, labels or
    sections) and a strong atmosphere are not in conflict.
-3. **Clarity beats spookiness where people act.** Forms, errors, buttons and prices are plain and
+3. **Clarity beats spookiness where people act.** Forms, errors and buttons are plain and
    instantly readable. Atmosphere lives around them, never on them.
 4. **Color means something.** Blood red = light, action, danger, the seconds running out.
    Pumpkin orange = My Pumpkin Basket. Black, bone and cold fog = the night.
@@ -93,6 +94,13 @@ Basket, nothing else. The Fitting Room and Buy live inside the basket; a costume
 - Accessible name `Kostuma` (the letters are `aria-hidden`, the mark is `role="img"`).
 - Hover (fine pointer): the o beats once (7.2 heartbeat). Reduced motion: no beat.
 - In the header and at the top of the footer.
+- **Icon** (owner, 2026-10-04: "our logo should be K in bloody gritty ink"): the wordmark's K
+  in blood (`#EE2531` to `#7A0812`, top to bottom) on the night's black, printed in gritty ink:
+  its edges bitten, the ink chipped, specked and dragged dry by the brush, bled a little; blood
+  runs off its feet in three drops that catch the light, a few spatters around them, a dim red
+  glow behind. `design/icon.svg` (the K's outline from the font, seeded noise: the same every
+  time); every size the site serves is drawn from it (14b). At 16 and 32 px, the K and its blood
+  without the grit, which is only noise there.
 
 ### 2.2 Voice
 
@@ -154,10 +162,11 @@ blood-text and destructive on background, card and muted ≥ 4.5; ember on backg
 
 ### 4.1 Families (`app/fonts/`, `next/font/local`: the files ship with the app)
 
-| Role    | Family         | Why                                                                                 |
-| ------- | -------------- | ----------------------------------------------------------------------------------- |
-| Display | Grenze Gotisch | Gothic titles like 80s slasher titles; readable at display sizes. `font-heading`.   |
-| Text    | Crimson Pro    | A book serif for lore and interface, the voice of an old horror novel. `font-sans`. |
+| Role            | Family         | Why                                                                                 |
+| --------------- | -------------- | ----------------------------------------------------------------------------------- |
+| Display         | Grenze Gotisch | Gothic titles like 80s slasher titles; readable at display sizes. `font-heading`.   |
+| Text            | Crimson Pro    | A book serif for lore and interface, the voice of an old horror novel. `font-sans`. |
+| Chinese display | Ma Shan Zheng  | A brush face for Chinese headings, in `font-heading` after Grenze Gotisch.          |
 
 - **Labels, buttons, badges, navigation:** the `caps` utility, Crimson Pro in small capitals
   (`font-variant-caps: all-small-caps`, 0.09em tracking, weight 600). The served files carry no
@@ -165,17 +174,22 @@ blood-text and destructive on background, card and muted ≥ 4.5; ember on backg
   italic).
 - **Never uppercase the gothic face**: its capitals are unreadable in a row. Titles and names
   keep their natural case.
-- Chinese: system fonts (`--font-cjk`), no tracking (4.3).
+- Chinese: headings in Ma Shan Zheng (OFL), subset to the characters Chinese headings use
+  (`app/fonts/cjk-heading.txt`, `scripts/fonts/cjk-heading.mjs`), never preloaded and limited by
+  `unicode-range`, so only a page with Chinese headings downloads it; every other character
+  from the system fonts (`--font-cjk`); no tracking (4.3). Chinese headings break only where
+  their messages put `<wbr>` (`word-break: keep-all`), anywhere only when a part overflows.
 
 ### 4.2 Scale (fluid)
 
 | Style                      | Family  | Size                                       | Line height | Weight |
 | -------------------------- | ------- | ------------------------------------------ | ----------- | ------ |
-| `display-xl` (home H1)     | display | clamp(3.25rem, 7.2vw, 7rem)                | 0.92        | 600    |
+| `display-xl` (home H1)     | display | clamp(2.875rem, 6.2vw, 5.5rem)             | 0.92        | 600    |
 | `display` (page H1)        | display | clamp(2.75rem, 6vw, 5.5rem)                | 0.95        | 600    |
 | `display-fit` (account H1) | display | clamp(2.75rem, min(5.2vw, 7.5svh), 5.5rem) | 0.95        | 600    |
 | `h2` (section)             | display | clamp(1.9rem, 3.4vw, 3rem)                 | 1           | 600    |
 | `h3` (names in lists)      | display | clamp(1.75rem, 3vw, 2.75rem)               | 1.02        | 500    |
+| `h4` (step titles)         | display | clamp(1.5rem, 1.1rem + 1vw, 2rem)          | 1.05        | 500    |
 | `numeral` (countdown)      | display | clamp(3rem, 6.2vw, 5.75rem)                | 0.95        | 500    |
 | `lead`                     | text    | 1.3125rem                                  | 1.5         | 400    |
 | `body-lg` (lore)           | text    | 1.25rem                                    | 1.65        | 400    |
@@ -194,6 +208,9 @@ stay at 16 px.
 
 - Sentence case in copy; the display face is never uppercased (4.1).
 - Films are set in italics (`Scream (1996)`).
+- Typographic apostrophes and quotes in every message and costume text (’ “ ”; Spanish «»): a
+  straight one looks like a tick mark in Grenze Gotisch. Decades keep their apostrophe (’90s);
+  a name ending in s takes ’s (Curtis’s). A shop's search keeps its words as typed (5).
 - Chinese (`*:lang(zh-Hans)`): no letter spacing, real weights from the system fonts, line
   height 1.8 for body text; the wordmark keeps `lang="en"`.
 
@@ -220,6 +237,11 @@ stay at 16 px.
 - Elevation is light: a red glow (`box-shadow` in `--blood`) marks what is under the pointer or
   lit (a thumbnail on hover, the costume picture).
 - Texture comes from the atmosphere (8): grain, fog, the vignette.
+- **Scrollbars** (owner, 2026-10-04: horror, blood, grimy): 13 px; the gutter near-black with
+  blotches of dark rot (seamless fractal noise), darkest at its sides; the thumb a clot of
+  blood, dark at its edges, wet down the middle, rounder at the bottom like a drop, brighter
+  while held. Firefox takes colors only: blood on near-black. Boxes that hide their scrollbar
+  on purpose (the Fitting Room's film strip) still do.
 
 ---
 
@@ -227,15 +249,15 @@ stay at 16 px.
 
 ### 7.1 Tokens
 
-| Token             | Value                          | Use                                                |
-| ----------------- | ------------------------------ | -------------------------------------------------- |
-| `--ease-dread`    | cubic-bezier(0.16, 1, 0.3, 1)  | Row hover, the drip (fast start, long tail).       |
-| `--ease-heavy`    | cubic-bezier(0.65, 0, 0.35, 1) | Toggles, overlays, the heartbeat, the reel change. |
-| `--duration-fast` | 150 ms                         | Color and opacity on hover/press.                  |
-| `--duration-base` | 300 ms                         | Small state changes, menus.                        |
-| `--duration-slow` | 700 ms                         | The mobile menu's items fading up.                 |
-| Frame             | 1000 / 24 ≈ 42 ms              | Film-rate steps (grain, cue mark).                 |
-| Stagger           | 60 ms, max 12 items            | The mobile menu's links.                           |
+| Token             | Value                          | Use                                                  |
+| ----------------- | ------------------------------ | ---------------------------------------------------- |
+| `--ease-dread`    | cubic-bezier(0.16, 1, 0.3, 1)  | Row hover, the blood's pour (fast start, long tail). |
+| `--ease-heavy`    | cubic-bezier(0.65, 0, 0.35, 1) | Toggles, overlays, the heartbeat, the reel change.   |
+| `--duration-fast` | 150 ms                         | Color and opacity on hover/press.                    |
+| `--duration-base` | 300 ms                         | Small state changes, menus.                          |
+| `--duration-slow` | 700 ms                         | The mobile menu's items fading up.                   |
+| Frame             | 1000 / 24 ≈ 42 ms              | Film-rate steps (grain, cue mark).                   |
+| Stagger           | 60 ms, max 12 items            | The mobile menu's links.                             |
 
 ### 7.2 Patterns
 
@@ -281,7 +303,7 @@ Under `prefers-reduced-motion: reduce`:
 - Reveals are off: content is simply there; costume photos are lit from the start.
 - The reel change becomes an instant cut; no scratches.
 - Ambient loops stop: grain frozen, fog still, no flicker, no heartbeat, no blinking eyes, no
-  lamp stutter, no drip, no VHS roll; the flashlight stays where it is; costume rows stay fully
+  lamp stutter, no pour or falling drop (the blood hangs still), no VHS roll; the flashlight stays where it is; costume rows stay fully
   lit. The cue mark shows steadily.
 - Hover keeps its color changes, without movement.
 
@@ -313,8 +335,12 @@ test measures brightness across the title's bottom edge and fails on a step of 1
    hidden tab, and fades out over the title's last 22 %. It hides **eyes in the corner** that
    blink now and then (hidden on small screens).
 6. **The figure in the window (home title).** An SVG: an arched window lit blood red (its lamp
-   stutters now and then), a hooded figure standing in it with two red eyes that blink, a red
-   light spill and glow. Between the tagline and the countdown on desktop, a small tableau above
+   stutters now and then), as grimy as the film strip (owner, 2026-10-04): its glass the strip's
+   red grime (`public/images/window-glass.webp`, drawn with the strip), dimmed and burnt in from
+   the frame, the frame dark and rough (a displacement filter), low contrast, a hooded figure standing in it with two red eyes that blink, a red
+   light spill and glow. **The figure only on phones** (owner, 2026-10-04): from 40rem the
+   window stands empty, and its lamp never stutters (the whole window is then a red field larger
+   than a card, 7.3). Between the tagline and the countdown on desktop, a small tableau above
    the title on phones. Its feet dissolve into the fog. Nothing else stands in the scene: no
    second window, no figures behind glass, no writing on the wall (owner).
 7. **Fog (home title and the 404).** The same texture in two layers rolling at different speeds
@@ -353,6 +379,13 @@ nothing flickers or beats).
   transparent background: the subject trimmed with a 4 % margin. The site shows each one's web
   copy (WebP, long side ≤ 1400 px, about 140 KB) from Firebase Storage, through `next/image`.
   The lossless masters (PNG, 2048 px) are kept for the Fitting Room.
+- **Garments (owner, 2026-10-03):** a costume may also have a `garment`, the outfit alone on a
+  mannequin or a plain ground, stripped of everything else: YouCam reads it better than the
+  photos shown. It is never shown on the site and never sent to the page; the try-on dresses
+  the visitor in it (set on white, JPEG), or in the first photo when there is none. Aunt Gladys,
+  Freddy Fazbear, Jigsaw and Billy the Puppet, Nikki 'Freaky Nikki' Freeman and Pirate Clark
+  have one. A try-on made with an outfit picture since replaced is no longer shown: the visitor
+  tries the costume on afresh.
 - In a 4:5 frame on the dark well (`--card`, a hairline edge), **contained, never cropped**
   (owner), standing on the frame's floor (`object-bottom`).
 - Alt: `"{name} costume"` (`Costume.photoAlt`) on the costume page; `""` in lists and on the
@@ -390,10 +423,7 @@ Client components are marked (C). Everything else renders on the server.
   `aria-busy`. Preset heights (default 40 px); header, menu and other touch-first controls use
   `lg` / `icon-lg` (44 px). Links styled as buttons use `buttonVariants` on the
   link itself.
-- **Badge** (preset: borderless, small capitals, `badge` size). The `soon` variant adds a 1 px
-  border (bone at 20 %) and 2 × 6 px padding so it reads as a stamped label, text muted: "Soon".
-  `premium`: the same stamp in `--blood-text` (border at 50 %), "Premium", the admission ticket
-  of paid features. `count`: a 20 px ember square with the number in `--background`, tabular
+- **Badge** (preset: borderless, small capitals, `badge` size). `count`: a 20 px ember square with the number in `--background`, tabular
   figures and a soft ember glow, set on the header's pumpkin (the basket's count). Each feature
   that needs another badge adds it with its tests.
 - **Field** (preset `field.tsx`: Field, FieldLabel, FieldDescription, FieldError with
@@ -454,7 +484,7 @@ Client components are marked (C). Everything else renders on the server.
 - **Footer** (on the page's grid; no top border and no sign-off line, owner):
   - Top row, aligned at the top: the wordmark and the legal lines (2.3) on the left (5 of 12
     columns); on the right (6 columns), Explore (Costumes, My Pumpkin Basket), Help (Report a
-    bug, Share feedback, Request a costume) and Fine print (Terms `soon`, Privacy `soon`),
+    bug, Share feedback, Request a costume) and Fine print (Terms of service, Privacy policy),
     their small-capital titles on one line.
   - Bottom row: the year (small capitals) on the left, the language links on the right.
   - Small screens: everything stacks; the columns go two, then one, per row.
@@ -472,58 +502,104 @@ Client components are marked (C). Everything else renders on the server.
   - Hover and focus per 7.2; prefetches on intent only (15). At the row's end, outside the
     link, the basket toggle.
 - **Basket toggle** (C, `components/basket/basket-toggle.tsx`): a 48 px button, outline pumpkin
-  (ash, ember on hover) ↔ lit pumpkin; it ignites on add (7.2). Named "Add {name} to My Pumpkin
-  Basket" / "Remove {name} from My Pumpkin Basket"; announces "{name} added to My Pumpkin
-  Basket." / "{name} removed from My Pumpkin Basket." through the polite live region (12).
-  Hidden without JavaScript.
+  (bone at 80 %, ember on hover) ↔ lit pumpkin; it ignites on add (7.2). Named "Add {name} to My
+  Pumpkin Basket" / "Remove {name} from My Pumpkin Basket"; on hover (pointers) and keyboard
+  focus its words show over it, right-aligned: "Add to My Pumpkin Basket" / "Remove from My
+  Pumpkin Basket" (`micro` small capitals on `--card`, a `--blood` hairline; hidden from screen
+  readers, who hear the button's name). Announces "{name} added to My Pumpkin Basket." /
+  "{name} removed from My Pumpkin Basket." through the polite live region (12). Hidden without
+  JavaScript.
 
 - **Billing block**: the credits of a costume page: centered between hairlines, role words in
   small `micro` capitals, names in `billing` small capitals ("Created by", "Brought to life
   by"). A role with no names is left out.
 - **Wardrobe list** ("The look"): the catalog's look text split into items, each with a thin
   square bullet, `body`. Reads as a wardrobe department checklist.
-- **Buy** (in the basket only, 1.3): opens the outfit's shop in a new tab, with an
-  `arrow-right-up-line` icon and sr-only "(opens in a new tab)"; `target="_blank"`
-  `rel="noopener noreferrer nofollow"` (+ `sponsored` when a link is an affiliate link). With
-  several shops, a styled menu of them ("Buy at {shop}"). A costume without a shop yet shows
-  "Buy" with a `soon` stamp and nothing to press. Each control is named by one whole message
-  ("Buy {name} (opens in a new tab)"), never words glued together, so every language orders
-  them its own way.
+- **Buy** (in the basket only, 1.3; owner, 2026-10-04: no affiliate links, no deals): opens a
+  shop's own search for the costume in a new tab, with an `arrow-right-up-line` icon and sr-only
+  "(opens in a new tab)"; `target="_blank"` `rel="noopener noreferrer nofollow"`. Every costume
+  names the shops whose search was checked and found it (`content/costumes.ts` `shops`, the
+  search words per shop; `lib/shops.ts` builds the links): up to three, and one is enough
+  (owner) where only one has it. With several, a styled menu of them ("Buy at {shop}") in a
+  fixed order, the costume shops first: HalloweenCostumes.com, Spirit Halloween, Amazon, then
+  Etsy, Trick or Treat Studios, eBay. Never "Soon": the type wants at least one shop. Each
+  control is named by one whole message ("Buy {name} (opens in a new tab)"), never words glued
+  together, so every language orders them its own way. The shops' names stay as they are.
 - **Empty state**: centered icon (64 px, muted), `h3`, one line of copy, one action.
-- **Coming soon panel**: see 11.9.
-- **Premium price line** (owner's words): "2 free try-ons, then {price} per costume."
-  `{price}` is USD 5 (`lib/fitting-room.ts`), no cents when whole ("$5"),
-  formatted by the locale's currency formatter (next-intl `format.number(5, {style: "currency",
-currency: "USD"})`), never a hardcoded "$5" string.
+- **Get Kostuma Pro** (owner, 2026-10-04; `components/pro/get-pro.tsx`): a button (outline in
+  the Fitting Room panel, primary elsewhere; pending: spinner + "Joining the waitlist…") that
+  puts the signed-in account on Kostuma Pro's waitlist (`waitlist/{uid}`, once), then opens a
+  pop-up (the alert dialog's card, 11.4b): "You’re on the Kostuma Pro waitlist." (title) and
+  "We’ll write to you at this email as soon as it opens." (owner, todo COPY-09: no promise
+  of a time or a deal); under them "Email", filled with the address the waitlist will write to (the
+  account's, until the visitor gives another), "Update" (outline; the same address sends
+  nothing; done: "Email updated.", announced) and "Close" (primary). Pressed again later, the
+  same pop-up with the email on record. Signed out, it is a link to sign in, then back. A
+  failure is an alert under the button ("Your session ended. Sign in again to join the
+  waitlist." or "Something went wrong. Try again."). No price, currency or payment word
+  anywhere (12).
 
 ---
 
 ## 11. Pages
 
 All pages: header, `<main id="content">`, footer, atmosphere layers. Titles through
-`generateMetadata` (`%s · Kostuma`). Auth/account/coming-soon/legal-soon pages are `noindex`.
+`generateMetadata` (`%s · Kostuma`). Auth, account, basket and Fitting Room pages are `noindex`;
+every other page is indexed, in every language (14b).
 
 ### 11.1 Home `/`
 
-1. **The title, in the night scene (8.4–8.7).** As tall as its content plus 200 px on desktop
-   (owner). Desktop: the tagline on the left, the countdown on the right with "Choose your
-   costume" under it (owner), bottoms aligned; the figure in the window stands between them.
-   Phones: the figure as a small tableau on top, then one column.
+1. **The title, in the night scene (8.4–8.7).** As tall as its content, 80 px below it on desktop and 40 px on phones before the costumes, short enough that the window behind stays whole: clear of the headline and the film strip (owner, 2026-10-04). Desktop: the tagline on the left with the transformation under it, the countdown on
+   the right with its bottom on the tagline's, and under it, beside the strip, "Choose your
+   costume", "Try it on yourself", "Do the makeup, step by step", their capitals level with the strip's top (owner);
+   the window stands between the columns, empty. Phones: the window with the figure in it as a
+   small tableau on top, then one column (tagline, transformation, countdown, the three lines).
    - H1 `display-xl`, flickering (7.2) and split into the red and bone ghosts (8.9): "The
-     darkest day is coming." (`App.taglineLead`). The VHS band rolls over the whole title (8.9).
+     darkest night is coming." (`App.taglineLead`; owner, todo COPY-10: Halloween is a night). The VHS band rolls over the whole title (8.9).
    - Under it, in `--blood-text` with a red glow: "Transform into a monster." (`App.taglineTail`).
+   - **After Halloween** (owner, 2026-10-04): from November 1 until Christmas, in the visitor's
+     own time zone, the H1 reads "The darkest night has passed." (`App.taglineAfterLead`) and
+     the red line "But you shall stay a monster until Santa comes. Ho. Ho. Ho."
+     (`App.taglineAfterTail`; from `lg` at most 11.5 em wide, so it wraps before the window and
+     never lies red on its glass). Everything else stays. The server guesses the season from
+     the connection's time zone (Vercel's `x-vercel-ip-timezone`, else its own); the browser
+     corrects it with its clock and turns it at midnight (`components/home/tagline.tsx`).
    - **Countdown** (`components/countdown`, logic in `lib/countdown`): a small-capital line
      "Until Halloween · **Saturday, October 31**" (the date in bone, formatted per locale), then
      four cells, Days · Hours · Minutes · Seconds: `numeral` digits in the display face over
-     small-capital units, four equal columns on one left edge; the seconds in `--blood-text`,
+     small-capital units, the digits in **decaying ink** (owner, 2026-10-04: an SVG filter, `#decaying-ink`, bites their edges ragged, flakes pits out of them, fades them unevenly and bleeds them a little; seeded, so always the same; the units stay clean), four equal columns on one left edge; the seconds in `--blood-text`,
      beating on every tick. Counts to midnight of October 31 **in the visitor's time zone**,
      real time left (no jump at daylight-saving changes); all of October 31 shows "Tonight."
-     and "The darkest day is here." in the same three rows (no shift at midnight); from
-     November 1 it counts to next year. The server renders dashes at the final size; the
+     and "The darkest night is here." in the same three rows (no shift at midnight); from
+     November 1 it counts to Christmas, December 25 at the visitor's midnight ("Until
+     Christmas · **Friday, December 25**", "Time until Christmas"), then to the next Halloween.
+     The server renders dashes at the final size, under its guess of the season's line; the
      browser fills in the count. `role="timer"`, and a visually hidden sentence updated once a
      minute ("29 days, 10 hours and 14 minutes until Halloween.").
-   - **"Choose your costume"** (`Home.chooseCostume`), display face, with a red arrow dripping
-     downward: a link to the costumes below (`/#costumes`).
+   - **The way through** (owner, 2026-10-04), one list in the display face: **"Choose your
+     costume"** (`Home.chooseCostume`), a link to the costumes below (`/#costumes`),
+     underlined in `--blood` like the site's other links (0.06 em, 0.16 em under: on a touch
+     screen nothing else tells it from the two lines of words), blood
+     dripping from its end down past the three lines (owner: it points down;
+     `components/home/blood-drip.tsx`: a pool at the word, two short runs, one long stream with
+     a drop at its tip; it pours down once, then a drop swells and falls every 2.4 s); then "Try it on yourself" (`Home.tryItOn`) and "Do the makeup, step by step"
+     (`Home.applyMakeup`), words, not links (the Fitting Room lives in the basket). The
+     blood is a column of its own beside the list, as tall as the lines, and the lines keep
+     to the first one's width: a longer line wraps under it ("Do the makeup, / step by step";
+     a phrase marked `<nowrap>` stays whole, Chinese breaks at its `<wbr>`), never into the
+     blood, which always runs past the last line.
+   - **The transformation** (owner, 2026-10-04: what to expect, no words), right under "Transform
+     into a monster.", as wide as the tagline's column: the owner's red, burnt strip of film
+     (`public/images/film-strip.webp`, drawn by `scripts/film-strip.mjs` from
+     `design/film-strip-example@4x.png`), one frame per picture of a real try-on of the owner's
+     sample photos (`content/sample-transformation.ts`, `npm run photos:samples`): the body
+     photo, the outfit tried on, the makeup's first, middle and last steps, each a cut-out
+     standing in its window (`components/home/transformation-reel.tsx`). Its frames are numbered
+     1–5 on the film's edge, between two sprocket holes. The cigarette burns (cue marks, a bone
+     hole ringed in char, ≤ 32 px) sit in the last two windows' upper right: the motor cue blinks
+     twice, then the changeover cue twice, four frames each a second apart, every 6 s; still under
+     reduced motion. It doesn't slide (owner). One `role="img"` named by `Home.reel`; its pictures
+     `alt=""`.
 2. **The costumes** (`<section id="costumes" aria-label="Costumes">`), right below: all 82
    rows (10.3) by year, latest first (owner; the year of the film a character is known from,
    ties in the owner's ranking), two columns from `lg`, lit by scroll (7.2),
@@ -573,14 +649,18 @@ title, toolbar or empty state for one.
   be saved. Reload the page to try again." (the visitor's changes are at risk: that they must
   know).
 - **The Fitting Room** panel (part of the basket, 1.3), at the top: a `--card` panel with a
-  `--blood` hairline at 40 % and a faint red glow; `h2` "The Fitting Room" + `soon` + `premium`,
-  one line ("Try on the outfits in your basket, special-effects makeup included."), the price
-  line (10.3), link "Step inside" → `/basket/fitting-room` (coming soon).
+  `--blood` hairline at 40 % and a faint red glow; `h2` "The Fitting Room", one line ("Try on
+  the outfits in your basket, then see the character's makeup on your own face, step by
+  step."), "One costume is free with
+  every account." (`lead`, semibold), then link "Step inside" → `/basket/fitting-room` (11.4b,
+  primary: nothing competes with the free costume), and "Get Kostuma Pro" (10.3, outline) only
+  once the account's free costume is used (here and on the account page).
 - Rows, the last added first, separated by space (no lines): thumbnail (4:5, 72 px wide, no
-  reveal), name + film (a link to the costume), actions: **Buy** (10.3), "Try on" + `soon`
-  (→ `/basket/fitting-room?costume={slug}`), "Remove" (ghost, ✕ icon). Removing keeps the
+  reveal), name + film (a link to the costume), actions: **Buy** (10.3), "Try on"
+  (→ `/basket/fitting-room?costume={slug}`, in `--foreground`: the basket's reason to exist),
+  "Remove" (ghost, ✕ icon, muted). Removing keeps the
   visitor's place: focus moves to the next row's Remove (or the previous one's), or to the empty
-  basket's title. "Clear basket" (ghost, under the rows) asks for a second click ("Click again
+  basket's title. "Clear basket" (ghost, under the rows) asks for a second press ("Press again
   to clear", in `--blood-text`, announced) within 4 s.
 - Empty: unlit pumpkin (64 px), `h2` "Your basket is empty.", "The night is young.", button
   "Browse costumes" → `/#costumes`.
@@ -593,6 +673,150 @@ title, toolbar or empty state for one.
   brings the guest basket into the account once, then empties it; signing out leaves the
   basket in the account and the device empty. Whatever is read is checked: unknown costumes
   are dropped, broken or outdated data reads as an empty basket.
+
+### 11.4b The Fitting Room `/basket/fitting-room` (`?costume={slug}`)
+
+The core of Kostuma (owner, 2026-10-03). `noindex`; signed in only (signed out: sign in, then
+back here with the costume). **One costume free per account** (owner, 2026-10-04;
+`lib/fitting-room/free-costume.ts`): a try-on holds it from its start; once one is done, no
+other starts, not of another costume, not with other photos; seeing a try-on already made is
+always free. A try-on that fails gives it back (try again with other photos), twice at most once
+pictures were made for it. The server decides at the start; the page reflects it.
+
+**A dressing room backstage** (owner, 2026-10-03: "a horror dressing room. immersive. clear.
+responsive"). The costumes hang on a clothes rail; the face photo goes into a vanity mirror ringed
+with bulbs, the body photo into a full-length mirror; the try-on is one big vanity where the
+visitor's face transforms. One type scale: H1 `display` → the stage's title `h2` → a step's title
+`h4` → small capitals → body. On large screens every stage sets its mirrors on the left and its
+words beside them; on phones the words come first.
+
+- **Title card:** H1 "The Fitting Room" split into the red and bone ghosts (8.9), the lead line
+  "Transform into {name}. Step by step." (owner, 2026-10-03; with no costume chosen, "Transform
+  into a monster. Step by step."), the VHS band rolling through the card from one edge of the screen to the other. Behind the
+  room, a red light behind the mirrors and moonlight from the upper right, fading out before the
+  page ends (no seam).
+- **The rail:** the costumes in My Pumpkin Basket, the last added first, each a 4:5 thumbnail
+  (72 px, 80 px from `sm`) hanging from a hook curled over a bar of cold metal that fades out at
+  both ends; each a link to its `?costume=`. The chosen one (`aria-current`) is lit (a
+  `--blood-text` frame, a red glow, its hook red) and sways on its hook; the others wait dimmed
+  (50 %, desaturated) until the pointer or focus finds them, and tilt when pushed. Many costumes
+  scroll along the rail. No costume chosen: the one added last. Loading: three skeleton frames on
+  the rail. Empty basket: three bare hangers swinging on the rail, `h2` "Your basket is
+  empty.", "Browse costumes". A chosen costume not in the basket: its photo, "{name} isn't in My
+  Pumpkin Basket yet." (`h4`) and "Add to My Pumpkin Basket".
+- **The mirrors:** a dark frame lit red from behind, a bone edge round the glass, fog rolling at
+  their feet (behind them, never under words). The vanity carries bulbs across its top and down
+  both sides: two flicker, one is dead and sputters now and then. Nothing is ever drawn over the
+  glass: what it holds shows as it is. Closed (renders can't run, the owner's switch is off, or
+  the day's unit budget can't take this costume's try-on: `lib/fitting-room/budget.ts`): the
+  vanity with every bulb out and "The Fitting Room is closed for the night. Come back soon."
+- **Your photos** (`h2`, "Two photos: your face, and you from head to toe. They stay
+  private."): "Your face" in the vanity (3:4) and "You, head to toe" in the full-length mirror
+  (2:3), their glasses level; each with its photo (contained, never cropped) or, empty, the shape
+  it should show (a head and shoulders, a standing figure) black and rimmed in breathing red; its
+  title (`h4`), "Choose a photo" (primary while empty) / "Change" (outline), and three short
+  tips. Phones (below `sm`): a small mirror beside its title, the button under them the width of
+  the screen, the tips last; nothing passes the 16 px gutter at 320 px. The photos used
+  last are offered again. A file is checked at once in the browser (an image, big enough, a
+  photo's shape: no AI): a problem rims the mirror and shows under its button in
+  `--destructive`. "Continue" (primary once every photo is in) needs both. A costume that is all
+  makeup asks only for the face ("{name} is all makeup: one photo, your face. It stays
+  private.").
+- **Confirm** (`h2` "Ready to try on {name}?"): the costume standing in the light (from `sm`)
+  beside the two mirrors with the photos, "Check your photos first: once the try-on starts, they
+  can't be changed until it's finished." and, in `lead` semibold, "This is your free costume.
+  Once it's done, trying on another needs Kostuma Pro." (only a free costume gets here), then
+  the consent to the photos' processing (todo
+  SEC-03), a checkbox, unticked: "I agree that Kostuma sends my photos to its image service,
+  YouCam (Perfect Corp.), which analyzes my face, skin tone and body only to make my pictures.
+  Kostuma keeps them for up to 12 months, or until I delete them; YouCam deletes its copies
+  within 30 days. More in the Privacy policy." (the policy a link, new tab; the one place the
+  interface names the service), then "Start the try-on" (primary; pending: spinner + "Checking
+  your photos…") and "Change photos" (ghost). Start without the tick: "Tick the box to agree
+  before the try-on starts." under it (`--destructive`). Nothing is sent before this button;
+  each try-on keeps the consent's time and wording version (`lib/fitting-room/consent.ts`).
+- **Used** (the free costume gone, no try-on of this costume to show): the vanity dark (every
+  bulb out) beside `h2` "You've used your free costume.", "You tried on {name}. Get Kostuma Pro
+  to try on more costumes." ({name} a link to that costume's try-on, the guide they earned,
+  while its pictures are kept; without a costume to name: "Get Kostuma Pro to try on more
+  costumes.") and "Get Kostuma Pro" (10.3). No photos are asked for.
+- **The try-on** (owner, 2026-10-03: the steps are the main thing): the vanity and, beside it,
+  the step card; under them the film strip; at the bottom "Try with other photos". Nothing else:
+  no name (the lead says it), no status line, no look line. Locked while it runs (no control to
+  change the photos). How it is going ("Trying on the outfit…", "Doing your makeup: 2 of 4 steps
+  ready…", "Your try-on is ready.") is told to screen readers only (a polite live region), and
+  the try-on's `h2`, the character's name, is for them too. One exception, seen by all: while
+  YouCam is too busy to take the first render (`lib/fitting-room/calls.ts`), the card opens
+  with "The mirror is busy. Your try-on starts in a moment." (`lead`, `--blood-text`); and
+  under the mirror while it runs, muted, "This takes about two minutes. You can leave and come
+  back." A try-on goes on with its page closed (YouCam's webhook moves it); coming back shows
+  it as it stands.
+  - **The vanity** shows one picture at a time, large (its glass as tall as the screen allows,
+    at most 42 rem): the outfit (the visitor in the costume), then their face after each step.
+    Never the face before (owner: "they know how they look"). The face wears the costume: the
+    outfit is tried on the face photo too, and the makeup starts from that dressed face (owner,
+    2026-10-04), which is no picture of its own; a face photo YouCam can't dress is made up as
+    it is. Until the visitor picks one, it
+    follows the newest picture out (with none yet, the frame rendering now) and, once done, shows
+    the last step: the whole transformation. A picture it shows by itself comes "into the light";
+    one the visitor picks fades up. Under it, once the picture is out, "Save" (`ui` small
+    capitals with a download icon, named "Save this picture"; todo OPP-11): the same JPEG,
+    unaltered, from the owner-only route with `?download=1`, as `kostuma-<costume>-<step>.jpg`
+    (`outfit`, `step-3`); on a phone that can share files, the share sheet with that file
+    (fetched before the tap, which must start the share). Nothing is published or composited.
+  - **The step card**, the main thing: "Step n of N" (`label` small capitals, `--blood-text`),
+    the step's title (`h2` size), the how-to (`lead`), its products as links to a shop's search
+    (new tab, 10.3 external links; named in the visitor's language, searched in English), on the last step "To finish" and the guide's last line; then
+    "Previous step" (outline) and "Next step" (primary), each hidden at its end (the other keeps
+    focus); at the last frame of a finished try-on, "Next step" reads "Start with step 1" and
+    goes to the guide's first step. For the outfit (owner, 2026-10-03): its name, "See the photo and note down what
+    to buy.", the costume's Buy (10.3, as in the basket), "Now let's get started on the
+    makeup." (`lead`), then what the whole makeup asks before step 1 (on step 1's card when a
+    try-on has no outfit): "The makeup takes about {minutes} minutes." (8 a step, to the nearest
+    5; todo OPP-12), "What you need" (`micro` small capitals, `--blood-text`) over every product
+    of the guide once, in the order its steps need them, each a shop link like a step's (two
+    columns from `sm`), and "Use cosmetic-grade products only, patch-test 24 hours before, and
+    keep paint and fake blood out of your eyes." (`body-lg`, muted; todo COPY-12); the next
+    step's button reads "Apply makeup".
+  - **On paper** (todo OPP-12): printing a try-on prints its guide alone, black on white, a
+    page to prop against the mirror: the character's name (the title face), the time, "What you
+    need" in two columns, the safety line, every step ("Step n of N", its title, how-to and
+    products) and "To finish". Never on screen; every other page prints as it is.
+  - **The film strip** ("Your pictures"): every picture as a frame between sprocket holes,
+    labelled "Outfit", 1, 2, …; the one in the mirror ringed in `--blood-text`; a frame not done
+    yet is the costume photo as a black silhouette rimmed in red (as the photos wait on the home
+    page, §7.2), the one rendering now at full strength, its red light breathing (2.4 s), the
+    ones waiting on it dim (35 %); a picture that comes out comes into the light. Each frame is a
+    button naming its picture ("Step 2: Rotting hollows"). The strip scrolls when the frames
+    outrun it and keeps the frame rendering in sight. Below `lg` (the strip under the card), a
+    frame picked brings the mirror into view (at once under reduced motion).
+- Ended: "Try with other photos" (outline) at the bottom, under the strip. It asks first
+  (owner, 2026-10-03: "handle this very carefully"): a pop-up (Base UI alert dialog, 12; `--card`
+  with a `--blood` hairline and glow over a dimmed, blurred page) "Replace your photos?", "New
+  photos make a new try-on of {name}, in place of this one. Nothing changes until you start it.",
+  "Keep current photos" (outline, focused first: Enter or Escape keep them) and "Choose new
+  photos" (primary). Choosing opens the photos, the account's photos in their mirrors, with "Keep
+  current photos" (ghost) beside "Continue" to go back to the try-on as it was. "Continue" with
+  the try-on's own photos says "These are the photos of your try-on. Change at least one, or keep
+  your current photos." (nothing new would come of it). The free costume used, the pop-up says
+  so instead: "You've used your free costume.", "New photos would make a new try-on of {name}.
+  Get Kostuma Pro for more try-ons.", "Keep current photos" (focused first) and "Get Kostuma
+  Pro", whose pop-up opens over it. Failed: an alert saying what to do ("Your face couldn't be
+  found in the photo…"), what it cost ("This didn't use your free costume.", and once a photo
+  failure has counted, "You have one more try with other photos.") and "Choose other photos"
+  (primary; the free costume used up by failed tries: "Get Kostuma Pro to try on more
+  costumes." and the button) heading the card,
+  which opens the photos with the message under the one at fault, without asking (nothing to
+  keep); "Continue" holds until that photo is changed (it would fail again, after the outfit was
+  paid for once more). A frame not rendered shows "Not rendered" in the mirror (a ✕ on the
+  strip). Reduced motion: no sway, tilt, flicker or breathing; pictures appear at once; the pop-up
+  appears without fading.
+- The try-on shown for a costume is the one made with the account's photos in use, else its
+  newest: going back to earlier photos (the same file again) shows their try-on, made once, after
+  a reload too. Older try-ons stay until the visitor deletes them (the account page, 11.6) or
+  they turn 12 months old; the free costume used stays used either way.
+- Pictures load from the server only, to their owner (`/api/fitting-room/…`, `private`
+  caching), never through the image optimizer.
 
 ### 11.5 Sign in `/sign-in`, Register `/register`, Reset password `/reset-password`
 
@@ -633,47 +857,83 @@ All `noindex`. A signed-in visitor is sent on to `next` (sign in, register).
 ### 11.6 Account `/account`
 
 - H1 "Your account". Profile: name, email, member since (the locale's long date).
-- The Fitting Room panel (11.4) with the account's line: "2 free try-ons waiting".
+- The Fitting Room panel (11.4) with the account's line instead of the general one: "Your free
+  costume is waiting." or "You've used your free costume." (unknown: the general line).
 - Sign out (outline button, a form: works before scripts load). Signed-out visitors are
   redirected to sign in (with `next`). `noindex`.
+- Under it, quiet (ghost buttons, muted, red on hover): "Delete my photos and pictures" and
+  "Delete my account" (todo SEC-04). Each asks first in a pop-up (12), its first focus the
+  button that keeps everything: "Delete your photos and pictures?" / "Your photos, every
+  picture made from them and your try-ons will be deleted for good. Your free costume stays as
+  it is." / "Keep them" · "Delete them" (destructive); "Delete your account?" / "Your account,
+  photos, pictures, My Pumpkin Basket and place on Kostuma Pro's waitlist will be deleted for
+  good. This can't be undone." / "Keep my account" · "Delete my account". Pending: spinner +
+  "Deleting…"; done, "Your photos and pictures are deleted." (a status line), or the account
+  signed out and sent home; failed, the reason in the pop-up, which stays.
 
 ### 11.7 Feedback `/feedback` (`?type=bug|feedback|costume`)
 
-- H1 "Tell us what haunts you" (lead: "Found a bug, have an idea, or want a feature? We read
-  every message.").
-- Segmented control: Report a bug · Share feedback · Request a costume (preselected by `type`).
-- Message textarea (label changes with type; 10–2000 characters, counter), optional email ("Only
-  if you want a reply"), reCAPTCHA, submit "Send".
-- Success replaces the form: check icon, "Received.", "Thank you. We read every message.",
-  button "Send another".
+Open to everyone (no sign-in). The account pages' frame (11.5): the night on the left with its
+own line, "The shadows hear your whispers." (owner), the form on the right (560 px).
+
+- H1 "Tell us what haunts you" (ghost title, 8.9); lead: "Found a bug, have an idea, or want a
+  costume we don't have yet? We read every message."
+- The kind: Report a bug · Share feedback · Request a costume, one row of three segments
+  (radio buttons underneath, legend for screen readers "What is it about?"), preselected by
+  `type` (else Share feedback; the footer's three links each open their own). The one chosen
+  is lit: blood fill, ember underline, red glow.
+- The message (textarea, grows with the text), its label and hint following the kind: "What
+  went wrong?" (what you did, what you expected, what happened instead) · "What's on your
+  mind?" · "Which costume should we add?" (the character and the film). 10–2,000 characters
+  (trimmed), a counter under it ("12 of 2,000 characters").
+- Email, optional ("Only if you want a reply."); reCAPTCHA and "Send" side by side from `lg`,
+  as on register.
+- Errors as on the account forms (12); "You've sent several messages in the last hour…" past 5
+  an hour from one account or connection.
+- Success replaces the form: check icon (ember, glowing), `h2` "Received." (focused), "Thank
+  you. We read every message.", outline button "Send another" (a fresh form on the same kind,
+  focus on the message).
+- Kept: `feedback/{id}` (kind, message, email or null, the account's uid when signed in,
+  language, device, system, browser, time); the owner reads it in the Firebase console.
 
 ### 11.8 Not found
 
 Centered title card with the VHS tracking layer (8.9): "404" in the display face at `h2` size, split
 into its red and bone ghosts,
 `display` "Lost in the dark", one line, button "Back to Kostuma". Both 404s (the in-app one and
-the global one for unmatched URLs) look the same; the global one has no header.
+the global one for unmatched URLs) look the same; the global one has no header, so it adds an
+outline "Costumes" (→ `/#costumes`) beside its button: most lost visitors mistyped a costume.
 
 ### 11.8b Something went wrong
 
 A page that breaks shows a title card in the visitor's language, never the error itself and
-never Next.js' English message: `display` "Something went wrong", one line ("Something on
+never Next.js' English message: `display` "Something went wrong in the dark.", one line ("Something on
 this page failed. Try again, or head back to Kostuma."), buttons "Try again" (retries) and
 "Back to Kostuma". Inside the shell for a page (`app/[locale]/error.tsx`); the whole document
 when the shell itself breaks (`app/global-error.tsx`, its language read from the URL).
 Developers find the details in the console; visitors only ever read messages.
 
-### 11.9 Coming soon pages
+### 11.9 Terms of service `/terms`, Privacy policy `/privacy`
 
-Shared panel ("trailer"): `label` with a blinking red REC dot (1 Hz, static under reduced
-motion) "Coming soon"; `display` title; lead; up to 3 feature bullets; primary action back to
-something that works now; secondary "Want it sooner? Tell us." → `/feedback?type=feedback`.
+The real documents, in plain words and the second person, true to what the site does
+(`Terms.*`, `Privacy.*` in the messages; `LegalPage`). Indexed. Both say who runs Kostuma
+right after their first section ("Who we are": its developers, a small independent team, not a
+registered company; the support email; not affiliated with Perfect Corp. (YouCam), which
+provides its AI image service).
 
-| Route                  | Title            | Content                                                                                                                                                                                                                                                                                                                             |
-| ---------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/basket/fitting-room` | The Fitting Room | Part of the basket: what it does (one full-body photo + one face close-up → you in each outfit from your basket, special-effects makeup included), the outfits in your basket (or a nudge to fill it), `premium` badge, price line, privacy note ("Your photos stay private."), CTA back to My Pumpkin Basket. Accepts `?costume=`. |
-| `/terms`               | Terms of service | "The fine print is being written." + a link to the feedback form. `noindex`.                                                                                                                                                                                                                                                        |
-| `/privacy`             | Privacy policy   | Same pattern; states plainly what is kept today (an account's name, email and Google picture; when it was made, roughly where (country, region, city, time zone, from the connection) and on what (device, system, browser); when it last signed in and how often; feedback messages) + a link to the feedback form. `noindex`.     |
+- The title card: H1 `display` split into the red and bone ghosts, the tape rolling through it
+  across the screen (8.9); the lead (`lead`, muted); "Last updated {date}" in small `micro`
+  capitals (the locale's long date, `lib/legal.ts`).
+- From `lg`: the contents (every section's title, `body` size, muted, ember on hover) in 3
+  columns on the left, sticky under the header; the text in 8 columns, at most 68 characters a
+  line. Phones: the text only.
+- Each section: `h2` at `h4` size in the display face, then paragraphs and lists at `body-lg`;
+  list items carry the wardrobe list's small square bullet (10.3). Bold lead-ins for list items
+  that name a thing ("Our host", "session").
+- Links underlined in blood; another company's policy opens in a new tab with the
+  `arrow-right-up-line` icon and sr-only "(opens in a new tab)" (12). The support email, a
+  `mailto:` link, appears only here (never the footer, 2.3).
+- When a feature changes what is kept, the Privacy policy changes with it, and its date.
 
 ---
 
@@ -683,10 +943,10 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
   (link text, page title, toggle labels, announcements), like "My List" on a streaming service.
 - **Dropdowns**: never the browser's native popup, which breaks the look (owner's call). Menus
   and selects are Base UI components styled like the language menu (10.1).
-- **Premium**: any paid capability shows the `premium` badge next to its first mention on a
-  screen, and the price line near its call to action. Never hide the price.
-- **Coming soon**: never a disabled button (unfocusable, unexplained). Use a working link to the
-  coming-soon page with a `soon` badge.
+- **No prices** (owner, 2026-10-04): no price, currency or payment word anywhere, and no
+  Premium badge. One costume is free; for more, "Get Kostuma Pro" (10.3), a waitlist.
+  `i18n/messages.test.ts` holds every message to it.
+- **Never a disabled button** (unfocusable, unexplained): what can't be done isn't offered.
 - **External links**: new tab, `noopener noreferrer`, icon + sr-only "(opens in a new tab)".
 - **Loading**: the cue mark for pages, skeletons for content, spinners only inside buttons. No
   full-page spinners.
@@ -725,13 +985,24 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 
 ## 14. Internationalization
 
-- Every visible string is a message, translated into Spanish and Chinese (`messages/{en,es,zh}.json`;
-  informal "tú" in Spanish). `i18n/messages.test.ts` checks that each language has every English
-  key and keeps each message's arguments and tags. Any key a language lacks falls back to English.
-- The costume data (`content/costumes.ts`: lore, looks, fun facts, credits) is English in every
-  language; character names and film titles are never translated. "My Pumpkin Basket" is
-  translated as its proper name ("Mi cesta de calabaza", "我的南瓜篮").
-- Dates, numbers, currency via next-intl formatters (countdown date, counts, price).
+- **Everything a visitor can read is in English, Spanish and Chinese** (owner, 2026-10-04:
+  "everything will be translated"). Every visible string is a message
+  (`messages/{en,es,zh}.json`; neutral Spanish with informal "tú", Simplified Chinese).
+  `i18n/messages.test.ts` requires every message in all three languages, with each message's
+  arguments and tags, none empty, and no price anywhere (12).
+- The collection's words too (`content/translations/{es,zh}.json`, English the source in
+  `content/costumes.ts` and `content/makeup.ts`): each costume's lore, fun fact, look and
+  credits, each film under its official local title (Spanish: Latin America's, else Mexico's,
+  else the original; Chinese: the mainland's), and every makeup guide (its look, every step's
+  title and how-to, its products, which are also the shop's search terms, and its finish).
+  Character names and the people credited stay as they are, in every language. The pages read
+  them through `getCostumes(locale)`, `getCostume(slug, locale)` and `guideFor(slug, locale)`;
+  `content/translations/translations.test.ts` holds every costume and guide to the English
+  (the same parts in the same order, every word translated, the people credited intact, one
+  name per product). A film is written as the language writes it (`Costume.film`: 《猛鬼街》
+  （1984） in Chinese). "My Pumpkin Basket" is translated as its proper name ("Mi cesta de
+  calabaza", "我的南瓜篮"); "Kostuma Pro" stays.
+- Dates and numbers via next-intl formatters (countdown date, counts).
 - Messages in sentence case; CSS applies the small capitals.
 - Endonyms in the language menu and links: English · Español · 中文, each with its own `lang`
   and `hreflang`.
@@ -739,15 +1010,61 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 
 ---
 
+## 14b. Search and sharing
+
+Every page a visitor can read without an account is indexed in all three languages (owner,
+2026-10-04: everything is translated). The pages that are each visitor's own stay out.
+
+- **Addresses:** one per page and language (English at the root, `/es/…`, `/zh/…`). Each page
+  names its canonical address (itself, in its language) and its versions in every language
+  (`hreflang` `en`, `es`, `zh-Hans`, and `x-default`, the English) in its head and in the
+  sitemap, never in a `Link` header (next-intl's `alternateLinks: false`). All on the
+  production domain (`lib/site.ts`: `SITE_URL`, else https://kostuma.vercel.app), so a preview
+  or a local build never points search engines at itself.
+- **Indexed:** home, every costume, feedback, terms and privacy. **Not:** sign in, register,
+  reset password, account, the basket and the Fitting Room (`noindex`, not in the sitemap).
+- **`/sitemap.xml`:** every indexed page in every language, each with its versions; the legal
+  pages dated by their last change. **`/robots.txt`:** all open but `/api/`; names the sitemap.
+- **Titles and descriptions:** each page's own, in its language (`%s · Kostuma`), saying what a
+  searcher gets (todo COPY-13): home "Kostuma · Horror movie costumes, tried on you, with
+  step-by-step makeup" and how many characters, the free try-on and the makeup; a costume "{name}
+  costume and makeup guide", the first sentence of its lore and "See it on your own face, step
+  by step."; another page its lead. Titles are not on the page: the design stays as it is.
+- **Shared links:** Open Graph and X (`summary_large_image`) in the page's language
+  (`og:locale` `en_US`, `es_LA`, `zh_CN`, the others as alternates). The cards, 1200 × 630 PNG
+  drawn by `next/og` in the night's colors and the title face (`lib/og.tsx`):
+  - home (`app/[locale]/opengraph-image.tsx`): the wordmark over the home page's real
+    transformation, five frames, in red light. Feedback, terms and privacy, without a card of
+    their own, show it too;
+  - a costume (`app/[locale]/costumes/[slug]/opengraph-image.tsx`): its name and year, its photo
+    standing in red light on the right (a landscape photo fills its place, cropped to its
+    subject, never covering the name), the wordmark below.
+
+  Names stay as they are in every language, so a card is the same in each; its description
+  (`alt`) is translated. A photo that can't be fetched leaves the card without it. Next names
+  the cards under their language, English too (`/en/…`): the proxy lets them be, never
+  redirected. An unknown costume or language has no card (404).
+
+- **Structured data (JSON-LD):** home names Kostuma (`Organization`, `WebSite` in its language)
+  and its collection (`ItemList`, every costume in order); a costume page its breadcrumb
+  (`BreadcrumbList`). A data block, never run; nothing in it can close its script.
+- **Icons:** the K in bloody, gritty ink (2.1; `design/icon.svg`, drawn by `npm run images`):
+  the tab's (`app/icon.svg`, `favicon.ico` at 16 and 32 px), an iPhone's (`apple-icon.png`,
+  180 px, its corners left to iOS) and the manifest's (`/manifest.webmanifest`: 192 and 512 px
+  and a maskable 512, the mark at 75 % inside the safe zone; the night's colors). Also the
+  logo search engines show for Kostuma (`Organization.logo`).
+
+---
+
 ## 15. Performance budgets
 
-| Metric              | Budget                                                                                                                                                                                                                                   |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LCP (4G, mid phone) | ≤ 2.0 s; the home LCP is the H1 text, visible from first paint (never starts at opacity 0)                                                                                                                                               |
-| CLS                 | ≤ 0.02 (reserved sizes for countdown, reCAPTCHA, images)                                                                                                                                                                                 |
-| INP                 | ≤ 200 ms                                                                                                                                                                                                                                 |
-| JS per route        | ≤ 120 KB gz shared + ≤ 40 KB route                                                                                                                                                                                                       |
-| Fonts               | 3 files in the repo (`app/fonts/`): Grenze Gotisch, Crimson Pro and its italic, variable, Latin and Latin Extended in one woff2 each (about 188 KB together), preloaded, `display: swap`; never fetched from Google; CJK from the system |
+| Metric              | Budget                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LCP (4G, mid phone) | ≤ 2.0 s; the home LCP is the H1 text, visible from first paint (never starts at opacity 0)                                                                                                                                                                                                                                                                                                                                                              |
+| CLS                 | ≤ 0.02 (reserved sizes for countdown, reCAPTCHA, images)                                                                                                                                                                                                                                                                                                                                                                                                |
+| INP                 | ≤ 200 ms                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| JS per route        | ≤ 120 KB gz shared + ≤ 40 KB route                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| Fonts               | 3 files in the repo (`app/fonts/`): Grenze Gotisch, Crimson Pro and its italic, variable, Latin and Latin Extended in one woff2 each (about 188 KB together), preloaded, `display: swap`; never fetched from Google. Chinese headings: a Ma Shan Zheng subset (about 725 characters, 310 KB), loaded only where Chinese headings show; other Chinese text from the system. The social cards draw with a TTF of the title face, on the server only (14b) |
 
 - Ambient effects: CSS, `transform`/`opacity` only, no `mix-blend-mode` on full-screen layers.
 - `motion` only where CSS can't do the job (first use: the basket count's roll), in client
@@ -755,9 +1072,10 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
   header over the hero and every atmosphere layer are CSS.
 - Images: `next/image`, explicit `sizes` (rows `(min-width: 1024px) 156px, 114px`; the costume
   page `(min-width: 1280px) 470px, (min-width: 1024px) 37vw, calc(100vw - 2rem)`; thumbnails
-  `72px`), lazy except the costume page photo (`loading="eager"`, `fetchPriority="high"`). Remote
+  `72px`; the home's film strip `(min-width: 1280px) 118px, (min-width: 1024px) 9vw, 17vw`), lazy except the costume page photo (`loading="eager"`, `fetchPriority="high"`). Remote
   photos only from the project's `costumes/` folder on Storage (`next.config.ts`
-  `remotePatterns`, no redirects); the browser loads them from `/_next/image`, so the CSP stays
+  `remotePatterns`, no redirects; the home's sample transformation lives there too, as
+  `sample-<slug>-<nn>.<hash>.webp`); the browser loads them from `/_next/image`, so the CSP stays
   `'self'`.
 - Prefetching: every page renders per request (the CSP nonce), so each prefetch costs the
   server a render. Long lists of links prefetch on intent only (hover, focus, touch:
@@ -768,24 +1086,27 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 
 ## 16. Implementation map
 
-| Piece                    | Where                                                                                                                                     |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Tokens (palette, motion) | `app/globals.css` `:root` + `@theme inline`                                                                                               |
-| Fonts                    | `app/fonts/` (the woff2 files, their OFL licenses, `index.ts`)                                                                            |
-| Atmosphere               | `components/horror/{atmosphere,fog}.tsx` + `app/film.css` (grain, vignette, ground fog, scratches, VHS)                                   |
-| Reel change              | `app/[locale]/template.tsx` (`<ViewTransition>`), `::view-transition` rules in `app/film.css`                                             |
-| Cue mark                 | `components/horror/cue-mark.tsx`, fed by `lib/navigation-status.ts` from `i18n/navigation.tsx`                                            |
-| Shell                    | `components/layout/{header,mobile-menu,footer,wordmark,skip-link,lost-in-the-dark}.tsx`                                                   |
-| Primitives               | `components/ui/*` (shadcn style, cva)                                                                                                     |
-| Feature components       | `components/{costume,basket,auth,forms,countdown}/*`                                                                                      |
-| Catalog                  | `content/costumes.ts` (the owner's list, typed) → `lib/catalog` → `components/costume/*`                                                  |
-| Links on intent          | `components/navigation/intent-link.tsx` (the costume rows)                                                                                |
-| Night scene              | `components/home/{night-scene,flashlight}.tsx`, fog texture `scripts/fog.mjs` → `public/images/fog.webp`                                  |
-| Countdown                | `lib/countdown` (logic, tested per time zone) + `components/countdown/countdown.tsx`                                                      |
-| My Pumpkin Basket        | `lib/basket` (store, storage format, Firestore) + `components/basket/*` + `app/[locale]/basket`; `firestore.rules`                        |
-| Costume photos           | `components/costume/{costume-image,costume-gallery}.tsx`, `lib/in-view.ts`, `.photo-reveal` in `app/film.css`; pipeline `scripts/photos/` |
-| Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`                                                        |
-| Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit                                                    |
+| Piece                    | Where                                                                                                                                                                                                                                                   |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tokens (palette, motion) | `app/globals.css` `:root` + `@theme inline`                                                                                                                                                                                                             |
+| Fonts                    | `app/fonts/` (the woff2 files, their OFL licenses, `index.ts`; `og/`, the social cards' TTF)                                                                                                                                                            |
+| Atmosphere               | `components/horror/{atmosphere,fog}.tsx` + `app/film.css` (grain, vignette, ground fog, scratches, VHS)                                                                                                                                                 |
+| Reel change              | `app/[locale]/template.tsx` (`<ViewTransition>`), `::view-transition` rules in `app/film.css`                                                                                                                                                           |
+| Cue mark                 | `components/horror/cue-mark.tsx`, fed by `lib/navigation-status.ts` from `i18n/navigation.tsx`                                                                                                                                                          |
+| Shell                    | `components/layout/{header,mobile-menu,footer,wordmark,skip-link,lost-in-the-dark}.tsx`                                                                                                                                                                 |
+| Primitives               | `components/ui/*` (shadcn style, cva)                                                                                                                                                                                                                   |
+| Feature components       | `components/{costume,basket,auth,forms,countdown}/*`                                                                                                                                                                                                    |
+| Catalog                  | `content/costumes.ts` (the owner's list, typed) → `lib/catalog` → `components/costume/*`                                                                                                                                                                |
+| Links on intent          | `components/navigation/intent-link.tsx` (the costume rows)                                                                                                                                                                                              |
+| Night scene              | `components/home/{night-scene,flashlight}.tsx`, fog texture `scripts/fog.mjs` → `public/images/fog.webp`                                                                                                                                                |
+| Countdown                | `lib/countdown` (logic, tested per time zone) + `components/countdown/countdown.tsx`                                                                                                                                                                    |
+| My Pumpkin Basket        | `lib/basket` (store, storage format, Firestore) + `components/basket/*` + `app/[locale]/basket`; `firestore.rules`                                                                                                                                      |
+| The Fitting Room         | `lib/fitting-room` (photos, render plan, YouCam, steps, store) + `components/fitting-room/*` + `app/[locale]/basket/fitting-room` + `app/api/fitting-room`                                                                                              |
+| Costume photos           | `components/costume/{costume-image,costume-gallery}.tsx`, `lib/in-view.ts`, `.photo-reveal` in `app/film.css`; pipeline `scripts/photos/`                                                                                                               |
+| Placeholder art          | `design/costume-placeholder.svg` → `public/images/costume-placeholder.{avif,webp}`                                                                                                                                                                      |
+| Search and sharing       | `lib/seo.ts` (addresses, versions, Open Graph, JSON-LD), `lib/site.ts`, `components/seo/json-ld.tsx`, `app/{sitemap,robots,manifest}.ts`, the cards `app/[locale]/**/opengraph-image.tsx` + `lib/og.tsx`; icons `design/icon.svg` → `scripts/icons.mjs` |
+| Shops                    | `lib/shops.ts` (each shop's search) ← `content/costumes.ts` `shops` → Buy (`components/basket/buy.tsx`)                                                                                                                                                 |
+| Visual review            | Playwright screenshots at 375, 768, 1280 px for every page, checked before each commit                                                                                                                                                                  |
 
 ---
 
@@ -794,11 +1115,12 @@ something that works now; secondary "Want it sooner? Tell us." → `/feedback?ty
 Each feature branch ships unit and end-to-end tests for the cases that apply to it:
 
 - **Countdown:** time zones east and west of UTC; daylight-saving changes before Oct 31;
-  Halloween day itself ("Tonight."); the rollover after Halloween to next year; a visitor whose
-  clock is wrong; the server-rendered placeholder before hydration.
+  Halloween day itself ("Tonight."); the turn to Christmas after Halloween's night, and back to
+  the next Halloween at Christmas; a visitor whose clock is wrong; the server-rendered
+  placeholder and the server's guess of the season before hydration.
 - **Languages:** the longest strings (Spanish) at 320 px; Chinese line breaking and fallback
-  fonts; dates, numbers and currency formatted per locale; untranslated keys falling back to
-  English.
+  fonts; dates and numbers formatted per locale; every message, costume and guide complete in
+  each language (a missing one fails the tests; the page would show English, never a raw key).
 - **Storage (basket):** absent, corrupted, oversized or outdated data in `localStorage`; storage
   that throws (private mode, blocked) or is full; changes from another tab; costumes that no
   longer exist.
@@ -817,6 +1139,21 @@ Each feature branch ships unit and end-to-end tests for the cases that apply to 
 - **Content states:** empty basket; unknown costume slugs, including a wrong case (404); the
   first and last costume (no previous / next, related wraps around); a character in several
   films; a credit role with no names; 1 item vs many (plurals).
+- **Fitting Room:** signed out (sign in, then back); an empty basket; a costume not in the
+  basket; a photo too small, of a strip's shape, not an image, cut short, sideways (turned
+  upright), far too big; one photo only; a face or body the renderer can't read (the try-on
+  fails, the photo at fault is named); a hiccup (tried again, at most 3 times); a render that
+  never ends (given up after 5 minutes); two tabs following one try-on (each render sent once);
+  the same photos and costume again (the same try-on, never rendered twice); another visitor
+  or a signed-out request asking for someone's pictures (nothing).
+- **Search and sharing:** every indexed page in each language names itself and its versions
+  on the production domain, whatever host served it (a malformed `SITE_URL` keeps to it); the
+  private pages stay out of search and the sitemap; a card for an unknown costume or language
+  is a 404; a card whose photo can't be fetched still draws; a landscape photo never covers
+  the name; no text closes the structured data's script.
+- **Shops:** a costume with one shop (a plain link) and with three (a menu, the costume shops
+  first); every costume has at least one, each search a secure link to its shop's own site,
+  every word of it kept (apostrophes, ampersands); never "Soon".
 - **Server cost:** scrolling the costumes prefetches nothing, hovering a card prefetches it;
   language links never prefetch; no section clips its fog; nothing scrolls sideways.
 
@@ -824,7 +1161,5 @@ Each feature branch ships unit and end-to-end tests for the cases that apply to 
 
 ## 18. Later
 
-The Fitting Room flow (upload guide, progress
-as a "developing film" animation, result reveal) · Stripe checkout styled as a ticket stub ·
-translations · optional opt-in ambient sound: projector whir (never autoplay) · shared-element
+optional opt-in ambient sound: projector whir (never autoplay) · shared-element
 morphs between cards and costume pages.

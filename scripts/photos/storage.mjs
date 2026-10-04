@@ -53,25 +53,43 @@ export function listedImages(source) {
 }
 
 /**
- * The file with every costume's `images` replaced by its photos, looked up by
- * file name. Throws when a listed file has no photo.
+ * The file name of every costume's `garment` (the outfit alone, for the
+ * try-on only) in content/costumes.ts, as a name or a photo already.
+ * @param {string} source the file's text
+ * @returns {string[]}
+ */
+export function listedGarments(source) {
+  return [...source.matchAll(GARMENT)].flatMap((match) => namesIn(match[1]))
+}
+
+/**
+ * The file with every costume's `images` and `garment` replaced by their
+ * photos, looked up by file name. Throws when a listed file has no photo.
  * @param {string} source the file's text
  * @param {Map<string, Photo>} photos by file name
  * @returns {string}
  */
 export function withPhotos(source, photos) {
-  return source.replace(IMAGES, (_, body, indent) => {
-    const list = namesIn(body).map((file) => {
-      const photo = photos.get(file)
-      if (!photo) throw new Error(`No uploaded photo for ${file}`)
-      return `{ file: ${JSON.stringify(photo.file)}, url: ${JSON.stringify(photo.url)}, width: ${photo.width}, height: ${photo.height} }`
+  const entry = (file) => {
+    const photo = photos.get(file)
+    if (!photo) throw new Error(`No uploaded photo for ${file}`)
+    return `{ file: ${JSON.stringify(photo.file)}, url: ${JSON.stringify(photo.url)}, width: ${photo.width}, height: ${photo.height} }`
+  }
+  return source
+    .replace(IMAGES, (_, body, indent) => {
+      const list = namesIn(body).map(entry)
+      return `images: [${list.join(", ")}],\n${indent}stores:`
     })
-    return `images: [${list.join(", ")}],\n${indent}stores:`
-  })
+    .replace(GARMENT, (_, body, indent) => {
+      const [file] = namesIn(body)
+      return `garment: ${entry(file)},\n${indent}images:`
+    })
 }
 
-// `images` always comes right before `stores` in a costume.
+// `images` always comes right before `stores` in a costume, and a
+// `garment`, when there is one, right before `images`.
 const IMAGES = /images: \[(.*?)\],\n(\s*)stores:/gs
+const GARMENT = /garment: (\{[^}]*\}|"[^"]*"),\n(\s*)images:/g
 
 /** The file names in an `images` list: bare strings or `file:` entries. */
 function namesIn(body) {

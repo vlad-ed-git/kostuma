@@ -38,6 +38,38 @@ async function documentAt(path: string) {
     : null
 }
 
+/** The account's free costume, used on Pearl (allowances/{uid}). */
+async function useFreeCostume(uid: string) {
+  const response = await fetch(`${firestore}/allowances/${uid}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: "Bearer owner",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      fields: {
+        held: {
+          mapValue: {
+            fields: {
+              youcam: {
+                mapValue: {
+                  fields: {
+                    tryOn: { stringValue: "0".repeat(32) },
+                    costume: { stringValue: "pearl" },
+                    done: { booleanValue: true },
+                  },
+                },
+              },
+            },
+          },
+        },
+        failedTries: { integerValue: "0" },
+      },
+    }),
+  })
+  expect(response.ok).toBe(true)
+}
+
 /** The uid of the account with this email (the Auth emulator's own API). */
 async function uidOf(email: string) {
   const response = await fetch(`${authEmulator}/accounts:lookup`, {
@@ -109,7 +141,9 @@ test("registering makes the account, its profile and a session", async ({
   expect(profile?.fields.emailVerified.booleanValue).toBe(false)
   expect(isNull(profile?.fields.photoURL)).toBe(true)
   expect(profile?.fields.provider.stringValue).toBe("password")
-  expect(profile?.fields.credits.integerValue).toBe("2")
+  // The free costume is the Fitting Room's to tell (its try-ons), not the
+  // profile's.
+  expect(profile?.fields).not.toHaveProperty("credits")
   expect(profile?.fields.locale.stringValue).toBe("en")
   expect(profile?.fields.termsAcceptedAt.timestampValue).toBeTruthy()
   // Where and on what: Playwright's desktop Chrome; no place off Vercel.
@@ -133,7 +167,76 @@ test("registering makes the account, its profile and a session", async ({
   await expect(page.getByRole("definition").first()).toHaveText("Carrie White")
   await expect(
     page.getByRole("region", { name: "The Fitting Room" })
-  ).toContainText("2 free try-ons waiting")
+  ).toContainText("Your free costume is waiting.")
+  expect(errors).toEqual([])
+})
+
+test("Get Kostuma Pro puts the account on the waitlist, with the email to write to", async ({
+  page,
+}) => {
+  const errors = collectErrors(page)
+  const email = newEmail()
+  await register(page, email)
+  await expect(page).toHaveURL(/\/$/, { timeout: 20_000 })
+  const uid = await uidOf(email)
+  // Kostuma Pro is offered once the free costume is used.
+  await useFreeCostume(uid)
+
+  await page.goto("/account")
+  const pro = page
+    .getByRole("region", { name: "The Fitting Room" })
+    .getByRole("button", { name: "Get Kostuma Pro" })
+  await pro.click()
+  const popup = page.getByRole("dialog", {
+    name: "You’re on the Kostuma Pro waitlist.",
+  })
+  await expect(popup).toContainText(
+    "We’ll write to you at this email as soon as it opens."
+  )
+  const field = popup.getByLabel("Email")
+  await expect(field).toHaveValue(email)
+
+  const joined = (await documentAt(`waitlist/${uid}`))?.fields
+  expect(joined?.uid.stringValue).toBe(uid)
+  expect(joined?.email.stringValue).toBe(email)
+  expect(joined?.accountEmail.stringValue).toBe(email)
+  expect(joined?.locale.stringValue).toBe("en")
+  expect(joined?.source.stringValue).toBe("account")
+  // A new password account's email isn't verified yet.
+  expect(joined?.emailVerified.booleanValue).toBe(false)
+  const createdAt = joined?.createdAt.timestampValue
+  expect(createdAt).toBeTruthy()
+  expect(Object.keys(joined ?? {}).sort()).toEqual([
+    "accountEmail",
+    "createdAt",
+    "email",
+    "emailVerified",
+    "locale",
+    "source",
+    "uid",
+    "updatedAt",
+  ])
+
+  // Another address to be reached at: kept, the account's own as it was.
+  const other = newEmail()
+  await field.fill(other)
+  await popup.getByRole("button", { name: "Update" }).click()
+  await expect(popup.getByRole("status")).toHaveText("Email updated.")
+  await expect
+    .poll(async () => (await documentAt(`waitlist/${uid}`))?.fields.email)
+    .toEqual({ stringValue: other })
+  const updated = (await documentAt(`waitlist/${uid}`))?.fields
+  expect(updated?.accountEmail.stringValue).toBe(email)
+  expect(updated?.createdAt.timestampValue).toBe(createdAt)
+
+  // Pressed again: the same entry, the email on record.
+  await popup.getByRole("button", { name: "Close" }).click()
+  await expect(popup).toBeHidden()
+  await pro.click()
+  await expect(popup.getByLabel("Email")).toHaveValue(other)
+  expect((await documentAt(`waitlist/${uid}`))?.fields.createdAt).toEqual({
+    timestampValue: createdAt,
+  })
   expect(errors).toEqual([])
 })
 

@@ -22,6 +22,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import type { AuthErrorCodes } from "@/lib/auth/fireAuthError"
 import type { FieldErrors } from "@/lib/auth/schemas"
 import { cn } from "@/lib/utils"
@@ -73,16 +74,30 @@ type LabelledProps = {
   label: string
   hint?: string
   error?: AuthErrorCodes
+  /** Shown under the control whatever happens, such as a counter. */
+  note?: string
   control: (props: ControlProps) => ReactNode
 }
 
 /** A label, the control it names, a hint, and the control's error. */
-function Labelled({ label, hint, error, control }: LabelledProps) {
+function Labelled({ label, hint, error, note, control }: LabelledProps) {
   const t = useTranslations("AuthErrors")
   const id = useId()
   const hintId = `${id}-hint`
   const errorId = `${id}-error`
-  const describedBy = [hint && hintId, error && errorId].filter(Boolean)
+  const noteId = `${id}-note`
+  const describedBy = [hint && hintId, error && errorId, note && noteId].filter(
+    Boolean
+  )
+
+  const below = (
+    <>
+      {hint && !error && (
+        <FieldDescription id={hintId}>{hint}</FieldDescription>
+      )}
+      {error && <FieldError id={errorId}>{t(error)}</FieldError>}
+    </>
+  )
 
   return (
     <Field data-invalid={error ? true : undefined} className="lg:gap-2">
@@ -92,10 +107,20 @@ function Labelled({ label, hint, error, control }: LabelledProps) {
         "aria-invalid": error ? true : undefined,
         "aria-describedby": describedBy.join(" ") || undefined,
       })}
-      {hint && !error && (
-        <FieldDescription id={hintId}>{hint}</FieldDescription>
+      {note ? (
+        // The hint (or the error) and the note on one line.
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0">{below}</div>
+          <FieldDescription
+            id={noteId}
+            className="shrink-0 text-end whitespace-nowrap tabular-nums"
+          >
+            {note}
+          </FieldDescription>
+        </div>
+      ) : (
+        below
       )}
-      {error && <FieldError id={errorId}>{t(error)}</FieldError>}
     </Field>
   )
 }
@@ -114,6 +139,31 @@ export function TextField({ label, hint, error, ...input }: TextFieldProps) {
       hint={hint}
       error={error}
       control={(control) => <Input {...control} {...input} />}
+    />
+  )
+}
+
+/** Text of several lines; it grows with what is typed. */
+export function TextAreaField({
+  label,
+  hint,
+  error,
+  note,
+  ...textarea
+}: ComponentProps<"textarea"> & {
+  name: string
+  label: string
+  hint?: string
+  error?: AuthErrorCodes
+  note?: string
+}) {
+  return (
+    <Labelled
+      label={label}
+      hint={hint}
+      error={error}
+      note={note}
+      control={(control) => <Textarea {...control} {...textarea} />}
     />
   )
 }

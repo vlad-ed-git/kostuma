@@ -10,20 +10,19 @@
 //    that object is already there.
 // 3. Writes every costume's photos (master's file name, the web copy's
 //    public URL and size) into content/costumes.ts, formatted with
-//    Prettier: the site shows the web copies.
+//    Prettier: the site shows the web copies of `images`; the try-on uses
+//    the web copy of `garment` (the outfit alone), or else of `images[0]`.
 //
-// Credentials: the service account key in secrets/ (gitignored), or
-// GOOGLE_APPLICATION_CREDENTIALS. Its contents are never printed.
-import { existsSync } from "node:fs"
+// Credentials: see admin.mjs.
 import { readFile, readdir, writeFile } from "node:fs/promises"
 import { fileURLToPath } from "node:url"
-import { applicationDefault, cert, initializeApp } from "firebase-admin/app"
 import { getSecurityRules } from "firebase-admin/security-rules"
 import { getStorage } from "firebase-admin/storage"
 import prettier from "prettier"
 
+import { adminApp, BUCKET, storeOnce } from "./admin.mjs"
 import {
-  CACHE_CONTROL,
+  listedGarments,
   listedImages,
   objectPath,
   publicUrl,
@@ -31,29 +30,11 @@ import {
 } from "./storage.mjs"
 import { webCopy } from "./web.mjs"
 
-const PROJECT = "kostuma-73f77"
-const BUCKET = `${PROJECT}.firebasestorage.app`
 const root = (path) => fileURLToPath(new URL(`../../${path}`, import.meta.url))
 const MASTERS = root("photos/masters/")
 const DATA = root("content/costumes.ts")
-const KEY = root("secrets/kostuma_service_account.json")
 
-const credential = process.env.GOOGLE_APPLICATION_CREDENTIALS
-  ? applicationDefault()
-  : existsSync(KEY)
-    ? cert(JSON.parse(await readFile(KEY, "utf8")))
-    : null
-if (!credential) {
-  console.error(
-    "No credentials: put the service account key in secrets/kostuma_service_account.json or set GOOGLE_APPLICATION_CREDENTIALS."
-  )
-  process.exit(1)
-}
-const app = initializeApp({
-  credential,
-  projectId: PROJECT,
-  storageBucket: BUCKET,
-})
+const app = await adminApp()
 
 // 1. The rules first: the photos must never be public by accident of order.
 // Deployed only when they differ from the live ones (no pile of copies).
@@ -74,19 +55,6 @@ if (live?.source.some((file) => file.content === rules)) {
 // content-hashed name.
 const bucket = getStorage(app).bucket()
 
-/** Stores the content under its path unless it is there; true if stored. */
-async function put(path, content, contentType) {
-  const object = bucket.file(path)
-  const [exists] = await object.exists()
-  if (!exists) {
-    await object.save(content, {
-      resumable: false,
-      metadata: { contentType, cacheControl: CACHE_CONTROL },
-    })
-  }
-  return { stored: !exists }
-}
-
 const files = (await readdir(MASTERS))
   .filter((name) => name.endsWith(".png"))
   .sort()
@@ -100,11 +68,16 @@ const photos = new Map()
 let uploaded = 0
 for (const file of files) {
   const master = await readFile(`${MASTERS}${file}`)
-  const kept = await put(objectPath(file, master), master, "image/png")
+  const kept = await storeOnce(
+    bucket,
+    objectPath(file, master),
+    master,
+    "image/png"
+  )
   const web = await webCopy(master)
   const path = objectPath(file, web.content, "webp")
-  const shown = await put(path, web.content, "image/webp")
-  uploaded += Number(kept.stored) + Number(shown.stored)
+  const shown = await storeOnce(bucket, path, web.content, "image/webp")
+  uploaded += Number(kept) + Number(shown)
   photos.set(file, {
     file,
     url: publicUrl(BUCKET, path),
@@ -118,7 +91,7 @@ console.log(
 
 // 3. The URLs into the data.
 const source = await readFile(DATA, "utf8")
-const listed = listedImages(source).flat()
+const listed = [...listedImages(source).flat(), ...listedGarments(source)]
 const unlisted = files.filter((file) => !listed.includes(file))
 const updated = withPhotos(source, photos)
 const options = await prettier.resolveConfig(DATA)

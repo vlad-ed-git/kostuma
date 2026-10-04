@@ -1,35 +1,34 @@
 import { RiArrowRightLine } from "@remixicon/react"
-import { useFormatter, useTranslations } from "next-intl"
+import { useTranslations } from "next-intl"
 
-import { Badge } from "@/components/ui/badge"
+import { GetPro } from "@/components/pro/get-pro"
 import { buttonVariants } from "@/components/ui/button"
 import { Link } from "@/i18n/navigation"
-import { fittingRoomPrice } from "@/lib/fitting-room"
+import type { WaitlistSource } from "@/lib/waitlist/schema"
 import { cn } from "@/lib/utils"
 
 /**
  * The Fitting Room, at the top of My Pumpkin Basket, which it is part of
- * (spec §11.4): what it will do, that it is coming soon, and its price. On
- * the account page (spec §11.6), the try-ons waiting there too.
+ * (spec §11.4): what it does, the costume every account tries on free, and
+ * the way in. On the account page (spec §11.6), whether the account's free
+ * costume is still waiting instead. Kostuma Pro only once the free costume
+ * is used (todo UX-08): before, nothing should compete with trying it.
  */
 export function FittingRoomPanel({
-  credits,
+  signedIn,
+  free,
+  source,
   className,
 }: {
-  /** The account's free try-ons left, when known. */
-  credits?: number
+  signedIn: boolean
+  /** The account's free costume is still there; unknown: undefined. */
+  free?: boolean
+  /** Where the panel is, for the waitlist. */
+  source: WaitlistSource
   className?: string
 }) {
   const t = useTranslations("FittingRoom")
   const account = useTranslations("Account")
-  const badge = useTranslations("Badge")
-  const format = useFormatter()
-  const price = format.number(fittingRoomPrice.perCostume, {
-    style: "currency",
-    currency: fittingRoomPrice.currency,
-    // "$5", and "$4.99" should it ever cost that.
-    minimumFractionDigits: 0,
-  })
 
   return (
     <section
@@ -39,29 +38,32 @@ export function FittingRoomPanel({
         className
       )}
     >
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <h2 id="fitting-room" className="font-heading text-h2 font-semibold">
-          {t("title")}
-        </h2>
-        <Badge variant="soon">{badge("soon")}</Badge>
-        <Badge variant="premium">{badge("premium")}</Badge>
-      </div>
+      <h2 id="fitting-room" className="font-heading text-h2 font-semibold">
+        {t("title")}
+      </h2>
       <p className="max-w-[60ch] text-body-lg">{t("line")}</p>
-      {credits !== undefined && (
-        <p className="text-lead">
-          {account("tryOnsWaiting", { count: credits })}
-        </p>
-      )}
       <p className="text-lead font-semibold">
-        {t("price", { free: fittingRoomPrice.freeTryOns, price })}
+        {source === "account" && free !== undefined
+          ? account(free ? "freeWaiting" : "freeUsed")
+          : t("free")}
       </p>
-      <Link
-        href="/basket/fitting-room"
-        className={buttonVariants({ variant: "outline", className: "mt-2" })}
-      >
-        {t("enter")}
-        <RiArrowRightLine aria-hidden="true" />
-      </Link>
+      <div className="mt-2 flex flex-wrap items-start gap-4">
+        <Link
+          href="/basket/fitting-room"
+          className={buttonVariants({ size: "lg" })}
+        >
+          {t("enter")}
+          <RiArrowRightLine aria-hidden="true" />
+        </Link>
+        {free === false && (
+          <GetPro
+            source={source}
+            signedIn={signedIn}
+            back="/basket"
+            variant="outline"
+          />
+        )}
+      </div>
     </section>
   )
 }

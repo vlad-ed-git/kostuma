@@ -32,4 +32,6 @@ export const replace = vi.fn()
 
 export const usePathname = () => "/"
 
-export const useRouter = () => ({ replace, push: vi.fn() })
+export const refresh = vi.fn()
+
+export const useRouter = () => ({ replace, push: vi.fn(), refresh })

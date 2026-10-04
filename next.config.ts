@@ -1,3 +1,5 @@
+import path from "node:path"
+
 import type { NextConfig } from "next"
 import createNextIntlPlugin from "next-intl/plugin"
 
@@ -54,20 +56,60 @@ export const costumePhotos = {
   search: "?alt=media",
 } as const
 
+/**
+ * The e2e build's stand-ins (E2E=1): each module that would reach a real
+ * service (Firebase, YouCam), swapped for its `*.e2e.ts` twin. Imported by
+ * these `@/` names, never relatively (a relative import bypasses them).
+ */
+export const e2eAliases = {
+  "@/lib/auth/session": "./lib/auth/session.e2e.ts",
+  "@/lib/auth/browser": "./lib/auth/browser.e2e.ts",
+  "@/lib/users": "./lib/users.e2e.ts",
+  "@/lib/basket/firestore": "./lib/basket/firestore.e2e.ts",
+  "@/lib/fitting-room/store": "./lib/fitting-room/store.e2e.ts",
+  "@/lib/fitting-room/renderer": "./lib/fitting-room/renderer.e2e.ts",
+  "@/lib/fitting-room/garment": "./lib/fitting-room/garment.e2e.ts",
+  "@/lib/waitlist/store": "./lib/waitlist/store.e2e.ts",
+  "@/lib/rate-limit": "./lib/rate-limit.e2e.ts",
+  "@/lib/account/erase": "./lib/account/erase.e2e.ts",
+} as const
+
+type WebpackConfig = { resolve?: { alias?: Record<string, unknown> } }
+
+/**
+ * How the e2e build bundles the stand-ins, with either bundler: Turbopack
+ * (the default) and webpack (`next build --webpack`), from the same map, so
+ * no e2e build ever runs the real modules.
+ */
+export function e2eBundling(root = process.cwd()) {
+  return {
+    turbopack: { resolveAlias: { ...e2eAliases } },
+    webpack(config: WebpackConfig) {
+      config.resolve ??= {}
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        // `$`: the module itself, exactly.
+        ...Object.fromEntries(
+          Object.entries(e2eAliases).map(([name, file]) => [
+            `${name}$`,
+            path.resolve(root, file),
+          ])
+        ),
+      }
+      return config
+    },
+  }
+}
+
 const nextConfig: NextConfig = {
   // Memoizes components automatically (React Compiler, stable in Next 16).
   reactCompiler: true,
   distDir,
-  ...(e2e === "1" && {
-    turbopack: {
-      resolveAlias: {
-        "@/lib/auth/session": "./lib/auth/session.e2e.ts",
-        "@/lib/auth/browser": "./lib/auth/browser.e2e.ts",
-        "@/lib/users": "./lib/users.e2e.ts",
-        "@/lib/basket/firestore": "./lib/basket/firestore.e2e.ts",
-      },
-    },
-  }),
+  ...(e2e === "1" && e2eBundling()),
+  // The social cards' font, read from disk (lib/og.tsx): shipped with them.
+  outputFileTracingIncludes: {
+    "/**/opengraph-image*": ["./app/fonts/og/*.ttf"],
+  },
   poweredByHeader: false,
   productionBrowserSourceMaps: false,
   // Next 16 removed the `eslint` option: `next build` no longer lints, so
@@ -97,6 +139,12 @@ const nextConfig: NextConfig = {
   experimental: {
     // The 404 page for URLs outside every language: app/global-not-found.tsx.
     globalNotFound: true,
+    serverActions: {
+      // The Fitting Room's two photos, which the browser shrinks to about
+      // 1 MB each first (lib/fitting-room/photo-rules.ts); Vercel takes 4.5 MB
+      // a request at most.
+      bodySizeLimit: "4mb",
+    },
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }]
