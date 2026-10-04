@@ -44,7 +44,7 @@ describe("Tagline", () => {
     )
     expect(html).toContain("The darkest night has passed.")
     expect(html).toContain(
-      "But you shall stay a monster until Santa comes. Hahaha."
+      "But you shall stay a monster until Santa comes. Ho. Ho. Ho."
     )
   })
 
@@ -62,7 +62,7 @@ describe("Tagline", () => {
     expect(title()).toHaveTextContent("The darkest night has passed.")
     expect(
       screen.getByText(
-        "But you shall stay a monster until Santa comes. Hahaha."
+        "But you shall stay a monster until Santa comes. Ho. Ho. Ho."
       )
     ).toBeVisible()
   })

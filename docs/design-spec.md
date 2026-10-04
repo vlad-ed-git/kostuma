@@ -559,7 +559,7 @@ every other page is indexed, in every language (14b).
    - Under it, in `--blood-text` with a red glow: "Transform into a monster." (`App.taglineTail`).
    - **After Halloween** (owner, 2026-10-04): from November 1 until Christmas, in the visitor's
      own time zone, the H1 reads "The darkest night has passed." (`App.taglineAfterLead`) and
-     the red line "But you shall stay a monster until Santa comes. Hahaha."
+     the red line "But you shall stay a monster until Santa comes. Ho. Ho. Ho."
      (`App.taglineAfterTail`; from `lg` at most 11.5 em wide, so it wraps before the window and
      never lies red on its glass). Everything else stays. The server guesses the season from
      the connection's time zone (Vercel's `x-vercel-ip-timezone`, else its own); the browser
@@ -1043,7 +1043,7 @@ Every page a visitor can read without an account is indexed in all three languag
 | CLS                 | ≤ 0.02 (reserved sizes for countdown, reCAPTCHA, images)                                                                                                                                                                                                                                                                                                                                                                                                |
 | INP                 | ≤ 200 ms                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | JS per route        | ≤ 120 KB gz shared + ≤ 40 KB route                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| Fonts               | 3 files in the repo (`app/fonts/`): Grenze Gotisch, Crimson Pro and its italic, variable, Latin and Latin Extended in one woff2 each (about 188 KB together), preloaded, `display: swap`; never fetched from Google. Chinese headings: a Ma Shan Zheng subset (729 characters, about 310 KB), loaded only where Chinese headings show; other Chinese text from the system. The social cards draw with a TTF of the title face, on the server only (14b) |
+| Fonts               | 3 files in the repo (`app/fonts/`): Grenze Gotisch, Crimson Pro and its italic, variable, Latin and Latin Extended in one woff2 each (about 188 KB together), preloaded, `display: swap`; never fetched from Google. Chinese headings: a Ma Shan Zheng subset (about 725 characters, 310 KB), loaded only where Chinese headings show; other Chinese text from the system. The social cards draw with a TTF of the title face, on the server only (14b) |
 
 - Ambient effects: CSS, `transform`/`opacity` only, no `mix-blend-mode` on full-screen layers.
 - `motion` only where CSS can't do the job (first use: the basket count's roll), in client

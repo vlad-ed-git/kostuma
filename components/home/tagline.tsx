@@ -10,7 +10,7 @@ import { countdownTo, type Holiday } from "@/lib/countdown"
  * The title card's tagline (spec §11.1): "The darkest night is coming." and
  * "Transform into a monster." until Halloween; then, its night past (owner,
  * 2026-10-04), "The darkest night has passed." and "But you shall stay a
- * monster until Santa comes. Hahaha." until Christmas, as the countdown
+ * monster until Santa comes. Ho. Ho. Ho." until Christmas, as the countdown
  * turns (lib/countdown). The server guesses the season from the
  * connection's time zone (`holiday`); the browser corrects it with its own
  * clock, and turns it at midnight.

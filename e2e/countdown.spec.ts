@@ -45,7 +45,9 @@ test.describe("the countdown", () => {
     await page.clock.runFor(3_000)
     await expect(title).toHaveText("The darkest night has passed.")
     await expect(
-      page.getByText("But you shall stay a monster until Santa comes. Hahaha.")
+      page.getByText(
+        "But you shall stay a monster until Santa comes. Ho. Ho. Ho."
+      )
     ).toBeVisible()
     await expect(
       page.getByText("Until Christmas · Friday, December 25")
