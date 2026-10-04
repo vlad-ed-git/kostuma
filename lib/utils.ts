@@ -1,4 +1,5 @@
-import { createCn } from "cn/config"
+import { type ClassValue, clsx } from "clsx"
+import { extendTailwindMerge } from "tailwind-merge"
 
 /**
  * Kostuma's own font sizes (the `--text-*` theme values in app/globals.css).
@@ -21,12 +22,17 @@ export const typeScale = [
   "numeral",
 ] as const
 
-/**
- * Joins class names and resolves Tailwind conflicts (the later class wins).
- * It knows Kostuma's type scale, so a size such as `text-label` is never
- * taken for a text color and dropped next to `text-muted-foreground`.
- * Import `cn` from here, never from the `cn` package (ESLint enforces it).
- */
-export const cn = createCn({
+const merge = extendTailwindMerge({
   extend: { classGroups: { "font-size": [{ text: [...typeScale] }] } },
 })
+
+/**
+ * Joins class names (clsx) and resolves Tailwind conflicts, the later class
+ * winning (tailwind-merge). It knows Kostuma's type scale, so a size such as
+ * `text-label` is never taken for a text color and dropped next to
+ * `text-muted-foreground`. Import `cn` from here, never tailwind-merge
+ * itself, nor a `cn` package (ESLint enforces it).
+ */
+export function cn(...classes: ClassValue[]) {
+  return merge(clsx(classes))
+}
