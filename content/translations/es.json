@@ -185,7 +185,7 @@
       "createdBy": ["Bram Stoker (novela de 1897)", "Tod Browning (dirección)"],
       "broughtToLifeBy": ["Bela Lugosi", "Universal Pictures"],
       "lore": "El aristocrático vampiro de Transilvania que se muda a Inglaterra para alimentarse. El acento de Lugosi y su forma de hablar, lenta e hipnótica, definieron cómo se ven y suenan los vampiros del cine.",
-      "funFact": "Según se cuenta, Lugosi fue enterrado con una de sus capas de Drácula. Christopher Lee (Hammer, 1958) y Gary Oldman (Coppola, 1992) ampliaron la leyenda.",
+      "funFact": "Lugosi nunca mostró colmillos en pantalla: el Drácula de Christopher Lee (Hammer, 1958) los hizo famosos, y Gary Oldman (Coppola, 1992) amplió la leyenda. Según se cuenta, Lugosi fue enterrado con una de sus capas de Drácula.",
       "look": {
         "pieces": [
           "Capa negra de cuello alto",
@@ -1246,7 +1246,7 @@
   },
   "guides": {
     "ghostface": {
-      "look": "Ghostface en carne y hueso: la cara blanca como la tiza, ojos negros alargados y huecos, pliegues grises de máscara, la nariz negra y una boca negra y larga.",
+      "look": "Ghostface en carne y hueso: la cara blanca como la tiza, ojos negros alargados y huecos, pliegues grises de máscara y una boca negra y larga.",
       "steps": [
         {
           "title": "Base blanca",
@@ -1273,13 +1273,8 @@
           "products": ["pintura facial en crema gris"]
         },
         {
-          "title": "Nariz negra",
-          "howTo": "Pinta la punta de la nariz de negro, con un punto redondo.",
-          "products": ["pintura facial en crema negra"]
-        },
-        {
           "title": "Boca negra y larga",
-          "howTo": "Pinta los labios de negro sólido, delineados más allá de sus bordes arriba y abajo, hasta formar un óvalo largo y abierto. Dos capas, y vuelve a pasar por la nariz.",
+          "howTo": "Pinta los labios de negro sólido, delineados más allá de sus bordes arriba y abajo, hasta formar un óvalo largo y abierto. Dos capas.",
           "products": ["labial negro", "delineador de labios negro"]
         }
       ],
@@ -2447,7 +2442,7 @@
       "steps": [
         {
           "title": "Base empolvada",
-          "howTo": "Aplica a toquecitos una base cuatro tonos más clara que tu piel y presiona mucho polvo encima, vieja y seca.",
+          "howTo": "Esta guía te convierte en «Madre», no en Norman. Aplica a toquecitos una base cuatro tonos más clara que tu piel y presiona mucho polvo encima, vieja y seca.",
           "products": [
             "base de maquillaje porcelana",
             "polvo fijador translúcido"

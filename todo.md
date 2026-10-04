@@ -126,7 +126,7 @@ OPP-11 and OPP-12.
 - [x] **COPY-03** One film-accurate outfit each for Hannibal, Grace and Pamela (checked), on the
       costume page and in the guide.
 - [x] **COPY-04** Fix the listed facts; check each "verify" against a reliable source first.
-- [ ] **COPY-05** Ghostface loses the black nose (its step and its repeat in the lips step);
+- [x] **COPY-05** Ghostface loses the black nose (its step and its repeat in the lips step);
       Dracula keeps the fangs and his fun fact adds "Lugosi never bared fangs on screen"; Norman
       Bates' guide says in its first line that it makes you "Mother". A changed guide bumps
       `PIPELINE_VERSION`.

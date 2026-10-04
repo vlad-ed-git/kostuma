@@ -20,7 +20,7 @@ import type { FacePhoto } from "./try-on"
  * Bumped whenever the same photos and costume would render differently: a
  * try-on is kept per photos, costume and version (never rendered twice).
  */
-export const PIPELINE_VERSION = 3
+export const PIPELINE_VERSION = 4
 
 /** The outfit's step, when the costume has one: always the first. */
 export const OUTFIT = 0

@@ -61,7 +61,7 @@ function secondCoat(color: Hex, paint: string, browColor?: Hex): MakeupStep {
 /** Each costume's guide, by its slug (content/costumes.ts). */
 export const makeupGuides: Record<string, MakeupGuide> = {
   ghostface: {
-    look: "Ghostface come to life: a chalk-white face, long black hollow eyes, gray mask folds, a black nose and a long black mouth.",
+    look: "Ghostface come to life: a chalk-white face, long black hollow eyes, gray mask folds and a long black mouth.",
     steps: [
       {
         title: "White base",
@@ -96,20 +96,13 @@ export const makeupGuides: Record<string, MakeupGuide> = {
         ),
       },
       {
-        title: "Black nose",
-        howTo: "Paint the tip of your nose black in a round dot.",
-        products: ["black cream face paint"],
-        render: makeup(noseTip(BLACK)),
-      },
-      {
         title: "Long black mouth",
         howTo:
-          "Paint the lips solid black, lined past their edges top and bottom into a long, gaping oval. Two coats, and go over the nose again.",
+          "Paint the lips solid black, lined past their edges top and bottom into a long, gaping oval. Two coats.",
         products: ["black lipstick", "black lip liner"],
         render: makeup(
           lips(matte(BLACK), "pouty"),
-          lipLine("Large&Full1", BLACK),
-          noseTip(BLACK)
+          lipLine("Large&Full1", BLACK)
         ),
       },
     ],
@@ -1733,7 +1726,7 @@ export const makeupGuides: Record<string, MakeupGuide> = {
       {
         title: "Powdered base",
         howTo:
-          "Pat on a foundation four shades lighter than your skin and press a lot of powder over it, old and dry.",
+          "This guide makes you “Mother” rather than Norman. Pat on a foundation four shades lighter than your skin and press a lot of powder over it, old and dry.",
         products: ["porcelain foundation", "translucent setting powder"],
         render: makeup(paler(4)),
       },

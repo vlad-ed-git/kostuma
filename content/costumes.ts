@@ -421,7 +421,7 @@ export const costumes: Costume[] = [
     broughtToLifeBy: ["Bela Lugosi", "Universal Pictures"],
     lore: "The aristocratic Transylvanian vampire who moves to England to feed. Lugosi's accent and slow, hypnotic delivery defined the look and sound of movie vampires.",
     funFact:
-      "Lugosi was reportedly buried in one of his Dracula capes. Christopher Lee (Hammer, 1958) and Gary Oldman (Coppola, 1992) built on the legend.",
+      "Lugosi never bared fangs on screen: Christopher Lee's Dracula (Hammer, 1958) made them famous, and Gary Oldman (Coppola, 1992) built on the legend. Lugosi was reportedly buried in one of his Dracula capes.",
     look: {
       pieces: [
         "Black cape with tall collar",
