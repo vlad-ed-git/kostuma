@@ -26,6 +26,7 @@ function tryOn(
     body: outfit ? "b" : null,
     outfit,
     dressed,
+    busy: false,
     steps,
   }
 }

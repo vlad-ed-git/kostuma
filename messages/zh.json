@@ -136,6 +136,7 @@
       "makeup": "正在为你化妆：已完成 {done}/{count} 步…",
       "done": "你的试穿已完成。"
     },
+    "busy": "镜子正忙。你的试穿马上开始。",
     "outfit": "服装",
     "outfitAlt": "穿着 {name} 装扮的你",
     "outfitShort": "服装",

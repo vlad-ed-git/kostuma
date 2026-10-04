@@ -222,3 +222,59 @@ describe("the budget", () => {
     })
   })
 })
+
+describe("YouCam's calls and webhooks", () => {
+  it("never gives out more calls than the budget holds, however many ask at once", async () => {
+    const { CAPACITY } = await import("./calls")
+    const now = Date.now()
+    // Eight starts of four calls each: seven fit in a full budget.
+    const granted = await Promise.all(
+      Array.from({ length: 8 }, () => store.takeCalls(4, now))
+    )
+    expect(granted.filter(Boolean)).toHaveLength(Math.floor(CAPACITY / 4))
+    // A deletion still goes, a little into debt.
+    expect(await store.takeCalls(1, now, true)).toBe(true)
+  })
+
+  it("notes whose a task is until it is forgotten", async () => {
+    const step = { uid: UID, id: "a".repeat(32), index: 2 }
+    // A task id with characters a document id can't hold.
+    const task = "pfNK5Pu/Re0MrwLH+cGA3DOmB1ahwfXT="
+    await store.trackTask(task, step, Date.now())
+    expect(await store.taskStep(task)).toEqual(step)
+    await store.forgetTask(task)
+    expect(await store.taskStep(task)).toBeNull()
+  })
+
+  it("takes each webhook delivery once", async () => {
+    const id = "msg_1eWPv9cWJCnEP99UJncmVJ6KjK_xVXRhZPe:1761112848"
+    const firsts = await Promise.all([
+      store.firstDelivery(id, Date.now()),
+      store.firstDelivery(id, Date.now()),
+    ])
+    expect(firsts.sort()).toEqual([false, true])
+  })
+
+  it("lists the running try-ons started before a time, until they end", async () => {
+    const old = tryOn("ghostface", 0)
+    old.createdAt = Date.now() - 2 * 24 * 60 * 60 * 1000
+    await store.begin(UID, old)
+    await store.begin("visitor-2", tryOn("ghostface", 1))
+    expect(await store.runningSince(Date.now() - 60_000, 10)).toEqual([
+      { uid: UID, id: old.id },
+    ])
+    await store.finish(UID, old.id, "failed", "failed")
+    expect(await store.runningSince(Date.now() - 60_000, 10)).toEqual([])
+  })
+
+  it("sweeps the notes older than a time", async () => {
+    const step = { uid: UID, id: "a".repeat(32), index: 0 }
+    await store.trackTask("old", step, 1_000)
+    await store.trackTask("new", step, Date.now())
+    await store.firstDelivery("old-delivery", 1_000)
+    await store.sweep(Date.now() - 60_000)
+    expect(await store.taskStep("old")).toBeNull()
+    expect(await store.taskStep("new")).toEqual(step)
+    expect(await store.firstDelivery("old-delivery", Date.now())).toBe(true)
+  })
+})

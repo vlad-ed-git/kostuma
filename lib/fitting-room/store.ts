@@ -1,5 +1,7 @@
 import "server-only"
 
+import { createHash } from "node:crypto"
+
 import { type DocumentReference, FieldValue } from "firebase-admin/firestore"
 
 import { adminBucket, adminDb } from "@/lib/firebase/admin"
@@ -13,6 +15,7 @@ import {
   unitsOfPlan,
   unspentUnits,
 } from "./budget"
+import { bucketOf, take } from "./calls"
 import { allowanceOf, countsAsFailedTry } from "./free-costume"
 import type {
   Begun,
@@ -35,7 +38,14 @@ import type {
  * - `config/fittingRoom`: the switch and the daily budget (budget.ts),
  *   made with its defaults by the first start, for the owner to change in
  *   the Firebase console; `usage/{YYYY-MM-DD}`: the units the day's
- *   try-ons reserved, `{ units }`.
+ *   try-ons reserved, `{ units }`;
+ * - `limits/youcam`: YouCam's site-wide call budget (calls.ts),
+ *   `{ tokens, at }`;
+ * - `youcamTasks/{sha256 of the task id}`: the step a YouCam task renders,
+ *   `{ uid, id, index, at }`, for its webhook; `webhooks/{sha256 of the
+ *   webhook-id}`: the deliveries handled, `{ at }`; both swept daily;
+ * - `runningTryOns/{uid}_{id}`: the try-ons running, `{ uid, id,
+ *   startedAt }`, for the daily check to end those stuck.
  * The visitor sees them only through the server (app/api/fitting-room).
  */
 
@@ -48,6 +58,16 @@ const tryOnRef = (uid: string, id: string) =>
 
 const configRef = () => adminDb().collection("config").doc("fittingRoom")
 const usageRef = (day: string) => adminDb().collection("usage").doc(day)
+
+const callsRef = () => adminDb().collection("limits").doc("youcam")
+const hashed = (value: string) =>
+  createHash("sha256").update(value).digest("hex")
+const taskRef = (task: string) =>
+  adminDb().collection("youcamTasks").doc(hashed(task))
+const deliveryRef = (id: string) =>
+  adminDb().collection("webhooks").doc(hashed(id))
+const runningRef = (uid: string, id: string) =>
+  adminDb().collection("runningTryOns").doc(`${uid}_${id}`)
 
 const reservedOf = (data: Record<string, unknown> | undefined) => {
   const units = data?.units
@@ -173,6 +193,11 @@ export function fittingRoomStore(): FittingRoomStore {
           return { outcome: "closed" }
         const started: TryOn = { ...fresh, reserved: { day, units } }
         transaction.set(ref, started)
+        transaction.set(runningRef(uid, fresh.id), {
+          uid,
+          id: fresh.id,
+          startedAt: fresh.createdAt,
+        })
         transaction.set(
           usageRef(day),
           { units: FieldValue.increment(units), updatedAt: Date.now() },
@@ -203,6 +228,7 @@ export function fittingRoomStore(): FittingRoomStore {
       const ref = tryOnRef(uid, id)
       return adminDb().runTransaction(async (transaction) => {
         const tryOn = (await transaction.get(ref)).data()
+        transaction.delete(runningRef(uid, id))
         if (!tryOn || tryOn.status !== "running") return false
         transaction.update(ref, { status, failure, updatedAt: Date.now() })
         if (status === "failed" && countsAsFailedTry(tryOn, failure)) {
@@ -269,6 +295,77 @@ export function fittingRoomStore(): FittingRoomStore {
         transaction.set(configRef(), next, { merge: true })
         return next
       })
+    },
+
+    takeCalls(calls, now, debt = false) {
+      return adminDb().runTransaction(async (transaction) => {
+        const next = take(
+          bucketOf((await transaction.get(callsRef())).data()),
+          calls,
+          now,
+          debt
+        )
+        if (next) transaction.set(callsRef(), next)
+        return next !== null
+      })
+    },
+
+    async trackTask(task, { uid, id, index }, now) {
+      await taskRef(task).set({ uid, id, index, at: now })
+    },
+
+    async taskStep(task) {
+      const data = (await taskRef(task).get()).data()
+      const { uid, id, index } = data ?? {}
+      return typeof uid === "string" &&
+        typeof id === "string" &&
+        typeof index === "number"
+        ? { uid, id, index }
+        : null
+    },
+
+    async forgetTask(task) {
+      await taskRef(task).delete()
+    },
+
+    async firstDelivery(id, now) {
+      try {
+        await deliveryRef(id).create({ at: now })
+        return true
+      } catch (error) {
+        // ALREADY_EXISTS: handled before.
+        if ((error as { code?: unknown }).code === 6) return false
+        throw error
+      }
+    },
+
+    async runningSince(before, limit) {
+      const snapshot = await adminDb()
+        .collection("runningTryOns")
+        .where("startedAt", "<", before)
+        .orderBy("startedAt")
+        .limit(limit)
+        .get()
+      return snapshot.docs.flatMap((doc) => {
+        const { uid, id } = doc.data()
+        return typeof uid === "string" && typeof id === "string"
+          ? [{ uid, id }]
+          : []
+      })
+    },
+
+    async sweep(before) {
+      for (const name of ["youcamTasks", "webhooks"]) {
+        const old = await adminDb()
+          .collection(name)
+          .where("at", "<", before)
+          .limit(400)
+          .get()
+        if (old.empty) continue
+        const batch = adminDb().batch()
+        for (const doc of old.docs) batch.delete(doc.ref)
+        await batch.commit()
+      }
     },
   }
 }

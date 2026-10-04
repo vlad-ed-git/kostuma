@@ -217,6 +217,35 @@ test.describe("The Fitting Room", () => {
     expect(errors).toEqual([])
   })
 
+  test("goes on with the page asking nothing: YouCam's webhooks move the try-on along", async ({
+    page,
+  }) => {
+    await enter(page, ["beetlejuice"])
+    // The page only reads: every render is announced by a signed webhook
+    // (the e2e build's fake does as YouCam does), and that moves it on.
+    await page.route("**/api/fitting-room/try-ons/*", (route) =>
+      route.request().method() === "POST" ? route.abort() : route.continue()
+    )
+    await page.goto("/basket/fitting-room?costume=beetlejuice")
+    await givePhotos(page, await photo(900, 1200), await photo(1000, 1500))
+    await page.getByRole("button", { name: "Continue" }).click()
+    await page.getByRole("button", { name: "Start the try-on" }).click()
+    await expect(page.getByText("Trying on the outfit…")).toBeAttached()
+
+    await expect
+      .poll(
+        async () => {
+          await page.reload()
+          return page.getByText("Your try-on is ready.").count()
+        },
+        { timeout: 30_000, intervals: [2_000] }
+      )
+      .toBe(1)
+    const beetlejuice = room(page, "Beetlejuice")
+    await expect(strip(beetlejuice).getByRole("button")).toHaveCount(8)
+    await picturesLoaded(beetlejuice)
+  })
+
   test("speaks the visitor's language: the guide in Spanish, its products the shop's search", async ({
     page,
   }) => {

@@ -607,7 +607,8 @@ function Fitting({
 
 /**
  * Asks how a running try-on is doing every POLL_MS, until it ends (then
- * `onEnd`).
+ * `onEnd`). Each ask also moves it along (POST): YouCam's webhook does
+ * that too where it can reach the server, never on localhost.
  */
 function useFollow(
   tryOn: TryOnView | null,
@@ -624,6 +625,7 @@ function useFollow(
     const ask = async () => {
       try {
         const response = await fetch(`/api/fitting-room/try-ons/${id}`, {
+          method: "POST",
           cache: "no-store",
         })
         // Signed out meanwhile: stop asking; the page says so on reload.

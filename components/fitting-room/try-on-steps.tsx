@@ -161,6 +161,10 @@ export function TryOnSteps({
 
       <div className="flex flex-col items-start gap-5 [grid-area:card] lg:pt-2">
         {failure}
+        {tryOn.busy && (
+          // YouCam is busy: the try-on waits its turn (calls.ts).
+          <p className="max-w-[60ch] text-lead text-blood-text">{t("busy")}</p>
+        )}
         {frame?.kind === "step" && (
           <p className="text-label caps text-blood-text">
             {t("stepOf", { number: frame.number, count: makeup.length })}

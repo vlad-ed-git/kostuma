@@ -2,16 +2,16 @@ import { createHash } from "node:crypto"
 
 import type { MakeupGuide } from "@/lib/makeup"
 
+import { admits, unitsOfGuide } from "./budget"
+import { BUSY_LIMIT_MS, busyDelay, checkEvery } from "./calls"
+import { allowanceOf } from "./free-costume"
 import {
   ProviderError,
   type RenderFailure,
   type RenderImages,
   type RenderProvider,
+  type Started,
 } from "./provider"
-
-type Renderer = RenderProvider["name"]
-import { admits, unitsOfGuide } from "./budget"
-import { allowanceOf } from "./free-costume"
 import {
   dressesFace,
   PIPELINE_VERSION,
@@ -28,13 +28,19 @@ import type {
   TryOn,
 } from "./try-on"
 
+type Renderer = RenderProvider["name"]
+
 /**
- * Drives a try-on, one small move per call: the page asks every couple of
- * seconds (`advance`), and each ask sends the steps whose picture can start,
- * looks in on those running, and keeps the pictures that are done. Nothing
- * needs to run in the background, and two tabs asking at once never send a
- * render twice: every move first claims its step (FittingRoomStore
- * `updateStep`).
+ * Drives a try-on, one small move per call (`advance`): each sends the steps
+ * whose picture can start, looks in on those running, and keeps the
+ * pictures that are done. YouCam's webhook calls it when a render finishes
+ * (app/api/youcam/webhook, `drive`), so a try-on goes on with its page
+ * closed; the page asks too, every couple of seconds, which is all there
+ * is where webhooks can't reach (localhost). Whoever asks, YouCam is asked
+ * about a running render at most every few seconds (calls.ts `checkEvery`),
+ * and a busy YouCam makes a render wait, never fail. Two requests at once
+ * never send a render twice: every move first claims its step
+ * (FittingRoomStore `updateStep`).
  */
 
 /** A claim ("starting", "saving") whose request died is taken over after this. */
@@ -50,6 +56,8 @@ export type Deps = {
   /** A costume's garment picture for the outfit's render (garment.ts). */
   garment: (slug: string) => Promise<Uint8Array>
   now?: () => number
+  /** Waits (`drive`); a test's clock moves instead. */
+  sleep?: (ms: number) => Promise<void>
 }
 
 /**
@@ -153,13 +161,18 @@ export async function mayBegin(
   return admits(capacity.controls, capacity.reserved, units) ? "ok" : "closed"
 }
 
-/** Moves a try-on along; the try-on as it now stands (null if none). */
+/**
+ * Moves a try-on along; the try-on as it now stands (null if none). `due`:
+ * the step whose render YouCam says has finished (its webhook), asked about
+ * at once.
+ */
 export async function advance(
   deps: Deps,
   uid: string,
-  id: string
+  id: string,
+  { due }: { due?: number } = {}
 ): Promise<TryOn | null> {
-  const { store, provider } = deps
+  const { store } = deps
   let tryOn = await store.tryOn(uid, id)
   if (!tryOn || tryOn.status !== "running") return tryOn
 
@@ -168,7 +181,9 @@ export async function advance(
   for (let pass = 0; pass < 2; pass++) {
     const current: TryOn = tryOn
     const kept = await Promise.all(
-      current.steps.map((_, index) => advanceStep(deps, uid, current, index))
+      current.steps.map((_, index) =>
+        advanceStep(deps, uid, current, index, index === due && pass === 0)
+      )
     )
     const next = await store.tryOn(uid, id)
     if (!next) return null
@@ -177,17 +192,23 @@ export async function advance(
   }
 
   if (tryOn.status !== "running") return tryOn
+  if (await releaseGarment(deps, uid, tryOn)) {
+    const next = await store.tryOn(uid, id)
+    if (!next) return null
+    tryOn = next
+  }
   // A face YouCam couldn't dress is made up as it is: not a failure.
   const failed = tryOn.steps.find(
     (step) => step.status === "failed" && !dressesFace(step.render)
   )
   if (failed) {
     if (await store.finish(uid, id, "failed", failed.failure ?? "failed")) {
-      // The rest would be paid for nothing: stop what still runs.
+      // The rest would be paid for nothing: stop what still runs, and let go
+      // of what was kept for later.
       await Promise.all(
         tryOn.steps.map((step) =>
-          step.status === "running" && step.task
-            ? provider.discard(step.task)
+          (step.status === "running" || step.status === "done") && step.task
+            ? discardTask(deps, step.task)
             : undefined
         )
       )
@@ -206,6 +227,38 @@ export async function advance(
   return store.tryOn(uid, id)
 }
 
+/**
+ * Moves a try-on along without a page asking (a webhook, the daily check)
+ * until `until`: waits out the renders a busy YouCam keeps waiting, and a
+ * finished render read a moment before its start was noted.
+ */
+export async function drive(
+  deps: Deps,
+  uid: string,
+  id: string,
+  { due, until }: { due?: number; until: number }
+): Promise<TryOn | null> {
+  const { now = Date.now, sleep = wait } = deps
+  let tryOn = await advance(deps, uid, id, { due })
+  for (let round = 0; round < 30 && tryOn?.status === "running"; round++) {
+    const at = now()
+    const status = due === undefined ? null : tryOn.steps[due]?.status
+    const pending = status === "starting" || status === "running"
+    const waiting = tryOn.steps
+      .filter((step) => step.status === "waiting" && (step.busy ?? 0) > 0)
+      .map((step) => step.notBefore ?? at)
+    const next = pending ? at + 1_000 : Math.min(...waiting)
+    if (!Number.isFinite(next) || next > until) break
+    await sleep(Math.max(0, next - at))
+    if (!pending) due = undefined
+    tryOn = await advance(deps, uid, id, { due })
+  }
+  return tryOn
+}
+
+const wait = (ms: number) =>
+  new Promise<void>((resolve) => setTimeout(resolve, ms))
+
 /** A step's state when it was read: a later change must find it unchanged. */
 type Seen = { status: StepStatus; since: number }
 
@@ -217,17 +270,26 @@ async function advanceStep(
   deps: Deps,
   uid: string,
   tryOn: TryOn,
-  index: number
+  index: number,
+  due: boolean
 ): Promise<boolean> {
   const now = deps.now ?? Date.now
   const step = tryOn.steps[index]
   const stale = now() - step.since > LEASE_MS
-  if (step.status === "waiting" || (step.status === "starting" && stale)) {
+  if (step.status === "waiting") {
+    // Kept waiting by a busy YouCam: not before its time.
+    if ((step.notBefore ?? 0) > now()) return false
     await send(deps, uid, tryOn, index)
     return false
   }
-  if (step.status === "running" || (step.status === "saving" && stale))
-    return collect(deps, uid, tryOn, index)
+  if (step.status === "starting" && stale) {
+    await send(deps, uid, tryOn, index)
+    return false
+  }
+  if (step.status === "running") return collect(deps, uid, tryOn, index, due)
+  // A request that died keeping a picture: asked again.
+  if (step.status === "saving" && stale)
+    return collect(deps, uid, tryOn, index, true)
   return false
 }
 
@@ -263,13 +325,15 @@ async function send(deps: Deps, uid: string, tryOn: TryOn, index: number) {
     )
   }
 
-  let task: string
+  let started: Started
   try {
-    task = await provider.start(step.render, {
+    started = await provider.start(step.render, {
       source,
-      ...(await inputsOf(deps, step.render)),
+      ...(await inputsOf(deps, tryOn, step.render)),
     })
   } catch (error) {
+    if (error instanceof ProviderError && error.busy)
+      return holdBack(deps, uid, tryOn.id, index, claim, step, error)
     const { reason, retry } = failureOf(error)
     console.error(`Try-on ${tryOn.id}: step ${index} could not start.`, error)
     await closeFor(store, error)
@@ -284,6 +348,9 @@ async function send(deps: Deps, uid: string, tryOn: TryOn, index: number) {
       retry
     )
   }
+  const { task, garmentFile } = started
+  // Noted first: its webhook may come any time now.
+  await store.trackTask(task, { uid, id: tryOn.id, index }, now())
   const running = await store.updateStep(
     uid,
     tryOn.id,
@@ -293,18 +360,26 @@ async function send(deps: Deps, uid: string, tryOn: TryOn, index: number) {
       status: "running",
       task,
       since: now(),
+      notBefore: now() + checkEvery(step.render),
+      busy: 0,
+      busySince: 0,
+      ...(garmentFile && { files: { garment: garmentFile } }),
     }
   )
   // Another request took the step over meanwhile: this render isn't needed.
-  if (!running) await provider.discard(task)
+  if (!running) await discardTask(deps, task)
 }
 
-/** Looks in on a running render, and keeps its picture once it's done. */
+/**
+ * Looks in on a running render (unless asked too recently: `due` asks at
+ * once), and keeps its picture once it's done.
+ */
 async function collect(
   deps: Deps,
   uid: string,
   tryOn: TryOn,
-  index: number
+  index: number,
+  due: boolean
 ): Promise<boolean> {
   const { store, provider, now = Date.now } = deps
   const step = tryOn.steps[index]
@@ -316,11 +391,32 @@ async function collect(
     return false
   }
   const overdue = now() - step.since > RUN_LIMIT_MS
+  if (step.status === "running") {
+    if (!due && !overdue && (step.notBefore ?? 0) > now()) return false
+    // This request asks; another asking now waits its turn.
+    const asking = await store.updateStep(
+      uid,
+      tryOn.id,
+      index,
+      (current) =>
+        unchanged(step)(current) && current.notBefore === step.notBefore,
+      { notBefore: now() + checkEvery(step.render) }
+    )
+    if (!asking) return false
+  }
 
   let state
   try {
     state = await provider.check(task, step.render)
   } catch (error) {
+    if (error instanceof ProviderError && error.busy) {
+      const busy = (step.busy ?? 0) + 1
+      await store.updateStep(uid, tryOn.id, index, unchanged(step), {
+        notBefore: now() + busyDelay(busy),
+        busy,
+      })
+      return false
+    }
     const { reason, retry } = failureOf(error)
     // A hiccup asking: the next ask tries again, unless it has gone on too long.
     if (retry && !overdue) return false
@@ -336,13 +432,13 @@ async function collect(
   if (state.status === "running") {
     if (!overdue) return false
     console.error(`Try-on ${tryOn.id}: step ${index} ran too long.`)
-    await provider.discard(task)
+    await discardTask(deps, task)
     await back("failed", true)
     return false
   }
   if (state.status === "error") {
     console.error(`Try-on ${tryOn.id}: step ${index} failed: ${state.detail}`)
-    await provider.discard(task)
+    await discardTask(deps, task)
     await back(state.reason, state.retry)
     return false
   }
@@ -351,23 +447,119 @@ async function collect(
   if (!(await store.updateStep(uid, tryOn.id, index, unchanged(step), claim)))
     return false
   await store.saveStepImage(uid, tryOn.id, index, state.image)
+  // The body's outfit keeps its task (and so the garment it uploaded) while
+  // the face's outfit may still use it.
+  const keep = needsGarment(tryOn, index)
   const kept = await store.updateStep(uid, tryOn.id, index, unchanged(claim), {
     status: "done",
-    task: null,
+    task: keep ? task : null,
     since: now(),
+    notBefore: 0,
+    busy: 0,
+    busySince: 0,
   })
-  await provider.discard(task)
+  if (!keep) await discardTask(deps, task)
   return kept
 }
 
-/** What a render needs besides its source picture: an outfit, its garment. */
+/**
+ * Whether the task of step `index` must outlive its render: a body's
+ * outfit whose garment (uploaded with it, deleted with it) the face's
+ * outfit may still need.
+ */
+function needsGarment(tryOn: TryOn, index: number) {
+  const step = tryOn.steps[index]
+  if (step.render.tool !== "clothes" || step.render.from !== "body")
+    return false
+  return tryOn.steps.some(
+    (other) =>
+      dressesFace(other.render) &&
+      other.status !== "done" &&
+      other.status !== "failed"
+  )
+}
+
+/**
+ * Deletes the tasks done steps kept for the garment once no step needs it
+ * (YouCam deletes a task with every file it used); true if it did.
+ */
+async function releaseGarment(deps: Deps, uid: string, tryOn: TryOn) {
+  const released = await Promise.all(
+    tryOn.steps.map(async (step, index) => {
+      if (step.status !== "done" || !step.task) return false
+      if (needsGarment(tryOn, index)) return false
+      const { task } = step
+      const mine = await deps.store.updateStep(
+        uid,
+        tryOn.id,
+        index,
+        (current) => current.status === "done" && current.task === task,
+        { task: null }
+      )
+      if (mine) await discardTask(deps, task)
+      return mine
+    })
+  )
+  return released.includes(true)
+}
+
+/** Deletes a task at YouCam and forgets whose it was. */
+async function discardTask({ store, provider }: Deps, task: string) {
+  await provider.discard(task)
+  await store.forgetTask(task).catch((error: unknown) => {
+    console.warn("Could not forget a YouCam task.", error)
+  })
+}
+
+/**
+ * What a render needs besides its source picture: an outfit, its garment,
+ * or the file of it the body's outfit uploaded (the face's outfit).
+ */
 async function inputsOf(
   deps: Deps,
+  tryOn: TryOn,
   render: Render
 ): Promise<Omit<RenderImages, "source">> {
-  if (render.tool === "clothes")
-    return { garment: await deps.garment(render.garment) }
-  return {}
+  if (render.tool !== "clothes") return {}
+  const shared = tryOn.steps.find(
+    (step) =>
+      step.status === "done" && step.task && step.files?.garment !== undefined
+  )?.files?.garment
+  if (render.from === "face" && shared) return { garmentFile: shared }
+  return { garment: await deps.garment(render.garment) }
+}
+
+/**
+ * A render YouCam was too busy to take (or the call budget was spent):
+ * back to waiting, not counted as an attempt, asked again after a while
+ * that grows each time; given up (Kostuma's failure, never the visitor's)
+ * once it has waited BUSY_LIMIT_MS.
+ */
+async function holdBack(
+  deps: Deps,
+  uid: string,
+  id: string,
+  index: number,
+  seen: Seen,
+  step: StoredStep,
+  error: ProviderError
+) {
+  const { store, now = Date.now } = deps
+  const at = now()
+  const busySince = step.busySince || at
+  if (at - busySince > BUSY_LIMIT_MS) {
+    console.error(`Try-on ${id}: step ${index} waited too long.`, error)
+    return setBack(deps, uid, id, index, seen, step.attempts, "failed", false)
+  }
+  const busy = (step.busy ?? 0) + 1
+  await store.updateStep(uid, id, index, unchanged(seen), {
+    status: "waiting",
+    task: null,
+    since: at,
+    notBefore: at + busyDelay(busy),
+    busy,
+    busySince,
+  })
 }
 
 /** A step that didn't work: tried again, or failed for good. */
@@ -389,13 +581,20 @@ async function setBack(
     index,
     unchanged(seen),
     again
-      ? { status: "waiting", task: null, attempts: tries, since: now() }
+      ? {
+          status: "waiting",
+          task: null,
+          attempts: tries,
+          since: now(),
+          notBefore: 0,
+        }
       : {
           status: "failed",
           task: null,
           attempts: tries,
           failure: reason,
           since: now(),
+          notBefore: 0,
         }
   )
 }

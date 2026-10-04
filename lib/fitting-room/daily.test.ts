@@ -1,11 +1,15 @@
 // @vitest-environment node
 import { afterEach, describe, expect, it, vi } from "vitest"
 
-import { dailyCheck } from "./daily"
+import { makeup, type MakeupGuide, paler } from "@/lib/makeup"
+
+import { dailyCheck, STUCK_MS } from "./daily"
 import { memoryStore } from "./memory-store"
 import { ProviderError, type RenderProvider } from "./provider"
+import { newTryOn } from "./steps"
 
 const NOW = Date.UTC(2026, 9, 20, 6)
+const DAY = 24 * 60 * 60 * 1000
 
 const provider = (balance: () => Promise<number | null>) =>
   ({ name: "youcam", balance }) as unknown as RenderProvider
@@ -19,7 +23,7 @@ describe("dailyCheck", () => {
       { store, provider: provider(async () => 49) },
       NOW
     )
-    expect(report).toEqual({ balance: 49, open: false, failed: [] })
+    expect(report).toEqual({ balance: 49, open: false, ended: 0, failed: [] })
     expect((await store.capacity(NOW)).controls).toMatchObject({
       open: false,
       closedFor: "units",
@@ -59,7 +63,12 @@ describe("dailyCheck", () => {
       },
       NOW
     )
-    expect(report).toEqual({ balance: null, open: null, failed: ["balance"] })
+    expect(report).toEqual({
+      balance: null,
+      open: null,
+      ended: 0,
+      failed: ["balance"],
+    })
     expect((await store.capacity(NOW)).controls.open).toBe(true)
   })
 
@@ -68,10 +77,93 @@ describe("dailyCheck", () => {
     expect(await dailyCheck({ store, provider: null }, NOW)).toEqual({
       balance: null,
       open: null,
+      ended: 0,
       failed: [],
     })
     expect(
       await dailyCheck({ store, provider: provider(async () => null) }, NOW)
     ).toMatchObject({ balance: null })
+  })
+})
+
+describe("dailyCheck, stuck try-ons and old notes", () => {
+  const guide: MakeupGuide = {
+    look: "A test face.",
+    steps: [
+      {
+        title: "Base",
+        howTo: "Foundation.",
+        products: ["foundation"],
+        render: makeup(paler(2)),
+      },
+    ],
+  }
+
+  const tryOnAt = (createdAt: number, n: number) =>
+    newTryOn(
+      {
+        slug: "ghostface",
+        guide,
+        face: {
+          id: String(n).padStart(32, "0"),
+          width: 768,
+          height: 1024,
+          skin: "#C7998A",
+        },
+        body: { id: "b".repeat(32), width: 960, height: 1440 },
+        garment: "https://example.com/ghostface.webp",
+      },
+      createdAt,
+      "youcam"
+    )
+
+  it("ends a try-on running a day after it started, as Kostuma's failure, and deletes its tasks", async () => {
+    const discarded: string[] = []
+    const youcam = {
+      name: "youcam",
+      balance: async () => null,
+      discard: async (task: string) => {
+        discarded.push(task)
+      },
+    } as unknown as RenderProvider
+    const store = memoryStore()
+    const stuck = tryOnAt(NOW - STUCK_MS - 1, 0)
+    const fresh = tryOnAt(NOW - 60_000, 1)
+    await store.begin("visitor", stuck)
+    await store.begin("visitor-2", fresh)
+    await store.updateStep("visitor", stuck.id, 0, () => true, {
+      status: "running",
+      task: "task-9",
+    })
+    await store.trackTask(
+      "task-9",
+      { uid: "visitor", id: stuck.id, index: 0 },
+      NOW
+    )
+
+    const report = await dailyCheck({ store, provider: youcam }, NOW)
+    expect(report.ended).toBe(1)
+    expect(await store.tryOn("visitor", stuck.id)).toMatchObject({
+      status: "failed",
+      failure: "failed",
+    })
+    expect((await store.tryOn("visitor-2", fresh.id))?.status).toBe("running")
+    expect(discarded).toEqual(["task-9"])
+    expect(await store.taskStep("task-9")).toBeNull()
+    // Never the visitor's: the free costume comes back.
+    expect((await store.room("visitor")).failedTries).toBe(0)
+    // Ended once.
+    expect((await dailyCheck({ store, provider: youcam }, NOW)).ended).toBe(0)
+  })
+
+  it("forgets YouCam's tasks and webhooks older than two days", async () => {
+    const store = memoryStore()
+    await store.trackTask("old", { uid: "u", id: "i", index: 0 }, NOW - 3 * DAY)
+    await store.trackTask("new", { uid: "u", id: "i", index: 1 }, NOW - DAY)
+    await store.firstDelivery("old-delivery", NOW - 3 * DAY)
+    await dailyCheck({ store, provider: null }, NOW)
+    expect(await store.taskStep("old")).toBeNull()
+    expect(await store.taskStep("new")).not.toBeNull()
+    expect(await store.firstDelivery("old-delivery", NOW)).toBe(true)
   })
 })

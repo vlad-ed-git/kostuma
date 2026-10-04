@@ -136,6 +136,7 @@
       "makeup": "Maquillándote: {done} de {count} pasos listos…",
       "done": "Tu prueba está lista."
     },
+    "busy": "El espejo está ocupado. Tu prueba empieza en un momento.",
     "outfit": "El disfraz",
     "outfitAlt": "Tú con el disfraz de {name}",
     "outfitShort": "Disfraz",

@@ -1,5 +1,8 @@
 import "server-only"
 
+// By its @/ name: the e2e build swaps it for its stand-in.
+import { fittingRoomStore } from "@/lib/fitting-room/store"
+
 import type { RenderProvider } from "./provider"
 import { youcamProvider } from "./youcam"
 
@@ -14,7 +17,13 @@ export function renderProvider(): RenderProvider | null {
   if (process.env.VERCEL && process.env.TRY_ON_PROVIDER !== "youcam")
     return null
   const key = process.env.YOUCAM_API_GENERATED_KEY
-  if (key) return youcamProvider(key)
+  if (key) {
+    // Every call takes its token from the site's budget (calls.ts).
+    const store = fittingRoomStore()
+    return youcamProvider(key, fetch, (calls, debt) =>
+      store.takeCalls(calls, Date.now(), debt)
+    )
+  }
   console.error(
     "The Fitting Room is closed: YOUCAM_API_GENERATED_KEY is not set."
   )

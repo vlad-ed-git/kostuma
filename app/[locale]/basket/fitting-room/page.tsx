@@ -17,6 +17,13 @@ import { fittingRoom } from "@/lib/fitting-room/service"
 import { fittingRoomStore } from "@/lib/fitting-room/store"
 import { toView, type TryOnView } from "@/lib/fitting-room/try-on"
 
+/**
+ * The platform's limit, explicit, for the page and its server action
+ * (starting a try-on: photos checked and kept, the first render's start
+ * gives up at 40 s).
+ */
+export const maxDuration = 60
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("FittingRoom")
   // Each visitor's own photos: never indexed.

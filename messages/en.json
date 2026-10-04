@@ -136,6 +136,7 @@
       "makeup": "Doing your makeup: {done} of {count} steps ready…",
       "done": "Your try-on is ready."
     },
+    "busy": "The mirror is busy. Your try-on starts in a moment.",
     "outfit": "The outfit",
     "outfitAlt": "You wearing the {name} costume",
     "outfitShort": "Outfit",

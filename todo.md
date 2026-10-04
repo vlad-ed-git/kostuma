@@ -32,7 +32,7 @@ OPP-11 and OPP-12.
 
 ## Engineering (`01-engineering.md`)
 
-- [ ] **ENG-01** YouCam webhooks drive try-ons (a route checking the Standard Webhooks
+- [x] **ENG-01** YouCam webhooks drive try-ons (a route checking the Standard Webhooks
       signature, idempotent on `webhook-id`, `YOUCAM_WEBHOOK_SECRET`; the e2e fake fires it
       too). Page polling stays a complete fallback (webhooks can't reach localhost) but asks
       YouCam at most every 5 s for makeup, 10 s for outfits. A site-wide token bucket in
@@ -45,9 +45,9 @@ OPP-11 and OPP-12.
       closes it below the floor. Closed shows the existing "closed" message.
 - [x] **ENG-03** Only photo failures (`face_photo`, `body_photo`, `photo_rejected`) count in
       `failedTries`.
-- [ ] **ENG-04** One 40 s deadline for a whole `start` (under `LEASE_MS`); `maxDuration = 60` on
+- [x] **ENG-04** One 40 s deadline for a whole `start` (under `LEASE_MS`); `maxDuration = 60` on
       the Fitting Room routes.
-- [ ] **ENG-05** Webhooks (ENG-01) keep try-ons going without the page; the daily cron ends
+- [x] **ENG-05** Webhooks (ENG-01) keep try-ons going without the page; the daily cron ends
       try-ons stuck over 24 h, as Kostuma's failure, not the visitor's.
 - [ ] **ENG-06** The browser sends the face at ≤ 1024 px and the body at ≤ 1440 px (long side),
       JPEG 0.85; a translated message if both together pass 4 MB.

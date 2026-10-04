@@ -3,6 +3,9 @@ import { fittingRoomStore } from "@/lib/fitting-room/store"
 
 import { picture } from "../../../picture"
 
+/** The platform's limit, explicit. */
+export const maxDuration = 60
+
 /** A try-on step's picture, to its owner only. */
 export async function GET(
   _request: Request,

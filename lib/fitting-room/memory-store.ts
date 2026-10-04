@@ -7,6 +7,7 @@ import {
   unitsOfPlan,
   unspentUnits,
 } from "./budget"
+import { type Bucket, take } from "./calls"
 import { allowanceOf, countsAsFailedTry } from "./free-costume"
 import type {
   FacePhoto,
@@ -14,7 +15,9 @@ import type {
   Photo,
   PhotoKind,
   StoredStep,
+  TaskRef,
   TryOn,
+  TryOnRef,
 } from "./try-on"
 
 /**
@@ -40,6 +43,10 @@ export function memoryStore({
   let controls: Controls = { ...DEFAULT_CONTROLS, ...initial }
   // Units reserved per day.
   const usage = new Map<string, number>()
+  let calls: Bucket | null = null
+  const tasks = new Map<string, TaskRef & { at: number }>()
+  const deliveries = new Map<string, number>()
+  const running = new Map<string, TryOnRef & { startedAt: number }>()
 
   function account(uid: string): Account {
     let found = accounts.get(uid)
@@ -111,6 +118,11 @@ export function memoryStore({
       usage.set(day, (usage.get(day) ?? 0) + units)
       const started: TryOn = { ...copy(fresh), reserved: { day, units } }
       found.tryOns.set(fresh.id, started)
+      running.set(`${uid}/${fresh.id}`, {
+        uid,
+        id: fresh.id,
+        startedAt: fresh.createdAt,
+      })
       return { outcome: "started", tryOn: copy(started) }
     },
 
@@ -126,6 +138,7 @@ export function memoryStore({
     async finish(uid, id, status, failure) {
       const found = account(uid)
       const tryOn = found.tryOns.get(id)
+      running.delete(`${uid}/${id}`)
       if (!tryOn || tryOn.status !== "running") return false
       tryOn.status = status
       tryOn.failure = failure
@@ -166,6 +179,44 @@ export function memoryStore({
         balanceAt: now,
       }
       return { ...controls }
+    },
+
+    async takeCalls(count, now, debt = false) {
+      const next = take(calls, count, now, debt)
+      if (next) calls = next
+      return next !== null
+    },
+
+    async trackTask(task, { uid, id, index }, now) {
+      tasks.set(task, { uid, id, index, at: now })
+    },
+
+    async taskStep(task) {
+      const found = tasks.get(task)
+      return found ? { uid: found.uid, id: found.id, index: found.index } : null
+    },
+
+    async forgetTask(task) {
+      tasks.delete(task)
+    },
+
+    async firstDelivery(id, now) {
+      if (deliveries.has(id)) return false
+      deliveries.set(id, now)
+      return true
+    },
+
+    async runningSince(before, limit) {
+      return [...running.values()]
+        .filter((each) => each.startedAt < before)
+        .sort((a, b) => a.startedAt - b.startedAt)
+        .slice(0, limit)
+        .map(({ uid, id }) => ({ uid, id }))
+    },
+
+    async sweep(before) {
+      for (const [task, { at }] of tasks) if (at < before) tasks.delete(task)
+      for (const [id, at] of deliveries) if (at < before) deliveries.delete(id)
     },
   }
 }

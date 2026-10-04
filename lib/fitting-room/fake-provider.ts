@@ -3,6 +3,7 @@ import "server-only"
 import { randomUUID } from "node:crypto"
 
 import sharp from "sharp"
+import { Webhook } from "standardwebhooks"
 
 import {
   ProviderError,
@@ -17,21 +18,32 @@ import { fromHex, type Render } from "./render-plan"
  * render takes a moment, like the real one. An outfit sets the garment
  * beside the visitor; a makeup or hair step washes the picture in its
  * colors, so every step looks different. Its tasks live in this server's
- * memory: one process only.
+ * memory: one process only. Like YouCam, it deletes the garment's upload
+ * with the task that made it, and announces each finished render with a
+ * signed webhook (SITE_URL, YOUCAM_WEBHOOK_SECRET), so the tests drive
+ * try-ons the way production does.
  *
  * A photo whose top-left corner is pure red (#FF0000, give or take what JPEG
  * does to it) can't be read (no face, no person), so the tests can watch a
  * render fail.
  */
 
-type Task = { render: Render; images: RenderImages; startedAt: number }
+type Task = {
+  render: Render
+  source: Uint8Array
+  /** The garment's upload (an outfit), by its file id. */
+  garmentFile?: string
+  startedAt: number
+}
 
 // Kept on globalThis: modules may be loaded again, and running tasks must
 // survive that.
 const store = globalThis as typeof globalThis & {
   __fakeRenderTasks?: Map<string, Task>
+  __fakeGarments?: Map<string, Uint8Array>
 }
 const tasks = (store.__fakeRenderTasks ??= new Map<string, Task>())
+const garments = (store.__fakeGarments ??= new Map<string, Uint8Array>())
 
 /** How long a fake render takes: FAKE_RENDER_MS, else 2.5 s. */
 function renderTime() {
@@ -42,10 +54,24 @@ function renderTime() {
 export const fakeProvider: RenderProvider = {
   name: "fake",
 
-  async start(render, images) {
+  async start(render, { source, garment, garmentFile }: RenderImages) {
     const task = randomUUID()
-    tasks.set(task, { render, images, startedAt: Date.now() })
-    return task
+    let file: string | undefined
+    if (render.tool === "clothes") {
+      file = garmentFile
+      if (!file && garment) {
+        file = `garment-${task}`
+        garments.set(file, garment)
+      }
+    }
+    tasks.set(task, {
+      render,
+      source,
+      garmentFile: file,
+      startedAt: Date.now(),
+    })
+    announce(task)
+    return { task, ...(file && { garmentFile: file }) }
   },
 
   async check(task) {
@@ -53,8 +79,8 @@ export const fakeProvider: RenderProvider = {
     if (!found) throw new ProviderError("Unknown fake task.", "failed", false)
     if (Date.now() - found.startedAt < renderTime())
       return { status: "running" }
-    const { render, images } = found
-    if (await unreadable(images.source)) {
+    const { render, source, garmentFile } = found
+    if (await unreadable(source)) {
       return {
         status: "error",
         reason: render.from === "body" ? "body_photo" : "face_photo",
@@ -62,21 +88,62 @@ export const fakeProvider: RenderProvider = {
         detail: "fake: the photo's top-left corner is red",
       }
     }
-    const image =
-      render.tool === "clothes"
-        ? await dress(images.source, images.garment)
-        : await wash(render, images.source)
-    return { status: "done", image }
+    if (render.tool !== "clothes")
+      return { status: "done", image: await wash(render, source) }
+    const garment = garmentFile && garments.get(garmentFile)
+    // As YouCam does once the task that uploaded it is deleted.
+    if (!garment) {
+      return {
+        status: "error",
+        reason: "failed",
+        retry: false,
+        detail: "fake: error_invalid_ref, the garment's file is gone",
+      }
+    }
+    return { status: "done", image: await dress(source, garment) }
   },
 
   async discard(task) {
     tasks.delete(task)
+    // A task goes with every file it uploaded (YouCam's task/delete).
+    garments.delete(`garment-${task}`)
   },
 
   // Free: nothing to count.
   async balance() {
     return null
   },
+}
+
+/**
+ * YouCam's webhook for a finished render (docs: Standard Webhooks), posted
+ * to this server once the render is done, when the build knows where it
+ * runs and the secret (playwright.config.ts).
+ */
+function announce(task: string) {
+  const site = process.env.SITE_URL
+  const secret = process.env.YOUCAM_WEBHOOK_SECRET
+  if (!site || !secret) return
+  setTimeout(() => {
+    const body = JSON.stringify({
+      created_at: Math.floor(Date.now() / 1000),
+      data: { task_id: task, task_status: "success" },
+    })
+    const id = `msg_${task}`
+    const sent = new Date()
+    fetch(new URL("/api/youcam/webhook", site), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "webhook-id": id,
+        "webhook-timestamp": String(Math.floor(sent.getTime() / 1000)),
+        "webhook-signature": new Webhook(secret).sign(id, sent, body),
+      },
+      body,
+    }).catch(() => {
+      // The page's asking finds the picture anyway.
+    })
+  }, renderTime() + 50)
 }
 
 async function unreadable(image: Uint8Array) {
@@ -89,10 +156,9 @@ async function unreadable(image: Uint8Array) {
 }
 
 /** The garment set over the right half of the body (or face) photo. */
-async function dress(body: Uint8Array, garment?: Uint8Array) {
+async function dress(body: Uint8Array, garment: Uint8Array) {
   const picture = sharp(body)
   const { width = 2, height = 2 } = await picture.metadata()
-  if (!garment) return new Uint8Array(await picture.jpeg().toBuffer())
   const inset = await sharp(garment)
     .resize({
       width: Math.round(width / 2),

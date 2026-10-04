@@ -102,10 +102,10 @@ describe("youcamProvider.start", () => {
       [`${API}/s2s/v2.0/task/makeup-vto`]: () =>
         json({ status: 200, data: { task_id: "task-1" } }),
     })
-    const task = await youcamProvider(KEY, fetcher).start(makeup, {
+    const started = await youcamProvider(KEY, fetcher).start(makeup, {
       source: IMAGE,
     })
-    expect(task).toBe("task-1")
+    expect(started).toEqual({ task: "task-1" })
 
     const [file, put, run] = calls
     expect(file.init?.method).toBe("POST")
@@ -138,7 +138,7 @@ describe("youcamProvider.start", () => {
     })
     expect(
       await youcamProvider(KEY, fetcher).start(hair, { source: IMAGE })
-    ).toBe("task-2")
+    ).toEqual({ task: "task-2" })
     expect(JSON.parse(String(calls[2].init?.body))).toEqual({
       src_file_id: "file-1",
       pattern: { name: "full" },
@@ -174,11 +174,12 @@ describe("youcamProvider.start", () => {
       [`${API}/s2s/v2.0/task/cloth-v4`]: () =>
         json({ status: 200, data: { task_id: "task-3" } }),
     })
-    const task = await youcamProvider(KEY, fetcher).start(outfit, {
+    const started = await youcamProvider(KEY, fetcher).start(outfit, {
       source: IMAGE,
       garment: GARMENT,
     })
-    expect(task).toBe("task-3")
+    // The garment's upload, for the face's outfit to use too.
+    expect(started).toEqual({ task: "task-3", garmentFile: "file-2" })
     const puts = calls.filter((call) =>
       call.url.startsWith("https://upload.example/")
     )
@@ -210,6 +211,56 @@ describe("youcamProvider.start", () => {
     expect(names).toEqual(["face.jpg", "garment.jpg"])
   })
 
+  it("tries the outfit on the face with the garment the body's outfit uploaded", async () => {
+    const { fetcher, calls } = youcam({
+      [`${API}/s2s/v2.0/file`]: uploadAnswer,
+      "https://upload.example/put": () => new Response(null),
+      [`${API}/s2s/v2.0/task/cloth-v4`]: () =>
+        json({ status: 200, data: { task_id: "task-5" } }),
+    })
+    const started = await youcamProvider(KEY, fetcher).start(dressed, {
+      source: IMAGE,
+      garmentFile: "garment-file",
+    })
+    expect(started).toEqual({ task: "task-5", garmentFile: "garment-file" })
+    // One upload: the face photo.
+    expect(
+      calls.filter((call) => call.url === `${API}/s2s/v2.0/file`)
+    ).toHaveLength(1)
+    expect(JSON.parse(String(calls.at(-1)?.init?.body))).toMatchObject({
+      src_file_id: "file-1",
+      ref_file_id: "garment-file",
+    })
+  })
+
+  it("takes its calls from the site's budget first: 2, or 3 with a garment to upload", async () => {
+    const taken: number[] = []
+    const takeCalls = async (calls: number) => {
+      taken.push(calls)
+      return true
+    }
+    const { fetcher } = youcam({
+      [`${API}/s2s/v2.0/file`]: uploadAnswer,
+      "https://upload.example/put": () => new Response(null),
+      [`${API}/s2s/v2.0/task/`]: () =>
+        json({ status: 200, data: { task_id: "task-6" } }),
+    })
+    const provider = youcamProvider(KEY, fetcher, takeCalls)
+    await provider.start(makeup, { source: IMAGE })
+    await provider.start(outfit, { source: IMAGE, garment: GARMENT })
+    await provider.start(dressed, { source: IMAGE, garmentFile: "file-2" })
+    expect(taken).toEqual([2, 3, 2])
+  })
+
+  it("waits, calling nothing, while the budget is spent", async () => {
+    const { fetcher, calls } = youcam({})
+    const error = await youcamProvider(KEY, fetcher, async () => false)
+      .start(makeup, { source: IMAGE })
+      .catch((caught: unknown) => caught)
+    expect(error).toMatchObject({ busy: true, retry: true })
+    expect(calls).toHaveLength(0)
+  })
+
   it("never starts an outfit without its garment", async () => {
     const { fetcher } = youcam({})
     await expect(
@@ -218,14 +269,14 @@ describe("youcamProvider.start", () => {
   })
 
   it.each([
-    [401, "InvalidApiKey", "unavailable", false, "key"],
-    [400, "CreditInsufficiency", "unavailable", false, "units"],
-    [429, "", "failed", true, null],
-    [503, "", "failed", true, null],
-    [400, "InvalidParameters", "failed", false, null],
+    [401, "InvalidApiKey", "unavailable", false, "key", false],
+    [400, "CreditInsufficiency", "unavailable", false, "units", false],
+    [429, "", "failed", true, null, true],
+    [503, "", "failed", true, null, true],
+    [400, "InvalidParameters", "failed", false, null, false],
   ])(
-    "turns HTTP %i %s into %s (retry: %s, closes: %s)",
-    async (status, code, reason, retry, closes) => {
+    "turns HTTP %i %s into %s (retry: %s, closes: %s, busy: %s)",
+    async (status, code, reason, retry, closes, busy) => {
       const { fetcher } = youcam({
         [`${API}/s2s/v2.0/file`]: () =>
           json({ status, error_code: code }, status),
@@ -234,7 +285,7 @@ describe("youcamProvider.start", () => {
         .start(makeup, { source: IMAGE })
         .catch((caught: unknown) => caught)
       expect(error).toBeInstanceOf(ProviderError)
-      expect(error).toMatchObject({ reason, retry, closes })
+      expect(error).toMatchObject({ reason, retry, closes, busy })
     }
   )
 
@@ -421,6 +472,45 @@ describe("youcamProvider.discard", () => {
     })
     expect(warn).toHaveBeenCalled()
     warn.mockRestore()
+  })
+
+  it("takes its call a little into debt, and leaves it to YouCam's 30 days past that", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {})
+    const debts: (boolean | undefined)[] = []
+    const { fetcher, calls } = youcam({
+      [`${API}/s2s/v2.0/task/delete`]: () => json({ status: 200 }),
+    })
+    await youcamProvider(KEY, fetcher, async (_, debt) => {
+      debts.push(debt)
+      return true
+    }).discard("task-1")
+    expect(debts).toEqual([true])
+    expect(calls).toHaveLength(1)
+    await youcamProvider(KEY, fetcher, async () => false).discard("task-2")
+    expect(calls).toHaveLength(1)
+    warn.mockRestore()
+  })
+})
+
+describe("youcamProvider.check, busy", () => {
+  it("takes one call, or waits while the budget is spent", async () => {
+    const { fetcher, calls } = youcam({
+      [`${API}/s2s/v2.0/task/makeup-vto/`]: () =>
+        json({ status: 200, data: { task_status: "running" } }),
+    })
+    const taken: number[] = []
+    const provider = youcamProvider(KEY, fetcher, async (count) => {
+      taken.push(count)
+      return taken.length === 1
+    })
+    expect(await provider.check("task-1", makeup)).toEqual({
+      status: "running",
+    })
+    expect(taken).toEqual([1])
+    await expect(provider.check("task-1", makeup)).rejects.toMatchObject({
+      busy: true,
+    })
+    expect(calls).toHaveLength(1)
   })
 })
 

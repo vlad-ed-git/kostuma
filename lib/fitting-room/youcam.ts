@@ -3,6 +3,7 @@ import "server-only"
 import sharp from "sharp"
 
 import {
+  busyError,
   ProviderError,
   type RenderFailure,
   type RenderProvider,
@@ -19,13 +20,24 @@ import type { Render } from "./render-plan"
  * polled until it has a result (a URL that lives 2 hours, fetched at once
  * and kept as a JPEG on white, at the face photo's size: makeup comes back
  * as a PNG with an alpha channel), then deleted with its files. A failed
- * task costs no units.
+ * task costs no units. Every API call first takes its token from the
+ * site's call budget (`takeCalls`, calls.ts); a busy answer (429, 5xx) or
+ * an empty budget is `busy`: the render waits, it doesn't fail. Deleting a
+ * task deletes every file it used, so a garment's upload serves one
+ * try-on's two outfits, no more (steps.ts).
  */
 
 const BASE = "https://yce-api-01.makeupar.com"
 
 /** Each call gives up after this long: the next poll tries again. */
 const TIMEOUT_MS = 20_000
+
+/**
+ * A whole start (its uploads and the task) gives up after this long, well
+ * within the claim's lease (steps.ts LEASE_MS): no other request takes the
+ * step over and pays for it twice.
+ */
+export const START_MS = 40_000
 
 const endpoints: Record<Render["tool"], string> = {
   clothes: "/s2s/v2.0/task/cloth-v4",
@@ -78,17 +90,44 @@ function engineFailure(code: string, render: Render): Failure {
 
 type Fetch = typeof fetch
 
+/**
+ * Takes tokens from the site's call budget (FittingRoomStore `takeCalls`):
+ * false when there aren't enough now. `debt`: a little past empty.
+ */
+export type TakeCalls = (calls: number, debt?: boolean) => Promise<boolean>
+
+/** A signal that ends a call: its own timeout, or the whole start's deadline. */
+const timeout = (deadline?: AbortSignal) =>
+  deadline
+    ? AbortSignal.any([deadline, AbortSignal.timeout(TIMEOUT_MS)])
+    : AbortSignal.timeout(TIMEOUT_MS)
+
 /** The YouCam provider, with the account's API key (YOUCAM_API_GENERATED_KEY). */
 export function youcamProvider(
   key: string,
-  fetcher: Fetch = fetch
+  fetcher: Fetch = fetch,
+  takeCalls: TakeCalls = async () => true
 ): RenderProvider {
-  async function call(path: string, init: RequestInit = {}) {
-    return dataOf(await request(path, init))
+  /** Takes `calls` from the budget, or waits: YouCam's limit is the site's. */
+  async function budget(calls: number) {
+    if (!(await takeCalls(calls)))
+      throw busyError("YouCam: the call budget is spent for now.")
+  }
+
+  async function call(
+    path: string,
+    init: RequestInit = {},
+    deadline?: AbortSignal
+  ) {
+    return dataOf(await request(path, init, deadline))
   }
 
   /** A call to the API: its whole answer. */
-  async function request(path: string, init: RequestInit = {}) {
+  async function request(
+    path: string,
+    init: RequestInit = {},
+    deadline?: AbortSignal
+  ) {
     let response: Response
     try {
       response = await fetcher(BASE + path, {
@@ -98,7 +137,7 @@ export function youcamProvider(
           "Content-Type": "application/json",
           ...init.headers,
         },
-        signal: AbortSignal.timeout(TIMEOUT_MS),
+        signal: timeout(deadline),
       })
     } catch (error) {
       throw new ProviderError(
@@ -113,19 +152,27 @@ export function youcamProvider(
   }
 
   /** Puts a picture on YouCam; its file id. */
-  async function upload(image: Uint8Array, name: string) {
-    const answer = await call("/s2s/v2.0/file", {
-      method: "POST",
-      body: JSON.stringify({
-        files: [
-          {
-            content_type: "image/jpeg",
-            file_name: name,
-            file_size: image.byteLength,
-          },
-        ],
-      }),
-    })
+  async function upload(
+    image: Uint8Array,
+    name: string,
+    deadline?: AbortSignal
+  ) {
+    const answer = await call(
+      "/s2s/v2.0/file",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          files: [
+            {
+              content_type: "image/jpeg",
+              file_name: name,
+              file_size: image.byteLength,
+            },
+          ],
+        }),
+      },
+      deadline
+    )
     const file = (answer.files as Record<string, unknown>[] | undefined)?.[0]
     const request = (
       file?.requests as Record<string, unknown>[] | undefined
@@ -134,64 +181,71 @@ export function youcamProvider(
     if (typeof fileId !== "string" || typeof request?.url !== "string") {
       throw new ProviderError("YouCam gave no upload URL.", "failed", true)
     }
-    await put(fetcher, request, image)
+    await put(fetcher, request, image, deadline)
     return fileId
-  }
-
-  async function paramsOf(
-    render: Render,
-    { source, garment }: Parameters<RenderProvider["start"]>[1]
-  ): Promise<Record<string, unknown>> {
-    switch (render.tool) {
-      case "clothes": {
-        // Checked before anything is uploaded.
-        if (!garment) {
-          throw new ProviderError(
-            "An outfit needs its garment.",
-            "failed",
-            false
-          )
-        }
-        return {
-          src_file_id: await upload(source, `${render.from}.jpg`),
-          ref_file_id: await upload(garment, "garment.jpg"),
-          garment_category: render.category,
-          change_shoes: true,
-          // The largest person is the visitor; a busy background is fine.
-          filter_multi_person: "off",
-        }
-      }
-      case "makeup":
-        return {
-          src_file_id: await upload(source, "face.jpg"),
-          version: "1.0",
-          effects: render.effects,
-        }
-      case "hair":
-        return {
-          src_file_id: await upload(source, "face.jpg"),
-          pattern: render.pattern,
-          palettes: render.palettes,
-        }
-    }
   }
 
   return {
     name: "youcam",
 
-    async start(render, images) {
-      const params = await paramsOf(render, images)
-      const started = await call(endpoints[render.tool], {
-        method: "POST",
-        body: JSON.stringify(params),
-      })
+    async start(render, { source, garment, garmentFile }) {
+      const outfit = render.tool === "clothes"
+      // Checked before anything is uploaded.
+      if (outfit && !garment && !garmentFile) {
+        throw new ProviderError("An outfit needs its garment.", "failed", false)
+      }
+      const garmentUpload = outfit && !garmentFile
+      // The source's upload, the garment's unless shared, and the task.
+      await budget(garmentUpload ? 3 : 2)
+      const deadline = AbortSignal.timeout(START_MS)
+      const src_file_id = await upload(
+        source,
+        outfit ? `${render.from}.jpg` : "face.jpg",
+        deadline
+      )
+      let params: Record<string, unknown>
+      let uploaded: string | undefined
+      switch (render.tool) {
+        case "clothes":
+          uploaded = garmentUpload
+            ? await upload(garment!, "garment.jpg", deadline)
+            : undefined
+          params = {
+            src_file_id,
+            ref_file_id: uploaded ?? garmentFile,
+            garment_category: render.category,
+            change_shoes: true,
+            // The largest person is the visitor; a busy background is fine.
+            filter_multi_person: "off",
+          }
+          break
+        case "makeup":
+          params = { src_file_id, version: "1.0", effects: render.effects }
+          break
+        case "hair":
+          params = {
+            src_file_id,
+            pattern: render.pattern,
+            palettes: render.palettes,
+          }
+          break
+      }
+      const started = await call(
+        endpoints[render.tool],
+        { method: "POST", body: JSON.stringify(params) },
+        deadline
+      )
       if (typeof started.task_id !== "string") {
         throw new ProviderError("YouCam gave no task id.", "failed", true)
       }
-      return started.task_id
+      return {
+        task: started.task_id,
+        ...(outfit && { garmentFile: uploaded ?? garmentFile }),
+      }
     },
 
     async check(task, render): Promise<TaskState> {
+      await budget(1)
       const data = await call(
         `${endpoints[render.tool]}/${encodeURIComponent(task)}`
       )
@@ -223,6 +277,11 @@ export function youcamProvider(
     },
 
     async discard(task) {
+      // Never put off for the budget, a little into debt at most.
+      if (!(await takeCalls(1, true))) {
+        console.warn("A YouCam task waits for its deletion: no call left.")
+        return
+      }
       await call("/s2s/v2.0/task/delete", {
         method: "POST",
         body: JSON.stringify({ task_id: task }),
@@ -232,6 +291,7 @@ export function youcamProvider(
     },
 
     async balance() {
+      await takeCalls(1, true)
       return unitsLeft(await request("/s2s/v1.0/client/credit"))
     },
   }
@@ -303,9 +363,8 @@ function refusal(path: string, status: number, body: unknown) {
     return new ProviderError(message, "unavailable", false, { closes: "units" })
   if (status === 401)
     return new ProviderError(message, "unavailable", false, { closes: "key" })
-  // Too many requests, or YouCam's own trouble: later.
-  if (status === 429 || status >= 500)
-    return new ProviderError(message, "failed", true)
+  // Too many requests, or YouCam's own trouble: wait, and ask again.
+  if (status === 429 || status >= 500) return busyError(message)
   // Anything else is a request Kostuma got wrong: trying again won't help.
   return new ProviderError(message, "failed", false)
 }
@@ -313,7 +372,8 @@ function refusal(path: string, status: number, body: unknown) {
 async function put(
   fetcher: Fetch,
   request: Record<string, unknown>,
-  image: Uint8Array
+  image: Uint8Array,
+  deadline?: AbortSignal
 ) {
   const headers = Object.fromEntries(
     Object.entries((request.headers as Record<string, unknown>) ?? {}).map(
@@ -326,7 +386,7 @@ async function put(
       headers,
       // A copy on its own ArrayBuffer, which fetch takes as a body.
       body: image.slice(),
-      signal: AbortSignal.timeout(TIMEOUT_MS),
+      signal: timeout(deadline),
     })
     if (response.ok) return
     throw new Error(`HTTP ${response.status}`)

@@ -38,13 +38,27 @@ export type StepStatus =
 export type StoredStep = {
   render: Render
   status: StepStatus
-  /** The provider's task, while it runs. */
+  /**
+   * The provider's task, while it runs; on a done outfit, its task until the
+   * dressed face no longer needs the garment it uploaded (steps.ts).
+   */
   task: string | null
   /** When the status last changed (ms since the epoch). */
   since: number
   /** Renders tried and given up (a hiccup), at most MAX_ATTEMPTS. */
   attempts: number
   failure: RenderFailure | null
+  /**
+   * Nothing is asked of YouCam for this step before then: a running
+   * render's next status check, or a render kept waiting by a busy YouCam
+   * (calls.ts).
+   */
+  notBefore?: number
+  /** Busy answers in a row (429, 5xx, no call left), and since when. */
+  busy?: number
+  busySince?: number
+  /** YouCam's file ids a later render may use again: the garment's. */
+  files?: { garment?: string }
 }
 
 export type TryOnStatus = "running" | "done" | "failed"
@@ -101,6 +115,12 @@ export type Begun =
 /** The switch and what today's try-ons have reserved (budget.ts). */
 export type Capacity = { controls: Controls; reserved: number }
 
+/** An account's try-on. */
+export type TryOnRef = { uid: string; id: string }
+
+/** Where a YouCam task's picture goes: a step of an account's try-on. */
+export type TaskRef = TryOnRef & { index: number }
+
 /**
  * Where try-ons, photos and pictures are kept: Firestore and Cloud Storage
  * (store.ts), or memory (memory-store.ts: tests and the e2e build).
@@ -136,7 +156,8 @@ export interface FittingRoomStore {
     change: Partial<StoredStep>
   ): Promise<boolean>
   /**
-   * Ends a running try-on, in one transaction: false if it had ended already.
+   * Ends a running try-on, in one transaction: false if it had ended already
+   * (or is gone). Either way it leaves the running try-ons (`runningSince`).
    * The units of the renders it never made go back to its day's budget. One
    * that fails for the visitor's photos after pictures were made for it
    * counts in the room's `failedTries` (free-costume.ts).
@@ -163,6 +184,25 @@ export interface FittingRoomStore {
    * Fitting Room by it (budget.ts `afterBalance`). The controls after it.
    */
   recordBalance(balance: number, now: number): Promise<Controls>
+  /**
+   * Takes `calls` tokens from YouCam's site-wide call budget (calls.ts):
+   * false when it hasn't that many now. `debt`: a little past empty.
+   */
+  takeCalls(calls: number, now: number, debt?: boolean): Promise<boolean>
+  /** Notes which step a YouCam task renders, for its webhook. */
+  trackTask(task: string, step: TaskRef, now: number): Promise<void>
+  /** The step a YouCam task renders; null once forgotten. */
+  taskStep(task: string): Promise<TaskRef | null>
+  forgetTask(task: string): Promise<void>
+  /** Whether a webhook delivery (its `webhook-id`) comes for the first time. */
+  firstDelivery(id: string, now: number): Promise<boolean>
+  /**
+   * Running try-ons started before `before` (the daily check ends those
+   * stuck), at most `limit`.
+   */
+  runningSince(before: number, limit: number): Promise<TryOnRef[]>
+  /** The daily sweep: forgets tasks and deliveries older than `before`. */
+  sweep(before: number): Promise<void>
 }
 
 /** A step as the page shows it. */
@@ -188,6 +228,8 @@ export type TryOnView = {
    * makeup's starting point, not a picture of its own.
    */
   dressed: boolean
+  /** Waiting on a busy YouCam before its first picture (calls.ts). */
+  busy: boolean
   steps: StepView[]
 }
 
@@ -209,6 +251,10 @@ export function toView(tryOn: TryOn): TryOnView {
     body: tryOn.body,
     outfit: tryOn.steps[0]?.render.tool === "clothes",
     dressed: tryOn.steps[1]?.render.tool === "clothes",
+    busy:
+      tryOn.status === "running" &&
+      !tryOn.steps.some((step) => step.status === "done") &&
+      tryOn.steps.some((step) => (step.busy ?? 0) > 0),
     steps: tryOn.steps.map((step, index) => ({
       // A failed try-on stops every step it hadn't finished.
       status:

@@ -687,8 +687,9 @@ words beside them; on phones the words come first.
 - **The mirrors:** a dark frame lit red from behind, a bone edge round the glass, fog rolling at
   their feet (behind them, never under words). The vanity carries bulbs across its top and down
   both sides: two flicker, one is dead and sputters now and then. Nothing is ever drawn over the
-  glass: what it holds shows as it is. Closed (renders can't run): the vanity with every bulb out
-  and "The Fitting Room is closed right now. Try again later."
+  glass: what it holds shows as it is. Closed (renders can't run, the owner's switch is off, or
+  the day's unit budget can't take this costume's try-on: `lib/fitting-room/budget.ts`): the
+  vanity with every bulb out and "The Fitting Room is closed right now. Try again later."
 - **Your photos** (`h2`, "Two photos: your face, and you from head to toe. They stay
   private."): "Your face" in the vanity (3:4) and "You, head to toe" in the full-length mirror
   (2:3), their glasses level; each with its photo (contained, never cropped) or, empty, the shape
@@ -713,7 +714,10 @@ words beside them; on phones the words come first.
   no name (the lead says it), no status line, no look line. Locked while it runs (no control to
   change the photos). How it is going ("Trying on the outfit…", "Doing your makeup: 2 of 4 steps
   ready…", "Your try-on is ready.") is told to screen readers only (a polite live region), and
-  the try-on's `h2`, the character's name, is for them too.
+  the try-on's `h2`, the character's name, is for them too. One exception, seen by all: while
+  YouCam is too busy to take the first render (`lib/fitting-room/calls.ts`), the card opens
+  with "The mirror is busy. Your try-on starts in a moment." (`lead`, `--blood-text`). A try-on
+  goes on with its page closed (YouCam's webhook moves it); coming back shows it as it stands.
   - **The vanity** shows one picture at a time, large (its glass as tall as the screen allows,
     at most 42 rem): the outfit (the visitor in the costume), then their face after each step.
     Never the face before (owner: "they know how they look"). The face wears the costume: the
