@@ -95,35 +95,6 @@ at most one Hair Color step, last). `lib/fitting-room/`:
   served only to their owner; the account page deletes them, or the whole
   account. The Privacy policy states all of it.
 
-## The rules (the owner's)
-
-Makeup guides (`content/makeup.ts`, held to them by `content/makeup.test.ts`):
-
-- The face's pictures come only from **Makeup VTO and Hair Color**, as YouCam
-  returns them. Never an image editor, Look VTO templates, lenses, hairstyles
-  or face reshaping, and never code that draws on, masks or composites a
-  visitor's picture.
-- Every step is makeup a person puts on at a vanity, at full strength. At most
-  one hair color, last. No cuts, wigs, lenses or props in a step.
-- What makeup can't draw (blood, stitches, fangs, a line through the eye) goes
-  in the guide's closing words (`finish`), never into a render.
-- No skin tone analysis: never YouCam's Skin Tone Analysis API. Kostuma measures
-  the skin itself, from the face photo (`lib/fitting-room/photo.ts`).
-
-Content and copy:
-
-- Every message, costume and guide exists in English, Spanish and Chinese; the
-  tests fail without all three. Character names and credited people stay as
-  they are.
-- Copy says what visitors see and can do, never how or where things are
-  stored.
-- The Terms of service and the Privacy policy stay true to the code: a change
-  to what is kept, sent or stored changes them, in all three languages, with
-  their dates in `lib/legal.ts`.
-- No prices or payments anywhere: Kostuma Pro is a waitlist.
-
-Design: dark only; WCAG 2.2 AA and `prefers-reduced-motion` respected; menus
-hold places, never actions.
 
 ## Operations
 
